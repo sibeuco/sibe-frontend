@@ -1,0 +1,15 @@
+@use 'src/assets/scss/modules/_var.scss' as *;
+.header{
+    background-color: $primary-color;
+}
+
+.header-text{
+    color: $white-color;
+    font-size: $font-general-size;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: $secondary-color;
+    }
+
+}

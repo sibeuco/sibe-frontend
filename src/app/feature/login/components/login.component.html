@@ -1,0 +1,23 @@
+<div class="login-page d-flex align-items-center justify-content-center">
+    <div class="center-box col-6 d-flex flex-row">
+        <div class="login-image col-6">
+            <img src="assets/images/Mujer-trabajando-en-computador-UCO-1.webp" alt="Imagen login"/>
+        </div>
+        <div class="formulario col-6" [formGroup]="formularioLogin">
+            <h1 class="iniciar-sesion">Iniciar sesión</h1>
+            <form class="barra"></form>
+            <div class="form-floating">
+                <input type="email" class="form-control" id="floatingInput" formControlName="userInput" placeholder="name@example.com">
+                <label class="usuario-input" for="floatingInput">Usuario</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" formControlName="passwordInput" placeholder="Password">
+                <label class="usuario-input" for="floatingPassword">Contraseña</label>
+            </div>
+            <button type="button" class="btn btn-lg">Ingresar</button>
+            <p class="mt-3">
+                <a href="#" class="text-muted">¿Olvidaste tu contraseña?</a>
+            </p>
+        </div>
+    </div>
+</div>
