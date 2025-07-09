@@ -6,6 +6,7 @@ import { StateProps } from 'src/app/shared/model/state.enum';
 import { LoginService } from '../service/login.service';
 import { jwtDecode } from 'jwt-decode';
 import { Login } from '../model/login.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +19,11 @@ export class LoginComponent implements OnInit{
   formularioLogin:FormGroup | any;
   mensajeError: string = '';
 
-  constructor(private formBuilder:FormBuilder, private stateService:StateService, private loginService:LoginService){
-  }
+  constructor(private formBuilder:FormBuilder,
+     private stateService:StateService, 
+     private loginService:LoginService,
+     private router: Router
+    ){}
 
 
   ngOnInit(): void {
@@ -68,6 +72,9 @@ export class LoginComponent implements OnInit{
           };
 
           this.stateService.updateState(StateProps.USER_SESSION, userSession);
+          
+          this.router.navigate(['/home']);
+
         } catch (error) {
           console.error('Error al decodificar el token:', error);
         }

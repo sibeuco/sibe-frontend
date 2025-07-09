@@ -1,0 +1,45 @@
+<div class="department-users-container col-12 justify-content-center">
+    <div class="title-container d-flex justify-content-center align-items-center">
+        <h1 class="admins-title">Administradores de la Dirección</h1>
+    </div>
+    <app-separator></app-separator>
+    <div class="top-table-container col-12 d-flex align-items-center justify-content-center">
+        <div class="search-button row align-items-center justify-content-between mt-3">
+            <div class="search-container col-md-6 col-12 mb-2 mb-md-0">
+                <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Buscar usuario..."
+                    [(ngModel)]="searchTerm"
+                    (input)="filterUsers()" />
+            </div>
+            <div class="button-container col-md-4 col-12 d-flex justify-content-md-end justify-content-center">
+                <app-primary-button
+                    [routerLink]="'/usuarios'"
+                    [icon]="'bi bi-person-add'"
+                    [text]="'Agregar nuevo usuario'">
+                </app-primary-button>
+            </div>
+        </div>
+    </div>
+    <div class="table-container col-12 d-flex align-items-center justify-content-center">
+        <div class="tabla-wrapper col-12 table-responsive">
+            <table class="table table-hover">
+                <thead class="table">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of usuariosFiltrados">
+                        <td>{{ user.nombre }}</td>
+                        <td>{{ user.correo }}</td>
+                        <td>{{ user.rol }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
