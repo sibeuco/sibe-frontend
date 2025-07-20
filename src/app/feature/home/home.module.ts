@@ -8,6 +8,8 @@ import { HomePrimaryButtonsComponent } from './components/home-primary-buttons/h
 import { AreasComponent } from './components/areas/areas.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { HomeFiltersComponent } from './components/home-filters/home-filters.component';
+import { TopDataContainerComponent } from './components/top-data-container/top-data-container.component';
+import { BottonDataContainerComponent } from './components/botton-data-container/botton-data-container.component';
 
 
 @NgModule({
@@ -16,7 +18,9 @@ import { HomeFiltersComponent } from './components/home-filters/home-filters.com
     PrincipalHomeComponent,
     HomePrimaryButtonsComponent,
     AreasComponent,
-    HomeFiltersComponent
+    HomeFiltersComponent,
+    TopDataContainerComponent,
+    BottonDataContainerComponent
   ],
   imports: [
     CommonModule,
