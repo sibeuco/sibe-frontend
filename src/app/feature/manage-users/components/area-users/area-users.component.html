@@ -15,10 +15,11 @@
             </div>
             <div class="button-container col-md-4 col-12 d-flex justify-content-md-end justify-content-center">
                 <app-primary-button
-                    [routerLink]="'/usuarios'"
+                    [modalTargetId]="'register-user-modal'"
                     [icon]="'bi bi-person-add'"
                     [text]="'Agregar nuevo usuario'">
                 </app-primary-button>
+                <app-register-new-user></app-register-new-user> 
             </div>
         </div>
     </div>
