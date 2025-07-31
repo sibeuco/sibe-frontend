@@ -1,33 +1,56 @@
 @use "src/assets/scss/modules/_var.scss" as *;
 
-.department-container{
+.servicio-area-container{
     background-color: $white-color;
-    margin-top: $general-margin-top;
+    margin-top: 1rem;
     width: 98%;
     margin-left: 1%;
-    height: 400px;
+    height: 300px;
     border-radius: $general-border-radius;
     box-shadow: $sombra-general;
+    overflow: hidden;
 }
 
-.department-title{
-    font-size: $font-big-size;
-    font-weight: bold;
-    color: $dark-green;
+.image-container{
+    overflow: hidden;
+}
+
+.img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .form-container{
-    margin-top: 2rem;
     background-color: $secondary-color;
     width: 90%;
     height: 0.5rem;
     border-radius: $general-border-radius;
 }
 
-.btn{
+.area-title{
+    font-size: $font-general;
+    font-weight: bold;
+    color: $dark-green;
+}
+
+.cuantity{
+    font-size: $font-big-size;
+    font-weight: bold;
+    color: $dark-green;
     margin-top: 4rem;
+}
+
+.data-name{
+    font: $font-general;
+    font-weight: bold;
+}
+
+.btn{
+    margin-top: 3rem;
     font-size: $font-general-size ;
     color: $white-color;
+    width: 20%;
     background-color: $primary-color;
     border-color: $primary-color;
     &:hover {
