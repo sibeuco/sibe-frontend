@@ -5,11 +5,21 @@ import { ManageDepartmentRoutingModule } from './manage-department-routing.modul
 import { ManageDepartmentComponent } from './components/manage-department.component';
 import { DepartmentComponent } from './components/department/department.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { DepartmentAreasComponent } from './components/department-areas/department-areas.component';
+import { BienestarAreaComponent } from './components/bienestar-area/bienestar-area.component';
+import { EvangelizacionAreaComponent } from './components/evangelizacion-area/evangelizacion-area.component';
+import { SantaMariaAreaComponent } from './components/santa-maria-area/santa-maria-area.component';
+import { ServicioAreaComponent } from './components/servicio-area/servicio-area.component';
 
 @NgModule({
   declarations: [
     ManageDepartmentComponent,
-    DepartmentComponent
+    DepartmentComponent,
+    DepartmentAreasComponent,
+    BienestarAreaComponent,
+    EvangelizacionAreaComponent,
+    SantaMariaAreaComponent,
+    ServicioAreaComponent
   ],
   imports: [
     CommonModule,
