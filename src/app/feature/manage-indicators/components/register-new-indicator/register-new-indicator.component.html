@@ -1,0 +1,93 @@
+<div class="modal-container modal fade" id="register-indicator-modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form (ngSubmit)="registrarIndicador()" #userForm="ngForm" class="form-container align-items-center justify-content-center">
+                <div class="modal-header col d-flex align-items-center justify-content-center">
+                    <h1 class="modal-title" id="indicatorModalLabel">Agregar Indicador</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="nombre" class="form-label">Nombre del indicador</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="indicador.nombre" required />
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="tipo" class="form-label">Tipo de indicador</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="tipo" name="tipo" [(ngModel)]="indicador.tipoIndicador" required>
+                            <option value="">Selecciona</option>
+                            <option value="Administrador">Administrador de Dirección</option>
+                            <option value="Administrador-area">Administrador de área</option>
+                            <option value="Colaborador">Colaborador</option>
+                            </select>
+                        </div>   
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="temporalidad" class="form-label">Temporalidad</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="temporalidad" name="temporalidad" [(ngModel)]="indicador.temporalidad" required>
+                            <option value="">Selecciona</option>
+                            <option value="Administrador">Administrador de Dirección</option>
+                            <option value="Administrador-area">Administrador de área</option>
+                            <option value="Colaborador">Colaborador</option>
+                            </select>
+                        </div>   
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="proyecto" class="form-label">Proyecto</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="proyecto" name="proyecto" [(ngModel)]="indicador.proyecto" required>
+                            <option value="">Selecciona</option>
+                            <option value="Administrador">Administrador de Dirección</option>
+                            <option value="Administrador-area">Administrador de área</option>
+                            <option value="Colaborador">Colaborador</option>
+                            </select>
+                        </div>   
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="publico" class="form-label">Público interés</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="publico" name="publico" [(ngModel)]="indicador.publicoInteres" required>
+                            <option value="">Selecciona</option>
+                            <option value="Administrador">Administrador de Dirección</option>
+                            <option value="Administrador-area">Administrador de área</option>
+                            <option value="Colaborador">Colaborador</option>
+                            </select>
+                        </div>   
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid">Registrar</button>
+                <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
