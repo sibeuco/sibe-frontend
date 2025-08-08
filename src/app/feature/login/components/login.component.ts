@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit{
           
           this.router.navigate(['/home']);
 
+
         } catch (error) {
           console.error('Error al decodificar el token:', error);
         }

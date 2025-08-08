@@ -8,6 +8,7 @@ import { AuthInterceptor } from './interceptor/auth-interceptor';
 import { ManejadorError } from './interceptor/manejador-error';
 import { TokenInterceptor } from './interceptor/token-interceptor';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
+import { AppRoutingModule } from '../app-routing.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/compiler';
   ],
   imports: [
     CommonModule,
-    HttpClientModule
+    HttpClientModule,
+    AppRoutingModule
   ],
   providers:[
     HttpService,
