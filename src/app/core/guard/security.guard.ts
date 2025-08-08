@@ -6,10 +6,10 @@ export const securityGuard: CanActivateFn = (route, state) => {
   const authorization = sessionStorage.getItem('Authorization');
 
   if (!authorization) {
-    router.navigate(['/inicio']);
+    router.navigate(['/login']);
     return false;
   } else if (tokenExpired(authorization)) {
-    router.navigate(['/inicio']);
+    router.navigate(['/login']);
     sessionStorage.removeItem('Authorization');
     return false;
   }
