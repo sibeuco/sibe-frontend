@@ -5,12 +5,16 @@ import { GoToAreaButtonComponent } from './components/go-to-area-button/go-to-ar
 import { RouterModule } from '@angular/router';
 import { SeparatorComponent } from './components/separator/separator.component';
 import { PrimaryButtonComponent } from './components/primary-button/primary-button.component';
+import { AreaTopImageComponent } from './components/area-top-image/area-top-image.component';
+import { AreaButtonsComponent } from './components/area-buttons/area-buttons.component';
 
 @NgModule({
   declarations: [
     GoToAreaButtonComponent,
     SeparatorComponent,
-    PrimaryButtonComponent
+    PrimaryButtonComponent,
+    AreaTopImageComponent,
+    AreaButtonsComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +27,9 @@ import { PrimaryButtonComponent } from './components/primary-button/primary-butt
     GoToAreaButtonComponent,
     SeparatorComponent,
     PrimaryButtonComponent,
-    RouterModule
+    RouterModule,
+    AreaTopImageComponent,
+    AreaButtonsComponent
   ]
 })
 export class SharedModule { }

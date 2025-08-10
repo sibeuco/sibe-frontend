@@ -1,0 +1,9 @@
+<div class="buttons-container d-flex justify-content-between gap-3">
+  <button 
+    *ngFor="let btn of buttons"
+    class="btn btn-primary flex-fill"
+    (click)="navigateTo(btn.link)">
+    <i class="{{ btn.icon }}"></i>
+    {{ btn.text }}
+  </button>
+</div>
