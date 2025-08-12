@@ -7,7 +7,8 @@ const routes: Routes = [{ path: 'login', loadChildren: () => import('./feature/l
 { path: 'gestionar-direccion', loadChildren: () => import('./feature/manage-department/manage-department.module').then(m => m.ManageDepartmentModule) },
 { path: 'gestionar-usuarios', loadChildren: () => import('./feature/manage-users/manage-users.module').then(m => m.ManageUsersModule) },
 { path: 'gestionar-indicadores', loadChildren: () => import('./feature/manage-indicators/manage-indicators.module').then(m => m.ManageIndicatorsModule) },
-{ path: 'area-bienestar', loadChildren: () => import('./feature/bienestar-area/bienestar-area.module').then(m => m.BienestarAreaModule) }];
+{ path: 'area-bienestar', loadChildren: () => import('./feature/bienestar-area/bienestar-area.module').then(m => m.BienestarAreaModule) },
+{ path: 'area-evangelizacion', loadChildren: () => import('./feature/evangelizacion-area/evangelizacion-area.module').then(m => m.EvangelizacionAreaModule) }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

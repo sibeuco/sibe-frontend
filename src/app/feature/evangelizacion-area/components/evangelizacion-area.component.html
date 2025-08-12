@@ -1,0 +1,27 @@
+<div class="col-12 align-items-center justify-content-center">
+    <div class="top-image-container">
+        <app-area-top-image 
+        imageSrc="assets\images\evangelizacion.jpg" 
+        text="Evangelización">
+        </app-area-top-image>
+    </div>
+    <div class="area-buttons-container">
+        <app-area-buttons
+        [buttons]="[
+            { text: 'Ver Resumen', icon: 'bi bi-clipboard-data', link: '/resumen' },
+            { text: 'Generar Informes', icon: 'bi bi-journal-plus', link: '/informes' }]">
+        </app-area-buttons>
+    </div>
+    <div class="activities-container">
+        <app-activities></app-activities>
+    </div>
+    <div class="area-filters-container">
+        <app-area-filters></app-area-filters>
+    </div>
+    <div class="top-data-container">
+        <app-top-data-container></app-top-data-container>
+    </div>
+    <div class="botton-data-container">
+        <app-bottom-data-container></app-bottom-data-container>
+    </div>
+</div>
