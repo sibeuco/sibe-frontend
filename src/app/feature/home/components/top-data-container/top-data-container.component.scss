@@ -5,12 +5,13 @@
 }
 
 .left-data-container{
+    margin-right: $general-margin-right;
     width: 48%;
-    height: 250px;
     background-color: $white-color;
-    margin-left: $general-margin-left;
     border-radius: $general-border-radius;
     box-shadow: $sombra-general;
+    overflow: hidden;
+    margin-left: $general-margin-left;
 }
 
 .right-data-container{
@@ -36,19 +37,34 @@
     color: $dark-green;
 }
 
-.img-data-container{
-    height: auto;
-}
-
-.img-container img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+.img-fluid{
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    margin-bottom: 10%;
 }
 
 .separator{
-    background-color: $black-color;
+    background-color: $dark-green;
     height: 5px;
     width: 80%;
+    border-radius: $general-border-radius;
+    margin-bottom: 10%;
+}
+
+.cuantity{
+    font-size: 6rem;
+    font-weight: bold;
+}
+
+.data-image-container{
+    margin-left: $general-margin-left;
+    max-height: 80%;
+    width: 100%;
+}
+
+.chart-activities-container{
+    height: 80%;
+    width: 90%;
 }
 

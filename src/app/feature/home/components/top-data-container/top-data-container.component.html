@@ -1,20 +1,31 @@
 <div class="principal-container d-flex col-12 justify-content-between">
-    <div class="left-data-container row">
-        <div class="title-container d-flex justify-content-center">
+    <div class="left-data-container">
+        <div class="title-container col d-flex justify-content-center align-items-center">
             <h1 class="left-data-title">Participantes totales</h1>
-        </div>
-        <div class="img-data-container col d-flex justify-content-center">
-            <div class="img-container row col-4 d-flex">
-                <img src="assets/images/home-college.png" alt="Grupo de personas" />
+        </div>  
+
+        <div class="data-image-container row justify-content-center align-items-center">
+            <div class="img-container col-5 d-flex justify-content-center">
+                <img src="assets/images/home-college.png" alt="Grupo de personas" class="img-fluid" />
             </div>
-            <div class="form-container row col-8 d-flex align-items-center justify-content-center">
-                <form class="separator"></form>
+
+            <div class="data-container col-7">
+                <div class="cuantity-container col d-flex align-items-center justify-content-center">
+                    <p class="cuantity">1455</p>
+                </div>
+                <div class="form-container col d-flex align-items-center justify-content-center">
+                    <form class="separator"></form>
+                </div>
             </div>
         </div>
     </div>
-    <div class="right-data-container row">
-        <div class="title-container d-flex justify-content-center">
+
+    <div class="right-data-container">
+        <div class="title-container col d-flex justify-content-center align-items-center">
             <h1 class="right-data-title">Participantes por área</h1>
         </div>
+        <div class="chart-activities-container">
+            <canvas id="participantsChart"></canvas>
+        </div>        
     </div>
 </div>
