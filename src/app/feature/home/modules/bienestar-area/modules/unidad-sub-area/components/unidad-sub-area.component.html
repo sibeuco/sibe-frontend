@@ -1,0 +1,27 @@
+<div class="col-12 align-items-center justify-content-center">
+    <div class="top-image-container">
+        <app-area-top-image 
+        imageSrc="assets\images\Enfermeras-en-reunion-UCO.webp"
+        text="Unidad de Salud">
+        </app-area-top-image>
+    </div>
+    <div class="area-buttons-container">
+        <app-area-buttons
+        [buttons]="[
+            { text: 'Ver Resumen', icon: 'bi bi-clipboard-data', link: '/resumen' },
+            { text: 'Generar Informes', icon: 'bi bi-journal-plus', link: '/informes' }]">
+        </app-area-buttons>
+    </div>
+    <div class="activities-container">
+        <app-activities></app-activities>
+    </div>
+    <div class="filters-container">
+        <app-filters></app-filters>
+    </div>
+    <div class="top-data-container">
+        <app-top-data></app-top-data>
+    </div>
+    <div class="botton-data-container">
+        <app-bottom-data></app-bottom-data>
+    </div>
+</div>

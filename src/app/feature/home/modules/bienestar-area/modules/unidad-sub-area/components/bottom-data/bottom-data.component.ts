@@ -11,7 +11,7 @@ Chart.register(...registerables);
 })
 export class BottomDataComponent implements AfterViewInit{
 
-    ngAfterViewInit(): void {
+      ngAfterViewInit(): void {
       const ctx = document.getElementById('myBarChart') as HTMLCanvasElement;
 
       new Chart(ctx, {
@@ -24,8 +24,8 @@ export class BottomDataComponent implements AfterViewInit{
           datasets: [{
             label: 'Participantes',
             data: [10, 75, 150, 100, 120, 20, 15, 95, 62, 36, 21],
-            backgroundColor: ['rgba(255, 202, 0, 0.7)'],
-            borderColor: ['rgba(255, 202, 0, 0.7)'],
+            backgroundColor: ['rgba(29, 52, 117, 1)'],
+            borderColor: ['rgba(29, 52, 117, 1)'],
             borderWidth: 1
           }]
         },
