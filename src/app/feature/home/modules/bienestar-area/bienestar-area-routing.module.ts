@@ -8,6 +8,7 @@ const routes: Routes = [{ path: '', component: BienestarAreaComponent},
   { path: 'sub-area-gimnasio', loadChildren: () => import('./modules/gimnasio-sub-area/gimnasio-sub-area.module').then(m => m.GimnasioSubAreaModule) },
   { path: 'sub-area-extension-cultural', loadChildren: () => import('./modules/extension-sub-area/extension-sub-area.module').then(m => m.ExtensionSubAreaModule) },
   { path: 'sub-area-banda-sinfonica', loadChildren: () => import('./modules/banda-sub-area/banda-sub-area.module').then(m => m.BandaSubAreaModule) },
+  { path: 'sub-area-unidad-de-salud', loadChildren: () => import('./modules/unidad-sub-area/unidad-sub-area.module').then(m => m.UnidadSubAreaModule) },
 ];
 
 @NgModule({
