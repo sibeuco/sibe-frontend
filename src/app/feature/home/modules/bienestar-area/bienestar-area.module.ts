@@ -9,6 +9,7 @@ import { AreaFiltersComponent } from './components/area-filters/area-filters.com
 import { TopDataContainerComponent } from './components/top-data-container/top-data-container.component';
 import { BottonDataContainerComponent } from './components/botton-data-container/botton-data-container.component';
 import { RegisterNewActivityComponent } from './components/register-new-activity/register-new-activity.component';
+import { SubAreasComponent } from './components/sub-areas/sub-areas.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { RegisterNewActivityComponent } from './components/register-new-activity
     AreaFiltersComponent,
     TopDataContainerComponent,
     BottonDataContainerComponent,
-    RegisterNewActivityComponent
+    RegisterNewActivityComponent,
+    SubAreasComponent
   ],
   imports: [
     CommonModule,
