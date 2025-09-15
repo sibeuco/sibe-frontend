@@ -10,6 +10,7 @@ import { TopDataContainerComponent } from './components/top-data-container/top-d
 import { BottonDataContainerComponent } from './components/botton-data-container/botton-data-container.component';
 import { RegisterNewActivityComponent } from './components/register-new-activity/register-new-activity.component';
 import { SubAreasComponent } from './components/sub-areas/sub-areas.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,13 +19,13 @@ import { SubAreasComponent } from './components/sub-areas/sub-areas.component';
     AreaFiltersComponent,
     TopDataContainerComponent,
     BottonDataContainerComponent,
-    RegisterNewActivityComponent,
     SubAreasComponent
   ],
   imports: [
     CommonModule,
     BienestarAreaRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class BienestarAreaModule { }

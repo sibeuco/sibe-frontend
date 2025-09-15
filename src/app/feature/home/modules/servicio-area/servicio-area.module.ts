@@ -8,6 +8,7 @@ import { ActivitiesComponent } from './components/activities/activities.componen
 import { AreaFiltersComponent } from './components/area-filters/area-filters.component';
 import { TopDataContainerComponent } from './components/top-data-container/top-data-container.component';
 import { BottomDataContainerComponent } from './components/bottom-data-container/bottom-data-container.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { BottomDataContainerComponent } from './components/bottom-data-container
   imports: [
     CommonModule,
     ServicioAreaRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class ServicioAreaModule { }

@@ -8,6 +8,7 @@ import { FiltersComponent } from './components/filters/filters.component';
 import { TopDataComponent } from './components/top-data/top-data.component';
 import { BottomDataComponent } from './components/bottom-data/bottom-data.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     TrabajoSocialSubAreaRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule
   ]
 })
 export class TrabajoSocialSubAreaModule { }

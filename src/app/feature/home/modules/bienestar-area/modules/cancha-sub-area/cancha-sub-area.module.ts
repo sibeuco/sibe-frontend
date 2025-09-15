@@ -8,6 +8,7 @@ import { ActivitiesComponent } from './components/activities/activities.componen
 import { FiltersComponent } from './components/filters/filters.component';
 import { TopDataComponent } from './components/top-data/top-data.component';
 import { BottomDataComponent } from './components/bottom-data/bottom-data.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { BottomDataComponent } from './components/bottom-data/bottom-data.compon
     CommonModule,
     CanchaSubAreaRoutingModule,
     SharedModule,
+    FormsModule
   ]
 })
 export class CanchaSubAreaModule { }

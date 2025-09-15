@@ -10,6 +10,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { HomeFiltersComponent } from './components/home-filters/home-filters.component';
 import { TopDataContainerComponent } from './components/top-data-container/top-data-container.component';
 import { BottonDataContainerComponent } from './components/botton-data-container/botton-data-container.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { BottonDataContainerComponent } from './components/botton-data-container
     CommonModule,
     HomeRoutingModule,
     SharedModule,
+    FormsModule
   ]
 })
 export class HomeModule { }

@@ -11,6 +11,7 @@ const routes: Routes = [{ path: '', component: BienestarAreaComponent},
   { path: 'sub-area-unidad-de-salud', loadChildren: () => import('./modules/unidad-sub-area/unidad-sub-area.module').then(m => m.UnidadSubAreaModule) },
   { path: 'sub-area-acompanamiento-psicosocial', loadChildren: () => import('./modules/acompanamiento-sub-area/acompanamiento-sub-area.module').then(m => m.AcompanamientoSubAreaModule) },
   { path: 'sub-area-trabajo-social', loadChildren: () => import('./modules/trabajo-social-sub-area/trabajo-social-sub-area.module').then(m => m.TrabajoSocialSubAreaModule) },
+  { path: 'asistencia-actividad', loadChildren: () => import('./modules/bienestar-area-activity-attendance/bienestar-area-activity-attendance.module').then(m => m.BienestarAreaActivityAttendanceModule) },
 ];
 
 @NgModule({
