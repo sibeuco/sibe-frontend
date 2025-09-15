@@ -7,6 +7,10 @@ import { SeparatorComponent } from './components/separator/separator.component';
 import { PrimaryButtonComponent } from './components/primary-button/primary-button.component';
 import { AreaTopImageComponent } from './components/area-top-image/area-top-image.component';
 import { AreaButtonsComponent } from './components/area-buttons/area-buttons.component';
+import { RegisterNewActivityComponent } from './components/register-new-activity/register-new-activity.component';
+import { FormsModule } from '@angular/forms';
+import { ActivityInfoComponent } from './components/activity-info/activity-info.component';
+import { AttendanceRecordComponent } from './components/attendance-record/attendance-record.component';
 
 @NgModule({
   declarations: [
@@ -14,11 +18,15 @@ import { AreaButtonsComponent } from './components/area-buttons/area-buttons.com
     SeparatorComponent,
     PrimaryButtonComponent,
     AreaTopImageComponent,
-    AreaButtonsComponent
+    AreaButtonsComponent,
+    RegisterNewActivityComponent,
+    ActivityInfoComponent,
+    AttendanceRecordComponent
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    FormsModule
   ],
   providers:[
     StateService
@@ -29,7 +37,10 @@ import { AreaButtonsComponent } from './components/area-buttons/area-buttons.com
     PrimaryButtonComponent,
     RouterModule,
     AreaTopImageComponent,
-    AreaButtonsComponent
+    AreaButtonsComponent,
+    RegisterNewActivityComponent,
+    ActivityInfoComponent,
+    AttendanceRecordComponent
   ]
 })
 export class SharedModule { }

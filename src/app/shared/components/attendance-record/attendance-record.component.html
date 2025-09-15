@@ -1,0 +1,115 @@
+<div class="attendance-record-container">
+
+  <!-- Formulario de búsqueda -->
+  <div class="search-section">
+    <div class="search-form">
+      <div class="row">
+        <div class="col-md-5 mb-3">
+          <label for="rfid" class="form-label">Código RFID</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="rfid" 
+            [(ngModel)]="rfidSearch" 
+            placeholder="Ingrese el código RFID del carnet"
+            (keyup.enter)="buscarParticipante()">
+        </div>
+        <div class="col-md-5 mb-3">
+          <label for="documento" class="form-label">Documento</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="documento" 
+            [(ngModel)]="documentoSearch" 
+            placeholder="Ingrese el número de documento"
+            (keyup.enter)="buscarParticipante()">
+        </div>
+        <div class="search-button-container col-md-2 mb-3">
+          <button 
+            type="button" 
+            class="btn btn-primary search-btn"
+            (click)="buscarParticipante()"
+            [disabled]="!rfidSearch && !documentoSearch || buscando">
+            <i class="bi bi-search" *ngIf="!buscando"></i>
+            <span class="spinner-border spinner-border-sm" *ngIf="buscando"></span>
+            {{ buscando ? 'Buscando...' : 'Buscar' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div class="alert-section" *ngIf="mensaje">
+    <div class="alert" [ngClass]="{
+      'alert-success': tipoMensaje === 'success',
+      'alert-danger': tipoMensaje === 'error',
+      'alert-warning': tipoMensaje === 'warning'
+    }">
+      {{ mensaje }}
+    </div>
+  </div>
+
+  <!-- Tabla de participantes -->
+  <div class="participants-section" *ngIf="participantesAsistencia.length > 0">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Nombre Completo</th>
+            <th>Documento</th>
+            <th>RFID</th>
+            <th>Correo</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let participante of participantesAsistencia; let i = index">
+            <td>{{ getNombreCompleto(participante) }}</td>
+            <td>{{ participante.documento }}</td>
+            <td>{{ participante.rfid || 'N/A' }}</td>
+            <td>{{ participante.correo }}</td>
+            <td>
+              <button 
+                type="button" 
+                class="btn btn-sm btn-outline-danger"
+                (click)="removerParticipante(i)"
+                title="Remover participante">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="participants-count">
+      <span class="badge ">Total: {{ participantesAsistencia.length }} participantes</span>
+    </div>
+  </div>
+
+  <!-- Botones de acción -->
+  <div class="action-buttons-section">
+    <div class="row">
+      <div class="cancel-button-container col-md-6 mb-2">
+        <button 
+          type="button" 
+          class="btn btn-secondary"
+          (click)="cancelarActividad()"
+          [disabled]="guardando">
+          Cancelar
+        </button>
+      </div>
+      <div class="success-bottom-container col-md-6 mb-2">
+        <button 
+          type="button" 
+          class="btn btn-success"
+          (click)="finalizarActividad()"
+          [disabled]="participantesAsistencia.length === 0 || guardando">
+          <i *ngIf="!guardando"></i>
+          <span class="spinner-border spinner-border-sm" *ngIf="guardando"></span>
+          {{ guardando ? 'Guardando...' : 'Finalizar Actividad' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

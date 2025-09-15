@@ -1,0 +1,114 @@
+<div class="modal-container modal fade" id="register-activity-modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <form (ngSubmit)="registrarActividad()" #userForm="ngForm" class="form-container align-items-center justify-content-center">
+                <div class="modal-header col d-flex align-items-center justify-content-center">
+                    <h1 class="modal-title" id="activityModalLabel">Agregar Actividad</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="nombre" class="form-label">Nombre</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="actividad.nombre" required />
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="objetivo" class="form-label">Objetivo</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" id="objetivo" name="objetivo" [(ngModel)]="actividad.objetivo" required />
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="semestre" class="form-label">Semestre</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" id="semestre" name="semestre" [(ngModel)]="actividad.semestre" required />
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="ruta" class="form-label">Ruta insumos</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" id="ruta" name="ruta" [(ngModel)]="actividad.rutaInsumos" required />
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="indicador" class="form-label">Indicador</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="indicador" name="indicador" 
+                                    [(ngModel)]="indicadorSeleccionado" 
+                                    (change)="actividad.indicador = indicadorSeleccionado"
+                                    required>
+                                <option value="">Seleccione un indicador</option>
+                                <option *ngFor="let indicador of indicadores" [value]="indicador.nombre">
+                                    {{ indicador.nombre }} - {{ indicador.tipologia }}
+                                </option>
+                            </select>
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="colaborador" class="form-label">Colaborador</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" id="colaborador" name="colaborador" [(ngModel)]="actividad.colaborador" required />
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="fechaProgramada" class="form-label">Fecha de la actividad</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="date" class="form-control" id="fechaProgramada" name="fechaProgramada" [(ngModel)]="actividad.fechaProgramada" required />
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="areaActividad" class="form-label">Area que ejecuta la actividad</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" id="areaActividad" name="areaActividad" [(ngModel)]="actividad.areaPertenece" required />
+                        </div>     
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid">Registrar</button>
+                <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
