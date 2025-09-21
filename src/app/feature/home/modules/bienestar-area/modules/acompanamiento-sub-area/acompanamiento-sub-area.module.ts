@@ -9,6 +9,7 @@ import { TopDataComponent } from './components/top-data/top-data.component';
 import { BottomDataComponent } from './components/bottom-data/bottom-data.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
+import { ActivitiesTableComponent } from 'src/app/shared/components/activities-table/activities-table.component';
 
 
 @NgModule({
