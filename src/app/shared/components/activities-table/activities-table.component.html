@@ -1,0 +1,68 @@
+<div class="activities-table-container">
+  <div class="table-wrapper">
+    <table class="activities-table">
+      <thead>
+        <tr>
+          <th class="sortable" (click)="ordenarPor('nombreActividad')">
+            <span>
+              Nombre Actividad
+              <span class="sort-indicator" [ngClass]="getSortClass('nombreActividad')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th class="sortable" (click)="ordenarPor('colaborador')">
+            <span>
+              Colaborador
+              <span class="sort-indicator" [ngClass]="getSortClass('colaborador')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th class="sortable" (click)="ordenarPor('fechaCreacion')">
+            <span>
+              Fecha Creación
+              <span class="sort-indicator" [ngClass]="getSortClass('fechaCreacion')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th class="sortable" (click)="ordenarPor('estado')">
+            <span>
+              Estado
+              <span class="sort-indicator" [ngClass]="getSortClass('estado')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let actividad of actividadesOrdenadas; trackBy: trackByActividadId">
+          <td class="activity-name">{{ actividad.nombreActividad }}</td>
+          <td class="collaborator">{{ actividad.colaborador }}</td>
+          <td class="creation-date">{{ actividad.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+          <td class="status">
+            <span class="status-badge" [ngClass]="getStatusClass(actividad.estado)">
+              {{ actividad.estado }}
+            </span>
+          </td>
+          <td class="action">
+            <button 
+              class="realizar-actividad-btn"
+              [disabled]="actividad.estado !== 'Pendiente'"
+              (click)="realizarActividad(actividad)"
+              [class.disabled]="actividad.estado !== 'Pendiente'">
+              Realizar Actividad
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="actividades.length === 0" class="no-activities">
+      <p>No hay actividades registradas para esta área.</p>
+    </div>
+  </div>
+</div>

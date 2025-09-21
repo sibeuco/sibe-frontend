@@ -122,7 +122,19 @@ export class AttendanceRecordComponent implements OnInit {
       correo: 'sandra.torres@email.com',
       rfid: 'RF008901',
       tipoUsuario: 'Estudiante'
-    }
+    },
+    {
+      id: 9,
+      tipoIdentificacion: 'CC',
+      documento: '1036965847',
+      primerNombre: 'Daniel',
+      segundoNombre: 'Felipe',
+      primerApellido: 'Garcia',
+      segundoApellido: 'Quiceno',
+      correo: 'danielgarciaquiceno@gmail.com',
+      rfid: '0058844276',
+      tipoUsuario: 'Estudiante'
+    } 
   ];
 
   constructor() {}
