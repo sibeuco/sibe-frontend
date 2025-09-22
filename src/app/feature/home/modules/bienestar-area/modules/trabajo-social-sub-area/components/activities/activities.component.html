@@ -9,7 +9,9 @@
                 <input
                     type="search"
                     class="form-control"
-                    placeholder="Buscar Actividad..."/>
+                    placeholder="Buscar Actividad..."
+                    [(ngModel)]="terminoBusqueda"
+                    (ngModelChange)="onBuscarActividad($event)"/>
             </div>
             <div class="button-container col-md-4 col-12 d-flex justify-content-md-end justify-content-center">
                 <app-primary-button
@@ -18,6 +20,14 @@
                     [text]="'Agregar nueva actividad'">
                 </app-primary-button>
                 <app-register-new-activity></app-register-new-activity>
+            </div>
+            <div class="activities-table-container">
+                <app-activities-table 
+                    [actividades]="listaActividades"
+                    [rutaRedireccion]="'/home/area-bienestar/sub-area-trabajo-social/asistencia-actividad'"
+                    [terminoBusqueda]="terminoBusqueda"
+                    (actividadSeleccionada)="onActividadSeleccionada($event)">
+                </app-activities-table>
             </div>
         </div>
     </div>
