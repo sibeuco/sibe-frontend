@@ -5,7 +5,7 @@
     margin-top: $general-margin-top;
     width: 98%;
     margin-left: $general-margin-left;
-    height: 500px;
+    height: 100%;
     border-radius: $general-border-radius;
     box-shadow: $sombra-general;
 }
@@ -19,6 +19,7 @@
 
 .top-table-container{
     margin-top: $general-margin-top;
+    margin-bottom: $general-margin-top;
 }
 
 .search-button{
