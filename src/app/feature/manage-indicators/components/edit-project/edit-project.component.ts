@@ -2,11 +2,11 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { Modal } from 'bootstrap';
 
 @Component({
-  selector: 'app-register-new-project',
-  templateUrl: './register-new-project.component.html',
-  styleUrls: ['./register-new-project.component.scss']
+  selector: 'app-edit-project',
+  templateUrl: './edit-project.component.html',
+  styleUrls: ['./edit-project.component.scss']
 })
-export class RegisterNewProjectComponent {
+export class EditProjectComponent {
 
   @Output() proyectoCreado = new EventEmitter<any>();
     
@@ -112,5 +112,6 @@ export class RegisterNewProjectComponent {
         const accion = this.accionesDisponibles.find(accion => accion.label === label);
         return accion?.value || '';
       }
+
 
 }

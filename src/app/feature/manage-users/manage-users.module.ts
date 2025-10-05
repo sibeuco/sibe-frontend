@@ -8,6 +8,7 @@ import { DepartmentUsersComponent } from './components/department-users/departme
 import { AreaUsersComponent } from './components/area-users/area-users.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { RegisterNewUserComponent } from './components/register-new-user/register-new-user.component';
+import { EditUserComponent } from './components/edit-user/edit-user.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { RegisterNewUserComponent } from './components/register-new-user/registe
     ManageUsersComponent,
     DepartmentUsersComponent,
     AreaUsersComponent,
-    RegisterNewUserComponent
+    RegisterNewUserComponent,
+    EditUserComponent
   ],
   imports: [
     CommonModule,

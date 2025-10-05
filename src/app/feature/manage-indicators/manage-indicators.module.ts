@@ -9,6 +9,11 @@ import { FormsModule } from '@angular/forms';
 import { RegisterNewIndicatorComponent } from './components/register-new-indicator/register-new-indicator.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { RegisterNewProjectComponent } from './components/register-new-project/register-new-project.component';
+import { EditIndicatorComponent } from './components/edit-indicator/edit-indicator.component';
+import { EditProjectComponent } from './components/edit-project/edit-project.component';
+import { ActionsComponent } from './components/actions/actions.component';
+import { RegisterNewActionComponent } from './components/register-new-action/register-new-action.component';
+import { EditActionComponent } from './components/edit-action/edit-action.component';
 
 
 @NgModule({
@@ -17,7 +22,12 @@ import { RegisterNewProjectComponent } from './components/register-new-project/r
     IndicatorsComponent,
     RegisterNewIndicatorComponent,
     ProjectsComponent,
-    RegisterNewProjectComponent
+    RegisterNewProjectComponent,
+    EditIndicatorComponent,
+    EditProjectComponent,
+    ActionsComponent,
+    RegisterNewActionComponent,
+    EditActionComponent
   ],
   imports: [
     CommonModule,

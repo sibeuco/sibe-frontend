@@ -31,6 +31,7 @@
                     <th>Nombre</th>
                     <th>Correo</th>
                     <th>Rol</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,9 +39,20 @@
                         <td>{{ user.nombre }}</td>
                         <td>{{ user.correo }}</td>
                         <td>{{ user.rol }}</td>
+                        <td class="text-center">
+                            <button 
+                                type="button" 
+                                class="btn btn-outline-warning btn-sm edit-user-button"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#edit-user-modal"
+                                title="Editar usuario">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <app-edit-user></app-edit-user>
 </div>

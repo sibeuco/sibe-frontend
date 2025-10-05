@@ -1,6 +1,6 @@
-<div class="area-users-container col-12 justify-content-center">
+<div class="actions-container col-12 justify-content-center">
     <div class="title-container d-flex justify-content-center align-items-center">
-        <h1 class="users-title">Usuarios de mis áreas</h1>
+        <h1 class="actions-title">Acciones</h1>
     </div>
     <app-separator></app-separator>
     <div class="top-table-container col-12 d-flex align-items-center justify-content-center">
@@ -9,17 +9,17 @@
                 <input
                     type="search"
                     class="form-control"
-                    placeholder="Buscar usuario..."
+                    placeholder="Buscar Acción..."
                     [(ngModel)]="searchTerm"
-                    (input)="filterUsers()" />
+                    (input)="filterActions()" />
             </div>
             <div class="button-container col-md-4 col-12 d-flex justify-content-md-end justify-content-center">
                 <app-primary-button
-                    [modalTargetId]="'register-user-modal'"
-                    [icon]="'bi bi-person-add'"
-                    [text]="'Agregar nuevo usuario'">
+                    [modalTargetId]="'register-action-modal'"
+                    [icon]="'bi bi-plus-circle'"
+                    [text]="'Agregar nueva acción'">
                 </app-primary-button>
-                <app-register-new-user></app-register-new-user> 
+                <app-register-new-action></app-register-new-action>
             </div>
         </div>
     </div>
@@ -28,24 +28,22 @@
             <table class="table table-hover">
                 <thead class="table">
                 <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Rol</th>
+                    <th>Detalle</th>
+                    <th>Objetivo</th>
                     <th></th>
                 </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of usuariosFiltrados">
-                        <td>{{ user.nombre }}</td>
-                        <td>{{ user.correo }}</td>
-                        <td>{{ user.rol }}</td>
+                    <tr *ngFor="let action of accionesFiltradas">
+                        <td>{{ action.detalle }}</td>
+                        <td>{{ action.objetivo }}</td>
                         <td class="text-center">
                             <button 
                                 type="button" 
-                                class="btn btn-outline-warning btn-sm edit-user-button"
+                                class="btn btn-outline-warning btn-sm edit-action-button"
                                 data-bs-toggle="modal" 
-                                data-bs-target="#edit-user-modal"
-                                title="Editar usuario">
+                                data-bs-target="#edit-action-modal"
+                                title="Editar acción">
                                 <i class="bi bi-pencil"></i>
                             </button>
                         </td>
@@ -54,5 +52,5 @@
             </table>
         </div>
     </div>
-    <app-edit-user></app-edit-user>
+    <app-edit-action></app-edit-action>
 </div>

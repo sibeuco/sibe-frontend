@@ -31,6 +31,7 @@
                     <th>Proyecto</th>
                     <th>Nombre</th>
                     <th>Objetivo</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,9 +39,20 @@
                         <td>{{ project.numeroProyecto }}</td>
                         <td>{{ project.nombre }}</td>
                         <td>{{ project.objetivo }}</td>
+                        <td class="text-center">
+                            <button 
+                                type="button" 
+                                class="btn btn-outline-warning btn-sm edit-project-button"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#edit-project-modal"
+                                title="Editar proyecto">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+    <app-edit-project></app-edit-project>
 </div>
