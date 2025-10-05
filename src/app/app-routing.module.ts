@@ -11,7 +11,7 @@ const routes: Routes = [{ path: 'login', loadChildren: () => import('./feature/l
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, {
-    scrollPositionRestoration: 'enabled',
+    scrollPositionRestoration: 'top',
     anchorScrolling: 'enabled'
   })],
   exports: [RouterModule]

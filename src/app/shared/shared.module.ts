@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivityInfoComponent } from './components/activity-info/activity-info.component';
 import { AttendanceRecordComponent } from './components/attendance-record/attendance-record.component';
 import { ActivitiesTableComponent } from './components/activities-table/activities-table.component';
+import { FilterListComponent } from './components/filter-list/filter-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ActivitiesTableComponent } from './components/activities-table/activiti
     RegisterNewActivityComponent,
     ActivityInfoComponent,
     AttendanceRecordComponent,
-    ActivitiesTableComponent
+    ActivitiesTableComponent,
+    FilterListComponent
   ],
   imports: [
     CommonModule,
@@ -37,13 +39,13 @@ import { ActivitiesTableComponent } from './components/activities-table/activiti
     GoToAreaButtonComponent,
     SeparatorComponent,
     PrimaryButtonComponent,
-    RouterModule,
     AreaTopImageComponent,
     AreaButtonsComponent,
     RegisterNewActivityComponent,
     ActivityInfoComponent,
     AttendanceRecordComponent,
-    ActivitiesTableComponent
+    ActivitiesTableComponent,
+    FilterListComponent
   ]
 })
 export class SharedModule { }
