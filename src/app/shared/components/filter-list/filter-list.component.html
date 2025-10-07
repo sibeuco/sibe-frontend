@@ -1,0 +1,30 @@
+<div class="filters-container">
+  <div class="filter-group">
+    <label for="year-filter">Año:</label>
+    <select id="year-filter" [(ngModel)]="selectedYear" class="filter-select">
+      <option value="">Todos los años</option>
+      <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label for="semester-filter">Semestre:</label>
+    <select id="semester-filter" [(ngModel)]="selectedSemester" class="filter-select">
+      <option value="">Todos los semestres</option>
+      <option *ngFor="let semester of semesters" [value]="semester">{{ semester }}</option>
+    </select>
+  </div>
+
+  <div class="filter-group">
+    <label for="relation-filter">Relación Académica:</label>
+    <select id="relation-filter" [(ngModel)]="selectedRelation" class="filter-select">
+      <option value="">Todas las relaciones</option>
+      <option *ngFor="let relation of academicRelations" [value]="relation">{{ relation }}</option>
+    </select>
+  </div>
+
+  <button type="button" class="btn btn-secondary" (click)="onFilter()">
+    <i class="bi bi-funnel-fill"></i>
+    <span>Filtrar</span>
+  </button>
+</div>
