@@ -13,6 +13,7 @@ import { ActivityInfoComponent } from './components/activity-info/activity-info.
 import { AttendanceRecordComponent } from './components/attendance-record/attendance-record.component';
 import { ActivitiesTableComponent } from './components/activities-table/activities-table.component';
 import { FilterListComponent } from './components/filter-list/filter-list.component';
+import { EditActivityComponent } from './components/edit-activity/edit-activity.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { FilterListComponent } from './components/filter-list/filter-list.compon
     ActivityInfoComponent,
     AttendanceRecordComponent,
     ActivitiesTableComponent,
-    FilterListComponent
+    FilterListComponent,
+    EditActivityComponent
   ],
   imports: [
     CommonModule,
