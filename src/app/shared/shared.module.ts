@@ -14,6 +14,7 @@ import { AttendanceRecordComponent } from './components/attendance-record/attend
 import { ActivitiesTableComponent } from './components/activities-table/activities-table.component';
 import { FilterListComponent } from './components/filter-list/filter-list.component';
 import { EditActivityComponent } from './components/edit-activity/edit-activity.component';
+import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { EditActivityComponent } from './components/edit-activity/edit-activity.
     AttendanceRecordComponent,
     ActivitiesTableComponent,
     FilterListComponent,
-    EditActivityComponent
+    EditActivityComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
@@ -47,7 +49,8 @@ import { EditActivityComponent } from './components/edit-activity/edit-activity.
     ActivityInfoComponent,
     AttendanceRecordComponent,
     ActivitiesTableComponent,
-    FilterListComponent
+    FilterListComponent,
+    ChangePasswordComponent
   ]
 })
 export class SharedModule { }
