@@ -35,6 +35,26 @@
         background: #a8a8a8;
       }
     }
+
+    .edit-activity-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35px;
+      height: 35px;
+      font-size: 1.1rem;
+      padding: 0;
+      margin: 0 auto;
+    }
+
+    .edit-activity-button i {
+      margin: 0;
+    }
+
+    .edit-action {
+      text-align: center;
+      vertical-align: middle;
+    }
     
     .activities-table {
       width: 100%;

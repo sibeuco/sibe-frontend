@@ -36,6 +36,7 @@
             </span>
           </th>
           <th>Acción</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -57,6 +58,16 @@
               Realizar Actividad
             </button>
           </td>
+          <td class="edit-action">
+            <button 
+                type="button" 
+                class="btn btn-outline-warning btn-sm edit-activity-button"
+                data-bs-toggle="modal" 
+                data-bs-target="#edit-activity-modal"
+                title="Editar actividad">
+                <i class="bi bi-pencil"></i>
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -65,4 +76,5 @@
       <p>No hay actividades registradas para esta área.</p>
     </div>
   </div>
+  <app-edit-activity></app-edit-activity>
 </div>

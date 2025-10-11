@@ -3,13 +3,13 @@ import { Modal } from 'bootstrap';
 import { IndicatorsService, Indicador } from 'src/app/feature/manage-indicators/service/indicators.service';
 
 @Component({
-  selector: 'app-register-new-activity',
-  templateUrl: './register-new-activity.component.html',
-  styleUrls: ['./register-new-activity.component.scss']
+  selector: 'app-edit-activity',
+  templateUrl: './edit-activity.component.html',
+  styleUrls: ['./edit-activity.component.scss']
 })
-export class RegisterNewActivityComponent implements OnInit {
+export class EditActivityComponent implements OnInit {
 
-  @Output() actividadCreada = new EventEmitter<any>();
+  @Output() actividadEditada = new EventEmitter<any>();
         
           actividad = {
             nombre: '',
@@ -78,8 +78,8 @@ export class RegisterNewActivityComponent implements OnInit {
             return index;
           }
         
-          registrarActividad() {
-            this.actividadCreada.emit(this.actividad);
+          editarActividad() {
+            this.actividadEditada.emit(this.actividad);
             this.limpiarFormulario();
         
             const modalElement = document.getElementById('userModal');
