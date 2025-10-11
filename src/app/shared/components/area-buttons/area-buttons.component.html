@@ -2,7 +2,7 @@
   <button 
     *ngFor="let btn of buttons"
     class="btn btn-primary flex-fill"
-    (click)="navigateTo(btn.link)">
+    (click)="navigateTo(btn)">
     <i class="{{ btn.icon }}"></i>
     {{ btn.text }}
   </button>

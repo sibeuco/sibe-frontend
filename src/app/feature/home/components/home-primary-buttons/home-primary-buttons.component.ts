@@ -7,4 +7,14 @@ import { Component } from '@angular/core';
 })
 export class HomePrimaryButtonsComponent {
 
+  scrollToFilters(): void {
+    const element = document.getElementById('home-filters-section');
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'start' 
+      });
+    }
+  }
+
 }
