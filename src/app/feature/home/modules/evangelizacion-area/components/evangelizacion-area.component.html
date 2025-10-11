@@ -8,14 +8,14 @@
     <div class="area-buttons-container">
         <app-area-buttons
         [buttons]="[
-            { text: 'Ver Resumen', icon: 'bi bi-clipboard-data', link: '/resumen' },
+            { text: 'Ver Resumen', icon: 'bi bi-clipboard-data', scrollTarget: 'evangelizacion-filters-section' },
             { text: 'Generar Informes', icon: 'bi bi-journal-plus', link: '/informes' }]">
         </app-area-buttons>
     </div>
     <div class="activities-container">
         <app-activities></app-activities>
     </div>
-    <div class="area-filters-container">
+    <div id="evangelizacion-filters-section" class="area-filters-container">
         <app-area-filters></app-area-filters>
     </div>
     <div class="top-data-container">

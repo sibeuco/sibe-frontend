@@ -11,6 +11,7 @@ import { HomeFiltersComponent } from './components/home-filters/home-filters.com
 import { TopDataContainerComponent } from './components/top-data-container/top-data-container.component';
 import { BottonDataContainerComponent } from './components/botton-data-container/botton-data-container.component';
 import { FormsModule } from '@angular/forms';
+import { ActivitiesComponent } from './components/activities/activities.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     AreasComponent,
     HomeFiltersComponent,
     TopDataContainerComponent,
-    BottonDataContainerComponent
+    BottonDataContainerComponent,
+    ActivitiesComponent
   ],
   imports: [
     CommonModule,
