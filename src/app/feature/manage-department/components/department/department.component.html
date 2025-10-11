@@ -1,13 +1,13 @@
 <div class="department-container col-12">
-    <div class="center-box col-12 d-flex">
-        <div class="image-container col-3 d-flex justify-content-center align-items-center">
+    <div class="center-box col-12 d-flex flex-column flex-md-row">
+        <div class="image-container col-md-3 d-none d-md-flex justify-content-center align-items-center">
             <img src="assets/images/manage.png" class="img-top h-100 w-100" alt="img-top" style="object-fit: cover;">
         </div>
-        <div class="buttons-container col overlay d-flex flex-column justify-content-center align-items-center">
+        <div class="buttons-container col-12 col-md overlay d-flex flex-column justify-content-center align-items-center">
             <h1 class="department-title">Dirección de Bienestar y Evangelización</h1>
             <div class="form-container">
             </div>
-            <div class="buttons-container d-flex justify-content-center align-items-center gap-5">
+            <div class="buttons-container d-flex flex-column flex-md-row justify-content-center align-items-center gap-3 gap-md-5">
                 <button routerLink="/gestionar-usuarios" type="button" class="btn btn-lg">
                     <i class="bi bi-people"></i>
                     Gestionar usuarios
@@ -16,6 +16,13 @@
                     <i class="bi bi-graph-up"></i>
                     Gestionar indicadores
                 </button>
+                <button type="button" class="btn btn-lg" data-bs-toggle="modal" data-bs-target="#upload-database-modal">
+                    <i class="bi bi-database-add"></i>
+                    Cargar base de datos
+                </button>
             </div>
     </div>
 </div>
+
+<!-- Modal de carga de base de datos -->
+<app-upload-database (archivoSeleccionado)="onArchivoSeleccionado($event)"></app-upload-database>
