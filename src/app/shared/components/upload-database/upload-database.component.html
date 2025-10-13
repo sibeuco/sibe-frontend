@@ -3,13 +3,13 @@
         <div class="modal-content">
             <div class="form-container align-items-center justify-content-center">
                 <div class="modal-header col d-flex align-items-center justify-content-center position-relative">
-                    <h1 class="modal-title" id="uploadModalLabel">Cargar Base de Datos</h1>
+                    <h1 class="modal-title" id="uploadModalLabel">{{ obtenerTituloModal() }}</h1>
                     <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
                     <!-- Información -->
                     <div class="mb-4 text-center">
-                        <p class="info-text">Selecciona un archivo de Excel (.xlsx o .xls) para cargar la base de datos del personal universitario</p>
+                        <p class="info-text">{{ obtenerDescripcionModal() }}</p>
                         <p class="info-text-small">Tamano maximo: 40MB</p>
                     </div>
 
@@ -50,21 +50,36 @@
 
                     <!-- Mensajes -->
                     <div style="min-height: 2rem;" class="text-center mt-3">
-                        <span *ngIf="mensajeError" class="text-danger">
+                        <span *ngIf="cargando" class="text-primary">
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Subiendo archivo al servidor...
+                        </span>
+                        <span *ngIf="!cargando && mensajeError" class="text-danger">
                             <i class="bi bi-exclamation-circle me-1"></i>{{ mensajeError }}
                         </span>
-                        <span *ngIf="mensajeExito" class="text-success">
+                        <span *ngIf="!cargando && mensajeExito" class="text-success">
                             <i class="bi bi-check-circle me-1"></i>{{ mensajeExito }}
                         </span>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" 
+                            class="cancel-button btn btn-secondary" 
+                            data-bs-dismiss="modal"
+                            [disabled]="cargando">
+                        Cancelar
+                    </button>
                     <button type="button" 
                             class="upload-button btn btn-primary" 
                             (click)="cargarArchivo()" 
-                            [disabled]="!archivoActual">
-                        <i class="bi bi-upload me-2"></i>Cargar Archivo
+                            [disabled]="!archivoActual || cargando">
+                        <span *ngIf="!cargando">
+                            <i class="bi bi-upload me-2"></i>Cargar Archivo
+                        </span>
+                        <span *ngIf="cargando">
+                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                            Cargando...
+                        </span>
                     </button>
                 </div>
             </div>
