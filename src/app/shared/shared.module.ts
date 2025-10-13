@@ -16,6 +16,7 @@ import { FilterListComponent } from './components/filter-list/filter-list.compon
 import { EditActivityComponent } from './components/edit-activity/edit-activity.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { UploadDatabaseComponent } from './components/upload-database/upload-database.component';
+import { ExternalParticipantComponent } from './components/external-participant/external-participant.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { UploadDatabaseComponent } from './components/upload-database/upload-dat
     FilterListComponent,
     EditActivityComponent,
     ChangePasswordComponent,
-    UploadDatabaseComponent
+    UploadDatabaseComponent,
+    ExternalParticipantComponent
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,8 @@ import { UploadDatabaseComponent } from './components/upload-database/upload-dat
     ActivitiesTableComponent,
     FilterListComponent,
     ChangePasswordComponent,
-    UploadDatabaseComponent
+    UploadDatabaseComponent,
+    ExternalParticipantComponent
   ]
 })
 export class SharedModule { }

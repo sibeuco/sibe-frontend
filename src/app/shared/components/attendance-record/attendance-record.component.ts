@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Participante, AsistenciaActividad } from 'src/app/core/model/participante.model';
+import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-attendance-record',
@@ -30,13 +31,13 @@ export class AttendanceRecordComponent implements OnInit {
     {
       id: 1,
       tipoIdentificacion: 'CC',
-      documento: '12345678',
-      primerNombre: 'Juan',
-      segundoNombre: 'Carlos',
-      primerApellido: 'Pérez',
-      segundoApellido: 'García',
-      correo: 'juan.perez@email.com',
-      rfid: 'RF001234',
+      documento: '1036965847',
+      primerNombre: 'Daniel',
+      segundoNombre: 'Felipe',
+      primerApellido: 'Garcia',
+      segundoApellido: 'Quiceno',
+      correo: 'daniel.garcia5847@gmail.com',
+      rfid: '0058844276',
       tipoUsuario: 'Estudiante'
     },
     {
@@ -122,19 +123,7 @@ export class AttendanceRecordComponent implements OnInit {
       correo: 'sandra.torres@email.com',
       rfid: 'RF008901',
       tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 9,
-      tipoIdentificacion: 'CC',
-      documento: '1036965847',
-      primerNombre: 'Daniel',
-      segundoNombre: 'Felipe',
-      primerApellido: 'Garcia',
-      segundoApellido: 'Quiceno',
-      correo: 'danielgarciaquiceno@gmail.com',
-      rfid: '0058844276',
-      tipoUsuario: 'Estudiante'
-    } 
+    }
   ];
 
   constructor() {}
@@ -169,9 +158,59 @@ export class AttendanceRecordComponent implements OnInit {
         this.agregarParticipante(participanteEncontrado);
         this.limpiarFormulario();
       } else {
-        this.mostrarMensaje('No se encontró ningún participante con los datos ingresados', 'warning');
+        // Preguntar si desea agregar como participante externo
+        this.preguntarAgregarParticipanteExterno();
       }
     }, 1000); // Simular 1 segundo de búsqueda
+  }
+
+  /**
+   * Pregunta al usuario si desea agregar un participante externo
+   */
+  private preguntarAgregarParticipanteExterno(): void {
+    const confirmar = confirm('No se encontró ningún participante con los datos ingresados.\n\n¿Desea agregar este participante como participante externo?');
+    
+    if (confirmar) {
+      this.abrirModalParticipanteExterno();
+    } else {
+      this.mostrarMensaje('No se encontró ningún participante con los datos ingresados', 'warning');
+      this.limpiarFormulario();
+    }
+  }
+
+  /**
+   * Abre el modal de participante externo
+   */
+  private abrirModalParticipanteExterno(): void {
+    const modalElement = document.getElementById('external-participant-modal');
+    if (modalElement) {
+      const modal = new Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  /**
+   * Maneja el evento cuando se agrega un participante externo
+   */
+  manejarParticipanteExterno(datos: any): void {
+    // Crear un objeto Participante a partir de los datos del participante externo
+    const participanteExterno: Participante = {
+      id: Date.now(), // Generar un ID temporal
+      tipoIdentificacion: 'EXT', // Tipo para identificar participantes externos
+      documento: datos.documento,
+      primerNombre: datos.nombreCompleto.split(' ')[0] || datos.nombreCompleto,
+      segundoNombre: datos.nombreCompleto.split(' ')[1] || '',
+      primerApellido: datos.nombreCompleto.split(' ')[2] || '',
+      segundoApellido: datos.nombreCompleto.split(' ')[3] || '',
+      correo: 'participante.externo@email.com', // Correo genérico para externos
+      rfid: this.rfidSearch || undefined,
+      tipoUsuario: 'Externo'
+    };
+
+    // Agregar el participante externo a la lista
+    this.agregarParticipante(participanteExterno);
+    this.limpiarFormulario();
+    this.mostrarMensaje(`Participante externo ${datos.nombreCompleto} agregado exitosamente`, 'success');
   }
 
   /**
