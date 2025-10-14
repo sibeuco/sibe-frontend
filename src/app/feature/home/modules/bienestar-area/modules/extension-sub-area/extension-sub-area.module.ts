@@ -9,6 +9,7 @@ import { FiltersComponent } from './components/filters/filters.component';
 import { TopDataComponent } from './components/top-data/top-data.component';
 import { BottomDataComponent } from './components/bottom-data/bottom-data.component';
 import { FormsModule } from '@angular/forms';
+import { ExtensionSubareaActivityAttendanceRecordComponent } from './components/extension-subarea-activity-attendance-record/extension-subarea-activity-attendance-record.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     ActivitiesComponent,
     FiltersComponent,
     TopDataComponent,
-    BottomDataComponent
+    BottomDataComponent,
+    ExtensionSubareaActivityAttendanceRecordComponent
   ],
   imports: [
     CommonModule,

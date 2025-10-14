@@ -10,6 +10,7 @@ import { BottomDataComponent } from './components/bottom-data/bottom-data.compon
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule } from '@angular/forms';
 import { ActivitiesTableComponent } from 'src/app/shared/components/activities-table/activities-table.component';
+import { AcompanamientoSubareaActivityAttendanceRecordComponent } from './components/acompanamiento-activity-attendance-record/acompanamiento-subarea-activity-attendance-record.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { ActivitiesTableComponent } from 'src/app/shared/components/activities-t
     ActivitiesComponent,
     FiltersComponent,
     TopDataComponent,
-    BottomDataComponent
+    BottomDataComponent,
+    AcompanamientoSubareaActivityAttendanceRecordComponent
   ],
   imports: [
     CommonModule,

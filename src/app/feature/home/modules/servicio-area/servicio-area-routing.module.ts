@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ServicioAreaComponent } from './components/servicio-area.component';
+import { ServicioAreaActivityAttendanceRecordComponent } from './components/servicio-area-activity-attendance-record/servicio-area-activity-attendance-record.component';
 
 const routes: Routes = [{ path: '', component: ServicioAreaComponent },
-  { path: 'asistencia-actividad', loadChildren: () => import('./modules/servicio-area-activity-attendance/servicio-area-activity-attendance.module').then(m => m.ServicioAreaActivityAttendanceModule) },
+  { path: 'asistencia-actividad-area-servicio', component: ServicioAreaActivityAttendanceRecordComponent}
 ];
 
 @NgModule({

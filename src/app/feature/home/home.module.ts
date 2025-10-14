@@ -12,6 +12,7 @@ import { TopDataContainerComponent } from './components/top-data-container/top-d
 import { BottonDataContainerComponent } from './components/botton-data-container/botton-data-container.component';
 import { FormsModule } from '@angular/forms';
 import { ActivitiesComponent } from './components/activities/activities.component';
+import { DepartmentAttendanceRecordComponent } from './components/department-attendance-record/department-attendance-record.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ActivitiesComponent } from './components/activities/activities.componen
     HomeFiltersComponent,
     TopDataContainerComponent,
     BottonDataContainerComponent,
-    ActivitiesComponent
+    ActivitiesComponent,
+    DepartmentAttendanceRecordComponent
   ],
   imports: [
     CommonModule,

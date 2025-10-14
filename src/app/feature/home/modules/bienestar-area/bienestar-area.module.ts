@@ -11,6 +11,7 @@ import { BottonDataContainerComponent } from './components/botton-data-container
 import { RegisterNewActivityComponent } from './components/register-new-activity/register-new-activity.component';
 import { SubAreasComponent } from './components/sub-areas/sub-areas.component';
 import { FormsModule } from '@angular/forms';
+import { BienestarAreaActivityAttendanceRecordComponent } from './components/bienestar-area-activity-attendance-record/bienestar-area-activity-attendance-record.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FormsModule } from '@angular/forms';
     AreaFiltersComponent,
     TopDataContainerComponent,
     BottonDataContainerComponent,
-    SubAreasComponent
+    SubAreasComponent,
+    BienestarAreaActivityAttendanceRecordComponent
   ],
   imports: [
     CommonModule,
