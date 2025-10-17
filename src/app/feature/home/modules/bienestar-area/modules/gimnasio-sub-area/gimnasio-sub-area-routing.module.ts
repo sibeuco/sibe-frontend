@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { GimnasioSubAreaComponent } from './components/gimnasio-sub-area.component';
+import { GimnasioSubareaActivityAttendanceRecordComponent } from './components/gimnasio-subarea-activity-attendance-record/gimnasio-subarea-activity-attendance-record.component';
 
 const routes: Routes = [{ path: '', component: GimnasioSubAreaComponent },
-  { path: 'asistencia-actividad', loadChildren: () => import('./modules/gimnasio-sub-area-activity-attendance/gimnasio-sub-area-activity-attendance.module').then(m => m.GimnasioSubAreaActivityAttendanceModule) },
+  { path: 'asistencia-actividad-subarea-gimnasio', component: GimnasioSubareaActivityAttendanceRecordComponent}
 ];
 
 @NgModule({

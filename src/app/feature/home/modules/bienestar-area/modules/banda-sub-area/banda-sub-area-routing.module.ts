@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BandaSubAreaComponent } from './components/banda-sub-area.component';
+import { BandaSubareaActivityAttendanceRecordComponent } from './components/banda-subarea-activity-attendance-record/banda-subarea-activity-attendance-record.component';
 
 const routes: Routes = [{ path: '', component: BandaSubAreaComponent },
-  { path: 'asistencia-actividad', loadChildren: () => import('./modules/banda-sub-area-activity-attendance/banda-sub-area-activity-attendance.module').then(m => m.BandaSubAreaActivityAttendanceModule) },
+  { path: 'asistencia-actividad-subarea-banda', component: BandaSubareaActivityAttendanceRecordComponent}
 ];
 
 @NgModule({

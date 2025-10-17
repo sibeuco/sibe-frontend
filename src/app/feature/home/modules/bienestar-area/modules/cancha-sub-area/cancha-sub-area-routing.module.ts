@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CanchaSubAreaComponent } from './components/cancha-sub-area.component';
+import { CanchaSubareaActivityAttendanceRecordComponent } from './components/cancha-subarea-activity-attendance-record/cancha-subarea-activity-attendance-record.component';
 
 const routes: Routes = [{ path: '', component: CanchaSubAreaComponent },
-  { path: 'asistencia-actividad', loadChildren: () => import('./modules/cancha-sub-area-activity-attendance/cancha-sub-area-activity-attendance.module').then(m => m.CanchaSubAreaActivityAttendanceModule) },
+  { path: 'asistencia-actividad-subarea-cancha', component: CanchaSubareaActivityAttendanceRecordComponent}
 ];
 
 @NgModule({

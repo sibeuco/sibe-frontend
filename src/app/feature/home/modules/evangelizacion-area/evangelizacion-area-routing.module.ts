@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EvangelizacionAreaComponent } from './components/evangelizacion-area.component';
+import { EvangelizacionAreaActivityAttendanceRecordComponent } from './components/evangelizacion-area-activity-attendance-record/evangelizacion-area-activity-attendance-record.component';
 
 const routes: Routes = [{ path: '', component: EvangelizacionAreaComponent },
-  { path: 'asistencia-actividad', loadChildren: () => import('./modules/evangelizacion-area-activity-attendance/evangelizacion-area-activity-attendance.module').then(m => m.EvangelizacionAreaActivityAttendanceModule) },
+  { path: 'asistencia-actividad-area-evangelizacion',component: EvangelizacionAreaActivityAttendanceRecordComponent }
 ];
 
 @NgModule({

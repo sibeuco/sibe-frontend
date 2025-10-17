@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from 'src/app/shared/service/user.service';
+import { UserResponse } from 'src/app/shared/model/user.model';
 
 @Component({
   selector: 'app-department-users',
@@ -7,25 +9,54 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DepartmentUsersComponent implements OnInit{
 
-  searchTerm: string = '';
-  usuarios = [
-    { nombre: 'Daniel García', correo: 'daniel@example.com', rol: 'Administrador' },
-    { nombre: 'Laura Mejía', correo: 'laura@example.com', rol: 'Colaborador' },
-    { nombre: 'Carlos Torres', correo: 'carlos@example.com', rol: 'Colaborador' }
-  ];
-  usuariosFiltrados = [...this.usuarios];
+  usuarios: UserResponse[] = [];
+    usuariosFiltrados: UserResponse[] = [];
+    cargando = false;
+    error = '';
+    searchTerm = '';
+  
+    constructor(private userService: UserService) {}
+  
+    ngOnInit(): void {
+      this.obtenerUsuarios();
+    }
 
-  ngOnInit(): void {
-    this.usuariosFiltrados = this.usuarios;
-  }
+    obtenerUsuarios(): void {
+    this.cargando = true;
+    this.error = '';
 
-  filterUsers(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.usuariosFiltrados = this.usuarios.filter(user =>
-      Object.values(user).some(value =>
-        value.toLowerCase().includes(term)
-      )
-    );
+    this.userService.consultarUsuarios().subscribe({
+      next: (res: UserResponse[]) => {
+
+        this.usuarios = res.filter(
+          usuario => usuario.tipoUsuario?.nombre === 'Administrador de dirección'
+        );
+
+        // Guarda también la lista filtrada para búsquedas
+        this.usuariosFiltrados = [...this.usuarios];
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al consultar usuarios:', err);
+        this.error = 'No se pudieron cargar los usuarios.';
+        this.cargando = false;
+      }
+    });
   }
+  
+    // para filtrar los usuarios por algún término de busqueda
+    filtrarUsuarios(): void {
+      if (!this.searchTerm.trim()) {
+        this.usuariosFiltrados = [...this.usuarios];
+      } else {
+        const termino = this.searchTerm.toLowerCase().trim();
+        this.usuariosFiltrados = this.usuarios.filter(usuario => 
+          usuario.nombres?.toLowerCase().includes(termino) ||
+          usuario.apellidos?.toLowerCase().includes(termino) ||
+          usuario.correo?.toLowerCase().includes(termino) ||
+          usuario.tipoUsuario?.nombre?.toLowerCase().includes(termino)
+        );
+      }
+    }
 
 }

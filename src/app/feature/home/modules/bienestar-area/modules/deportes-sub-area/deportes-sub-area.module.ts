@@ -9,6 +9,7 @@ import { FiltersComponent } from './components/filters/filters.component';
 import { TopDataComponent } from './components/top-data/top-data.component';
 import { BottomDataComponent } from './components/bottom-data/bottom-data.component';
 import { FormsModule } from '@angular/forms';
+import { DeportesSubareaActivityAttendanceRecordComponent } from './components/deportes-subarea-activity-attendance-record/deportes-subarea-activity-attendance-record.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     ActivitiesComponent,
     FiltersComponent,
     TopDataComponent,
-    BottomDataComponent
+    BottomDataComponent,
+    DeportesSubareaActivityAttendanceRecordComponent
   ],
   imports: [
     CommonModule,
