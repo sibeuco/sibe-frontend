@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { UserResponse } from '../model/user.model';
@@ -31,11 +31,15 @@ export class UserService extends HttpService {
    * Consulta todos los usuarios
    * GET /usuarios
    */
-  consultarUsuarios(): Observable<Response<UserResponse[]>> {
-    const opts = this.createDefaultOptions();
+  consultarUsuarios(): Observable<UserResponse[]> {
+    const opts = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+      })
+    };
     const url = `${environment.endpoint}${this.USUARIO_ENDPOINT}`;
-    
-    return this.doGet<Response<UserResponse[]>>(url, opts);
+    return this.http.get<UserResponse[]>(url, opts);
   }
 
   /**

@@ -1,8 +1,10 @@
 <div class="department-users-container col-12 justify-content-center">
-    <div class="title-container d-flex justify-content-center align-items-center">
+   <div class="title-container d-flex justify-content-center align-items-center">
         <h1 class="admins-title">Administradores de la Dirección</h1>
     </div>
     <app-separator></app-separator>
+
+    <!-- Contenedor del recuadro de busqueda y el boton que llama al modal de registrar nuevo usuario -->
     <div class="top-table-container col-12 d-flex align-items-center justify-content-center">
         <div class="search-button row align-items-center justify-content-between mt-3">
             <div class="search-container col-md-6 col-12 mb-2 mb-md-0">
@@ -11,7 +13,7 @@
                     class="form-control"
                     placeholder="Buscar usuario..."
                     [(ngModel)]="searchTerm"
-                    (input)="filterUsers()" />
+                    (input)="filtrarUsuarios()" />
             </div>
             <div class="button-container col-md-4 col-12 d-flex justify-content-md-end justify-content-center">
                 <app-primary-button
@@ -19,26 +21,57 @@
                     [icon]="'bi bi-person-add'"
                     [text]="'Agregar nuevo usuario'">
                 </app-primary-button>
-                <app-register-new-user></app-register-new-user>
+                <app-register-new-user></app-register-new-user> 
             </div>
         </div>
     </div>
-    <div class="table-container col-12 d-flex align-items-center justify-content-center">
+
+    <!-- Estado de carga -->
+    <div *ngIf="cargando" class="col-12 d-flex justify-content-center align-items-center py-4">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Cargando...</span>
+        </div>
+        <span class="ms-2">Cargando usuarios...</span>
+    </div>
+
+    <!-- Estado de error por si no cargan los usuarios-->
+    <div *ngIf="error && !cargando" class="col-12 d-flex justify-content-center align-items-center py-4">
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>{{ error }}</div>
+            <button 
+                type="button" 
+                class="btn btn-outline-danger btn-sm ms-3"
+                (click)="obtenerUsuarios()">
+                Reintentar
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div *ngIf="!cargando && !error" class="table-container col-12 d-flex align-items-center justify-content-center">
         <div class="tabla-wrapper col-12 table-responsive">
-            <table class="table table-hover">
+            <div *ngIf="usuariosFiltrados.length === 0" class="text-center py-4">
+                <i class="bi bi-people fs-1 text-muted"></i>
+                <p class="text-muted mt-2">
+                    {{ usuarios.length === 0 ? 'No hay usuarios registrados' : 'No se encontraron usuarios con ese criterio' }}
+                </p>
+            </div>
+
+            <table *ngIf="usuariosFiltrados.length > 0" class="table table-hover">
                 <thead class="table">
-                <tr>
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Rol</th>
-                    <th></th>
-                </tr>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th></th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let user of usuariosFiltrados">
-                        <td>{{ user.nombre }}</td>
+                        <td>{{ user.nombres }} {{ user.apellidos }}</td>
                         <td>{{ user.correo }}</td>
-                        <td>{{ user.rol }}</td>
+                        <td>{{ user.tipoUsuario.nombre }}</td>
                         <td class="text-center">
                             <button 
                                 type="button" 
@@ -54,5 +87,6 @@
             </table>
         </div>
     </div>
+
     <app-edit-user></app-edit-user>
 </div>
