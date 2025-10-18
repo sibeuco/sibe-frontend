@@ -1,3 +1,3 @@
-export interface studentFileRequest{
+export interface StudentFileRequest{
     archivo: File;
 }

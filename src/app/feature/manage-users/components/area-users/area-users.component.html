@@ -21,7 +21,7 @@
                     [icon]="'bi bi-person-add'"
                     [text]="'Agregar nuevo usuario'">
                 </app-primary-button>
-                <app-register-new-user></app-register-new-user> 
+                <app-register-new-user (usuarioCreado)="onUsuarioCreado($event)"></app-register-new-user> 
             </div>
         </div>
     </div>

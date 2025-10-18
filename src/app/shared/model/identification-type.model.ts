@@ -1,4 +1,4 @@
-export interface identificationTypeResponse{
+export interface IdentificationTypeResponse{
     identificador: string;
     sigla: string;
     descripcion: string;

@@ -58,4 +58,11 @@ export class AreaUsersComponent implements OnInit{
     }
   }
 
+  // Se ejecuta cuando se crea un nuevo usuario desde el modal
+  onUsuarioCreado(response: any): void {
+    console.log('Usuario creado:', response);
+    // Recargar la lista de usuarios para mostrar el nuevo usuario
+    this.obtenerUsuarios();
+  }
+
 }

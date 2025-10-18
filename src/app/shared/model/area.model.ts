@@ -1,4 +1,4 @@
-export interface areaRequest{
+export interface AreaRequest{
     area: string;
     tipoArea: string;
 }
