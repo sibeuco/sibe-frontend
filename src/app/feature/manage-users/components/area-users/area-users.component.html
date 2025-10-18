@@ -78,6 +78,7 @@
                                 class="btn btn-outline-warning btn-sm edit-user-button"
                                 data-bs-toggle="modal" 
                                 data-bs-target="#edit-user-modal"
+                                (click)="seleccionarUsuarioParaEditar(user)"
                                 title="Editar usuario">
                                 <i class="bi bi-pencil"></i>
                             </button>
@@ -88,5 +89,8 @@
         </div>
     </div>
 
-    <app-edit-user></app-edit-user>
+    <app-edit-user 
+        [usuarioAEditar]="usuarioSeleccionado" 
+        (usuarioActualizado)="onUsuarioActualizado($event)">
+    </app-edit-user>
 </div>

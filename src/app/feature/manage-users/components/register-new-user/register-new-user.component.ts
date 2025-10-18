@@ -6,6 +6,7 @@ import { UserRequest } from 'src/app/shared/model/user.model';
 import { UserTypeResponse } from 'src/app/shared/model/user-type.model';
 import { IdentificationTypeService } from 'src/app/shared/service/identification-type.service';
 import { IdentificationTypeResponse } from 'src/app/shared/model/identification-type.model';
+import { UserNotificationService } from '../../service/user-notification.service';
 
 @Component({
   selector: 'app-register-new-user',
@@ -26,10 +27,8 @@ export class RegisterNewUserComponent implements OnInit {
     tipoUsuario: ''
   };
 
-
-  // Datos del área hardcodeados
   areaData = {
-    area: '7c02a46c-7410-4411-8b6a-f442b7b456d3', // UUID del área
+    area: '7c02a46c-7410-4411-8b6a-f442b7b456d3', 
     tipoArea: 'DIRECCION'
   };
 
@@ -50,7 +49,8 @@ export class RegisterNewUserComponent implements OnInit {
   constructor(
     private userService: UserService,
     private userTypeService: UserTypeService,
-    private identificationTypeService: IdentificationTypeService
+    private identificationTypeService: IdentificationTypeService,
+    private userNotificationService: UserNotificationService
   ) {}
 
   ngOnInit(): void {
@@ -129,8 +129,11 @@ export class RegisterNewUserComponent implements OnInit {
         this.cargando = false;
         this.mensajeExito = 'Usuario creado exitosamente';
         
-        // Emitir evento para actualizar la lista en el componente padre
+        // Emitir evento para actualizar la lista en el componente padre (mantener compatibilidad)
         this.usuarioCreado.emit(response);
+        
+        // Notificar a través del servicio para que todos los componentes se actualicen
+        this.userNotificationService.notificarUsuarioCreado(response);
         
         // Limpiar formulario y cerrar modal después de un breve delay
         setTimeout(() => {

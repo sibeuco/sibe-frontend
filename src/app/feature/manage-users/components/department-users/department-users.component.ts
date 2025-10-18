@@ -1,24 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from 'src/app/shared/service/user.service';
 import { UserResponse } from 'src/app/shared/model/user.model';
+import { UserNotificationService } from '../../service/user-notification.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-department-users',
   templateUrl: './department-users.component.html',
   styleUrls: ['./department-users.component.scss']
 })
-export class DepartmentUsersComponent implements OnInit{
+export class DepartmentUsersComponent implements OnInit, OnDestroy{
 
   usuarios: UserResponse[] = [];
     usuariosFiltrados: UserResponse[] = [];
     cargando = false;
     error = '';
     searchTerm = '';
+    usuarioSeleccionado: UserResponse | null = null;
+    private subscriptions: Subscription[] = [];
   
-    constructor(private userService: UserService) {}
+    constructor(
+      private userService: UserService,
+      private userNotificationService: UserNotificationService
+    ) {}
   
     ngOnInit(): void {
       this.obtenerUsuarios();
+      this.suscribirseANotificaciones();
+    }
+
+    ngOnDestroy(): void {
+      // Limpiar suscripciones para evitar memory leaks
+      this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+
+    suscribirseANotificaciones(): void {
+      // Suscribirse a notificaciones de usuarios creados
+      const subCreado = this.userNotificationService.usuarioCreado$.subscribe(() => {
+        this.obtenerUsuarios();
+      });
+      this.subscriptions.push(subCreado);
+
+      // Suscribirse a notificaciones de usuarios actualizados
+      const subActualizado = this.userNotificationService.usuarioActualizado$.subscribe(() => {
+        this.obtenerUsuarios();
+      });
+      this.subscriptions.push(subActualizado);
     }
 
     obtenerUsuarios(): void {
@@ -57,6 +84,25 @@ export class DepartmentUsersComponent implements OnInit{
           usuario.tipoUsuario?.nombre?.toLowerCase().includes(termino)
         );
       }
+    }
+
+    // Se ejecuta cuando se crea un nuevo usuario desde el modal
+    onUsuarioCreado(response: any): void {
+      console.log('Usuario creado:', response);
+      // Recargar la lista de usuarios para mostrar el nuevo usuario
+      this.obtenerUsuarios();
+    }
+
+    // Se ejecuta cuando se actualiza un usuario desde el modal
+    onUsuarioActualizado(response: any): void {
+      console.log('Usuario actualizado:', response);
+      // Recargar la lista de usuarios para mostrar los cambios
+      this.obtenerUsuarios();
+    }
+
+    // Selecciona el usuario para editar
+    seleccionarUsuarioParaEditar(usuario: UserResponse): void {
+      this.usuarioSeleccionado = usuario;
     }
 
 }

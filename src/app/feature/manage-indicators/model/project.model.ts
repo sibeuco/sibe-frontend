@@ -1,14 +1,22 @@
-import { actionRequest } from "./action.model";
+import { ActionResponse } from "./action.model";
 
-export interface projectRequest{
+export interface ProjectRequest{
     numeroProyecto: string;
     nombre:string;
     objetivo: string;
     accion: string[];
 }
 
-export interface editProjectRequest{
+export interface EditProjectRequest{
     nombre:string;
     objetivo: string;
     accion: string[];
+}
+
+export interface ProjectResponse{
+    identificador: string;
+    numeroProyecto: string;
+    nombre:string;
+    objetivo: string;
+    accion: ActionResponse[];
 }
