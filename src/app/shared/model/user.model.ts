@@ -1,6 +1,5 @@
 import { IdentificationResponse } from "./identification.model";
 import { UserTypeResponse } from "./user-type.model";
-import { IdentificationTypeResponse } from "./identification-type.model";
 
 export interface UserRequest{
     tipoIdentificacion: string;

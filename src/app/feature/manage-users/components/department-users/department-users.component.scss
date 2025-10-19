@@ -57,6 +57,16 @@ input.form-control:focus {
   padding: 0;
 }
 
+.delete-user-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  font-size: 1.1rem;
+  padding: 0;
+}
+
 .edit-user-button i {
   margin: 0;
 }

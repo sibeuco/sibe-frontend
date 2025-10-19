@@ -13,7 +13,7 @@ export class LoginService {
   validarLogin(login: Login): Observable<Response<string>>  {
     window.sessionStorage.setItem('userdetails', JSON.stringify(login));
 
-    return this.http.doGet<Response<string>>(`${environment.endpoint}${this.LOGIN_ENDPOINT}`, this.http.createDefaultOptions());
+    return this.http.doGet<Response<string>>(`${environment.endpoint}${this.LOGIN_ENDPOINT}`);
   }
 
 }

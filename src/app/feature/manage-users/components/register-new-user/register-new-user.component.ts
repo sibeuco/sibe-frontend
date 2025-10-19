@@ -174,6 +174,22 @@ export class RegisterNewUserComponent implements OnInit {
     if (modalElement) {
       const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
       modal.hide();
+      
+      // Asegurar que el backdrop se remueva completamente
+      setTimeout(() => {
+        // Remover cualquier backdrop que pueda quedar
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(backdrop => backdrop.remove());
+        
+        // Remover la clase modal-open del body
+        document.body.classList.remove('modal-open');
+        
+        // Restaurar el padding-right del body si fue modificado
+        document.body.style.paddingRight = '';
+        
+        // Restaurar el overflow del body
+        document.body.style.overflow = '';
+      }, 300);
     }
   }
 

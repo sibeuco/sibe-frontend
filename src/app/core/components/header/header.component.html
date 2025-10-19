@@ -3,9 +3,13 @@
     <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/home">
       <img src="assets/images/logo_sibe.png" alt="Logo SIBE" height="40" />
     </a>
-    <div class="d-flex gap-3">
-        <a *ngIf="isHome" class="header-text me-5" href="#">Home</a>
-        <a *ngIf="isCerrarSesion" class="header-text " href="#">Cerrar sesión</a>
-    </div>
+
+    <ng-container *ngIf="isLogged$ | async as isLogged">
+      <div class="d-flex gap-3">
+        <a *ngIf="isLogged" class="header-text me-5" routerLink="/home">Home</a>
+        <a *ngIf="isLogged" class="header-text" (click)="logout()" style="cursor: pointer;">Cerrar sesión</a>
+      </div>
+    </ng-container>
+
   </nav>
 </header>

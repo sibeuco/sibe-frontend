@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { StateProps } from '../model/state.enum';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class StateService {
   
   private stateProps: Map<StateProps, any> = new Map();
@@ -20,6 +23,13 @@ export class StateService {
   deleteProperty(prop:StateProps){
     this.stateProps.delete(prop);
     this.state.next(this.stateProps);
+  }
+
+  select<T>(prop:StateProps):Observable<T | undefined>{
+    return this.state.asObservable().pipe(
+      map(stateMap => stateMap.get(prop) as T | undefined),
+      distinctUntilChanged() 
+    );
   }
   
 }

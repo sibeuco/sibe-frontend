@@ -58,8 +58,15 @@ export class EditUserComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['usuarioAEditar'] && changes['usuarioAEditar'].currentValue) {
-      this.cargarDatosUsuario();
+    console.log('ngOnChanges triggered:', changes); // Debug log
+    if (changes['usuarioAEditar']) {
+      if (changes['usuarioAEditar'].currentValue) {
+        console.log('UsuarioAEditar cambió, cargando datos...'); // Debug log
+        this.cargarDatosUsuario();
+      } else {
+        console.log('UsuarioAEditar se limpió, limpiando formulario...'); // Debug log
+        this.limpiarFormulario();
+      }
     }
   }
 
@@ -99,14 +106,16 @@ export class EditUserComponent implements OnInit, OnChanges {
 
   cargarDatosUsuario(): void {
     if (this.usuarioAEditar) {
+      console.log('Usuario a editar:', this.usuarioAEditar); // Debug log
       this.usuario = {
-        nombres: this.usuarioAEditar.nombres,
-        apellidos: this.usuarioAEditar.apellidos,
-        tipoIdentificacion: this.usuarioAEditar.identificacion?.identificador || '',
+        nombres: this.usuarioAEditar.nombres || '',
+        apellidos: this.usuarioAEditar.apellidos || '',
+        tipoIdentificacion: this.usuarioAEditar.identificacion?.tipoIdentificacion?.identificador || '',
         numeroIdentificacion: this.usuarioAEditar.identificacion?.numeroIdentificacion || '',
-        correo: this.usuarioAEditar.correo,
+        correo: this.usuarioAEditar.correo || '',
         tipoUsuario: this.usuarioAEditar.tipoUsuario?.identificador || ''
       };
+      console.log('Datos cargados en el formulario:', this.usuario); // Debug log
     }
   }
 
@@ -180,11 +189,35 @@ export class EditUserComponent implements OnInit, OnChanges {
     );
   }
 
+  abrirModal(): void {
+    const modalElement = document.getElementById('edit-user-modal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modal.show();
+    }
+  }
+
   cerrarModal() {
     const modalElement = document.getElementById('edit-user-modal');
     if (modalElement) {
       const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
       modal.hide();
+      
+      // Asegurar que el backdrop se remueva completamente
+      setTimeout(() => {
+        // Remover cualquier backdrop que pueda quedar
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(backdrop => backdrop.remove());
+        
+        // Remover la clase modal-open del body
+        document.body.classList.remove('modal-open');
+        
+        // Restaurar el padding-right del body si fue modificado
+        document.body.style.paddingRight = '';
+        
+        // Restaurar el overflow del body
+        document.body.style.overflow = '';
+      }, 300);
     }
   }
 
@@ -199,6 +232,7 @@ export class EditUserComponent implements OnInit, OnChanges {
     };
     this.error = '';
     this.mensajeExito = '';
+    this.usuarioAEditar = null; // Limpiar la referencia al usuario
   }
 
 }

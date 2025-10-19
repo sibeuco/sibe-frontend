@@ -65,6 +65,7 @@
                         <th>Correo</th>
                         <th>Rol</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,12 +76,19 @@
                         <td class="text-center">
                             <button 
                                 type="button" 
-                                class="btn btn-outline-warning btn-sm edit-user-button"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#edit-user-modal"
+                                class="btn btn-outline-warning btn-sm edit-user-button me-2"
                                 (click)="seleccionarUsuarioParaEditar(user)"
                                 title="Editar usuario">
                                 <i class="bi bi-pencil"></i>
+                            </button>
+                        </td>
+                        <td class="text-center">
+                            <button 
+                                type="button" 
+                                class="btn btn-outline-danger btn-sm delete-user-button"
+                                (click)="eliminarUsuario(user)"
+                                title="Eliminar usuario">
+                                <i class="bi bi-trash"></i>
                             </button>
                         </td>
                     </tr>
@@ -89,8 +97,4 @@
         </div>
     </div>
 
-    <app-edit-user 
-        [usuarioAEditar]="usuarioSeleccionado" 
-        (usuarioActualizado)="onUsuarioActualizado($event)">
-    </app-edit-user>
 </div>

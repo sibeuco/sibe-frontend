@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { UserService } from 'src/app/shared/service/user.service';
 import { UserResponse } from 'src/app/shared/model/user.model';
 import { UserNotificationService } from '../../service/user-notification.service';
@@ -11,12 +11,13 @@ import { Subscription } from 'rxjs';
 })
 export class AreaUsersComponent implements OnInit, OnDestroy{
 
+  @Output() usuarioSeleccionadoParaEditar = new EventEmitter<UserResponse>();
+
   usuarios: UserResponse[] = [];
   usuariosFiltrados: UserResponse[] = [];
   cargando = false;
   error = '';
   searchTerm = '';
-  usuarioSeleccionado: UserResponse | null = null;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -46,6 +47,12 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
       this.obtenerUsuarios();
     });
     this.subscriptions.push(subActualizado);
+
+    // Suscribirse a notificaciones de usuarios eliminados
+    const subEliminado = this.userNotificationService.usuarioEliminado$.subscribe(() => {
+      this.obtenerUsuarios();
+    });
+    this.subscriptions.push(subEliminado);
   }
 
   obtenerUsuarios(): void {
@@ -54,9 +61,11 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
 
     this.userService.consultarUsuarios().subscribe({
       next: (res: UserResponse[]) => {
+        console.log('Usuarios obtenidos del servicio (area-users):', res); // Debug log
         this.usuarios = res.filter(
-          usuario => usuario.tipoUsuario.nombre !== 'Administrador de dirección'
+          usuario => usuario.tipoUsuario?.nombre !== 'Administrador de dirección'
         );
+        console.log('Usuarios filtrados (area-users):', this.usuarios); // Debug log
 
         //  Guarda también la lista filtrada para búsquedas
         this.usuariosFiltrados = [...this.usuarios];
@@ -101,7 +110,46 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
 
   // Selecciona el usuario para editar
   seleccionarUsuarioParaEditar(usuario: UserResponse): void {
-    this.usuarioSeleccionado = usuario;
+    console.log('Usuario seleccionado para editar (area-users):', usuario); // Debug log
+    console.log('Estructura de identificacion:', usuario.identificacion); // Debug log
+    console.log('Estructura de tipoUsuario:', usuario.tipoUsuario); // Debug log
+    this.usuarioSeleccionadoParaEditar.emit(usuario);
+  }
+
+  // Elimina un usuario
+  eliminarUsuario(usuario: UserResponse): void {
+    const confirmacion = confirm(`¿Está seguro de que desea eliminar al usuario ${usuario.nombres} ${usuario.apellidos}?`);
+    
+    if (confirmacion) {
+      this.cargando = true;
+      this.error = '';
+
+      this.userService.eliminarUsuario(usuario.identificador).subscribe({
+        next: (response) => {
+          console.log('Usuario eliminado exitosamente:', response);
+          this.cargando = false;
+          
+          this.userNotificationService.notificarUsuarioEliminado(response);
+          
+          alert('Usuario eliminado exitosamente');
+          
+          this.obtenerUsuarios();
+        },
+        error: (err) => {
+          this.cargando = false;
+          console.error('Error al eliminar usuario:', err);
+          
+          let mensajeError = 'Error al eliminar el usuario. Por favor, intente nuevamente.';
+          if (err.error && err.error.mensaje) {
+            mensajeError = err.error.mensaje;
+          } else if (err.error && err.error.message) {
+            mensajeError = err.error.message;
+          }
+          
+          alert(mensajeError);
+        }
+      });
+    }
   }
 
 }

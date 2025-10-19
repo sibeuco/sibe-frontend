@@ -16,11 +16,11 @@ export class UserService extends HttpService {
     super(http);
   }
 
-  consultarUsuarioPorIdentificador(identificador: string): Observable<Response<UserResponse>> {
+  consultarUsuarioPorIdentificador(identificador: string): Observable<UserResponse> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.USUARIO_ENDPOINT}/${identificador}`;
     
-    return this.doGet<Response<UserResponse>>(url, opts);
+    return this.doGet<UserResponse>(url, opts);
   }
 
   consultarUsuarios(): Observable<UserResponse[]> {
@@ -34,11 +34,11 @@ export class UserService extends HttpService {
     return this.http.get<UserResponse[]>(url, opts);
   }
 
-  consultarUsuarioPorCorreo(correo: string): Observable<Response<UserResponse>> {
+  consultarUsuarioPorCorreo(correo: string): Observable<UserResponse> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.USUARIO_ENDPOINT}/usuario/correo/${correo}`;
     
-    return this.doGet<Response<UserResponse>>(url, opts);
+    return this.doGet<UserResponse>(url, opts);
   }
 
   agregarNuevoUsuario(usuario: UserRequest): Observable<Response<string>> {
