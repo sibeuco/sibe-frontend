@@ -5,11 +5,38 @@
     </a>
 
     <ng-container *ngIf="isLogged$ | async as isLogged">
-      <div class="d-flex gap-3">
+      <div class="d-flex gap-3 align-items-center">
         <a *ngIf="isLogged" class="header-text me-5" routerLink="/home">Home</a>
-        <a *ngIf="isLogged" class="header-text" (click)="logout()" style="cursor: pointer;">Cerrar sesión</a>
+        
+        <!-- Botón de usuario con dropdown -->
+        <div class="dropdown" *ngIf="isLogged">
+          <button 
+            class="btn btn-outline-light dropdown-toggle user-button" 
+            type="button" 
+            (click)="toggleDropdown()"
+            [attr.aria-expanded]="mostrarDropdown">
+            <i class="bi bi-person-circle me-2"></i>
+            <span *ngIf="userSession$ | async as userSession">{{ userSession.correo }}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" [class.show]="mostrarDropdown" *ngIf="mostrarDropdown">
+            <li>
+              <button class="dropdown-item" (click)="abrirModalCambiarContrasena(); cerrarDropdown()">
+                Cambiar Contraseña
+              </button>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+              <button class="dropdown-item text-danger" (click)="logout(); cerrarDropdown()">
+                Cerrar Sesión
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
     </ng-container>
 
   </nav>
 </header>
+
+<!-- Modal de cambio de contraseña -->
+<app-change-password (contrasenaActualizada)="onContrasenaActualizada($event)"></app-change-password>

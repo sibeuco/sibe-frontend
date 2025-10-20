@@ -114,5 +114,39 @@
   </div>
 </div>
 
+<!-- Modal de confirmación para participante externo -->
+<div class="modal-container modal fade" id="confirmExternalParticipantModal" tabindex="-1" aria-labelledby="confirmExternalParticipantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header col d-flex align-items-center justify-content-center position-relative">
+                <h1 class="modal-title" id="confirmExternalParticipantModalLabel">
+                    <i class="bi bi-question-circle-fill me-2"></i>
+                    Participante No Encontrado
+                </h1>
+                <button type="button" class="btn-close position-absolute" (click)="cancelarAgregarParticipanteExterno()" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center justify-content-center mb-4">
+                    <div class="text-center">
+                        <i class="bi bi-person-plus text-warning" style="font-size: 4rem;"></i>
+                        <p class="mt-3 mb-1" style="font-size: 1.8rem;">No se encontró ningún participante con los datos ingresados.</p>
+                        <p class="mb-1" style="font-size: 1.6rem;">¿Deseas agregar este participante como participante externo?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="cancel-button btn btn-secondary me-3" (click)="cancelarAgregarParticipanteExterno()">
+                    <i class="bi bi-x-circle me-1"></i>
+                    Cancelar
+                </button>
+                <button type="button" class="confirm-button btn btn-primary" (click)="confirmarAgregarParticipanteExterno()">
+                    <i class="bi bi-person-plus me-1"></i>
+                    Agregar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal de participante externo -->
 <app-external-participant (participanteAgregado)="manejarParticipanteExterno($event)"></app-external-participant>
