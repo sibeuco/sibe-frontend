@@ -3,6 +3,7 @@ import { UserService } from 'src/app/shared/service/user.service';
 import { UserResponse } from 'src/app/shared/model/user.model';
 import { UserNotificationService } from '../../service/user-notification.service';
 import { Subscription } from 'rxjs';
+import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-area-users',
@@ -19,6 +20,12 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
   error = '';
   searchTerm = '';
   private subscriptions: Subscription[] = [];
+  
+  // Propiedades para el modal de confirmación
+  usuarioAEliminar: UserResponse | null = null;
+  eliminando = false;
+  mensajeExito = '';
+  mostrarMensajeExito = false;
 
   constructor(
     private userService: UserService,
@@ -104,7 +111,6 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
   // Se ejecuta cuando se actualiza un usuario desde el modal
   onUsuarioActualizado(response: any): void {
     console.log('Usuario actualizado:', response);
-    // Recargar la lista de usuarios para mostrar los cambios
     this.obtenerUsuarios();
   }
 
@@ -116,40 +122,79 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
     this.usuarioSeleccionadoParaEditar.emit(usuario);
   }
 
-  // Elimina un usuario
-  eliminarUsuario(usuario: UserResponse): void {
-    const confirmacion = confirm(`¿Está seguro de que desea eliminar al usuario ${usuario.nombres} ${usuario.apellidos}?`);
-    
-    if (confirmacion) {
-      this.cargando = true;
-      this.error = '';
+  // Limpia el estado del modal
+  private limpiarEstadoModal(): void {
+    this.usuarioAEliminar = null;
+    this.eliminando = false;
+    this.mostrarMensajeExito = false;
+    this.mensajeExito = '';
+  }
 
-      this.userService.eliminarUsuario(usuario.identificador).subscribe({
-        next: (response) => {
-          console.log('Usuario eliminado exitosamente:', response);
-          this.cargando = false;
-          
-          this.userNotificationService.notificarUsuarioEliminado(response);
-          
-          alert('Usuario eliminado exitosamente');
-          
-          this.obtenerUsuarios();
-        },
-        error: (err) => {
-          this.cargando = false;
-          console.error('Error al eliminar usuario:', err);
-          
-          let mensajeError = 'Error al eliminar el usuario. Por favor, intente nuevamente.';
-          if (err.error && err.error.mensaje) {
-            mensajeError = err.error.mensaje;
-          } else if (err.error && err.error.message) {
-            mensajeError = err.error.message;
+  // Abre el modal de confirmación para eliminar un usuario
+  eliminarUsuario(usuario: UserResponse): void {
+    // Limpiar estado previo antes de abrir el modal
+    this.limpiarEstadoModal();
+    
+    // Establecer el nuevo usuario a eliminar
+    this.usuarioAEliminar = usuario;
+    
+    const modalElement = document.getElementById('confirmDeleteAreaModal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  // Confirma la eliminación del usuario
+  confirmarEliminacion(): void {
+    if (!this.usuarioAEliminar) return;
+
+    this.eliminando = true;
+    this.error = '';
+
+    this.userService.eliminarUsuario(this.usuarioAEliminar.identificador).subscribe({
+      next: (response) => {
+        console.log('Usuario eliminado exitosamente (area-users):', response); // Debug log
+        this.eliminando = false;
+        
+        // Mostrar mensaje de éxito en el modal
+        this.mensajeExito = 'Usuario eliminado exitosamente';
+        this.mostrarMensajeExito = true;
+        
+        // Notificar a través del servicio para que todos los componentes se actualicen
+        this.userNotificationService.notificarUsuarioEliminado(response);
+        
+        // Recargar la lista de usuarios
+        this.obtenerUsuarios();
+        
+        // Cerrar el modal después de 2 segundos
+        setTimeout(() => {
+          const modalElement = document.getElementById('confirmDeleteAreaModal');
+          if (modalElement) {
+            const modal = Modal.getInstance(modalElement);
+            if (modal) {
+              modal.hide();
+            }
           }
           
-          alert(mensajeError);
+          // Limpiar el estado del modal
+          this.limpiarEstadoModal();
+        }, 2000);
+      },
+      error: (err) => {
+        this.eliminando = false;
+        console.error('Error al eliminar usuario (area-users):', err); // Debug log
+        
+        let mensajeError = 'Error al eliminar el usuario. Por favor, intente nuevamente.';
+        if (err.error && err.error.mensaje) {
+          mensajeError = err.error.mensaje;
+        } else if (err.error && err.error.message) {
+          mensajeError = err.error.message;
         }
-      });
-    }
+        
+        alert(mensajeError);
+      }
+    });
   }
 
 }

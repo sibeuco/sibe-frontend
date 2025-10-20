@@ -97,4 +97,62 @@
         </div>
     </div>
 
+    <!-- Modal de confirmación para eliminar usuario -->
+    <div class="modal-container modal fade" id="confirmDeleteDepartmentModal" tabindex="-1" aria-labelledby="confirmDeleteDepartmentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header col d-flex align-items-center justify-content-center position-relative">
+                    <h1 class="modal-title" id="confirmDeleteDepartmentModalLabel">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        Confirmar Eliminación
+                    </h1>
+                    <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Contenido de confirmación -->
+                    <div *ngIf="!mostrarMensajeExito" class="d-flex align-items-center justify-content-center mb-4">
+                        <div class="text-center">
+                            <i class="bi bi-person-x-fill text-danger" style="font-size: 4rem;"></i>
+                            <p class="mt-3 mb-1" style="font-size: 1.8rem;">¿Estás seguro de que deseas eliminar este usuario?</p>
+                            <span class="text-dark" style="font-size: 2rem; font-weight: 545;">{{ usuarioAEliminar?.nombres }} {{ usuarioAEliminar?.apellidos }}</span>
+                        </div>
+                    </div>
+                    <div *ngIf="!mostrarMensajeExito" class="alert alert-warning d-flex align-items-center justify-content-center" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <span style="font-size: 1.6rem;">Esta acción no se puede deshacer.</span>
+                    </div>
+                    
+                    <!-- Mensaje de éxito -->
+                    <div *ngIf="mostrarMensajeExito" class="d-flex align-items-center justify-content-center mb-4">
+                        <div class="text-center">
+                            <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                            <p class="mt-3 mb-1" style="font-size: 1.8rem;">{{ mensajeExito }}</p>
+                            <small class="text-muted" style="font-size: 1.4rem;">Esta notificación se cerrará automáticamente...</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center" *ngIf="!mostrarMensajeExito">
+                    <button type="button" class="cancel-button btn btn-secondary me-3" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>
+                        Cancelar
+                    </button>
+                    <button 
+                        type="button" 
+                        class="delete-button btn btn-danger" 
+                        (click)="confirmarEliminacion()"
+                        [disabled]="eliminando">
+                        <span *ngIf="!eliminando">
+                            <i class="bi bi-trash me-1"></i>
+                            Eliminar
+                        </span>
+                        <span *ngIf="eliminando">
+                            <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+                            Eliminando...
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

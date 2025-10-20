@@ -71,3 +71,103 @@ input.form-control:focus {
 .edit-user-button i {
   margin: 0;
 }
+
+// Estilos para el modal de confirmación
+#confirmDeleteAreaModal {
+  .modal-container {
+    border-radius: $general-border-radius;
+  }
+
+  .modal-content {
+    border: none;
+    border-radius: $general-border-radius;
+    box-shadow: $sombra-general;
+    width: 100%;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    background-color: $primary-color;
+    border-radius: $general-border-radius $general-border-radius 0 0;
+    
+    .modal-title {
+      color: $white-color;
+      font-weight: bold;
+    }
+  }
+
+  .modal-body {
+    padding: 2rem;
+    text-align: center;
+    
+    .alert {
+      border-radius: $general-border-radius;
+      border: none;
+      background-color: #fff3cd;
+      color: #856404;
+      font-size: $font-general-size;
+    }
+  }
+
+  .modal-footer {
+    border-top: none;
+    padding: 1.5rem 2rem;
+    
+    .btn {
+      border-radius: $buttons-border-radius;
+      font-weight: 500;
+      font-size: $font-general-size;
+      padding: 0.8rem 2rem;
+      
+      &.delete-button {
+        background-color: $red-color;
+        border-color: $red-color;
+        width: 30%;
+        
+        &:hover:not(:disabled) {
+          background-color: darken($red-color, 10%);
+          border-color: darken($red-color, 10%);
+        }
+        
+        &:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
+      }
+      
+      &.cancel-button {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        width: 30%;
+        
+        &:hover {
+          background-color: #5a6268;
+          border-color: #545b62;
+        }
+      }
+    }
+  }
+
+  .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 1;
+    font-weight: bold;
+    font-size: 1.5rem;
+    top: 10px;
+    right: 15px;
+  }
+
+  .btn-close:hover {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+  }
+
+  // Estilos para el mensaje de éxito
+  .text-success {
+    color: $primary-color !important;
+  }
+
+  .text-muted {
+    color: #6c757d !important;
+  }
+}
