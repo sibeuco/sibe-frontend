@@ -18,7 +18,6 @@ export class HeaderComponent implements OnInit {
   
   isLogged$!: Observable<boolean>;
   
-  // Propiedad para controlar el dropdown
   mostrarDropdown: boolean = false;
 
   constructor(private stateService: StateService,
@@ -37,16 +36,11 @@ export class HeaderComponent implements OnInit {
     // 1. Limpia el estado global (esto hará que isLogged$ emita 'false')
     this.stateService.deleteProperty(StateProps.USER_SESSION);
 
-    // 2. Limpia el token guardado en la sesión del navegador
     window.sessionStorage.removeItem('Authorization');
 
-    // 3. Redirige al usuario a la página de login
     this.router.navigate(['/login']);
   }
 
-  /**
-   * Abre el modal de cambio de contraseña
-   */
   abrirModalCambiarContrasena(): void {
     const modalElement = document.getElementById('change-password-modal');
     if (modalElement) {
@@ -55,25 +49,14 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  /**
-   * Maneja el evento cuando se actualiza la contraseña
-   */
   onContrasenaActualizada(response: any): void {
     console.log('Contraseña actualizada:', response);
-    // Aquí puedes agregar lógica adicional si es necesario
-    // Por ejemplo, mostrar un mensaje de éxito
   }
 
-  /**
-   * Alterna la visibilidad del dropdown
-   */
   toggleDropdown(): void {
     this.mostrarDropdown = !this.mostrarDropdown;
   }
 
-  /**
-   * Cierra el dropdown
-   */
   cerrarDropdown(): void {
     this.mostrarDropdown = false;
   }
