@@ -1,7 +1,7 @@
-import { identificationResponse } from "./identification.model";
-import { userTypeResponse } from "./user-type.model";
+import { IdentificationResponse } from "./identification.model";
+import { UserTypeResponse } from "./user-type.model";
 
-export interface userRequest{
+export interface UserRequest{
     tipoIdentificacion: string;
     numeroIdentificacion: string;
     nombres: string;
@@ -9,17 +9,23 @@ export interface userRequest{
     correo: string;
     clave: string;
     tipoUsuario: string;
-    area: string;
+    area: {
+        area: string;
+        tipoArea: string;
+    };
 }
 
-export interface editUserRequest{
+export interface EditUserRequest{
     tipoIdentificacion: string;
     numeroIdentificacion: string;
     nombres: string;
     apellidos: string;
     correo: string;
     tipoUsuario: string;
-    area: string;
+    area: {
+        area: string;
+        tipoArea: string;
+    };
 }
 
 export interface UserResponse {
@@ -27,7 +33,7 @@ export interface UserResponse {
   nombres: string;
   apellidos: string;
   correo: string;
-  identificacion: identificationResponse;
-  tipoUsuario: userTypeResponse;
+  identificacion: IdentificationResponse;
+  tipoUsuario: UserTypeResponse;
   estaActivo: boolean;
 }

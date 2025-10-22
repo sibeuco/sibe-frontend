@@ -1,7 +1,7 @@
-import { identificationTypeResponse } from "./identification-type.model";
+import { IdentificationTypeResponse } from "./identification-type.model";
 
-export interface identificationResponse{
+export interface IdentificationResponse{
     identificador: string;
     numeroIdentificacion: string;
-    tipoIdentificacion: identificationTypeResponse;
+    tipoIdentificacion: IdentificationTypeResponse;
 }

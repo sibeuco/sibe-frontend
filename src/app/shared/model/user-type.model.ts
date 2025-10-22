@@ -1,4 +1,4 @@
-export interface userTypeResponse{
+export interface UserTypeResponse{
   identificador: string;
   codigo: string; 
   nombre: string;

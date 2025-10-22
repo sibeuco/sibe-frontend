@@ -1,3 +1,3 @@
-export interface employeeFileRequest{
+export interface EmployeeFileRequest{
     archivo: File;
 }

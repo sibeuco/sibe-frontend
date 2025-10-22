@@ -168,14 +168,40 @@ export class AttendanceRecordComponent implements OnInit {
    * Pregunta al usuario si desea agregar un participante externo
    */
   private preguntarAgregarParticipanteExterno(): void {
-    const confirmar = confirm('No se encontró ningún participante con los datos ingresados.\n\n¿Desea agregar este participante como participante externo?');
-    
-    if (confirmar) {
-      this.abrirModalParticipanteExterno();
-    } else {
-      this.mostrarMensaje('No se encontró ningún participante con los datos ingresados', 'warning');
-      this.limpiarFormulario();
+    const modalElement = document.getElementById('confirmExternalParticipantModal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modal.show();
     }
+  }
+
+  /**
+   * Confirma agregar participante externo
+   */
+  confirmarAgregarParticipanteExterno(): void {
+    const modalElement = document.getElementById('confirmExternalParticipantModal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+    this.abrirModalParticipanteExterno();
+  }
+
+  /**
+   * Cancela agregar participante externo
+   */
+  cancelarAgregarParticipanteExterno(): void {
+    const modalElement = document.getElementById('confirmExternalParticipantModal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+    this.mostrarMensaje('No se encontró ningún participante con los datos ingresados', 'warning');
+    this.limpiarFormulario();
   }
 
   /**
