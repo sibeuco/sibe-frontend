@@ -17,6 +17,7 @@ import { EditActivityComponent } from './components/edit-activity/edit-activity.
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { UploadDatabaseComponent } from './components/upload-database/upload-database.component';
 import { ExternalParticipantComponent } from './components/external-participant/external-participant.component';
+import { DateSelectorComponent } from './components/date-selector/date-selector.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { ExternalParticipantComponent } from './components/external-participant/
     EditActivityComponent,
     ChangePasswordComponent,
     UploadDatabaseComponent,
-    ExternalParticipantComponent
+    ExternalParticipantComponent,
+    DateSelectorComponent
   ],
   imports: [
     CommonModule,
