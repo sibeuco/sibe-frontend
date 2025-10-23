@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'gestionar-direccion', loadChildren: () => import('./feature/manage-department/manage-department.module').then(m => m.ManageDepartmentModule), canActivate: [securityGuard]},
   { path: 'gestionar-usuarios', loadChildren: () => import('./feature/manage-users/manage-users.module').then(m => m.ManageUsersModule), canActivate: [securityGuard]},
   { path: 'gestionar-indicadores', loadChildren: () => import('./feature/manage-indicators/manage-indicators.module').then(m => m.ManageIndicatorsModule), canActivate: [securityGuard]},
-  { path: 'recuperar-contrasena', loadChildren: () => import('./feature/password-recovery/password-recovery.module').then(m => m.PasswordRecoveryModule), canActivate: [securityGuard]},
+  { path: 'recuperar-contrasena', loadChildren: () => import('./feature/password-recovery/password-recovery.module').then(m => m.PasswordRecoveryModule)},
   { path: '**', redirectTo: 'login' }
 ];
 
