@@ -1,4 +1,4 @@
-<div class="modal-container modal fade" id="register-user-modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+<div class="modal-container modal fade" [id]="modalId" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
             <form (ngSubmit)="registrarUsuario()" #userForm="ngForm" class="form-container align-items-center justify-content-center">
@@ -135,6 +135,59 @@
                                 {{ errorTiposUsuario }}
                             </small>
                         </div>   
+                    </div>
+
+                    <!-- Campo selector de tipo (solo para area-users) -->
+                    <div class="mb-3" *ngIf="tipoComponente === 'area'">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="tipoEstructura" class="form-label">Tipo de Estructura</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="tipoEstructura" name="tipoEstructura" [(ngModel)]="usuario.tipoEstructura" (change)="onTipoEstructuraChange()" required>
+                                <option value="">Selecciona el tipo</option>
+                                <option *ngFor="let opcion of opcionesTipoEstructura" [value]="opcion.valor">
+                                    {{ opcion.etiqueta }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campo dinámico desplegable -->
+                    <div class="mb-3" *ngIf="tipoComponente === 'department' && listaDesplegable && listaDesplegable.length > 0">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label [for]="nombreCampo" class="form-label">{{ etiquetaCampo }}</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" [id]="nombreCampo" [name]="nombreCampo" [(ngModel)]="usuario.estructuraOrganizacional" required>
+                                <option value="">Selecciona</option>
+                                <option *ngFor="let item of listaDesplegable" [value]="item.identificador">
+                                    {{ item.nombre }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campo desplegable condicional para area-users -->
+                    <div class="mb-3" *ngIf="tipoComponente === 'area' && usuario.tipoEstructura && listaFiltrada && listaFiltrada.length > 0">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="estructuraOrganizacional" class="form-label">
+                                    {{ usuario.tipoEstructura === 'area' ? 'Seleccionar Área' : 'Seleccionar Subárea' }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="estructuraOrganizacional" name="estructuraOrganizacional" [(ngModel)]="usuario.estructuraOrganizacional" required>
+                                <option value="">Selecciona</option>
+                                <option *ngFor="let item of listaFiltrada" [value]="item.identificador">
+                                    {{ item.nombre }}
+                                </option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- Mensajes de estado -->

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, Input } from '@angular/core';
 import { Modal } from 'bootstrap';
 import { UserService } from 'src/app/shared/service/user.service';
 import { UserTypeService } from 'src/app/shared/service/user-type.service';
@@ -15,6 +15,13 @@ import { UserNotificationService } from '../../service/user-notification.service
 })
 export class RegisterNewUserComponent implements OnInit {
   @Output() usuarioCreado = new EventEmitter<any>();
+  @Input() listaDesplegable: { identificador: string; nombre: string }[] = [];
+  @Input() etiquetaCampo: string = 'Estructura Organizacional';
+  @Input() nombreCampo: string = 'estructuraOrganizacional';
+  @Input() modalId: string = 'register-user-modal';
+  @Input() tipoComponente: 'department' | 'area' = 'department'; // Nuevo input para identificar el tipo de componente
+  @Input() listaAreas: { identificador: string; nombre: string }[] = []; // Lista de áreas para comparar
+  @Input() listaSubareas: { identificador: string; nombre: string }[] = []; // Lista de subáreas para comparar
 
   usuario = {
     nombres: '',
@@ -24,13 +31,11 @@ export class RegisterNewUserComponent implements OnInit {
     correo: '',
     clave: '',
     confirmarClave: '',
-    tipoUsuario: ''
+    tipoUsuario: '',
+    estructuraOrganizacional: '',
+    tipoEstructura: '' // Nuevo campo para seleccionar Área o Subárea
   };
 
-  areaData = {
-    area: '7c02a46c-7410-4411-8b6a-f442b7b456d3', 
-    tipoArea: 'DIRECCION'
-  };
 
   cargando = false;
   error = '';
@@ -45,6 +50,13 @@ export class RegisterNewUserComponent implements OnInit {
   tiposUsuario: UserTypeResponse[] = [];
   cargandoTiposUsuario = false;
   errorTiposUsuario = '';
+
+  // Propiedades para manejo de listas condicionales
+  listaFiltrada: { identificador: string; nombre: string }[] = [];
+  opcionesTipoEstructura = [
+    { valor: 'area', etiqueta: 'Área' },
+    { valor: 'subarea', etiqueta: 'Subárea' }
+  ];
 
   constructor(
     private userService: UserService,
@@ -92,6 +104,35 @@ export class RegisterNewUserComponent implements OnInit {
     });
   }
 
+  onTipoEstructuraChange(): void {
+    // Limpiar la selección de estructura organizacional cuando cambia el tipo
+    this.usuario.estructuraOrganizacional = '';
+    
+    // Filtrar la lista según el tipo seleccionado
+    if (this.usuario.tipoEstructura === 'area') {
+      this.listaFiltrada = this.listaAreas;
+    } else if (this.usuario.tipoEstructura === 'subarea') {
+      this.listaFiltrada = this.listaSubareas;
+    } else {
+      this.listaFiltrada = [];
+    }
+  }
+
+  determinarTipoArea(identificadorSeleccionado: string): string {
+    if (this.tipoComponente === 'department') {
+      return 'DIRECCION';
+    } else if (this.tipoComponente === 'area') {
+      
+      if (this.usuario.tipoEstructura === 'area') {
+        return 'AREA';
+      } else if (this.usuario.tipoEstructura === 'subarea') {
+        return 'SUBAREA';
+      }
+    }
+    
+    return '';
+  }
+
   registrarUsuario() {
     // Validar contraseñas
     if (this.usuario.clave !== this.usuario.confirmarClave) {
@@ -110,6 +151,8 @@ export class RegisterNewUserComponent implements OnInit {
     this.error = '';
     this.mensajeExito = '';
 
+      const tipoArea = this.determinarTipoArea(this.usuario.estructuraOrganizacional);
+      
       const userRequest: UserRequest = {
         tipoIdentificacion: this.usuario.tipoIdentificacion, // Solo el identificador
         numeroIdentificacion: this.usuario.numeroIdentificacion,
@@ -119,8 +162,8 @@ export class RegisterNewUserComponent implements OnInit {
         clave: this.usuario.clave,
         tipoUsuario: this.usuario.tipoUsuario, // Solo el identificador
         area: {
-          area: this.areaData.area,
-          tipoArea: this.areaData.tipoArea
+          area: this.usuario.estructuraOrganizacional,
+          tipoArea: tipoArea
         }
       };
 
@@ -157,7 +200,7 @@ export class RegisterNewUserComponent implements OnInit {
   }
 
   validarFormulario(): boolean {
-    return !!(
+    const camposBasicos = !!(
       this.usuario.nombres &&
       this.usuario.apellidos &&
       this.usuario.tipoIdentificacion &&
@@ -167,10 +210,24 @@ export class RegisterNewUserComponent implements OnInit {
       this.usuario.confirmarClave &&
       this.usuario.tipoUsuario
     );
+
+    // Para department-users, solo necesita estructuraOrganizacional
+    if (this.tipoComponente === 'department') {
+      return camposBasicos && !!this.usuario.estructuraOrganizacional;
+    }
+
+    // Para area-users, necesita tipoEstructura y estructuraOrganizacional
+    if (this.tipoComponente === 'area') {
+      return camposBasicos && 
+             !!this.usuario.tipoEstructura && 
+             !!this.usuario.estructuraOrganizacional;
+    }
+
+    return camposBasicos;
   }
 
   cerrarModal() {
-    const modalElement = document.getElementById('register-user-modal');
+    const modalElement = document.getElementById(this.modalId);
     if (modalElement) {
       const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
       modal.hide();
@@ -203,8 +260,11 @@ export class RegisterNewUserComponent implements OnInit {
       correo: '',
       clave: '',
       confirmarClave: '',
-      tipoUsuario: ''
+      tipoUsuario: '',
+      estructuraOrganizacional: '',
+      tipoEstructura: ''
     };
+    this.listaFiltrada = [];
     this.error = '';
     this.mensajeExito = '';
   }

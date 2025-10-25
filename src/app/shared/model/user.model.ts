@@ -36,4 +36,8 @@ export interface UserResponse {
   identificacion: IdentificationResponse;
   tipoUsuario: UserTypeResponse;
   estaActivo: boolean;
+  area?: {
+    area: string;
+    tipoArea: string;
+  };
 }

@@ -2,29 +2,27 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
-import { Response } from '../model/response.model';
 import { environment } from 'src/environments/environment';
-import { DepartmentResponse } from '../model/departmen.model';
+import { SubAreaResponse } from '../model/subarea.model';
 
 @Injectable({
     providedIn: 'root'
 })
-export class DepartmentService extends HttpService {
-    private readonly DIRECCION_ENDPOINT = '/direcciones';
+export class SubAreaService extends HttpService {
+    private readonly SUBAREA_ENDPOINT = '/subareas';
 
     constructor(http: HttpClient) {
         super(http);
     }
 
-    consultarDirecciones(): Observable<DepartmentResponse[]> {
+    consultarDirecciones(): Observable<SubAreaResponse[]> {
         const opts = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
             })
         };
-        const url = `${environment.endpoint}${this.DIRECCION_ENDPOINT}`;
-        return this.http.get<DepartmentResponse[]>(url, opts);
+        const url = `${environment.endpoint}${this.SUBAREA_ENDPOINT}`;
+        return this.http.get<SubAreaResponse[]>(url, opts);
     }
-
 }
