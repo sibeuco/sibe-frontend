@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actividad, EstadoActividad } from '../../model/actividad.model';
+import { FechaProgramada, EstadoFechaProgramada } from '../../model/fecha-programada.model';
 
 @Component({
   selector: 'app-activities-table',
@@ -17,6 +18,10 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   columnaOrdenamiento: string = '';
   direccionOrdenamiento: 'asc' | 'desc' = 'asc';
   actividadesOrdenadas: Actividad[] = [];
+
+  // Propiedades para el modal de fechas programadas
+  actividadSeleccionadaParaModal: Actividad | null = null;
+  fechasProgramadas: FechaProgramada[] = [];
 
   constructor(private router: Router) {}
 
@@ -40,7 +45,8 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
       actividadesFiltradas = this.actividades.filter(actividad => 
         actividad.nombreActividad.toLowerCase().includes(termino) ||
         actividad.colaborador.toLowerCase().includes(termino) ||
-        actividad.estado.toLowerCase().includes(termino)
+        actividad.estado.toLowerCase().includes(termino) ||
+        (actividad.fechaProgramada && actividad.fechaProgramada.toLocaleDateString().toLowerCase().includes(termino))
       );
     }
     
@@ -87,6 +93,10 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
         case 'fechaCreacion':
           valorA = new Date(a.fechaCreacion).getTime();
           valorB = new Date(b.fechaCreacion).getTime();
+          break;
+        case 'fechaProgramada':
+          valorA = a.fechaProgramada ? new Date(a.fechaProgramada).getTime() : 0;
+          valorB = b.fechaProgramada ? new Date(b.fechaProgramada).getTime() : 0;
           break;
         case 'estado':
           valorA = a.estado.toLowerCase();
@@ -140,36 +150,93 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Maneja el clic en el botón "Realizar Actividad"
+   * Maneja el clic en el botón "Gestionar Actividad"
    */
   realizarActividad(actividad: Actividad): void {
-    if (actividad.estado === EstadoActividad.PENDIENTE) {
-      // Emitir evento para que el componente padre maneje la lógica
-      this.actividadSeleccionada.emit(actividad);
-      
-      // Si hay una ruta de redirección configurada, navegar a ella
-      if (this.rutaRedireccion) {
-        this.router.navigate([this.rutaRedireccion], {
-          queryParams: { 
-            actividadId: actividad.id,
-            nombreActividad: actividad.nombreActividad,
-            colaborador: actividad.colaborador
-          }
-        }).then(success => {
-          if (success) {
-            console.log('Navegación exitosa a:', this.rutaRedireccion);
-          } else {
-            console.error('Error al navegar a:', this.rutaRedireccion);
-          }
-        });
+    // Emitir evento para que el componente padre maneje la lógica
+    this.actividadSeleccionada.emit(actividad);
+    
+    // Configurar datos para el modal
+    this.actividadSeleccionadaParaModal = actividad;
+    this.cargarFechasProgramadas(actividad.id);
+    
+    // Abrir el modal
+    this.abrirModalFechas();
+  }
+
+  /**
+   * Carga las fechas programadas para una actividad específica
+   */
+  private cargarFechasProgramadas(actividadId: number): void {
+    // TODO: Aquí deberías hacer una llamada al servicio para obtener las fechas programadas
+    // Por ahora, creamos datos de ejemplo
+    this.fechasProgramadas = [
+      {
+        id: 1,
+        fecha: new Date('2024-01-15'),
+        estado: EstadoFechaProgramada.PENDIENTE,
+        actividadId: actividadId
+      },
+      {
+        id: 2,
+        fecha: new Date('2024-01-22'),
+        estado: EstadoFechaProgramada.EN_CURSO,
+        actividadId: actividadId
+      },
+      {
+        id: 3,
+        fecha: new Date('2024-01-29'),
+        estado: EstadoFechaProgramada.FINALIZADO,
+        actividadId: actividadId
       }
+    ];
+  }
+
+  /**
+   * Abre el modal de fechas programadas
+   */
+  private abrirModalFechas(): void {
+    // Usar Bootstrap modal API
+    const modalElement = document.getElementById('date-selector-modal');
+    if (modalElement) {
+      const modal = new (window as any).bootstrap.Modal(modalElement);
+      modal.show();
     }
   }
 
   /**
-   * Verifica si el botón debe estar deshabilitado
+   * Cierra el modal de fechas programadas
    */
-  isButtonDisabled(estado: EstadoActividad): boolean {
-    return estado !== EstadoActividad.PENDIENTE;
+  cerrarModalFechas(): void {
+    const modalElement = document.getElementById('date-selector-modal');
+    if (modalElement) {
+      const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+        // Asegurar que el backdrop se elimine correctamente
+        setTimeout(() => {
+          const backdrop = document.querySelector('.modal-backdrop');
+          if (backdrop) {
+            backdrop.remove();
+          }
+          // Remover la clase modal-open del body
+          document.body.classList.remove('modal-open');
+          document.body.style.overflow = '';
+          document.body.style.paddingRight = '';
+        }, 150);
+      }
+    }
+    this.actividadSeleccionadaParaModal = null;
+    this.fechasProgramadas = [];
   }
+
+  /**
+   * Maneja el clic en el botón "Ver" de una fecha programada
+   */
+  verFechaProgramada(fechaProgramada: FechaProgramada): void {
+    console.log('Ver fecha programada:', fechaProgramada);
+    // TODO: Implementar la lógica para ver los detalles de la fecha programada
+    // Esto podría abrir otro modal o navegar a una página de detalles
+  }
+
 }

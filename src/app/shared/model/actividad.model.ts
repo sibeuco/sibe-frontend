@@ -3,6 +3,7 @@ export interface Actividad {
   nombreActividad: string;
   colaborador: string;
   fechaCreacion: Date;
+  fechaProgramada?: Date;
   estado: EstadoActividad;
 }
 

@@ -527,3 +527,176 @@
     opacity: 0.8;
   }
 }
+
+// Estilos para el mensaje de acceso denegado
+.access-denied-section {
+  margin-bottom: 2rem;
+  
+  .access-denied-container {
+    background: $white-color;
+    border-radius: $general-border-radius;
+    overflow: hidden;
+    animation: slideInDown 0.5s ease-out;
+    
+    .access-denied-content {
+      display: flex;
+      align-items: center;
+      padding: 2rem;
+      gap: 2rem;
+      
+      .access-denied-icon {
+        flex-shrink: 0;
+        
+        i {
+          font-size: 4rem;
+          color: #64748b;
+          animation: gentlePulse 3s infinite;
+        }
+      }
+      
+      .access-denied-text {
+        flex: 1;
+        
+        .access-denied-title {
+          color: #334155;
+          font-weight: 600;
+          font-size: 1.5rem;
+          margin-bottom: 0.75rem;
+        }
+        
+        .access-denied-message {
+          color: #475569;
+          font-size: 1.1rem;
+          margin-bottom: 1.5rem;
+          line-height: 1.6;
+        }
+        
+        .access-denied-details {
+          background-color: rgba(255, 255, 255, 0.8);
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 1rem;
+          border-left: 4px solid #64748b;
+          
+          .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            
+            &:last-child {
+              margin-bottom: 0;
+            }
+            
+            i {
+              color: #64748b;
+              font-size: 1.1rem;
+            }
+            
+            .detail-label {
+              font-weight: 600;
+              color: #475569;
+              margin-right: 0.5rem;
+              min-width: 140px;
+            }
+            
+            .detail-value {
+              color: #1e293b;
+              font-weight: 500;
+              background-color: #f1f5f9;
+              padding: 0.25rem 0.75rem;
+              border-radius: 4px;
+              font-family: 'Courier New', monospace;
+            }
+          }
+        }
+        
+        .access-denied-note {
+          background-color: #fff3cd;
+          border: 1px solid #ffc107;
+          border-radius: 6px;
+          padding: 0.75rem 1rem;
+          display: flex;
+          align-items: center;
+          margin-top: 1.5rem;
+          
+          i {
+            color: #856404;
+            font-size: 1.2rem;
+          }
+          
+          span {
+            color: #856404;
+            font-weight: 500;
+            margin-left: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Animaciones para el acceso denegado
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+}
+
+// Responsive para el mensaje de acceso denegado
+@media (max-width: 768px) {
+  .access-denied-section {
+    .access-denied-container {
+      .access-denied-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+        gap: 1rem;
+        
+        .access-denied-icon {
+          i {
+            font-size: 3rem;
+          }
+        }
+        
+        .access-denied-text {
+          .access-denied-title {
+            font-size: 1.3rem;
+          }
+          
+          .access-denied-message {
+            font-size: 1rem;
+          }
+          
+          .access-denied-details {
+            .detail-item {
+              flex-direction: column;
+              align-items: flex-start;
+              gap: 0.25rem;
+              
+              .detail-label {
+                min-width: auto;
+                margin-right: 0;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

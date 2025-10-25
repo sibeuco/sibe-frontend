@@ -47,13 +47,14 @@
                         </div>
                     </div>
 
-                    <!-- Fecha actual -->
-                    <div class="info-row mb-3 justify-content-center">
+
+                    <!-- Fecha de realización - Solo se muestra si el estado es FINALIZADA -->
+                    <div class="info-row mb-3 justify-content-center" *ngIf="esActividadFinalizada()">
                         <div class="info-label">
-                            <label class="form-label fw-bold">Fecha actual:</label>
+                            <label class="form-label fw-bold">Fecha de Realización:</label>
                         </div>
                         <div class="info-value">
-                            <p class="info-text">{{ fechaActual }}</p>
+                            <p class="info-text">{{ formatearFechaRealizacion(actividad.fechaRealizacion || '') }}</p>
                         </div>
                     </div>
 

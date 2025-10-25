@@ -19,7 +19,6 @@ export class RegisterNewActivityComponent implements OnInit {
             indicador: '',
             colaborador: '',
             fechasProgramadas: [] as string[],
-            areaPertenece: ''
           };
 
           // Lista de indicadores para el select
@@ -98,7 +97,6 @@ export class RegisterNewActivityComponent implements OnInit {
               indicador: '',
               colaborador: '',
               fechasProgramadas: [],
-              areaPertenece: ''
             };
             this.indicadorSeleccionado = '';
             this.fechaTemporal = '';

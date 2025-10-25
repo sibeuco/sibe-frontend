@@ -10,6 +10,8 @@ import { Modal } from 'bootstrap';
 export class AttendanceRecordComponent implements OnInit {
   
   @Input() idActividad: number = 0;
+  @Input() actividad: any = null; // Datos de la actividad
+  @Input() usuarioLoggeado: any = null; // Usuario actualmente loggeado
   @Output() actividadFinalizada = new EventEmitter<any>();
   @Output() actividadCancelada = new EventEmitter<any>();
 
@@ -130,6 +132,78 @@ export class AttendanceRecordComponent implements OnInit {
 
   ngOnInit(): void {
     this.limpiarMensaje();
+    this.cargarDatosPrueba();
+  }
+
+  /**
+   * Carga datos de prueba para testing
+   */
+  private cargarDatosPrueba(): void {
+    // Datos de actividad de prueba
+    if (!this.actividad) {
+      this.actividad = {
+        id: 1,
+        nombre: 'Taller de Bienestar Estudiantil',
+        colaborador: 'María González Pérez',
+        estado: 'EN_CURSO', // Cambiar a 'FINALIZADA' para probar el otro caso
+        objetivo: 'Promover el bienestar integral de los estudiantes',
+        indicador: 'Satisfacción grupos de Interés - eficacia',
+        fechaProgramada: '2024-12-25'
+      };
+    }
+
+    // Datos de usuario loggeado de prueba
+    if (!this.usuarioLoggeado) {
+      this.usuarioLoggeado = {
+        id: 1,
+        nombreCompleto: 'María González Pérez', // Coincide con el colaborador
+        email: 'maria.gonzalez@email.com',
+        documento: '1036965847',
+        tipoUsuario: 'Colaborador'
+      };
+    }
+
+    // Cargar algunos participantes de prueba si la actividad está finalizada
+    if (this.esActividadFinalizada()) {
+      this.participantesAsistencia = [
+        {
+          id: 1,
+          tipoIdentificacion: 'CC',
+          documento: '1036965847',
+          primerNombre: 'Daniel',
+          segundoNombre: 'Felipe',
+          primerApellido: 'Garcia',
+          segundoApellido: 'Quiceno',
+          correo: 'daniel.garcia5847@gmail.com',
+          rfid: '0058844276',
+          tipoUsuario: 'Estudiante'
+        },
+        {
+          id: 2,
+          tipoIdentificacion: 'CC',
+          documento: '87654321',
+          primerNombre: 'María',
+          segundoNombre: 'Elena',
+          primerApellido: 'Rodríguez',
+          segundoApellido: 'López',
+          correo: 'maria.rodriguez@email.com',
+          rfid: 'RF005678',
+          tipoUsuario: 'Estudiante'
+        },
+        {
+          id: 3,
+          tipoIdentificacion: 'TI',
+          documento: 'TI123456',
+          primerNombre: 'Carlos',
+          segundoNombre: 'Alberto',
+          primerApellido: 'González',
+          segundoApellido: 'Martínez',
+          correo: 'carlos.gonzalez@email.com',
+          rfid: 'RF009012',
+          tipoUsuario: 'Estudiante'
+        }
+      ];
+    }
   }
 
   /**
@@ -359,6 +433,71 @@ export class AttendanceRecordComponent implements OnInit {
 
   private limpiarMensaje(): void {
     this.mensaje = '';
+  }
+
+  /**
+   * Verifica si la actividad está finalizada
+   */
+  esActividadFinalizada(): boolean {
+    return this.actividad?.estado === 'FINALIZADA';
+  }
+
+  /**
+   * Verifica si el usuario loggeado es el colaborador de la actividad
+   */
+  esColaboradorActividad(): boolean {
+    if (!this.actividad || !this.usuarioLoggeado) {
+      return false;
+    }
+    // Comparar por documento o email del colaborador
+    return this.actividad.colaborador === this.usuarioLoggeado.nombreCompleto ||
+           this.actividad.colaborador === this.usuarioLoggeado.email ||
+           this.actividad.colaborador === this.usuarioLoggeado.documento;
+  }
+
+  /**
+   * Verifica si se debe mostrar el formulario de asistencia
+   */
+  debeMostrarFormularioAsistencia(): boolean {
+    return !this.esActividadFinalizada() && this.esColaboradorActividad();
+  }
+
+  /**
+   * Verifica si se debe mostrar solo la lista de participantes
+   */
+  debeMostrarSoloLista(): boolean {
+    return this.esActividadFinalizada();
+  }
+
+  /**
+   * Verifica si se debe mostrar mensaje de acceso denegado
+   */
+  debeMostrarAccesoDenegado(): boolean {
+    return !this.esActividadFinalizada() && !this.esColaboradorActividad();
+  }
+
+  /**
+   * Método para cambiar el escenario de prueba
+   * Útil para testing de diferentes casos
+   */
+  cambiarEscenarioPrueba(escenario: 'finalizada' | 'en_curso_colaborador' | 'en_curso_no_colaborador'): void {
+    switch (escenario) {
+      case 'finalizada':
+        this.actividad.estado = 'FINALIZADA';
+        this.usuarioLoggeado.nombreCompleto = 'María González Pérez';
+        break;
+      case 'en_curso_colaborador':
+        this.actividad.estado = 'EN_CURSO';
+        this.usuarioLoggeado.nombreCompleto = 'María González Pérez';
+        break;
+      case 'en_curso_no_colaborador':
+        this.actividad.estado = 'EN_CURSO';
+        this.usuarioLoggeado.nombreCompleto = 'Juan Pérez'; // Diferente al colaborador
+        break;
+    }
+    
+    // Recargar datos de prueba
+    this.cargarDatosPrueba();
   }
 
 }

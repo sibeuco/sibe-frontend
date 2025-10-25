@@ -6,6 +6,8 @@ export interface ActividadInfo {
   objetivo: string;
   indicador: string;
   fechaProgramada?: string;
+  estado: string; // Mantenemos el estado internamente para la lógica
+  fechaRealizacion?: string;
 }
 
 @Component({
@@ -25,39 +27,36 @@ export class ActivityInfoComponent implements OnInit {
       colaborador: 'María González Pérez',
       objetivo: 'Promover el bienestar integral de los estudiantes a través de actividades recreativas y de desarrollo personal',
       indicador: 'Satisfacción grupos de Interés - eficacia',
-      fechaProgramada: '2024-12-25'
+      fechaProgramada: '2024-12-25',
+      estado: 'FINALIZADA',
+      fechaRealizacion: '2024-12-25'
     },
     {
       nombre: 'Programa de Evangelización Comunitaria',
       colaborador: 'Carlos Rodríguez Martínez',
       objetivo: 'Fortalecer los valores espirituales y la fe en la comunidad universitaria mediante actividades de evangelización',
       indicador: 'Nivel satisfacción - impacto',
-      fechaProgramada: '2024-12-30'
+      fechaProgramada: '2024-12-30',
+      estado: 'EN_CURSO',
+      fechaRealizacion: undefined
     },
     {
       nombre: 'Actividad de Servicio Social',
       colaborador: 'Ana Lucía Herrera',
       objetivo: 'Desarrollar el sentido de responsabilidad social en los estudiantes a través de actividades de servicio comunitario',
       indicador: 'Reducción de quejas y reclamos - efectividad',
-      fechaProgramada: '2025-01-15'
+      fechaProgramada: '2025-01-15',
+      estado: 'FINALIZADA',
+      fechaRealizacion: '2024-12-25'
     }
   ];
 
   actividadEjemplo: ActividadInfo = this.actividadesEjemplo[2];
 
   ngOnInit(): void {
-    this.obtenerFechaActual();
     if (!this.actividad) {
       this.actividad = this.actividadEjemplo;
     }
-  }
-
-  obtenerFechaActual(): void {
-    const hoy = new Date();
-    const dia = hoy.getDate().toString().padStart(2, '0');
-    const mes = (hoy.getMonth() + 1).toString().padStart(2, '0');
-    const año = hoy.getFullYear();
-    this.fechaActual = `${dia}/${mes}/${año}`;
   }
 
   // Método para formatear la fecha programada si viene en formato ISO
@@ -81,4 +80,20 @@ export class ActivityInfoComponent implements OnInit {
   obtenerActividadesEjemplo(): ActividadInfo[] {
     return this.actividadesEjemplo;
   }
+
+  // Método para verificar si el estado es FINALIZADA
+  esActividadFinalizada(): boolean {
+    return this.actividad?.estado === 'FINALIZADA';
+  }
+
+  // Método para formatear la fecha de realización
+  formatearFechaRealizacion(fechaISO: string): string {
+    if (!fechaISO) return '';
+    const fecha = new Date(fechaISO);
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
+    const año = fecha.getFullYear();
+    return `${dia}/${mes}/${año}`;
+  }
+
 }
