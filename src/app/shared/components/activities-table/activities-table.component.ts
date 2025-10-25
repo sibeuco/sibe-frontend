@@ -213,6 +213,17 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
       const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
       if (modal) {
         modal.hide();
+        // Asegurar que el backdrop se elimine correctamente
+        setTimeout(() => {
+          const backdrop = document.querySelector('.modal-backdrop');
+          if (backdrop) {
+            backdrop.remove();
+          }
+          // Remover la clase modal-open del body
+          document.body.classList.remove('modal-open');
+          document.body.style.overflow = '';
+          document.body.style.paddingRight = '';
+        }, 150);
       }
     }
     this.actividadSeleccionadaParaModal = null;

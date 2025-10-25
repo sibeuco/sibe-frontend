@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { FechaProgramada, EstadoFechaProgramada } from '../../model/fecha-programada.model';
 import { Actividad } from '../../model/actividad.model';
 
@@ -10,12 +11,13 @@ import { Actividad } from '../../model/actividad.model';
 export class DateSelectorComponent implements OnInit, OnChanges {
   @Input() actividad: Actividad | null = null;
   @Input() fechasProgramadas: FechaProgramada[] = [];
+  @Input() redirectLink: string = ''; // Link para redirección
   @Output() verFecha = new EventEmitter<FechaProgramada>();
   @Output() cerrarModal = new EventEmitter<void>();
 
   fechasOrdenadas: FechaProgramada[] = [];
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.ordenarFechas();
@@ -54,13 +56,48 @@ export class DateSelectorComponent implements OnInit, OnChanges {
    * Maneja el clic en el botón "Ver"
    */
   verFechaProgramada(fechaProgramada: FechaProgramada): void {
+    // Emitir el evento para mantener compatibilidad
     this.verFecha.emit(fechaProgramada);
+    
+    // Cerrar el modal correctamente antes de navegar
+    this.cerrarModalCompletamente();
+    
+    // Si hay un link de redirección, navegar a él
+    if (this.redirectLink) {
+      this.router.navigate([this.redirectLink]);
+    }
   }
 
   /**
    * Cierra el modal
    */
   cerrar(): void {
+    this.cerrarModal.emit();
+  }
+
+  /**
+   * Cierra el modal completamente, eliminando el backdrop
+   */
+  private cerrarModalCompletamente(): void {
+    const modalElement = document.getElementById('date-selector-modal');
+    if (modalElement) {
+      const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+        // Forzar la eliminación del backdrop después de un pequeño delay
+        setTimeout(() => {
+          const backdrop = document.querySelector('.modal-backdrop');
+          if (backdrop) {
+            backdrop.remove();
+          }
+          // Remover la clase modal-open del body
+          document.body.classList.remove('modal-open');
+          document.body.style.overflow = '';
+          document.body.style.paddingRight = '';
+        }, 150);
+      }
+    }
+    // Emitir el evento de cerrar modal
     this.cerrarModal.emit();
   }
 
