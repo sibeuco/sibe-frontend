@@ -4,6 +4,9 @@ import { UserResponse } from 'src/app/shared/model/user.model';
 import { UserNotificationService } from '../../service/user-notification.service';
 import { Subscription } from 'rxjs';
 import { Modal } from 'bootstrap';
+import { DepartmentService } from 'src/app/shared/service/department.service';
+import { DepartmentResponse } from 'src/app/shared/model/departmen.model';
+import { UsuarioSeleccionadoParaEditar } from '../manage-users.component';
 
 @Component({
   selector: 'app-department-users',
@@ -12,7 +15,7 @@ import { Modal } from 'bootstrap';
 })
 export class DepartmentUsersComponent implements OnInit, OnDestroy{
 
-  @Output() usuarioSeleccionadoParaEditar = new EventEmitter<UserResponse>();
+  @Output() usuarioSeleccionadoParaEditar = new EventEmitter<UsuarioSeleccionadoParaEditar>();
 
   usuarios: UserResponse[] = [];
     usuariosFiltrados: UserResponse[] = [];
@@ -26,15 +29,21 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
     eliminando = false;
     mensajeExito = '';
     mostrarMensajeExito = false;
+
+    // Propiedades para la lista desplegable
+    listaDepartamentos: { identificador: string; nombre: string }[] = [];
+    cargandoDepartamentos = false;
   
     constructor(
       private userService: UserService,
-      private userNotificationService: UserNotificationService
+      private userNotificationService: UserNotificationService,
+      private departmentService: DepartmentService
     ) {}
   
     ngOnInit(): void {
       this.obtenerUsuarios();
       this.suscribirseANotificaciones();
+      this.cargarDepartamentos();
     }
 
     ngOnDestroy(): void {
@@ -60,6 +69,23 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
         this.obtenerUsuarios();
       });
       this.subscriptions.push(subEliminado);
+    }
+
+    cargarDepartamentos(): void {
+      this.cargandoDepartamentos = true;
+      this.departmentService.consultarDirecciones().subscribe({
+        next: (departamentos: DepartmentResponse[]) => {
+          this.listaDepartamentos = departamentos.map(dept => ({
+            identificador: dept.identificador,
+            nombre: dept.nombre
+          }));
+          this.cargandoDepartamentos = false;
+        },
+        error: (err) => {
+          console.error('Error al cargar departamentos:', err);
+          this.cargandoDepartamentos = false;
+        }
+      });
     }
 
     obtenerUsuarios(): void {
@@ -120,7 +146,10 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
       console.log('Usuario seleccionado para editar (department-users):', usuario); // Debug log
       console.log('Estructura de identificacion (department):', usuario.identificacion); // Debug log
       console.log('Estructura de tipoUsuario (department):', usuario.tipoUsuario); // Debug log
-      this.usuarioSeleccionadoParaEditar.emit(usuario);
+      this.usuarioSeleccionadoParaEditar.emit({
+        usuario: usuario,
+        tipoComponente: 'department'
+      });
     }
 
     // Limpia el estado del modal

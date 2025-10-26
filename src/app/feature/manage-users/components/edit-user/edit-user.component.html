@@ -115,7 +115,58 @@
                         </div>   
                     </div>
 
-                    <!-- Área hardcodeada - no se muestra en el formulario -->
+                    <!-- Campo selector de tipo (solo para area-users) -->
+                    <div class="mb-3" *ngIf="tipoComponente === 'area'">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="tipoEstructura" class="form-label">Tipo de Estructura</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="tipoEstructura" name="tipoEstructura" [(ngModel)]="usuario.tipoEstructura" (change)="onTipoEstructuraChange()" required>
+                                <option value="">Selecciona el tipo</option>
+                                <option *ngFor="let opcion of opcionesTipoEstructura" [value]="opcion.valor">
+                                    {{ opcion.etiqueta }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campo dinámico desplegable para department-users -->
+                    <div class="mb-3" *ngIf="tipoComponente === 'department' && listaDepartamentos && listaDepartamentos.length > 0">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="estructuraOrganizacional" class="form-label">Departamento</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="estructuraOrganizacional" name="estructuraOrganizacional" [(ngModel)]="usuario.estructuraOrganizacional" required>
+                                <option value="">Selecciona</option>
+                                <option *ngFor="let item of listaDepartamentos" [value]="item.identificador">
+                                    {{ item.nombre }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campo desplegable condicional para area-users -->
+                    <div class="mb-3" *ngIf="tipoComponente === 'area' && usuario.tipoEstructura && listaFiltrada && listaFiltrada.length > 0">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="estructuraOrganizacional" class="form-label">
+                                    {{ usuario.tipoEstructura === 'area' ? 'Seleccionar Área' : 'Seleccionar Subárea' }}
+                                </label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="estructuraOrganizacional" name="estructuraOrganizacional" [(ngModel)]="usuario.estructuraOrganizacional" required>
+                                <option value="">Selecciona</option>
+                                <option *ngFor="let item of listaFiltrada" [value]="item.identificador">
+                                    {{ item.nombre }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
 
                     <!-- Mensajes de estado -->
                     <div *ngIf="cargando" class="mb-3 text-center">

@@ -8,6 +8,12 @@ import { UserTypeResponse } from 'src/app/shared/model/user-type.model';
 import { IdentificationTypeResponse } from 'src/app/shared/model/identification-type.model';
 import { UserResponse } from 'src/app/shared/model/user.model';
 import { UserNotificationService } from '../../service/user-notification.service';
+import { DepartmentService } from 'src/app/shared/service/department.service';
+import { AreaService } from 'src/app/shared/service/area.service';
+import { SubAreaService } from 'src/app/shared/service/subarea.service';
+import { DepartmentResponse } from 'src/app/shared/model/departmen.model';
+import { AreaResponse } from 'src/app/shared/model/area.model';
+import { SubAreaResponse } from 'src/app/shared/model/subarea.model';
 
 @Component({
   selector: 'app-edit-user',
@@ -18,6 +24,10 @@ export class EditUserComponent implements OnInit, OnChanges {
 
   @Input() usuarioAEditar: UserResponse | null = null;
   @Output() usuarioActualizado = new EventEmitter<any>();
+  @Input() tipoComponente: 'department' | 'area' = 'department';
+  @Input() listaDepartamentos: { identificador: string; nombre: string }[] = [];
+  @Input() listaAreas: { identificador: string; nombre: string }[] = [];
+  @Input() listaSubareas: { identificador: string; nombre: string }[] = [];
 
   usuario = {
     nombres: '',
@@ -25,13 +35,11 @@ export class EditUserComponent implements OnInit, OnChanges {
     tipoIdentificacion: '',
     numeroIdentificacion: '',
     correo: '',
-    tipoUsuario: ''
+    tipoUsuario: '',
+    estructuraOrganizacional: '',
+    tipoEstructura: ''
   };
 
-  areaData = {
-    area: '7c02a46c-7410-4411-8b6a-f442b7b456d3',
-    tipoArea: 'DIRECCION'
-  };
 
   cargando = false;
   error = '';
@@ -44,6 +52,13 @@ export class EditUserComponent implements OnInit, OnChanges {
   tiposUsuario: UserTypeResponse[] = [];
   cargandoTiposUsuario = false;
   errorTiposUsuario = '';
+
+  // Propiedades para manejo de listas condicionales
+  listaFiltrada: { identificador: string; nombre: string }[] = [];
+  opcionesTipoEstructura = [
+    { valor: 'area', etiqueta: 'Área' },
+    { valor: 'subarea', etiqueta: 'Subárea' }
+  ];
 
   constructor(
     private userService: UserService,
@@ -113,10 +128,78 @@ export class EditUserComponent implements OnInit, OnChanges {
         tipoIdentificacion: this.usuarioAEditar.identificacion?.tipoIdentificacion?.identificador || '',
         numeroIdentificacion: this.usuarioAEditar.identificacion?.numeroIdentificacion || '',
         correo: this.usuarioAEditar.correo || '',
-        tipoUsuario: this.usuarioAEditar.tipoUsuario?.identificador || ''
+        tipoUsuario: this.usuarioAEditar.tipoUsuario?.identificador || '',
+        estructuraOrganizacional: this.usuarioAEditar.area?.area || '',
+        tipoEstructura: this.determinarTipoEstructuraInicial()
       };
+      
+      // Configurar lista filtrada según el tipo de estructura
+      this.configurarListaFiltrada();
+      
       console.log('Datos cargados en el formulario:', this.usuario); // Debug log
     }
+  }
+
+  determinarTipoEstructuraInicial(): string {
+    if (this.tipoComponente === 'department') {
+      return '';
+    }
+    
+    if (this.tipoComponente === 'area' && this.usuarioAEditar?.area?.area) {
+      // Verificar si el área actual está en la lista de áreas
+      const esArea = this.listaAreas.some(area => area.identificador === this.usuarioAEditar?.area?.area);
+      if (esArea) {
+        return 'area';
+      }
+      
+      // Verificar si está en la lista de subáreas
+      const esSubarea = this.listaSubareas.some(subarea => subarea.identificador === this.usuarioAEditar?.area?.area);
+      if (esSubarea) {
+        return 'subarea';
+      }
+    }
+    
+    return '';
+  }
+
+  configurarListaFiltrada(): void {
+    if (this.usuario.tipoEstructura === 'area') {
+      this.listaFiltrada = this.listaAreas;
+    } else if (this.usuario.tipoEstructura === 'subarea') {
+      this.listaFiltrada = this.listaSubareas;
+    } else if (this.tipoComponente === 'department') {
+      this.listaFiltrada = this.listaDepartamentos;
+    } else {
+      this.listaFiltrada = [];
+    }
+  }
+
+  onTipoEstructuraChange(): void {
+    // Limpiar la selección de estructura organizacional cuando cambia el tipo
+    this.usuario.estructuraOrganizacional = '';
+    
+    // Filtrar la lista según el tipo seleccionado
+    if (this.usuario.tipoEstructura === 'area') {
+      this.listaFiltrada = this.listaAreas;
+    } else if (this.usuario.tipoEstructura === 'subarea') {
+      this.listaFiltrada = this.listaSubareas;
+    } else {
+      this.listaFiltrada = [];
+    }
+  }
+
+  determinarTipoArea(identificadorSeleccionado: string): string {
+    if (this.tipoComponente === 'department') {
+      return 'DIRECCION';
+    } else if (this.tipoComponente === 'area') {
+      if (this.usuario.tipoEstructura === 'area') {
+        return 'AREA';
+      } else if (this.usuario.tipoEstructura === 'subarea') {
+        return 'SUBAREA';
+      }
+    }
+    
+    return '';
   }
 
   actualizarUsuario() {
@@ -134,6 +217,8 @@ export class EditUserComponent implements OnInit, OnChanges {
     this.error = '';
     this.mensajeExito = '';
 
+    const tipoArea = this.determinarTipoArea(this.usuario.estructuraOrganizacional);
+    
     const editUserRequest: EditUserRequest = {
       tipoIdentificacion: this.usuario.tipoIdentificacion,
       numeroIdentificacion: this.usuario.numeroIdentificacion,
@@ -142,8 +227,8 @@ export class EditUserComponent implements OnInit, OnChanges {
       correo: this.usuario.correo,
       tipoUsuario: this.usuario.tipoUsuario,
       area: {
-        area: this.areaData.area,
-        tipoArea: this.areaData.tipoArea
+        area: this.usuario.estructuraOrganizacional,
+        tipoArea: tipoArea
       }
     };
 
@@ -179,7 +264,7 @@ export class EditUserComponent implements OnInit, OnChanges {
   }
 
   validarFormulario(): boolean {
-    return !!(
+    const camposBasicos = !!(
       this.usuario.nombres &&
       this.usuario.apellidos &&
       this.usuario.tipoIdentificacion &&
@@ -187,6 +272,20 @@ export class EditUserComponent implements OnInit, OnChanges {
       this.usuario.correo &&
       this.usuario.tipoUsuario
     );
+
+    // Para department-users, solo necesita estructuraOrganizacional
+    if (this.tipoComponente === 'department') {
+      return camposBasicos && !!this.usuario.estructuraOrganizacional;
+    }
+
+    // Para area-users, necesita tipoEstructura y estructuraOrganizacional
+    if (this.tipoComponente === 'area') {
+      return camposBasicos && 
+             !!this.usuario.tipoEstructura && 
+             !!this.usuario.estructuraOrganizacional;
+    }
+
+    return camposBasicos;
   }
 
   abrirModal(): void {
@@ -228,8 +327,11 @@ export class EditUserComponent implements OnInit, OnChanges {
       tipoIdentificacion: '',
       numeroIdentificacion: '',
       correo: '',
-      tipoUsuario: ''
+      tipoUsuario: '',
+      estructuraOrganizacional: '',
+      tipoEstructura: ''
     };
+    this.listaFiltrada = [];
     this.error = '';
     this.mensajeExito = '';
     this.usuarioAEditar = null; // Limpiar la referencia al usuario

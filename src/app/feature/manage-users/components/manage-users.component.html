@@ -9,6 +9,10 @@
     <!-- Modal compartido para editar usuarios -->
     <app-edit-user 
         [usuarioAEditar]="usuarioSeleccionado" 
+        [tipoComponente]="tipoComponenteOrigen"
+        [listaDepartamentos]="listaDepartamentos"
+        [listaAreas]="listaAreas"
+        [listaSubareas]="listaSubareas"
         (usuarioActualizado)="onUsuarioActualizado($event)">
     </app-edit-user>
 </div>

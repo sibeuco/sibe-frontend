@@ -4,6 +4,11 @@ import { UserResponse } from 'src/app/shared/model/user.model';
 import { UserNotificationService } from '../../service/user-notification.service';
 import { Subscription } from 'rxjs';
 import { Modal } from 'bootstrap';
+import { AreaService } from 'src/app/shared/service/area.service';
+import { SubAreaService } from 'src/app/shared/service/subarea.service';
+import { AreaResponse } from 'src/app/shared/model/area.model';
+import { SubAreaResponse } from 'src/app/shared/model/subarea.model';
+import { UsuarioSeleccionadoParaEditar } from '../manage-users.component';
 
 @Component({
   selector: 'app-area-users',
@@ -12,7 +17,7 @@ import { Modal } from 'bootstrap';
 })
 export class AreaUsersComponent implements OnInit, OnDestroy{
 
-  @Output() usuarioSeleccionadoParaEditar = new EventEmitter<UserResponse>();
+  @Output() usuarioSeleccionadoParaEditar = new EventEmitter<UsuarioSeleccionadoParaEditar>();
 
   usuarios: UserResponse[] = [];
   usuariosFiltrados: UserResponse[] = [];
@@ -27,14 +32,22 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
   mensajeExito = '';
   mostrarMensajeExito = false;
 
+  // Propiedades para la lista desplegable
+  listaAreas: { identificador: string; nombre: string }[] = [];
+  listaSubareas: { identificador: string; nombre: string }[] = [];
+  cargandoAreas = false;
+
   constructor(
     private userService: UserService,
-    private userNotificationService: UserNotificationService
+    private userNotificationService: UserNotificationService,
+    private areaService: AreaService,
+    private subAreaService: SubAreaService
   ) {}
 
   ngOnInit(): void {
     this.obtenerUsuarios();
     this.suscribirseANotificaciones();
+    this.cargarAreasYSubareas();
   }
 
   ngOnDestroy(): void {
@@ -60,6 +73,42 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
       this.obtenerUsuarios();
     });
     this.subscriptions.push(subEliminado);
+  }
+
+  cargarAreasYSubareas(): void {
+    this.cargandoAreas = true;
+    
+    // Cargar áreas
+    this.areaService.consultarAreas().subscribe({
+      next: (areas: AreaResponse[]) => {
+        // Cargar subáreas
+        this.subAreaService.consultarDirecciones().subscribe({
+          next: (subareas: SubAreaResponse[]) => {
+            // Separar áreas y subáreas
+            this.listaAreas = areas.map(area => ({
+              identificador: area.identificador,
+              nombre: area.nombre
+            }));
+            
+            this.listaSubareas = subareas.map(subarea => ({
+              identificador: subarea.identificador,
+              nombre: subarea.nombre
+            }));
+
+            // Las listas ya están separadas para el uso condicional
+            this.cargandoAreas = false;
+          },
+          error: (err) => {
+            console.error('Error al cargar subáreas:', err);
+            this.cargandoAreas = false;
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al cargar áreas:', err);
+        this.cargandoAreas = false;
+      }
+    });
   }
 
   obtenerUsuarios(): void {
@@ -119,7 +168,10 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
     console.log('Usuario seleccionado para editar (area-users):', usuario); // Debug log
     console.log('Estructura de identificacion:', usuario.identificacion); // Debug log
     console.log('Estructura de tipoUsuario:', usuario.tipoUsuario); // Debug log
-    this.usuarioSeleccionadoParaEditar.emit(usuario);
+    this.usuarioSeleccionadoParaEditar.emit({
+      usuario: usuario,
+      tipoComponente: 'area'
+    });
   }
 
   // Limpia el estado del modal

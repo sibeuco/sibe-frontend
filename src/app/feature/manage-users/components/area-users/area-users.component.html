@@ -17,11 +17,17 @@
             </div>
             <div class="button-container col-md-4 col-12 d-flex justify-content-md-end justify-content-center">
                 <app-primary-button
-                    [modalTargetId]="'register-user-modal'"
+                    [modalTargetId]="'register-area-user-modal'"
                     [icon]="'bi bi-person-add'"
                     [text]="'Agregar nuevo usuario'">
                 </app-primary-button>
-                <app-register-new-user (usuarioCreado)="onUsuarioCreado($event)"></app-register-new-user> 
+                <app-register-new-user 
+                    modalId="register-area-user-modal"
+                    tipoComponente="area"
+                    [listaAreas]="listaAreas"
+                    [listaSubareas]="listaSubareas"
+                    (usuarioCreado)="onUsuarioCreado($event)">
+                </app-register-new-user> 
             </div>
         </div>
     </div>
