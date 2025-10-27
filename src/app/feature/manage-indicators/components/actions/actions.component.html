@@ -19,7 +19,7 @@
                     [icon]="'bi bi-plus-circle'"
                     [text]="'Agregar nueva acción'">
                 </app-primary-button>
-                <app-register-new-action></app-register-new-action>
+                <app-register-new-action (accionCreada)="obtenerAcciones()"></app-register-new-action>
             </div>
         </div>
     </div>
@@ -34,6 +34,32 @@
                 </tr>
                 </thead>
                 <tbody>
+                    <!-- Estado de carga -->
+                    <tr *ngIf="cargando">
+                        <td colspan="3" class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Cargando...</span>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Mensaje de error -->
+                    <tr *ngIf="!cargando && error">
+                        <td colspan="3" class="text-center py-4">
+                            <div class="alert alert-danger mb-0" role="alert">
+                                {{ error }}
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Mensaje cuando no hay datos -->
+                    <tr *ngIf="!cargando && !error && accionesFiltradas.length === 0">
+                        <td colspan="3" class="text-center py-4 text-muted">
+                            No se encontraron acciones
+                        </td>
+                    </tr>
+                    
+                    <!-- Datos de la tabla -->
                     <tr *ngFor="let action of accionesFiltradas">
                         <td>{{ action.detalle }}</td>
                         <td>{{ action.objetivo }}</td>

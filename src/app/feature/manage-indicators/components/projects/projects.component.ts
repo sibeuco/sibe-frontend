@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ProjectResponse } from '../../model/project.model';
+import { ProjectService } from '../../service/project.service';
 
 @Component({
   selector: 'app-projects',
@@ -8,22 +10,38 @@ import { Component, OnInit } from '@angular/core';
 export class ProjectsComponent implements OnInit{
   
   searchTerm: string = '';
-  proyectos = [
-    { numeroProyecto: 'proyecto 1', nombre: 'educación para la vida', objetivo: 'educar' },
-    { numeroProyecto: 'proyecto 2', nombre: 'Más allá de la educación', objetivo: 'Ayudar a la mejora institucional' },
-    { numeroProyecto: 'proyecto 7', nombre: 'más energía', objetivo: 'Pausas activas para mejorar el bienestar' }
-  ];
-  proyectosFiltrados = [...this.proyectos];
+  proyectos: ProjectResponse[] = [];
+  proyectosFiltrados: ProjectResponse[] = [];
+  cargando: boolean = false;
+  error: string = '';
+
+  constructor(private projectService: ProjectService) {}
 
   ngOnInit(): void {
-    this.proyectosFiltrados = this.proyectos;
+    this.cargarProyectos();
+  }
+
+  cargarProyectos(): void {
+    this.cargando = true;
+    this.projectService.consultarProyectos().subscribe({
+      next: (data) => {
+        this.proyectos = data;
+        this.proyectosFiltrados = [...this.proyectos];
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener proyectos:', err);
+        this.error = 'No se pudieron cargar los proyectos.';
+        this.cargando = false;
+      }
+    });
   }
 
   filterProjects(): void {
     const term = this.searchTerm.toLowerCase();
     this.proyectosFiltrados = this.proyectos.filter(project =>
       Object.values(project).some(value =>
-        value.toLowerCase().includes(term)
+        String(value).toLowerCase().includes(term)
       )
     );
   }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActionResponse } from '../../model/action.model';
+import { ActionService } from '../../service/action.service';
 
 @Component({
   selector: 'app-actions',
@@ -8,22 +10,40 @@ import { Component, OnInit } from '@angular/core';
 export class ActionsComponent implements OnInit{
 
   searchTerm: string = '';
-  acciones = [
-    { detalle: 'educar para seguir avanzando en el control de la vida', objetivo: 'educar' },
-    { detalle: 'acción 2', objetivo: 'Ayudar a la mejora institucional' },
-    { detalle: 'acción 78', objetivo: 'Pausas activas para mejorar el bienestar' }
-  ];
-  accionesFiltradas = [...this.acciones];
+  acciones: ActionResponse[] = [];
+  accionesFiltradas: ActionResponse[] = [];
+  cargando: boolean = false;
+  error: string = '';
+
+  constructor(private actionService: ActionService) {}
 
   ngOnInit(): void {
-    this.accionesFiltradas = this.acciones;
+    this.obtenerAcciones();
+  }
+
+  obtenerAcciones(): void {
+    this.cargando = true;
+    this.error = '';
+
+    this.actionService.consultarAcciones().subscribe({
+      next: (data) => {
+        this.acciones = data;
+        this.accionesFiltradas = [...this.acciones];
+        this.cargando = false;
+      },
+      error: (err) => {
+        console.error('Error al obtener acciones:', err);
+        this.error = 'No se pudieron cargar las acciones.';
+        this.cargando = false;
+      }
+    });
   }
 
   filterActions(): void {
     const term = this.searchTerm.toLowerCase();
     this.accionesFiltradas = this.acciones.filter(action =>
       Object.values(action).some(value =>
-        value.toLowerCase().includes(term)
+        value && value.toString().toLowerCase().includes(term)
       )
     );
   }

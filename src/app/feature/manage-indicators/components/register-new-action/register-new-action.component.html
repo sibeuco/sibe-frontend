@@ -27,10 +27,27 @@
                             <input type="text" class="form-control" id="objetivo" name="objetivo" [(ngModel)]="accion.objetivo" required />
                         </div>     
                     </div>
+                    
+                    <!-- Mensaje de éxito -->
+                    <div class="mb-3" *ngIf="exito">
+                        <div class="alert alert-success text-center" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>{{ exito }}
+                        </div>
+                    </div>
+                    
+                    <!-- Mensaje de error -->
+                    <div class="mb-3" *ngIf="error">
+                        <div class="alert alert-danger text-center" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid">Registrar</button>
+                <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal" [disabled]="cargando">Cancelar</button>
+                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid || cargando">
+                    <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    {{ cargando ? 'Registrando...' : 'Registrar' }}
+                </button>
                 </div>
             </form>
         </div>
