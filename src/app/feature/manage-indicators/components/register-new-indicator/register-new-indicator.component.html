@@ -64,11 +64,12 @@
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <select class="form-select" id="proyecto" name="proyecto" [(ngModel)]="indicador.proyecto" required>
                             <option value="">Selecciona</option>
-                            <option value="Proyecto 3">Proyecto 3</option>
-                            <option value="Proyecto 4">Proyecto 4</option>
-                            <option value="Proyecto 7">Proyecto 7</option>
+                            <option *ngFor="let proyecto of proyectos" [value]="proyecto.identificador">{{ proyecto.nombre }}</option>
                             </select>
-                        </div>   
+                        </div>
+                        <div *ngIf="cargandoProyectos" class="text-center mt-2">
+                            <small class="text-muted">Cargando proyectos...</small>
+                        </div>
                     </div>
 
                     <div class="mb-3">
