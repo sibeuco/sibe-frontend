@@ -1,5 +1,5 @@
-export interface editPasswordRequest{
-    usuario: string;
+export interface EditPasswordRequest{
+    identificador: string;
     claveAntigua: string;
     claveNueva: string;
 }

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { StateProps } from '../model/state.enum';
 import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-// Debes importar el modelo UserSession aquí
 import { UserSession } from 'src/app/feature/login/model/user-session.model';
 
 @Injectable({
@@ -25,7 +24,7 @@ export class StateService {
         const tokenPayload = JSON.parse(atob(token.split('.')[1]));
         const userSession: UserSession = {
           correo: tokenPayload.email,
-          identificador: tokenPayload.identificador,
+          identificador: tokenPayload.id || tokenPayload.identificador,
           authorities: tokenPayload.authorities.split(','),
           logged: true
         };
