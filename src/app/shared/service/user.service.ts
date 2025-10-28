@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { UserResponse, UserRequest, EditUserRequest } from '../model/user.model';
 import { Response } from '../model/response.model';
 import { environment } from 'src/environments/environment';
+import { EditPasswordRequest } from '../model/password.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService extends HttpService {
   private readonly USUARIO_ENDPOINT = '/usuarios';
+  private readonly MODIFICAR_CLAVE_ENDPOINT = '/usuarios/modificar/clave';
 
   constructor(http: HttpClient) {
     super(http);
@@ -60,6 +62,27 @@ export class UserService extends HttpService {
     const url = `${environment.endpoint}${this.USUARIO_ENDPOINT}/usuario/${identificador}`;
     
     return this.doDelete<Response<string>>(url, opts);
+  }
+
+  modificarClave(request: EditPasswordRequest): Observable<{ valor: string }> {
+    const url = `${environment.endpoint}${this.MODIFICAR_CLAVE_ENDPOINT}`;
+
+    // Obtener el token del sessionStorage
+    const token = window.sessionStorage.getItem('Authorization');
+
+    const opts = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token || ''}`
+      })
+    };
+
+    return this.http.put<{ valor: string }>(url, request, opts).pipe(
+      catchError(error => {
+        console.error('Error al modificar la clave:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { Modal } from 'bootstrap';
 
 @Component({
@@ -8,6 +8,9 @@ import { Modal } from 'bootstrap';
 })
 export class ChangePasswordComponent {
   @Output() contrasenaActualizada = new EventEmitter<any>();
+  @Input() cambiandoContrasena: boolean = false;
+  @Input() mensajeError: string = '';
+  @Input() mensajeExito: string = '';
 
   passwords = {
     contrasenaActual: '',
@@ -32,8 +35,7 @@ export class ChangePasswordComponent {
       nuevaContrasena: this.passwords.nuevaContrasena
     });
     
-    this.limpiarFormulario();
-    this.cerrarModal();
+    // No cerrar el modal aquí, el padre lo manejará
   }
 
   limpiarFormulario() {

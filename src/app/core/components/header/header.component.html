@@ -39,4 +39,10 @@
 </header>
 
 <!-- Modal de cambio de contraseña -->
-<app-change-password (contrasenaActualizada)="onContrasenaActualizada($event)"></app-change-password>
+<app-change-password 
+  #changePasswordComponent
+  [cambiandoContrasena]="cambiandoContrasena" 
+  [mensajeError]="mensajeError" 
+  [mensajeExito]="mensajeExito"
+  (contrasenaActualizada)="onContrasenaActualizada($event)">
+</app-change-password>
