@@ -100,11 +100,20 @@ export class UploadDatabaseComponent {
     this.mensajeError = '';
     this.mensajeExito = '';
 
+
     // Enviar el archivo al backend con el tipo de base de datos
     this.uploadService.subirArchivo(this.archivoActual, this.tipoBaseDatos).subscribe({
       next: (respuesta) => {
         this.cargando = false;
-        this.mensajeExito = 'Archivo cargado exitosamente en la base de datos';
+        
+        // Mostrar mensaje de éxito del backend o mensaje por defecto
+        if (respuesta && respuesta.mensaje) {
+          this.mensajeExito = respuesta.mensaje;
+        } else if (respuesta && respuesta.message) {
+          this.mensajeExito = respuesta.message;
+        } else {
+          this.mensajeExito = 'Archivo cargado exitosamente en la base de datos';
+        }
         
         // Emitir el archivo al componente padre (por compatibilidad)
         this.archivoSeleccionado.emit(this.archivoActual!);
@@ -116,21 +125,24 @@ export class UploadDatabaseComponent {
         setTimeout(() => {
           this.cerrarModal();
           this.limpiarFormulario();
-        }, 1500);
+        }, 2000);
       },
       error: (error) => {
         this.cargando = false;
-        console.error('Error al cargar el archivo:', error);
         
-        // Manejar diferentes tipos de errores
+        // Manejar diferentes tipos de errores con mensajes del backend
         if (error.status === 0) {
           this.mensajeError = 'No se pudo conectar con el servidor';
         } else if (error.status === 400) {
-          this.mensajeError = error.error?.mensaje || 'Error en la validación del archivo';
+          this.mensajeError = error.error?.mensaje || error.error?.message || 'Error en la validación del archivo';
+        } else if (error.status === 401) {
+          this.mensajeError = 'No tienes autorización para realizar esta acción';
+        } else if (error.status === 403) {
+          this.mensajeError = 'Acceso denegado para esta operación';
         } else if (error.status === 500) {
-          this.mensajeError = 'Error del servidor al procesar el archivo';
+          this.mensajeError = error.error?.mensaje || error.error?.message || 'Error del servidor al procesar el archivo';
         } else {
-          this.mensajeError = error.error?.mensaje || 'Error al cargar el archivo al servidor';
+          this.mensajeError = error.error?.mensaje || error.error?.message || 'Error al cargar el archivo al servidor';
         }
       }
     });
