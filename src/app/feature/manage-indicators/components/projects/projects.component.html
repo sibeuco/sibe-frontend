@@ -69,8 +69,7 @@
                             <button 
                                 type="button" 
                                 class="btn btn-outline-warning btn-sm edit-project-button"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#edit-project-modal"
+                                (click)="abrirModalEdicion(project)"
                                 title="Editar proyecto">
                                 <i class="bi bi-pencil"></i>
                             </button>
@@ -80,5 +79,9 @@
             </table>
         </div>
     </div>
-    <app-edit-project></app-edit-project>
+    <app-edit-project 
+        [proyectoAEditar]="proyectoSeleccionado"
+        (proyectoModificado)="onProyectoModificado($event)"
+        (proyectoCancelado)="onProyectoCancelado()">
+    </app-edit-project>
 </div>

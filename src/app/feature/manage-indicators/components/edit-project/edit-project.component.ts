@@ -1,14 +1,19 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { Modal } from 'bootstrap';
+import { Component, EventEmitter, Input, OnInit, OnChanges, SimpleChanges, Output } from '@angular/core';
+import { ProjectService } from '../../service/project.service';
+import { ActionService } from '../../service/action.service';
+import { ProjectResponse, EditProjectRequest } from '../../model/project.model';
+import { ActionResponse } from '../../model/action.model';
 
 @Component({
   selector: 'app-edit-project',
   templateUrl: './edit-project.component.html',
   styleUrls: ['./edit-project.component.scss']
 })
-export class EditProjectComponent {
+export class EditProjectComponent implements OnInit, OnChanges {
 
-  @Output() proyectoCreado = new EventEmitter<any>();
+  @Input() proyectoAEditar: ProjectResponse | null = null;
+  @Output() proyectoModificado = new EventEmitter<ProjectResponse>();
+  @Output() proyectoCancelado = new EventEmitter<void>();
     
       proyecto = {
         numeroProyecto: '',
@@ -17,39 +22,137 @@ export class EditProjectComponent {
         acciones: [] as string[]
       };
 
-      // Lista de acciones disponibles
-      accionesDisponibles = [
-        { value: 'capacitacion', label: 'Capacitación en habilidades blandas' },
-        { value: 'seguimiento', label: 'Seguimiento académico personalizado' },
-        { value: 'tutoria', label: 'Tutoría individual' },
-        { value: 'workshop', label: 'Workshops de desarrollo profesional' },
-        { value: 'mentoring', label: 'Programa de mentoring' },
-        { value: 'networking', label: 'Actividades de networking' },
-        { value: 'investigacion', label: 'Apoyo en proyectos de investigación' },
-        { value: 'practicas', label: 'Gestión de prácticas profesionales' },
-        { value: 'becas', label: 'Gestión de becas y ayudas' },
-        { value: 'orientacion', label: 'Orientación vocacional' },
-        { value: 'liderazgo', label: 'Desarrollo de liderazgo' },
-        { value: 'emprendimiento', label: 'Apoyo al emprendimiento' },
-        { value: 'voluntariado', label: 'Programas de voluntariado' },
-        { value: 'intercambio', label: 'Programas de intercambio estudiantil' },
-        { value: 'eventos', label: 'Organización de eventos académicos' }
-      ];
-
-      accionesFiltradas = [...this.accionesDisponibles];
+      // Lista de acciones disponibles desde el servicio
+      accionesDisponibles: { value: string; label: string }[] = [];
+      accionesFiltradas: { value: string; label: string }[] = [];
       searchAcciones = '';
       showDropdown = false;
-    
-      registrarProyecto() {
+      cargandoAcciones = false;
+      cargando = false;
+      error = '';
+      exito = '';
 
-        this.proyectoCreado.emit(this.proyecto);
-        this.limpiarFormulario();
+      constructor(
+        private projectService: ProjectService,
+        private actionService: ActionService
+      ) {
+        // Asegurar que el array de acciones esté inicializado
+        this.proyecto.acciones = [];
+      }
+
+      ngOnInit(): void {
+        this.cargarAcciones();
+        if (this.proyectoAEditar) {
+          this.cargarDatosProyecto();
+        }
+      }
+
+      ngOnChanges(changes: SimpleChanges): void {
+        if (changes['proyectoAEditar'] && changes['proyectoAEditar'].currentValue) {
+          this.cargarDatosProyecto();
+        }
+      }
+
+      cargarAcciones(): void {
+        this.cargandoAcciones = true;
+        this.actionService.consultarAcciones().subscribe({
+          next: (acciones: ActionResponse[]) => {
+            // Mapear las acciones del servicio al formato esperado
+            this.accionesDisponibles = acciones.map(accion => ({
+              value: accion.identificador,
+              label: accion.detalle
+            }));
+            this.accionesFiltradas = [...this.accionesDisponibles];
+            this.cargandoAcciones = false;
+          },
+          error: (error) => {
+            console.error('Error al cargar las acciones:', error);
+            this.cargandoAcciones = false;
+          }
+        });
+      }
+
+      cargarDatosProyecto(): void {
+        if (this.proyectoAEditar) {
+          this.proyecto = {
+            numeroProyecto: this.proyectoAEditar.numeroProyecto,
+            nombre: this.proyectoAEditar.nombre,
+            objetivo: this.proyectoAEditar.objetivo,
+            acciones: this.proyectoAEditar.acciones || [] // Cargar acciones si están disponibles
+          };
+          // Limpiar mensajes previos cuando se cargan nuevos datos
+          this.error = '';
+          this.exito = '';
+          this.cargando = false;
+        }
+      }
     
-        const modalElement = document.getElementById('userModal');
-    if (modalElement) {
-      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
-      modal.hide();
-    }
+      modificarProyecto() {
+        if (this.cargando || !this.proyectoAEditar) return;
+
+        this.cargando = true;
+        this.error = '';
+        this.exito = '';
+
+        // Validar que hay acciones seleccionadas
+        if (!this.proyecto.acciones || this.proyecto.acciones.length === 0) {
+          this.error = 'Debe seleccionar al menos una acción para el proyecto';
+          this.cargando = false;
+          return;
+        }
+
+        // Preparar el objeto del proyecto para enviar
+        const proyectoRequest: EditProjectRequest = {
+          nombre: this.proyecto.nombre,
+          objetivo: this.proyecto.objetivo,
+          acciones: this.proyecto.acciones
+        };
+
+        this.projectService.modificarProyecto(this.proyectoAEditar.identificador, proyectoRequest).subscribe({
+          next: (response) => {
+            this.exito = 'Proyecto modificado exitosamente';
+            
+            // Crear el objeto de respuesta actualizado
+            const proyectoModificado: ProjectResponse = {
+              identificador: this.proyectoAEditar!.identificador,
+              numeroProyecto: this.proyecto.numeroProyecto,
+              nombre: this.proyecto.nombre,
+              objetivo: this.proyecto.objetivo
+            };
+
+            // Esperar un momento antes de cerrar para que se vea el mensaje
+            setTimeout(() => {
+              this.proyectoModificado.emit(proyectoModificado);
+            }, 1500);
+
+            this.cargando = false;
+          },
+          error: (error) => {
+            console.error('Error al modificar el proyecto:', error);
+            
+            // Extraer el mensaje de error
+            let mensajeError = 'Error al modificar el proyecto. Por favor, intente nuevamente.';
+            
+            if (error?.error) {
+              if (typeof error.error === 'string') {
+                mensajeError = error.error;
+              } else if (error.error.mensaje) {
+                mensajeError = error.error.mensaje;
+              } else if (error.error.message) {
+                mensajeError = error.error.message;
+              }
+            } else if (error?.message) {
+              mensajeError = error.message;
+            }
+
+            this.error = mensajeError;
+            this.cargando = false;
+          }
+        });
+      }
+
+      cancelar() {
+        this.proyectoCancelado.emit();
       }
     
       limpiarFormulario() {
@@ -62,6 +165,9 @@ export class EditProjectComponent {
         this.searchAcciones = '';
         this.accionesFiltradas = [...this.accionesDisponibles];
         this.showDropdown = false;
+        this.error = '';
+        this.exito = '';
+        this.cargando = false;
       }
 
       filterAcciones() {

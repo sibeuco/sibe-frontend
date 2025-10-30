@@ -1,7 +1,7 @@
 <div class="modal-container modal fade" id="edit-project-modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form (ngSubmit)="registrarProyecto()" #userForm="ngForm" class="form-container align-items-center justify-content-center">
+            <form (ngSubmit)="modificarProyecto()" #userForm="ngForm" class="form-container align-items-center justify-content-center">
                 <div class="modal-header col d-flex align-items-center justify-content-center position-relative">
                     <h1 class="modal-title" id="projectModalLabel">Editar Proyecto</h1>
                     <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -72,6 +72,10 @@
                                         </div>
                                         
                                         <div class="dropdown-options">
+                                            <div *ngIf="cargandoAcciones" class="loading-actions">
+                                                <span>Cargando acciones...</span>
+                                            </div>
+                                            
                                             <label 
                                                 *ngFor="let accion of accionesFiltradas" 
                                                 class="action-option">
@@ -79,12 +83,12 @@
                                                     type="checkbox" 
                                                     [value]="accion.value"
                                                     [checked]="isActionSelected(accion.value)"
-                                                    (change)="toggleAction(accion.value)"
+                                                    (click)="toggleAction(accion.value)"
                                                     class="action-checkbox" />
                                                 <span class="action-label">{{ accion.label }}</span>
                                             </label>
                                             
-                                            <div *ngIf="accionesFiltradas.length === 0" class="no-results">
+                                            <div *ngIf="!cargandoAcciones && accionesFiltradas.length === 0" class="no-results">
                                                 No se encontraron acciones
                                             </div>
                                         </div>
@@ -94,17 +98,19 @@
                                 <!-- Información de selección -->
                                 <div class="selected-actions">
                                     <small class="text-muted actions-info">
-                                        Seleccionadas: {{ proyecto.acciones.length || 0 }} acciones
+                                        Seleccionadas: {{ (proyecto.acciones && proyecto.acciones.length) || 0 }} acciones
                                     </small>
                                     <div class="selected-tags" *ngIf="proyecto.acciones && proyecto.acciones.length > 0">
                                         <span 
-                                            *ngFor="let accion of getSelectedActionsLabels()" 
+                                            *ngFor="let accion of getSelectedActionsLabels(); let i = index" 
                                             class="action-tag">
-                                            {{ accion }}
+                                            <span class="action-tag-text">{{ accion }}</span>
                                             <button 
                                                 type="button" 
                                                 class="remove-tag" 
-                                                (click)="removeAction(getActionValue(accion))">
+                                                (mousedown)="$event.stopPropagation()"
+                                                (click)="removeAction(getActionValue(accion)); $event.stopPropagation()"
+                                                title="Eliminar acción">
                                                 ×
                                             </button>
                                         </span>
@@ -114,10 +120,26 @@
                         </div>     
                     </div>
 
+                    <!-- Mensaje de éxito -->
+                    <div class="mb-3" *ngIf="exito">
+                        <div class="alert alert-success text-center" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>{{ exito }}
+                        </div>
+                    </div>
+                    
+                    <!-- Mensaje de error -->
+                    <div class="mb-3" *ngIf="error">
+                        <div class="alert alert-danger text-center" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid">Registrar</button>
+                <button type="button" class="cancel-button btn btn-secondary" (click)="cancelar()" [disabled]="cargando">Cancelar</button>
+                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid || cargando">
+                    <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    {{ cargando ? 'Modificando...' : 'Modificar' }}
+                </button>
                 </div>
             </form>
         </div>
