@@ -171,7 +171,7 @@
       overflow-x: auto;
       overflow-y: hidden;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      -webkit-overflow-scrolling: touch; // Para scroll suave en iOS
+      -webkit-overflow-scrolling: touch;
 
       .table {
         margin-bottom: 0;
@@ -187,26 +187,26 @@
             padding: 15px 10px;
             border: none;
             white-space: nowrap;
-            min-width: 120px; // Ancho mínimo para cada columna
+            min-width: 120px;
 
             &:first-child {
-              min-width: 200px; // Nombre completo necesita más espacio
+              min-width: 200px;
             }
 
             &:nth-child(2) {
-              min-width: 120px; // Documento
+              min-width: 120px;
             }
 
             &:nth-child(3) {
-              min-width: 100px; // RFID
+              min-width: 100px;
             }
 
             &:nth-child(4) {
-              min-width: 180px; // Correo
+              min-width: 180px;
             }
 
             &:last-child {
-              min-width: 100px; // Acciones
+              min-width: 100px;
             }
           }
         }
@@ -311,7 +311,6 @@
   }
 }
 
-// Responsive design para tablets
 @media (max-width: 1024px) and (min-width: 769px) {
   .attendance-record-container {
     .participants-section {
@@ -351,7 +350,6 @@
   }
 }
 
-// Responsive design para móviles
 @media (max-width: 768px) {
   .attendance-record-container {
     padding: 15px;
@@ -427,7 +425,6 @@
   }
 }
 
-// Animaciones
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -443,14 +440,12 @@
   animation: fadeIn 0.5s ease-out;
 }
 
-// Spinner personalizado
 .spinner-border-sm {
   width: 1rem;
   height: 1rem;
   border-width: 0.1em;
 }
 
-// Estilos para el modal de confirmación
 #confirmExternalParticipantModal {
   .modal-container {
     border-radius: $general-border-radius;
@@ -528,7 +523,6 @@
   }
 }
 
-// Estilos para el mensaje de acceso denegado
 .access-denied-section {
   margin-bottom: 2rem;
   
