@@ -4,13 +4,13 @@ export interface ProjectRequest{
     numeroProyecto: string;
     nombre:string;
     objetivo: string;
-    accion: string[];
+    acciones: string[];
 }
 
 export interface EditProjectRequest{
     nombre:string;
     objetivo: string;
-    accion: string[];
+    acciones: string[];
 }
 
 export interface ProjectResponse{
@@ -18,4 +18,5 @@ export interface ProjectResponse{
     numeroProyecto: string;
     nombre:string;
     objetivo: string;
+    acciones?: string[];
 }

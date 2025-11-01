@@ -35,7 +35,10 @@ export class RegisterNewProjectComponent implements OnInit {
       constructor(
         private actionService: ActionService,
         private projectService: ProjectService
-      ) {}
+      ) {
+        // Asegurar que el array de acciones esté inicializado
+        this.proyecto.acciones = [];
+      }
 
       ngOnInit(): void {
         this.cargarAcciones();
@@ -78,19 +81,23 @@ export class RegisterNewProjectComponent implements OnInit {
         this.error = '';
         this.exito = '';
 
+        // Validar que hay acciones seleccionadas
+        if (!this.proyecto.acciones || this.proyecto.acciones.length === 0) {
+          this.error = 'Debe seleccionar al menos una acción para el proyecto';
+          this.cargando = false;
+          return;
+        }
+
         // Preparar el objeto del proyecto para enviar
         const proyectoRequest: ProjectRequest = {
           numeroProyecto: this.proyecto.numeroProyecto,
           nombre: this.proyecto.nombre,
           objetivo: this.proyecto.objetivo,
-          accion: this.proyecto.acciones // Lista de identificadores de acciones
+          acciones: this.proyecto.acciones // Lista de identificadores de acciones
         };
-
-        console.log('Enviando proyecto:', proyectoRequest);
 
         this.projectService.agregarNuevoProyecto(proyectoRequest).subscribe({
           next: (response) => {
-            console.log('Proyecto creado exitosamente:', response);
             this.exito = 'Proyecto creado exitosamente';
             this.proyectoCreado.emit(this.proyecto);
             
@@ -197,7 +204,9 @@ export class RegisterNewProjectComponent implements OnInit {
       }
 
       getSelectedActionsLabels(): string[] {
-        if (!this.proyecto.acciones) return [];
+        if (!this.proyecto.acciones) {
+          return [];
+        }
         return this.proyecto.acciones
           .map(value => this.accionesDisponibles.find(accion => accion.value === value)?.label)
           .filter(label => label) as string[];

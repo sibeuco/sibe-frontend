@@ -27,17 +27,13 @@ export class DepartmentComponent {
    * Se ejecuta cuando se selecciona un archivo (mantiene compatibilidad)
    */
   onArchivoSeleccionado(archivo: File) {
-    console.log('Archivo seleccionado:', archivo);
-    console.log('Nombre:', archivo.name);
-    console.log('Tamaño:', (archivo.size / (1024 * 1024)).toFixed(2), 'MB');
-    console.log('Tipo:', archivo.type);
+    // Archivo seleccionado - lógica adicional si es necesaria
   }
 
   /**
    * Se ejecuta cuando la carga al backend se completa exitosamente
    */
   onCargaCompleta(respuesta: any) {
-    console.log('Respuesta del servidor:', respuesta);
     // Aquí puedes:
     // - Actualizar una tabla de datos
     // - Mostrar un mensaje de éxito

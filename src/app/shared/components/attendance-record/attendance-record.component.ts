@@ -45,13 +45,13 @@ export class AttendanceRecordComponent implements OnInit {
     {
       id: 2,
       tipoIdentificacion: 'CC',
-      documento: '87654321',
-      primerNombre: 'María',
-      segundoNombre: 'Elena',
-      primerApellido: 'Rodríguez',
-      segundoApellido: 'López',
-      correo: 'maria.rodriguez@email.com',
-      rfid: 'RF005678',
+      documento: '1036945983',
+      primerNombre: 'Erika',
+      segundoNombre: 'Fernanda',
+      primerApellido: 'Torres',
+      segundoApellido: 'Marin',
+      correo: 'egresado.jefe@uco.edu.co',
+      rfid: '3620660411',
       tipoUsuario: 'Estudiante'
     },
     {
