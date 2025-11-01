@@ -2,6 +2,9 @@
 @import "assets/scss/modules/_var.scss";
 @import "assets/scss/partials/_global.scss";
 @import "assets/scss/partials/_reset.scss";
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
 
 html, body {
   height: 100%;

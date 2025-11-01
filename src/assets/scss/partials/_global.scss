@@ -12,3 +12,7 @@ body{
   font-size: 1.4rem;
   background-color: $background-color;
 }
+
+html, body {
+  overflow-x: hidden;
+}

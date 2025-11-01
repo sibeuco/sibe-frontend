@@ -1,0 +1,94 @@
+<div class="activities-table-container">
+  <div class="table-wrapper">
+    <table class="activities-table">
+      <thead>
+        <tr>
+          <th class="sortable" (click)="ordenarPor('nombreActividad')">
+            <span>
+              Nombre Actividad
+              <span class="sort-indicator" [ngClass]="getSortClass('nombreActividad')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th class="sortable" (click)="ordenarPor('colaborador')">
+            <span>
+              Colaborador
+              <span class="sort-indicator" [ngClass]="getSortClass('colaborador')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th class="sortable" (click)="ordenarPor('fechaCreacion')">
+            <span>
+              Fecha Creación
+              <span class="sort-indicator" [ngClass]="getSortClass('fechaCreacion')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th class="sortable" (click)="ordenarPor('fechaProgramada')">
+            <span>
+              Fecha Programada
+              <span class="sort-indicator" [ngClass]="getSortClass('fechaProgramada')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th class="sortable" (click)="ordenarPor('estado')">
+            <span>
+              Estado
+              <span class="sort-indicator" [ngClass]="getSortClass('estado')">
+                <i class="sort-icon">↕</i>
+              </span>
+            </span>
+          </th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let actividad of actividadesOrdenadas; trackBy: trackByActividadId">
+          <td class="activity-name">{{ actividad.nombreActividad }}</td>
+          <td class="collaborator">{{ actividad.colaborador }}</td>
+          <td class="creation-date">{{ actividad.fechaCreacion | date:'dd/MM/yyyy' }}</td>
+          <td class="programmed-date">{{ actividad.fechaProgramada ? (actividad.fechaProgramada | date:'dd/MM/yyyy') : 'Sin fecha' }}</td>
+          <td class="status">
+            <span class="status-badge" [ngClass]="getStatusClass(actividad.estado)">
+              {{ actividad.estado }}
+            </span>
+          </td>
+          <td class="action">
+            <button 
+              class="realizar-actividad-btn"
+              (click)="realizarActividad(actividad)">
+              Gestionar
+            </button>
+          </td>
+          <td class="edit-action">
+            <button 
+                type="button" 
+                class="btn btn-outline-warning btn-sm edit-activity-button"
+                data-bs-toggle="modal" 
+                data-bs-target="#edit-activity-modal"
+                title="Editar actividad">
+                <i class="bi bi-pencil"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <div *ngIf="actividades.length === 0" class="no-activities">
+      <p>No hay actividades registradas para esta área.</p>
+    </div>
+  </div>
+  <app-edit-activity></app-edit-activity>
+  <app-date-selector 
+    [actividad]="actividadSeleccionadaParaModal"
+    [fechasProgramadas]="fechasProgramadas"
+    [redirectLink]="rutaRedireccion"
+    (verFecha)="verFechaProgramada($event)"
+    (cerrarModal)="cerrarModalFechas()">
+  </app-date-selector>
+</div>
