@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Modal } from 'bootstrap';
+import { IndicatorService } from '../../service/indicator.service';
+import { IndicatorResponse } from '../../model/indicator.model';
 
 @Component({
   selector: 'app-indicators',
@@ -8,24 +11,72 @@ import { Component, OnInit } from '@angular/core';
 export class IndicatorsComponent implements OnInit{
 
   searchTerm: string = '';
-  indicadores = [
-    { nombre: 'Satisfacción grupos de Interés', tipologia: 'eficacia', proyecto: 'Proyecto 1' },
-    { nombre: 'Nivel satisfracción', tipologia: 'impacto', proyecto: 'Proyecto 7' },
-    { nombre: 'Reducción de quejas y reclamos', tipologia: 'efectividad', proyecto: 'Proyecto 2' }
-  ];
-  indicadoresFiltrados = [...this.indicadores];
+  indicadores: IndicatorResponse[] = [];
+  indicadoresFiltrados: IndicatorResponse[] = [];
+  
+  // Propiedades para el modal de edición
+  indicadorSeleccionado: IndicatorResponse | null = null;
+
+  constructor(private indicatorService: IndicatorService) {}
 
   ngOnInit(): void {
-    this.indicadoresFiltrados = this.indicadores;
+    this.loadIndicators();
+  }
+
+  loadIndicators(): void {
+    this.indicatorService.consultarIndicadores().subscribe({
+      next: (indicadores) => {
+        this.indicadores = indicadores;
+        this.indicadoresFiltrados = indicadores;
+      },
+      error: (error) => {
+        console.error('Error al cargar los indicadores:', error);
+      }
+    });
   }
 
   filterIndicators(): void {
     const term = this.searchTerm.toLowerCase();
     this.indicadoresFiltrados = this.indicadores.filter(indicator =>
-      Object.values(indicator).some(value =>
-        value.toLowerCase().includes(term)
-      )
+      indicator.nombre.toLowerCase().includes(term) ||
+      indicator.tipoIndicador.tipologiaIndicador.toLowerCase().includes(term) ||
+      indicator.proyecto.nombre.toLowerCase().includes(term)
     );
+  }
+
+  // Métodos para el modal de edición
+  abrirModalEdicion(indicator: IndicatorResponse): void {
+    this.indicadorSeleccionado = indicator;
+    
+    // Abrir el modal usando Bootstrap
+    const modalElement = document.getElementById('edit-indicator-modal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  onIndicadorModificado(indicadorModificado: IndicatorResponse): void {
+    // Recargar todos los indicadores desde el backend
+    this.loadIndicators();
+    
+    // Cerrar el modal
+    this.cerrarModal();
+  }
+
+  onIndicadorCancelado(): void {
+    this.cerrarModal();
+  }
+
+  private cerrarModal(): void {
+    const modalElement = document.getElementById('edit-indicator-modal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+    this.indicadorSeleccionado = null;
   }
 
 }

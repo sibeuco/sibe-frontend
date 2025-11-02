@@ -8,7 +8,7 @@ export interface IndicatorRequest{
     tipoIndicador: string;
     temporalidad: string;
     proyecto: string;
-    publicoInteres: string[];
+    publicosInteres: string[];
 }
 
 export interface EditIndicatorRequest{
@@ -16,14 +16,14 @@ export interface EditIndicatorRequest{
     tipoIndicador: string;
     temporalidad: string;
     proyecto: string;
-    publicoInteres: string[];
+    publicosInteres: string[];
 }
 
 export interface IndicatorResponse{
-    identifiacdor: string;
+    identificador: string;
     nombre: string;
     tipoIndicador: IndicatorTypeResponse;
     temporalidad: FrequencyResponse;
     proyecto: ProjectResponse;
-    publicoInteres: InterestedPublicResponse[];
+    publicosInteres: InterestedPublicResponse[];
 }

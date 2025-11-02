@@ -1,7 +1,7 @@
 <div class="modal-container modal fade" id="edit-indicator-modal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <form (ngSubmit)="editarIndicador()" #userForm="ngForm" class="form-container align-items-center justify-content-center">
+            <form (ngSubmit)="modificarIndicador()" #userForm="ngForm" class="form-container align-items-center justify-content-center">
                 <div class="modal-header col d-flex align-items-center justify-content-center position-relative">
                     <h1 class="modal-title" id="indicatorModalLabel">Editar Indicador</h1>
                     <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -27,12 +27,11 @@
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <select class="form-select" id="tipo" name="tipo" [(ngModel)]="indicador.tipoIndicador" required>
                             <option value="">Selecciona</option>
-                            <option value="Eficacia">Eficiencia</option>
-                            <option value="Capacidad Instalada">Capacidad Instalada</option>
-                            <option value="Eficacia">Eficacia</option>
-                            <option value="Efectividad">Efectividad</option>
-                            <option value="Valor">Valor</option>
+                            <option *ngFor="let tipo of tiposIndicador" [value]="tipo.identificador">{{ tipo.naturalezaIndicador }} - {{ tipo.tipologiaIndicador }}</option>
                             </select>
+                        </div>
+                        <div *ngIf="cargandoTiposIndicador" class="text-center mt-2">
+                            <small class="text-muted">Cargando tipos de indicador...</small>
                         </div>   
                     </div>
 
@@ -45,13 +44,11 @@
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <select class="form-select" id="temporalidad" name="temporalidad" [(ngModel)]="indicador.temporalidad" required>
                             <option value="">Selecciona</option>
-                            <option value="Semanal">Semanal</option>
-                            <option value="Mensual">Mensual</option>
-                            <option value="Trimestral">Trimestral</option>
-                            <option value="Semestral">Semestral</option>
-                            <option value="Anual">Anual</option>
-                            <option value="Bimestral">Bimestral</option>
+                            <option *ngFor="let temporalidad of temporalidades" [value]="temporalidad.identificador">{{ temporalidad.nombre }}</option>
                             </select>
+                        </div>
+                        <div *ngIf="cargandoTemporalidades" class="text-center mt-2">
+                            <small class="text-muted">Cargando temporalidades...</small>
                         </div>   
                     </div>
 
@@ -64,11 +61,12 @@
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <select class="form-select" id="proyecto" name="proyecto" [(ngModel)]="indicador.proyecto" required>
                             <option value="">Selecciona</option>
-                            <option value="Proyecto 3">Proyecto 3</option>
-                            <option value="Proyecto 4">Proyecto 4</option>
-                            <option value="Proyecto 7">Proyecto 7</option>
+                            <option *ngFor="let proyecto of proyectos" [value]="proyecto.identificador">{{ proyecto.nombre }}</option>
                             </select>
-                        </div>   
+                        </div>
+                        <div *ngIf="cargandoProyectos" class="text-center mt-2">
+                            <small class="text-muted">Cargando proyectos...</small>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -78,21 +76,100 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="publico" name="publico" [(ngModel)]="indicador.publicoInteres" required>
-                            <option value="">Selecciona</option>
-                            <option value="Registros calificados programa">Registros calificados programa</option>
-                            <option value="Acreditación institucional">Acreditación institucional</option>
-                            <option value="Certificaciones ISO">Certificaciones ISO</option>
-                            <option value="Ministerio de educación">Ministerio de educación</option>
-                            <option value="Plan pastoral diosesano">Plan pastoral diosesano</option>
-                            </select>
+                            <div class="actions-container">
+                                <!-- Campo de búsqueda -->
+                                <input 
+                                    type="text" 
+                                    class="form-control actions-search" 
+                                    placeholder="Buscar público interés..."
+                                    [(ngModel)]="searchPublicoInteres"
+                                    (input)="filterPublicoInteres()"
+                                    (focus)="showDropdown = true"
+                                    name="searchPublicoInteres" />
+                                
+                                <!-- Dropdown personalizado -->
+                                <div class="actions-dropdown" [class.show]="showDropdown">
+                                    <div class="dropdown-content">
+                                        <div class="dropdown-header">
+                                            <span>Seleccionar público de interés</span>
+                                            <button 
+                                                type="button" 
+                                                class="btn-close-dropdown" 
+                                                (click)="showDropdown = false">
+                                                ×
+                                            </button>
+                                        </div>
+                                        
+                                        <div class="dropdown-options">
+                                            <div *ngIf="cargandoPublicoInteres" class="loading-actions">
+                                                <span>Cargando público de interés...</span>
+                                            </div>
+                                            
+                                            <label 
+                                                *ngFor="let publico of publicoInteresFiltrados" 
+                                                class="action-option">
+                                                <input 
+                                                    type="checkbox" 
+                                                    [value]="publico.value"
+                                                    [checked]="isPublicoInteresSelected(publico.value)"
+                                                    (click)="togglePublicoInteres(publico.value)"
+                                                    class="action-checkbox" />
+                                                <span class="action-label">{{ publico.label }}</span>
+                                            </label>
+                                            
+                                            <div *ngIf="!cargandoPublicoInteres && publicoInteresFiltrados.length === 0" class="no-results">
+                                                No se encontró público de interés
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Información de selección -->
+                                <div class="selected-actions">
+                                    <small class="text-muted actions-info">
+                                        Seleccionados: {{ (indicador.publicosInteres && indicador.publicosInteres.length) || 0 }} público(s) de interés
+                                    </small>
+                                    <div class="selected-tags" *ngIf="indicador.publicosInteres && indicador.publicosInteres.length > 0">
+                                        <span 
+                                            *ngFor="let publico of getSelectedPublicoInteresLabels(); let i = index" 
+                                            class="action-tag">
+                                            <span class="action-tag-text">{{ publico }}</span>
+                                            <button 
+                                                type="button" 
+                                                class="remove-tag" 
+                                                (mousedown)="$event.stopPropagation()"
+                                                (click)="removePublicoInteres(getPublicoInteresValue(publico)); $event.stopPropagation()"
+                                                title="Eliminar público de interés">
+                                                ×
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>   
+                    </div>
+
+                    <!-- Mensaje de éxito -->
+                    <div class="mb-3" *ngIf="exito">
+                        <div class="alert alert-success text-center" role="alert">
+                            <i class="bi bi-check-circle me-2"></i>{{ exito }}
+                        </div>
+                    </div>
+                    
+                    <!-- Mensaje de error -->
+                    <div class="mb-3" *ngIf="error">
+                        <div class="alert alert-danger text-center" role="alert">
+                            <i class="bi bi-exclamation-triangle me-2"></i>{{ error }}
+                        </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid">Registrar</button>
+                <button type="button" class="cancel-button btn btn-secondary" (click)="cancelar()" [disabled]="cargando">Cancelar</button>
+                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid || cargando">
+                    <span *ngIf="cargando" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    {{ cargando ? 'Modificando...' : 'Modificar' }}
+                </button>
                 </div>
             </form>
         </div>
