@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Modal } from 'bootstrap';
 import { IndicatorService } from '../../service/indicator.service';
 import { IndicatorResponse } from '../../model/indicator.model';
 
@@ -12,6 +13,9 @@ export class IndicatorsComponent implements OnInit{
   searchTerm: string = '';
   indicadores: IndicatorResponse[] = [];
   indicadoresFiltrados: IndicatorResponse[] = [];
+  
+  // Propiedades para el modal de edición
+  indicadorSeleccionado: IndicatorResponse | null = null;
 
   constructor(private indicatorService: IndicatorService) {}
 
@@ -38,6 +42,41 @@ export class IndicatorsComponent implements OnInit{
       indicator.tipoIndicador.tipologiaIndicador.toLowerCase().includes(term) ||
       indicator.proyecto.nombre.toLowerCase().includes(term)
     );
+  }
+
+  // Métodos para el modal de edición
+  abrirModalEdicion(indicator: IndicatorResponse): void {
+    this.indicadorSeleccionado = indicator;
+    
+    // Abrir el modal usando Bootstrap
+    const modalElement = document.getElementById('edit-indicator-modal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  onIndicadorModificado(indicadorModificado: IndicatorResponse): void {
+    // Recargar todos los indicadores desde el backend
+    this.loadIndicators();
+    
+    // Cerrar el modal
+    this.cerrarModal();
+  }
+
+  onIndicadorCancelado(): void {
+    this.cerrarModal();
+  }
+
+  private cerrarModal(): void {
+    const modalElement = document.getElementById('edit-indicator-modal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+    this.indicadorSeleccionado = null;
   }
 
 }

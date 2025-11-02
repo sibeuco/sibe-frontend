@@ -36,7 +36,7 @@ export class IndicatorService extends HttpService {
 
   modificarIndicador(identificador: string, indicador: EditIndicatorRequest): Observable<Response<string>> {
     const opts = this.createDefaultOptions();
-        const url = `${environment.endpoint}${this.INDICATOR_ENDPOINT}${identificador}`;
+        const url = `${environment.endpoint}${this.INDICATOR_ENDPOINT}/${identificador}`;
         
         return this.doPut<EditIndicatorRequest, Response<string>>(url, indicador, opts);
 
