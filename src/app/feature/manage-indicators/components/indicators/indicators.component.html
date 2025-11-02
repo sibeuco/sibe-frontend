@@ -19,7 +19,7 @@
                     [icon]="'bi bi-plus-circle'"
                     [text]="'Agregar nuevo indicador'">
                 </app-primary-button>
-                <app-register-new-indicator></app-register-new-indicator>
+                <app-register-new-indicator (indicadorCreado)="loadIndicators()"></app-register-new-indicator>
             </div>
         </div>
     </div>

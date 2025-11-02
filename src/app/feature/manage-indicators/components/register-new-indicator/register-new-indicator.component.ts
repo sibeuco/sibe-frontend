@@ -8,6 +8,8 @@ import { IndicatorTypeResponse } from '../../model/indicator-type.model';
 import { IndicatorTypeService } from '../../service/indicator-type.service';
 import { InterestedPublicResponse } from '../../model/interested-public.model';
 import { InterestedPublicService } from '../../service/interested-public.service';
+import { IndicatorService } from '../../service/indicator.service';
+import { IndicatorRequest } from '../../model/indicator.model';
 
 @Component({
   selector: 'app-register-new-indicator',
@@ -22,7 +24,7 @@ export class RegisterNewIndicatorComponent implements OnInit {
         tipoIndicador: '',
         temporalidad: '',
         proyecto: '',
-        publicoInteres: ''
+        publicosInteres: [] as string[]
       };
 
       proyectos: ProjectResponse[] = [];
@@ -34,15 +36,26 @@ export class RegisterNewIndicatorComponent implements OnInit {
       tiposIndicador: IndicatorTypeResponse[] = [];
       cargandoTiposIndicador: boolean = false;
 
-      publicoInteres: InterestedPublicResponse[] = [];
+      // Lista de público de interés disponible desde el servicio
+      publicoInteresDisponibles: { value: string; label: string }[] = [];
+      publicoInteresFiltrados: { value: string; label: string }[] = [];
+      searchPublicoInteres = '';
+      showDropdown = false;
       cargandoPublicoInteres: boolean = false;
+      cargando = false;
+      error = '';
+      exito = '';
 
       constructor(
         private projectService: ProjectService,
         private frequencyService: FrequencyService,
         private indicatorTypeService: IndicatorTypeService,
-        private interestedPublicService: InterestedPublicService
-      ) {}
+        private interestedPublicService: InterestedPublicService,
+        private indicatorService: IndicatorService
+      ) {
+        // Asegurar que el array de público de interés esté inicializado
+        this.indicador.publicosInteres = [];
+      }
 
       ngOnInit(): void {
         this.cargarProyectos();
@@ -97,7 +110,12 @@ export class RegisterNewIndicatorComponent implements OnInit {
         this.cargandoPublicoInteres = true;
         this.interestedPublicService.consultarPublicoInteres().subscribe({
           next: (publicoInteres: InterestedPublicResponse[]) => {
-            this.publicoInteres = publicoInteres;
+            // Mapear el público de interés del servicio al formato esperado
+            this.publicoInteresDisponibles = publicoInteres.map(publico => ({
+              value: publico.identificador,
+              label: publico.nombre
+            }));
+            this.publicoInteresFiltrados = [...this.publicoInteresDisponibles];
             this.cargandoPublicoInteres = false;
           },
           error: (error) => {
@@ -106,17 +124,135 @@ export class RegisterNewIndicatorComponent implements OnInit {
           }
         });
       }
+
+      filterPublicoInteres() {
+        const term = this.searchPublicoInteres.toLowerCase();
+        if (!this.publicoInteresDisponibles || this.publicoInteresDisponibles.length === 0) {
+          this.publicoInteresFiltrados = [];
+          return;
+        }
+        
+        if (term.trim() === '') {
+          this.publicoInteresFiltrados = [...this.publicoInteresDisponibles];
+        } else {
+          this.publicoInteresFiltrados = this.publicoInteresDisponibles.filter(publico =>
+            publico.label.toLowerCase().includes(term)
+          );
+        }
+      }
+
+      isPublicoInteresSelected(value: string): boolean {
+        return this.indicador.publicosInteres?.includes(value) || false;
+      }
+
+      togglePublicoInteres(value: string) {
+        if (!this.indicador.publicosInteres) {
+          this.indicador.publicosInteres = [];
+        }
+        
+        const index = this.indicador.publicosInteres.indexOf(value);
+        if (index > -1) {
+          this.indicador.publicosInteres.splice(index, 1);
+        } else {
+          this.indicador.publicosInteres.push(value);
+        }
+      }
+
+      removePublicoInteres(value: string) {
+        if (this.indicador.publicosInteres) {
+          const index = this.indicador.publicosInteres.indexOf(value);
+          if (index > -1) {
+            this.indicador.publicosInteres.splice(index, 1);
+          }
+        }
+      }
+
+      getSelectedPublicoInteresLabels(): string[] {
+        if (!this.indicador.publicosInteres) {
+          return [];
+        }
+        return this.indicador.publicosInteres
+          .map(value => this.publicoInteresDisponibles.find(publico => publico.value === value)?.label)
+          .filter(label => label) as string[];
+      }
+
+      getPublicoInteresValue(label: string): string {
+        const publico = this.publicoInteresDisponibles.find(publico => publico.label === label);
+        return publico?.value || '';
+      }
     
       registrarIndicador() {
+        if (this.cargando) return;
 
-        this.indicadorCreado.emit(this.indicador);
-        this.limpiarFormulario();
-    
+        this.cargando = true;
+        this.error = '';
+        this.exito = '';
+
+        // Validar que hay público de interés seleccionado
+        if (!this.indicador.publicosInteres || this.indicador.publicosInteres.length === 0) {
+          this.error = 'Debe seleccionar al menos un público de interés para el indicador';
+          this.cargando = false;
+          return;
+        }
+
+        // Preparar el objeto del indicador para enviar
+        const indicadorRequest: IndicatorRequest = {
+          nombre: this.indicador.nombre,
+          tipoIndicador: this.indicador.tipoIndicador,
+          temporalidad: this.indicador.temporalidad,
+          proyecto: this.indicador.proyecto,
+          publicosInteres: this.indicador.publicosInteres // Lista de identificadores
+        };
+
+        this.indicatorService.agregarNuevoIndicador(indicadorRequest).subscribe({
+          next: (response) => {
+            this.exito = 'Indicador creado exitosamente';
+            this.indicadorCreado.emit(this.indicador);
+            
+            // Esperar un momento antes de cerrar para que se vea el mensaje
+            setTimeout(() => {
+              this.limpiarFormulario();
+              this.cerrarModal();
+            }, 1500);
+
+            this.cargando = false;
+          },
+          error: (error) => {
+            console.error('Error completo:', JSON.stringify(error));
+            
+            // Extraer el mensaje de error de diferentes formatos posibles
+            let mensajeError = 'Error al registrar el indicador. Por favor, intente nuevamente.';
+
+            if (error?.error) {
+              if (typeof error.error === 'string') {
+                mensajeError = error.error;
+              } else if (error.error.mensaje) {
+                mensajeError = error.error.mensaje;
+              } else if (error.error.message) {
+                mensajeError = error.error.message;
+              } else if (error.error.error) {
+                mensajeError = typeof error.error.error === 'string'
+                  ? error.error.error
+                  : mensajeError;
+              } else if (error.error.valor) {
+                mensajeError = error.error.valor;
+              }
+            } else if (error?.message) {
+              mensajeError = error.message;
+            }
+
+            this.error = mensajeError;
+            this.cargando = false;
+          }
+        });
+      }
+
+      cerrarModal() {
         const modalElement = document.getElementById('register-indicator-modal');
-    if (modalElement) {
-      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
-      modal.hide();
-    }
+        if (modalElement) {
+          const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+          modal.hide();
+        }
       }
     
       limpiarFormulario() {
@@ -125,8 +261,13 @@ export class RegisterNewIndicatorComponent implements OnInit {
           tipoIndicador: '',
           temporalidad: '',
           proyecto: '',
-          publicoInteres: ''
+          publicosInteres: [] as string[]
         };
+        this.searchPublicoInteres = '';
+        this.publicoInteresFiltrados = [...this.publicoInteresDisponibles];
+        this.showDropdown = false;
+        this.error = '';
+        this.exito = '';
       }
     
 }
