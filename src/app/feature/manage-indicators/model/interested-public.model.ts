@@ -1,4 +1,4 @@
-export interface PublicInterestResponse{
+export interface InterestedPublicResponse{
     identificador: string;
     nombre: string;
 }
