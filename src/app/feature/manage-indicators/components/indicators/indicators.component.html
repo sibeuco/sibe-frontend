@@ -29,6 +29,7 @@
                 <thead class="table">
                 <tr>
                     <th>Nombre</th>
+                    <th>Naturaleza</th>
                     <th>Tipologia</th>
                     <th>Proyecto</th>
                     <th></th>
@@ -37,8 +38,9 @@
                 <tbody>
                     <tr *ngFor="let indicator of indicadoresFiltrados">
                         <td>{{ indicator.nombre }}</td>
-                        <td>{{ indicator.tipologia }}</td>
-                        <td>{{ indicator.proyecto }}</td>
+                        <td>{{ indicator.tipoIndicador.naturalezaIndicador }}</td>
+                        <td>{{ indicator.tipoIndicador.tipologiaIndicador }}</td>
+                        <td>{{ indicator.proyecto.nombre }}</td>
                         <td class="text-center">
                             <button 
                                 type="button" 
