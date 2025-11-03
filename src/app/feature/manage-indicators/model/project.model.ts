@@ -18,5 +18,5 @@ export interface ProjectResponse{
     numeroProyecto: string;
     nombre:string;
     objetivo: string;
-    acciones?: string[];
+    acciones?: ActionResponse[];
 }

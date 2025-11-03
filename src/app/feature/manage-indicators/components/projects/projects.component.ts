@@ -63,12 +63,8 @@ export class ProjectsComponent implements OnInit{
   }
 
   onProyectoModificado(proyectoModificado: ProjectResponse): void {
-    // Actualizar el proyecto en la lista local
-    const index = this.proyectos.findIndex(p => p.identificador === proyectoModificado.identificador);
-    if (index !== -1) {
-      this.proyectos[index] = proyectoModificado;
-      this.proyectosFiltrados = [...this.proyectos];
-    }
+    // Recargar todos los proyectos desde el backend
+    this.cargarProyectos();
     
     // Cerrar el modal
     this.cerrarModal();
