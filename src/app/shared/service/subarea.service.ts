@@ -10,12 +10,13 @@ import { SubAreaResponse } from '../model/subarea.model';
 })
 export class SubAreaService extends HttpService {
     private readonly SUBAREA_ENDPOINT = '/subareas';
+    private readonly SUBAREA_NAME_ENDPOINT = '/subareas';
 
     constructor(http: HttpClient) {
         super(http);
     }
 
-    consultarDirecciones(): Observable<SubAreaResponse[]> {
+    consultarSubareas(): Observable<SubAreaResponse[]> {
         const opts = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
@@ -24,5 +25,12 @@ export class SubAreaService extends HttpService {
         };
         const url = `${environment.endpoint}${this.SUBAREA_ENDPOINT}`;
         return this.http.get<SubAreaResponse[]>(url, opts);
+    }
+
+    consultarPorNombre(nombre: string): Observable<SubAreaResponse> {
+        const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.SUBAREA_NAME_ENDPOINT}/${nombre}`;
+
+        return this.doGet<SubAreaResponse>(url, opts);
     }
 }

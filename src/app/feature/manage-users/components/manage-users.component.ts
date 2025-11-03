@@ -69,7 +69,7 @@ export class ManageUsersComponent implements OnInit {
     });
 
     // Cargar subáreas
-    this.subAreaService.consultarDirecciones().subscribe({
+    this.subAreaService.consultarSubareas().subscribe({
       next: (subareas: SubAreaResponse[]) => {
         this.listaSubareas = subareas.map(subarea => ({
           identificador: subarea.identificador,

@@ -82,7 +82,7 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
     this.areaService.consultarAreas().subscribe({
       next: (areas: AreaResponse[]) => {
         // Cargar subáreas
-        this.subAreaService.consultarDirecciones().subscribe({
+        this.subAreaService.consultarSubareas().subscribe({
           next: (subareas: SubAreaResponse[]) => {
             // Separar áreas y subáreas
             this.listaAreas = areas.map(area => ({

@@ -11,6 +11,9 @@ import { ActivityRequest, ActivityResponse } from '../model/activity.model';
 })
 export class ActivityService extends HttpService {
   private readonly ACTIVITY_ENDPOINT = '/actividades';
+  private readonly ACTIVITY_AREA_ENDPOINT = '/actividades/area';
+  private readonly ACTIVITY_DEPARTMENT_ENDPOINT = '/actividades/direccion';
+  private readonly ACTIVITY_SUBAREA_ENDPOINT = '/actividades/subarea';
 
   constructor(http: HttpClient) {
     super(http);
@@ -32,5 +35,26 @@ export class ActivityService extends HttpService {
     };
     const url = `${environment.endpoint}${this.ACTIVITY_ENDPOINT}`;
     return this.http.get<ActivityResponse[]>(url, opts);
+  }
+
+  consultarPorArea(identificador: string): Observable<ActivityResponse[]> {
+    const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.ACTIVITY_AREA_ENDPOINT}/${identificador}`;
+        
+        return this.doGet<ActivityResponse[]>(url, opts);
+  }
+
+  consultarPorDireccion(identificador: string): Observable<ActivityResponse[]> {
+    const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.ACTIVITY_DEPARTMENT_ENDPOINT}/${identificador}`;
+        
+        return this.doGet<ActivityResponse[]>(url, opts);
+  }
+
+  consultarPorSubarea(identificador: string): Observable<ActivityResponse[]> {
+    const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.ACTIVITY_SUBAREA_ENDPOINT}/${identificador}`;
+        
+        return this.doGet<ActivityResponse[]>(url, opts);
   }
 }

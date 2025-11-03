@@ -10,7 +10,8 @@ import { DepartmentResponse } from '../model/department.model';
     providedIn: 'root'
 })
 export class DepartmentService extends HttpService {
-    private readonly DIRECCION_ENDPOINT = '/direcciones';
+    private readonly DEPARTMENT_ENDPOINT = '/direcciones';
+    private readonly DEPARTMENT_NAME_ENDPOINT = '/direcciones/nombre';
 
     constructor(http: HttpClient) {
         super(http);
@@ -23,8 +24,15 @@ export class DepartmentService extends HttpService {
                 'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
             })
         };
-        const url = `${environment.endpoint}${this.DIRECCION_ENDPOINT}`;
+        const url = `${environment.endpoint}${this.DEPARTMENT_ENDPOINT}`;
         return this.http.get<DepartmentResponse[]>(url, opts);
+    }
+
+    consultarPorNombre(nombre: string): Observable<DepartmentResponse> {
+        const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.DEPARTMENT_NAME_ENDPOINT}/${nombre}`;
+
+        return this.doGet<DepartmentResponse>(url, opts);
     }
 
 }

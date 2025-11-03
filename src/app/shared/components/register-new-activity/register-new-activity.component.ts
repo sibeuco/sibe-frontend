@@ -125,7 +125,7 @@ export class RegisterNewActivityComponent implements OnInit {
       }
     });
 
-    this.subAreaService.consultarDirecciones().subscribe({
+    this.subAreaService.consultarSubareas().subscribe({
       next: (subareas) => {
         this.subareas = subareas;
       },
