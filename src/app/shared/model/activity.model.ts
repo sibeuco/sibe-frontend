@@ -14,24 +14,27 @@ export interface ActivityRequest {
   objetivo: string;
   semestre: string;
   rutaInsumos: string;
-  indicador: IndicatorRequest;
+  indicador: string;
   colaborador: string;
   creador: string;
   fechasProgramadas: String[];
   area: string;
 }
 
-export interface ActivityResponse{
+export interface ActivityResponse {
   identificador: string;
   nombre: string;
   objetivo: string;
   semestre: string;
   rutaInsumos: string;
-  indicador: IndicatorResponse;
+  indicador: string;
   colaborador: string;
   creador: string;
   fechasProgramadas: String[];
-  area: string;
+  area: {
+    area: string;
+    tipoArea: string;
+  };
 }
 
 export enum EstadoActividad {

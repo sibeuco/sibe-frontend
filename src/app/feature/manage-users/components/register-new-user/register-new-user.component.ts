@@ -19,9 +19,9 @@ export class RegisterNewUserComponent implements OnInit {
   @Input() etiquetaCampo: string = 'Estructura Organizacional';
   @Input() nombreCampo: string = 'estructuraOrganizacional';
   @Input() modalId: string = 'register-user-modal';
-  @Input() tipoComponente: 'department' | 'area' = 'department'; // Nuevo input para identificar el tipo de componente
-  @Input() listaAreas: { identificador: string; nombre: string }[] = []; // Lista de áreas para comparar
-  @Input() listaSubareas: { identificador: string; nombre: string }[] = []; // Lista de subáreas para comparar
+  @Input() tipoComponente: 'department' | 'area' = 'department';
+  @Input() listaAreas: { identificador: string; nombre: string }[] = [];
+  @Input() listaSubareas: { identificador: string; nombre: string }[] = [];
 
   usuario = {
     nombres: '',
@@ -33,7 +33,7 @@ export class RegisterNewUserComponent implements OnInit {
     confirmarClave: '',
     tipoUsuario: '',
     estructuraOrganizacional: '',
-    tipoEstructura: '' // Nuevo campo para seleccionar Área o Subárea
+    tipoEstructura: ''
   };
 
 

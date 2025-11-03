@@ -1,6 +1,20 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { Modal } from 'bootstrap';
-import { IndicatorsService, Indicador } from 'src/app/feature/manage-indicators/service/indicators.service';
+import { IndicatorService } from 'src/app/feature/manage-indicators/service/indicator.service';
+import { IndicatorResponse } from 'src/app/feature/manage-indicators/model/indicator.model';
+import { UserService } from 'src/app/shared/service/user.service';
+import { UserResponse } from 'src/app/shared/model/user.model';
+import { DepartmentService } from 'src/app/shared/service/department.service';
+import { AreaService } from 'src/app/shared/service/area.service';
+import { SubAreaService } from 'src/app/shared/service/subarea.service';
+import { DepartmentResponse } from 'src/app/shared/model/department.model';
+import { AreaResponse } from 'src/app/shared/model/area.model';
+import { SubAreaResponse } from 'src/app/shared/model/subarea.model';
+import { ActivityService } from 'src/app/shared/service/activity.service';
+import { ActivityRequest } from 'src/app/shared/model/activity.model';
+import { StateService } from 'src/app/shared/service/state.service';
+import { StateProps } from 'src/app/shared/model/state.enum';
+import { UserSession } from 'src/app/feature/login/model/user-session.model';
 
 @Component({
   selector: 'app-register-new-activity',
@@ -10,97 +24,328 @@ import { IndicatorsService, Indicador } from 'src/app/feature/manage-indicators/
 export class RegisterNewActivityComponent implements OnInit {
 
   @Output() actividadCreada = new EventEmitter<any>();
-        
-          actividad = {
-            nombre: '',
-            objetivo: '',
-            semestre: '',
-            rutaInsumos: '',
-            indicador: '',
-            colaborador: '',
-            fechasProgramadas: [] as string[],
-          };
 
-          // Lista de indicadores para el select
-          indicadores: Indicador[] = [];
-          indicadorSeleccionado: string = '';
-          
-          // Fecha temporal para agregar
-          fechaTemporal: string = '';
-          errorFecha: string = '';
+  actividad = {
+    nombre: '',
+    objetivo: '',
+    semestre: '',
+    rutaInsumos: '',
+    indicador: '',
+    colaborador: '',
+    area: '',
+    tipoArea: '',
+    fechasProgramadas: [] as string[],
+  };
 
-          constructor(private indicatorsService: IndicatorsService) {}
+  // Lista de indicadores para el select
+  indicadores: IndicatorResponse[] = [];
+  indicadorSeleccionado: string = '';
 
-          ngOnInit(): void {
-            this.cargarIndicadores();
-          }
+  // Lista de usuarios para el select de colaborador
+  usuarios: UserResponse[] = [];
+  colaboradorSeleccionado: string = '';
 
-          // Método para cargar los indicadores desde el servicio
-          cargarIndicadores(): void {
-            // Por ahora usamos datos mock, cuando esté la API se puede cambiar a:
-            // this.indicatorsService.obtenerIndicadores().subscribe(response => {
-            //   this.indicadores = response.data;
-            // });
-            this.indicadores = this.indicatorsService.obtenerIndicadoresMock();
-          }
+  // Propiedades para estructura organizacional
+  tipoEstructura: string = '';
+  direcciones: DepartmentResponse[] = [];
+  areas: AreaResponse[] = [];
+  subareas: SubAreaResponse[] = [];
+  listaFiltrada: { identificador: string; nombre: string }[] = [];
+  areaSeleccionada: string = '';
+  
+  opcionesTipoEstructura = [
+    { valor: 'direccion', etiqueta: 'Dirección' },
+    { valor: 'area', etiqueta: 'Área' },
+    { valor: 'subarea', etiqueta: 'Subárea' }
+  ];
 
-          // Agregar fecha a la lista
-          agregarFecha() {
-            this.errorFecha = '';
+  // Fecha temporal para agregar
+  fechaTemporal: string = '';
+  errorFecha: string = '';
 
-            if (!this.fechaTemporal) {
-              this.errorFecha = 'Por favor seleccione una fecha';
-              return;
-            }
+  // Estados para el registro
+  cargando = false;
+  error = '';
+  mensajeExito = '';
 
-            // Verificar si la fecha ya existe en la lista
-            if (this.actividad.fechasProgramadas.includes(this.fechaTemporal)) {
-              this.errorFecha = 'Esta fecha ya está agregada';
-              return;
-            }
+  constructor(
+    private indicatorService: IndicatorService,
+    private userService: UserService,
+    private departmentService: DepartmentService,
+    private areaService: AreaService,
+    private subAreaService: SubAreaService,
+    private activityService: ActivityService,
+    private stateService: StateService
+  ) { }
 
-            // Agregar la fecha a la lista
-            this.actividad.fechasProgramadas.push(this.fechaTemporal);
-            
-            // Limpiar el campo temporal
-            this.fechaTemporal = '';
-          }
+  ngOnInit(): void {
+    this.cargarIndicadores();
+    this.cargarUsuarios();
+    this.cargarEstructurasOrganizacionales();
+  }
 
-          // Eliminar fecha de la lista
-          eliminarFecha(index: number) {
-            this.actividad.fechasProgramadas.splice(index, 1);
-            this.errorFecha = '';
-          }
+  cargarIndicadores(): void {
+    this.indicatorService.consultarIndicadores().subscribe({
+      next: (indicadores) => {
+        this.indicadores = indicadores;
+      },
+      error: () => {
+        // Error silencioso al cargar indicadores
+      }
+    });
+  }
 
-          // TrackBy para optimizar el *ngFor
-          trackByIndex(index: number): number {
-            return index;
-          }
-        
-          registrarActividad() {
-            this.actividadCreada.emit(this.actividad);
-            this.limpiarFormulario();
-        
-            const modalElement = document.getElementById('userModal');
-        if (modalElement) {
-          const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
-          modal.hide();
+  cargarUsuarios(): void {
+    this.userService.consultarUsuarios().subscribe({
+      next: (usuarios) => {
+        this.usuarios = usuarios;
+      },
+      error: () => {
+        // Error silencioso al cargar usuarios
+      }
+    });
+  }
+
+  cargarEstructurasOrganizacionales(): void {
+    this.departmentService.consultarDirecciones().subscribe({
+      next: (direcciones) => {
+        this.direcciones = direcciones;
+      },
+      error: () => {
+        // Error silencioso al cargar direcciones
+      }
+    });
+
+    this.areaService.consultarAreas().subscribe({
+      next: (areas) => {
+        this.areas = areas;
+      },
+      error: () => {
+        // Error silencioso al cargar áreas
+      }
+    });
+
+    this.subAreaService.consultarDirecciones().subscribe({
+      next: (subareas) => {
+        this.subareas = subareas;
+      },
+      error: () => {
+        // Error silencioso al cargar subáreas
+      }
+    });
+  }
+
+  onTipoEstructuraChange(): void {
+    this.areaSeleccionada = '';
+    this.actividad.area = '';
+    this.actividad.tipoArea = '';
+    
+    if (this.tipoEstructura === 'direccion') {
+      this.listaFiltrada = this.direcciones.map(direccion => ({
+        identificador: direccion.identificador,
+        nombre: direccion.nombre
+      }));
+    } else if (this.tipoEstructura === 'area') {
+      this.listaFiltrada = this.areas.map(area => ({
+        identificador: area.identificador,
+        nombre: area.nombre
+      }));
+    } else if (this.tipoEstructura === 'subarea') {
+      this.listaFiltrada = this.subareas.map(subarea => ({
+        identificador: subarea.identificador,
+        nombre: subarea.nombre
+      }));
+    } else {
+      this.listaFiltrada = [];
+    }
+  }
+
+  determinarTipoArea(): string {
+    if (this.tipoEstructura === 'direccion') {
+      return 'DIRECCION';
+    } else if (this.tipoEstructura === 'area') {
+      return 'AREA';
+    } else if (this.tipoEstructura === 'subarea') {
+      return 'SUBAREA';
+    }
+    return '';
+  }
+
+  agregarFecha() {
+    this.errorFecha = '';
+
+    if (!this.fechaTemporal) {
+      this.errorFecha = 'Por favor seleccione una fecha';
+      return;
+    }
+
+    if (this.actividad.fechasProgramadas.includes(this.fechaTemporal)) {
+      this.errorFecha = 'Esta fecha ya está agregada';
+      return;
+    }
+
+    this.actividad.fechasProgramadas.push(this.fechaTemporal);
+    this.fechaTemporal = '';
+  }
+  eliminarFecha(index: number) {
+    this.actividad.fechasProgramadas.splice(index, 1);
+    this.errorFecha = '';
+  }
+
+  trackByIndex(index: number): number {
+    return index;
+  }
+
+  registrarActividad() {
+    if (!this.validarFormulario()) {
+      this.error = 'Por favor, complete todos los campos requeridos';
+      return;
+    }
+
+    this.cargando = true;
+    this.error = '';
+    this.mensajeExito = '';
+
+    let creador = '';
+    const userSession = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
+    creador = userSession?.identificador || '';
+    
+    if (!creador) {
+      try {
+        const token = window.sessionStorage.getItem('Authorization');
+        if (token) {
+          const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+          creador = tokenPayload.identificador || tokenPayload.id || '';
         }
-          }
+      } catch {
+        // Error al decodificar el token
+      }
+    }
+
+    if (!creador || creador.trim() === '') {
+      this.error = 'No se pudo obtener la información del usuario. Por favor, inicie sesión nuevamente.';
+      this.cargando = false;
+      return;
+    }
+
+    if (!this.indicadorSeleccionado || this.indicadorSeleccionado.trim() === '') {
+      this.error = 'Por favor, seleccione un indicador';
+      this.cargando = false;
+      return;
+    }
+
+    if (!this.actividad.area || this.actividad.area.trim() === '') {
+      this.error = 'Por favor, seleccione un área';
+      this.cargando = false;
+      return;
+    }
+
+    const tipoArea = this.determinarTipoArea();
+    if (!tipoArea) {
+      this.error = 'No se pudo determinar el tipo de área. Por favor, seleccione el tipo de estructura organizacional.';
+      this.cargando = false;
+      return;
+    }
+
+    const activityRequest: any = {
+      nombre: this.actividad.nombre.trim(),
+      objetivo: this.actividad.objetivo.trim(),
+      semestre: this.actividad.semestre.trim(),
+      rutaInsumos: this.actividad.rutaInsumos.trim(),
+      indicador: this.indicadorSeleccionado.trim(),
+      colaborador: this.actividad.colaborador.trim(),
+      creador: creador,
+      fechasProgramadas: this.actividad.fechasProgramadas.map(f => f.trim()).filter(f => f),
+      area: {
+        area: this.actividad.area.trim(),
+        tipoArea: tipoArea
+      }
+    };
+
+    // Llamar al servicio
+    this.activityService.agregarNuevaActividad(activityRequest).subscribe({
+      next: (response) => {
+        this.cargando = false;
+        this.mensajeExito = 'Actividad creada exitosamente';
         
-          limpiarFormulario() {
-            this.actividad = {
-              nombre: '',
-              objetivo: '',
-              semestre: '',
-              rutaInsumos: '',
-              indicador: '',
-              colaborador: '',
-              fechasProgramadas: [],
-            };
-            this.indicadorSeleccionado = '';
-            this.fechaTemporal = '';
-            this.errorFecha = '';
+        this.actividadCreada.emit(response);
+        
+        setTimeout(() => {
+          this.limpiarFormulario();
+          this.cerrarModal();
+        }, 1500);
+      },
+      error: (err) => {
+        this.cargando = false;
+        
+        if (err.error) {
+          if (err.error.mensaje) {
+            this.error = err.error.mensaje;
+          } else if (err.error.message) {
+            this.error = err.error.message;
+          } else if (typeof err.error === 'string') {
+            this.error = err.error;
+          } else {
+            this.error = 'Error al crear la actividad. Por favor, intente nuevamente.';
           }
+        } else {
+          this.error = 'Error al crear la actividad. Por favor, intente nuevamente.';
+        }
+      }
+    });
+  }
+
+  validarFormulario(): boolean {
+    return !!(
+      this.actividad.nombre &&
+      this.actividad.objetivo &&
+      this.actividad.semestre &&
+      this.actividad.rutaInsumos &&
+      this.indicadorSeleccionado &&
+      this.indicadorSeleccionado.trim() !== '' &&
+      this.actividad.colaborador &&
+      this.actividad.area &&
+      this.actividad.fechasProgramadas.length > 0
+    );
+  }
+
+  cerrarModal() {
+    const modalElement = document.getElementById('register-activity-modal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modal.hide();
+      
+      setTimeout(() => {
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        backdrops.forEach(backdrop => backdrop.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.paddingRight = '';
+        document.body.style.overflow = '';
+      }, 300);
+    }
+  }
+
+  limpiarFormulario() {
+    this.actividad = {
+      nombre: '',
+      objetivo: '',
+      semestre: '',
+      rutaInsumos: '',
+      indicador: '',
+      colaborador: '',
+      area: '',
+      tipoArea: '',
+      fechasProgramadas: [],
+    };
+    this.indicadorSeleccionado = '';
+    this.colaboradorSeleccionado = '';
+    this.tipoEstructura = '';
+    this.areaSeleccionada = '';
+    this.listaFiltrada = [];
+    this.fechaTemporal = '';
+    this.errorFecha = '';
+    this.error = '';
+    this.mensajeExito = '';
+  }
 
 }

@@ -60,11 +60,10 @@
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <select class="form-select" id="indicador" name="indicador" 
                                     [(ngModel)]="indicadorSeleccionado" 
-                                    (change)="actividad.indicador = indicadorSeleccionado"
                                     required>
                                 <option value="">Seleccione un indicador</option>
-                                <option *ngFor="let indicador of indicadores" [value]="indicador.nombre">
-                                    {{ indicador.nombre }} - {{ indicador.tipologia }}
+                                <option *ngFor="let indicador of indicadores" [value]="indicador.identificador">
+                                    {{ indicador.nombre }} - {{ indicador.tipoIndicador.tipologiaIndicador }}
                                 </option>
                             </select>
                         </div>     
@@ -77,7 +76,57 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="colaborador" name="colaborador" [(ngModel)]="actividad.colaborador" required />
+                            <select class="form-select" id="colaborador" name="colaborador" 
+                                    [(ngModel)]="colaboradorSeleccionado" 
+                                    (change)="actividad.colaborador = colaboradorSeleccionado"
+                                    required>
+                                <option value="">Seleccione un colaborador</option>
+                                <option *ngFor="let usuario of usuarios" [value]="usuario.identificador">
+                                    {{ usuario.nombres }} {{ usuario.apellidos }} - {{ usuario.correo }}
+                                </option>
+                            </select>
+                        </div>     
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="tipoEstructura" class="form-label">Tipo de Estructura Organizacional</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="tipoEstructura" name="tipoEstructura" 
+                                    [(ngModel)]="tipoEstructura" 
+                                    (change)="onTipoEstructuraChange()"
+                                    required>
+                                <option value="">Seleccione el tipo</option>
+                                <option *ngFor="let opcion of opcionesTipoEstructura" [value]="opcion.valor">
+                                    {{ opcion.etiqueta }}
+                                </option>
+                            </select>
+                        </div>     
+                    </div>
+
+                    <div class="mb-3" *ngIf="tipoEstructura && listaFiltrada && listaFiltrada.length > 0">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="area" class="form-label">
+                                    <span *ngIf="tipoEstructura === 'direccion'">Seleccionar Dirección</span>
+                                    <span *ngIf="tipoEstructura === 'area'">Seleccionar Área</span>
+                                    <span *ngIf="tipoEstructura === 'subarea'">Seleccionar Subárea</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="area" name="area" 
+                                    [(ngModel)]="areaSeleccionada" 
+                                    (change)="actividad.area = areaSeleccionada; actividad.tipoArea = determinarTipoArea()"
+                                    required>
+                                <option value="">Seleccione una opción</option>
+                                <option *ngFor="let item of listaFiltrada" [value]="item.identificador">
+                                    {{ item.nombre }}
+                                </option>
+                            </select>
                         </div>     
                     </div>
 
@@ -148,9 +197,36 @@
                             required />
                     </div>
 
+                    <!-- Mensajes de estado -->
+                    <div *ngIf="cargando" class="mb-3 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Creando actividad...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Creando actividad...</p>
+                    </div>
+
+                    <div *ngIf="error" class="mb-3">
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <div>{{ error }}</div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="mensajeExito" class="mb-3">
+                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <div>{{ mensajeExito }}</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid">Registrar</button>
+                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid || cargando">
+                    <span *ngIf="!cargando">Registrar</span>
+                    <span *ngIf="cargando">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Registrando...
+                    </span>
+                </button>
                 <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>
