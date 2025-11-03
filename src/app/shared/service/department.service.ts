@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Response } from '../model/response.model';
 import { environment } from 'src/environments/environment';
-import { DepartmentResponse } from '../model/departmen.model';
+import { DepartmentResponse } from '../model/department.model';
 
 @Injectable({
     providedIn: 'root'

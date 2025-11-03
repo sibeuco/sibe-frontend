@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { FechaProgramada, EstadoFechaProgramada } from '../../model/fecha-programada.model';
-import { Actividad } from '../../model/actividad.model';
+import { Actividad } from '../../model/activity.model';
 
 @Component({
   selector: 'app-date-selector',

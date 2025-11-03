@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actividad, EstadoActividad } from 'src/app/shared/model/actividad.model';
+import { Actividad, EstadoActividad } from 'src/app/shared/model/activity.model';
 
 @Component({
   selector: 'app-activities',

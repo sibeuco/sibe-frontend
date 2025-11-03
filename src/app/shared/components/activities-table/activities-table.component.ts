@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { Actividad, EstadoActividad } from '../../model/actividad.model';
+import { Actividad, EstadoActividad } from '../../model/activity.model';
 import { FechaProgramada, EstadoFechaProgramada } from '../../model/fecha-programada.model';
 
 @Component({
