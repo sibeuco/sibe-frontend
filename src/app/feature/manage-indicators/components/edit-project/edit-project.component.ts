@@ -16,7 +16,6 @@ export class EditProjectComponent implements OnInit, OnChanges {
   @Output() proyectoCancelado = new EventEmitter<void>();
     
       proyecto = {
-        numeroProyecto: '',
         nombre: '',
         objetivo: '',
         acciones: [] as string[]
@@ -75,10 +74,9 @@ export class EditProjectComponent implements OnInit, OnChanges {
       cargarDatosProyecto(): void {
         if (this.proyectoAEditar) {
           this.proyecto = {
-            numeroProyecto: this.proyectoAEditar.numeroProyecto,
             nombre: this.proyectoAEditar.nombre,
             objetivo: this.proyectoAEditar.objetivo,
-            acciones: this.proyectoAEditar.acciones || [] // Cargar acciones si están disponibles
+            acciones: this.proyectoAEditar.acciones?.map(accion => accion.identificador) || []
           };
           // Limpiar mensajes previos cuando se cargan nuevos datos
           this.error = '';
@@ -115,7 +113,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
             // Crear el objeto de respuesta actualizado
             const proyectoModificado: ProjectResponse = {
               identificador: this.proyectoAEditar!.identificador,
-              numeroProyecto: this.proyecto.numeroProyecto,
+              numeroProyecto: this.proyectoAEditar!.numeroProyecto,
               nombre: this.proyecto.nombre,
               objetivo: this.proyecto.objetivo
             };
@@ -157,7 +155,6 @@ export class EditProjectComponent implements OnInit, OnChanges {
     
       limpiarFormulario() {
         this.proyecto = {
-          numeroProyecto: '',
           nombre: '',
           objetivo: '',
           acciones: [] as string[]
