@@ -10,7 +10,7 @@ import { SubAreaResponse } from '../model/subarea.model';
 })
 export class SubAreaService extends HttpService {
     private readonly SUBAREA_ENDPOINT = '/subareas';
-    private readonly SUBAREA_NAME_ENDPOINT = '/subareas';
+    private readonly SUBAREA_NAME_ENDPOINT = '/subareas/nombre';
 
     constructor(http: HttpClient) {
         super(http);
