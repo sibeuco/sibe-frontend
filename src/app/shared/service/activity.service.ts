@@ -28,17 +28,6 @@ export class ActivityService extends HttpService {
     return this.doPost<ActivityRequest, Response<string>>(url, actividad, opts);
   }
 
-  consultarActividades(): Observable<ActivityResponse[]> {
-    const opts = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-      })
-    };
-    const url = `${environment.endpoint}${this.ACTIVITY_ENDPOINT}`;
-    return this.http.get<ActivityResponse[]>(url, opts);
-  }
-
   consultarPorArea(identificador: string): Observable<ActivityResponse[]> {
     const opts = this.createDefaultOptions();
         const url = `${environment.endpoint}${this.ACTIVITY_AREA_ENDPOINT}/${identificador}`;
