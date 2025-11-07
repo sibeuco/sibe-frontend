@@ -4,7 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Response } from '../model/response.model';
 import { environment } from 'src/environments/environment';
-import { ActivityRequest, ActivityResponse } from '../model/activity.model';
+import { ActivityRequest, ActivityResponse, EditActivityRequest } from '../model/activity.model';
 import { ActivityExecutionResponse } from '../model/activity-execution.model';
 
 @Injectable({
@@ -28,6 +28,14 @@ export class ActivityService extends HttpService {
     return this.doPost<ActivityRequest, Response<string>>(url, actividad, opts);
   }
 
+  modificarActividad(identificador: string, actividad: EditActivityRequest): Observable<Response<string>> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.ACTIVITY_ENDPOINT}/${identificador}`;
+
+    return this.doPut<EditActivityRequest, Response<string>>(url, actividad, opts);
+  }
+
+
   consultarActividades(): Observable<ActivityResponse[]> {
     const opts = {
       headers: new HttpHeaders({
@@ -41,30 +49,30 @@ export class ActivityService extends HttpService {
 
   consultarPorArea(identificador: string): Observable<ActivityResponse[]> {
     const opts = this.createDefaultOptions();
-        const url = `${environment.endpoint}${this.ACTIVITY_AREA_ENDPOINT}/${identificador}`;
-        
-        return this.doGet<ActivityResponse[]>(url, opts);
+    const url = `${environment.endpoint}${this.ACTIVITY_AREA_ENDPOINT}/${identificador}`;
+
+    return this.doGet<ActivityResponse[]>(url, opts);
   }
 
   consultarPorDireccion(identificador: string): Observable<ActivityResponse[]> {
     const opts = this.createDefaultOptions();
-        const url = `${environment.endpoint}${this.ACTIVITY_DEPARTMENT_ENDPOINT}/${identificador}`;
-        
-        return this.doGet<ActivityResponse[]>(url, opts);
+    const url = `${environment.endpoint}${this.ACTIVITY_DEPARTMENT_ENDPOINT}/${identificador}`;
+
+    return this.doGet<ActivityResponse[]>(url, opts);
   }
 
   consultarPorSubarea(identificador: string): Observable<ActivityResponse[]> {
     const opts = this.createDefaultOptions();
-        const url = `${environment.endpoint}${this.ACTIVITY_SUBAREA_ENDPOINT}/${identificador}`;
-        
-        return this.doGet<ActivityResponse[]>(url, opts);
+    const url = `${environment.endpoint}${this.ACTIVITY_SUBAREA_ENDPOINT}/${identificador}`;
+
+    return this.doGet<ActivityResponse[]>(url, opts);
   }
 
   consultarEjecuciones(identificador: string): Observable<ActivityExecutionResponse[]> {
     const opts = this.createDefaultOptions();
-        const url = `${environment.endpoint}${this.ACTIVITY_EXECUTION_ENDPOINT}/${identificador}`;
-        
-        return this.doGet<ActivityExecutionResponse[]>(url, opts);
+    const url = `${environment.endpoint}${this.ACTIVITY_EXECUTION_ENDPOINT}/${identificador}`;
+
+    return this.doGet<ActivityExecutionResponse[]>(url, opts);
 
   }
 }
