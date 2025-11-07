@@ -1,7 +1,13 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
-import { Router } from '@angular/router';
-import { Actividad, EstadoActividad } from '../../model/activity.model';
-import { FechaProgramada, EstadoFechaProgramada } from '../../model/fecha-programada.model';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { ActivityResponse, EstadoActividad } from '../../model/activity.model';
+import { FechaProgramada } from '../../model/fecha-programada.model';
+import { ActivityExecutionResponse } from '../../model/activity-execution.model';
+import { ActivityService } from '../../service/activity.service';
+import { DepartmentService } from '../../service/department.service';
+import { AreaService } from '../../service/area.service';
+import { SubAreaService } from '../../service/subarea.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError, switchMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-activities-table',
@@ -9,28 +15,308 @@ import { FechaProgramada, EstadoFechaProgramada } from '../../model/fecha-progra
   styleUrls: ['./activities-table.component.scss']
 })
 export class ActivitiesTableComponent implements OnInit, OnChanges {
-  @Input() actividades: Actividad[] = [];
+  // Inputs para cargar desde backend
+  @Input() nombreArea: string = '';
+  @Input() tipoEstructura: 'direccion' | 'area' | 'subarea' = 'direccion';
+  
+  // Input opcional: si se pasan actividades directamente, se usan en lugar de cargar desde backend
+  // Temporalmente acepta tanto ActivityResponse[] como Actividad[] para compatibilidad
+  @Input() actividades: any[] = [];
+  
   @Input() rutaRedireccion: string = '';
   @Input() terminoBusqueda: string = '';
-  @Output() actividadSeleccionada = new EventEmitter<Actividad>();
+  @Output() actividadSeleccionada = new EventEmitter<any>();
 
   // Propiedades para ordenamiento
   columnaOrdenamiento: string = '';
   direccionOrdenamiento: 'asc' | 'desc' = 'asc';
-  actividadesOrdenadas: Actividad[] = [];
+  actividadesOrdenadas: ActivityResponse[] = [];
+  actividadesCargadas: ActivityResponse[] = []; // Actividades cargadas desde backend o recibidas como input
 
   // Propiedades para el modal de fechas programadas
-  actividadSeleccionadaParaModal: Actividad | null = null;
+  actividadSeleccionadaParaModal: ActivityResponse | null = null;
   fechasProgramadas: FechaProgramada[] = [];
 
-  constructor(private router: Router) {}
+  // Estados de carga
+  cargando = false;
+  error = '';
+
+  // Mapa para almacenar fechas programadas más cercanas (identificador actividad -> fecha)
+  fechasProgramadasMap: Map<string, Date | null> = new Map();
+  
+  // Mapa para almacenar ejecuciones de cada actividad (identificador actividad -> ejecuciones)
+  ejecucionesMap: Map<string, ActivityExecutionResponse[]> = new Map();
+
+  constructor(
+    private activityService: ActivityService,
+    private departmentService: DepartmentService,
+    private areaService: AreaService,
+    private subAreaService: SubAreaService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.aplicarFiltrosYOrdenamiento();
+    // Si se pasan actividades directamente, usar esas (modo antiguo)
+    // Si se pasa nombreArea, cargar desde backend (modo nuevo)
+    if (this.actividades && this.actividades.length > 0) {
+      // Modo antiguo: convertir Actividad[] a ActivityResponse[] si es necesario
+      const actividadesNormalizadas = this.normalizarActividades(this.actividades);
+      this.actividadesCargadas = actividadesNormalizadas;
+      this.cargando = false;
+      // Cargar fechas programadas
+      this.cargarFechasProgramadas(actividadesNormalizadas);
+    } else if (this.nombreArea) {
+      // Modo nuevo: cargar desde backend
+      this.cargarActividades();
+    } else {
+      this.cargando = false;
+      this.aplicarFiltrosYOrdenamiento();
+    }
   }
 
-  ngOnChanges() {
-    this.aplicarFiltrosYOrdenamiento();
+  /**
+   * Normaliza las actividades al formato ActivityResponse
+   * Convierte Actividad[] antiguo a ActivityResponse[] si es necesario
+   */
+  private normalizarActividades(actividades: any[]): ActivityResponse[] {
+    return actividades.map(act => {
+      // Si ya es ActivityResponse, retornarlo tal cual
+      if (act.identificador && act.nombre) {
+        return act as ActivityResponse;
+      }
+      // Si es Actividad antiguo, convertir a ActivityResponse
+      return {
+        identificador: act.id?.toString() || '',
+        nombre: act.nombreActividad || '',
+        objetivo: '',
+        semestre: '',
+        rutaInsumos: '',
+        fechaCreacion: act.fechaCreacion ? (typeof act.fechaCreacion === 'string' ? act.fechaCreacion : act.fechaCreacion.toISOString()) : '',
+        indicador: {} as any,
+        colaborador: act.colaborador || '',
+        nombreColaborador: act.nombreColaborador || '',
+        creador: ''
+      } as ActivityResponse;
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // Si cambian las actividades pasadas directamente, actualizar
+    if (changes['actividades']) {
+      const actividadesNormalizadas = this.actividades ? this.normalizarActividades(this.actividades) : [];
+      this.actividadesCargadas = actividadesNormalizadas;
+      this.cargando = false;
+      if (actividadesNormalizadas.length > 0) {
+        // Cargar fechas programadas
+        this.cargarFechasProgramadas(actividadesNormalizadas);
+      } else {
+        this.aplicarFiltrosYOrdenamiento();
+      }
+    }
+    
+    // Si cambian los parámetros para cargar desde backend
+    if (changes['nombreArea'] || changes['tipoEstructura']) {
+      // Solo cargar si no hay actividades pasadas directamente
+      if (this.nombreArea && (!this.actividades || this.actividades.length === 0)) {
+        this.cargarActividades();
+      }
+    }
+    
+    if (changes['terminoBusqueda']) {
+      this.aplicarFiltrosYOrdenamiento();
+    }
+  }
+
+  /**
+   * Carga las actividades desde el backend según el tipo de estructura
+   * Método público para poder recargar desde componentes padre
+   */
+  recargarActividades(): void {
+    if (this.nombreArea && this.tipoEstructura) {
+      this.cargarActividades();
+    }
+  }
+
+  /**
+   * Carga las actividades desde el backend según el tipo de estructura
+   */
+  private cargarActividades(): void {
+    if (!this.nombreArea || !this.tipoEstructura) {
+      return;
+    }
+
+    this.cargando = true;
+    this.error = '';
+
+    // Primero consultar por nombre para obtener el identificador
+    let consultaPorNombre$: any;
+
+    switch (this.tipoEstructura) {
+      case 'direccion':
+        consultaPorNombre$ = this.departmentService.consultarPorNombre(this.nombreArea);
+        break;
+      case 'area':
+        consultaPorNombre$ = this.areaService.consultarPorNombre(this.nombreArea);
+        break;
+      case 'subarea':
+        consultaPorNombre$ = this.subAreaService.consultarPorNombre(this.nombreArea);
+        break;
+      default:
+        this.error = 'Tipo de estructura no válido';
+        this.cargando = false;
+        return;
+    }
+
+    consultaPorNombre$
+      .pipe(
+        switchMap((estructura: any) => {
+          if (!estructura || !estructura.identificador) {
+            throw new Error('No se pudo obtener el identificador de la estructura');
+          }
+
+          // Luego consultar las actividades según el tipo
+          switch (this.tipoEstructura) {
+            case 'direccion':
+              return this.activityService.consultarPorDireccion(estructura.identificador);
+            case 'area':
+              return this.activityService.consultarPorArea(estructura.identificador);
+            case 'subarea':
+              return this.activityService.consultarPorSubarea(estructura.identificador);
+            default:
+              return of([]);
+          }
+        }),
+        catchError(() => {
+          this.error = 'Error al cargar las actividades. Por favor, intente nuevamente.';
+          return of([]);
+        })
+      )
+      .subscribe({
+        next: (actividades: ActivityResponse[]) => {
+          this.actividadesCargadas = actividades || [];
+          // Cargar fechas programadas
+          this.cargarFechasProgramadas(actividades);
+        },
+        error: () => {
+          this.cargando = false;
+        }
+      });
+  }
+
+  /**
+   * Obtiene el nombre del colaborador desde el modelo
+   */
+  obtenerNombreColaborador(actividad: ActivityResponse): string {
+    if (!actividad || !actividad.nombreColaborador) {
+      return 'Sin colaborador';
+    }
+    return actividad.nombreColaborador;
+  }
+
+  /**
+   * Carga las fechas programadas más cercanas para todas las actividades
+   */
+  private cargarFechasProgramadas(actividades: ActivityResponse[]): void {
+    if (!actividades || actividades.length === 0) {
+      this.cargando = false;
+      this.aplicarFiltrosYOrdenamiento();
+      return;
+    }
+
+    // Consultar ejecuciones para todas las actividades en paralelo
+    const consultas = actividades.map(actividad =>
+      this.activityService.consultarEjecuciones(actividad.identificador).pipe(
+        map((ejecuciones: ActivityExecutionResponse[]) => {
+          const fechaMasCercana = this.calcularFechaMasCercana(ejecuciones);
+          return { 
+            identificador: actividad.identificador, 
+            fecha: fechaMasCercana,
+            ejecuciones: ejecuciones
+          };
+        }),
+        catchError(() => of({ 
+          identificador: actividad.identificador, 
+          fecha: null,
+          ejecuciones: [] as ActivityExecutionResponse[]
+        }))
+      )
+    );
+
+    forkJoin(consultas).subscribe({
+      next: (resultados) => {
+        resultados.forEach(r => {
+          this.fechasProgramadasMap.set(r.identificador, r.fecha);
+          this.ejecucionesMap.set(r.identificador, r.ejecuciones);
+        });
+        this.cargando = false;
+        this.aplicarFiltrosYOrdenamiento();
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.cargando = false;
+        this.aplicarFiltrosYOrdenamiento();
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  /**
+   * Calcula la fecha programada más cercana a hoy desde las ejecuciones
+   */
+  private calcularFechaMasCercana(ejecuciones: ActivityExecutionResponse[]): Date | null {
+    if (!ejecuciones || ejecuciones.length === 0) {
+      return null;
+    }
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+
+    // Convertir todas las fechas programadas a Date y filtrar las válidas
+    const fechasValidas = ejecuciones
+      .map(ej => {
+        if (!ej.fechaProgramada) return null;
+        const fecha = this.parseFechaLocal(ej.fechaProgramada);
+        return isNaN(fecha.getTime()) ? null : fecha;
+      })
+      .filter(fecha => fecha !== null) as Date[];
+
+    if (fechasValidas.length === 0) {
+      return null;
+    }
+
+    // Encontrar la fecha más cercana a hoy
+    let fechaMasCercana: Date | null = null;
+    let diferenciaMinima = Infinity;
+
+    fechasValidas.forEach(fecha => {
+      const diferencia = Math.abs(fecha.getTime() - hoy.getTime());
+      if (diferencia < diferenciaMinima) {
+        diferenciaMinima = diferencia;
+        fechaMasCercana = fecha;
+      }
+    });
+
+    return fechaMasCercana;
+  }
+
+  /**
+   * Parsea una fecha string del backend como fecha local (evita desfase por zona horaria)
+   * Soporta formatos: 'YYYY-MM-DD' y ISO estándar.
+   */
+  private parseFechaLocal(fechaStr: string): Date {
+    // Caso 'YYYY-MM-DD'
+    const soloFecha = /^\d{4}-\d{2}-\d{2}$/;
+    if (soloFecha.test(fechaStr)) {
+      const [y, m, d] = fechaStr.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+    // Fallback ISO: si no trae zona horaria y queda en 00:00Z, ajustar a local
+    const d = new Date(fechaStr);
+    if (!isNaN(d.getTime())) {
+      return d;
+    }
+    // Último recurso: retornar fecha inválida para que el filtro la descarte
+    return new Date('invalid');
   }
 
   /**
@@ -38,15 +324,15 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
    */
   private aplicarFiltrosYOrdenamiento(): void {
     // Primero aplicar filtro de búsqueda
-    let actividadesFiltradas = this.actividades;
+    let actividadesFiltradas = this.actividadesCargadas;
     
     if (this.terminoBusqueda && this.terminoBusqueda.trim() !== '') {
       const termino = this.terminoBusqueda.toLowerCase().trim();
-      actividadesFiltradas = this.actividades.filter(actividad => 
-        actividad.nombreActividad.toLowerCase().includes(termino) ||
-        actividad.colaborador.toLowerCase().includes(termino) ||
-        actividad.estado.toLowerCase().includes(termino) ||
-        (actividad.fechaProgramada && actividad.fechaProgramada.toLocaleDateString().toLowerCase().includes(termino))
+      actividadesFiltradas = this.actividadesCargadas.filter(actividad => 
+        actividad.nombre.toLowerCase().includes(termino) ||
+        (actividad.nombreColaborador && actividad.nombreColaborador.toLowerCase().includes(termino)) ||
+        this.calcularEstado(actividad).toLowerCase().includes(termino) ||
+        (this.obtenerFechaProgramada(actividad) && this.obtenerFechaProgramada(actividad)!.toLocaleDateString().toLowerCase().includes(termino))
       );
     }
     
@@ -83,24 +369,26 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
 
       switch (columna) {
         case 'nombreActividad':
-          valorA = a.nombreActividad.toLowerCase();
-          valorB = b.nombreActividad.toLowerCase();
+          valorA = a.nombre.toLowerCase();
+          valorB = b.nombre.toLowerCase();
           break;
         case 'colaborador':
-          valorA = a.colaborador.toLowerCase();
-          valorB = b.colaborador.toLowerCase();
+          valorA = (a.nombreColaborador || '').toLowerCase();
+          valorB = (b.nombreColaborador || '').toLowerCase();
           break;
         case 'fechaCreacion':
           valorA = new Date(a.fechaCreacion).getTime();
           valorB = new Date(b.fechaCreacion).getTime();
           break;
         case 'fechaProgramada':
-          valorA = a.fechaProgramada ? new Date(a.fechaProgramada).getTime() : 0;
-          valorB = b.fechaProgramada ? new Date(b.fechaProgramada).getTime() : 0;
+          const fechaA = this.obtenerFechaProgramada(a);
+          const fechaB = this.obtenerFechaProgramada(b);
+          valorA = fechaA ? new Date(fechaA).getTime() : 0;
+          valorB = fechaB ? new Date(fechaB).getTime() : 0;
           break;
         case 'estado':
-          valorA = a.estado.toLowerCase();
-          valorB = b.estado.toLowerCase();
+          valorA = this.calcularEstado(a).toLowerCase();
+          valorB = this.calcularEstado(b).toLowerCase();
           break;
         default:
           return 0;
@@ -127,16 +415,17 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Función para realizar el tracking de las actividades por ID
+   * Función para realizar el tracking de las actividades por identificador
    */
-  trackByActividadId(index: number, actividad: Actividad): number {
-    return actividad.id;
+  trackByActividadId(index: number, actividad: ActivityResponse): string {
+    return actividad.identificador;
   }
 
   /**
    * Obtiene la clase CSS para el estado de la actividad
    */
-  getStatusClass(estado: EstadoActividad): string {
+  getStatusClass(actividad: ActivityResponse): string {
+    const estado = this.calcularEstado(actividad);
     switch (estado) {
       case EstadoActividad.PENDIENTE:
         return 'status-pendiente';
@@ -150,46 +439,62 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Calcula el estado de la actividad basándose en los estados de las ejecuciones
+   * Si al menos una ejecución tiene estado diferente de FINALIZADO → PENDIENTE
+   * Si todas las ejecuciones tienen estado FINALIZADO → FINALIZADO
+   */
+  calcularEstado(actividad: ActivityResponse): EstadoActividad {
+    const ejecuciones = this.ejecucionesMap.get(actividad.identificador);
+    
+    // Si no hay ejecuciones, retornar PENDIENTE por defecto
+    if (!ejecuciones || ejecuciones.length === 0) {
+      return EstadoActividad.PENDIENTE;
+    }
+
+    // Verificar si todas las ejecuciones están FINALIZADAS
+    const todasFinalizadas = ejecuciones.every(ej => 
+      ej.estadoActividad && 
+      ej.estadoActividad.nombre === EstadoActividad.FINALIZADO
+    );
+
+    // Si todas están finalizadas, retornar FINALIZADO
+    if (todasFinalizadas) {
+      return EstadoActividad.FINALIZADO;
+    }
+
+    // Si al menos una no está finalizada, retornar PENDIENTE
+    return EstadoActividad.PENDIENTE;
+  }
+
+  /**
+   * Obtiene la fecha programada más cercana de la actividad
+   */
+  obtenerFechaProgramada(actividad: ActivityResponse): Date | null {
+    return this.fechasProgramadasMap.get(actividad.identificador) || null;
+  }
+
+  /**
    * Maneja el clic en el botón "Gestionar Actividad"
    */
-  realizarActividad(actividad: Actividad): void {
+  realizarActividad(actividad: ActivityResponse): void {
     // Emitir evento para que el componente padre maneje la lógica
     this.actividadSeleccionada.emit(actividad);
     
     // Configurar datos para el modal
     this.actividadSeleccionadaParaModal = actividad;
-    this.cargarFechasProgramadas(actividad.id);
+    this.cargarFechasProgramadasParaModal(actividad.identificador);
     
     // Abrir el modal
     this.abrirModalFechas();
   }
 
   /**
-   * Carga las fechas programadas para una actividad específica
+   * Carga las fechas programadas para una actividad específica (para el modal)
+   * TODO: Implementar la carga real de fechas programadas desde el servicio
    */
-  private cargarFechasProgramadas(actividadId: number): void {
-    // TODO: Aquí deberías hacer una llamada al servicio para obtener las fechas programadas
-    // Por ahora, creamos datos de ejemplo
-    this.fechasProgramadas = [
-      {
-        id: 1,
-        fecha: new Date('2024-01-15'),
-        estado: EstadoFechaProgramada.PENDIENTE,
-        actividadId: actividadId
-      },
-      {
-        id: 2,
-        fecha: new Date('2024-01-22'),
-        estado: EstadoFechaProgramada.EN_CURSO,
-        actividadId: actividadId
-      },
-      {
-        id: 3,
-        fecha: new Date('2024-01-29'),
-        estado: EstadoFechaProgramada.FINALIZADO,
-        actividadId: actividadId
-      }
-    ];
+  private cargarFechasProgramadasParaModal(actividadIdentificador: string): void {
+    // TODO: Implementar llamada al servicio para obtener las fechas programadas
+    this.fechasProgramadas = [];
   }
 
   /**
@@ -232,11 +537,10 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
 
   /**
    * Maneja el clic en el botón "Ver" de una fecha programada
+   * TODO: Implementar la lógica para ver los detalles de la fecha programada
    */
   verFechaProgramada(fechaProgramada: FechaProgramada): void {
-    console.log('Ver fecha programada:', fechaProgramada);
     // TODO: Implementar la lógica para ver los detalles de la fecha programada
-    // Esto podría abrir otro modal o navegar a una página de detalles
   }
 
 }

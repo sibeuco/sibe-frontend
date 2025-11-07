@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { FechaProgramada, EstadoFechaProgramada } from '../../model/fecha-programada.model';
-import { Actividad } from '../../model/activity.model';
+import { ActivityResponse } from '../../model/activity.model';
 
 @Component({
   selector: 'app-date-selector',
@@ -9,7 +9,7 @@ import { Actividad } from '../../model/activity.model';
   styleUrls: ['./date-selector.component.scss']
 })
 export class DateSelectorComponent implements OnInit, OnChanges {
-  @Input() actividad: Actividad | null = null;
+  @Input() actividad: ActivityResponse | null = null;
   @Input() fechasProgramadas: FechaProgramada[] = [];
   @Input() redirectLink: string = ''; // Link para redirección
   @Output() verFecha = new EventEmitter<FechaProgramada>();

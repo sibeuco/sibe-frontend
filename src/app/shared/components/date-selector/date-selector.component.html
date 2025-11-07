@@ -4,7 +4,7 @@
     <div class="modal-content">
       <div class="modal-header col d-flex align-items-center justify-content-center position-relative">
         <h1 class="modal-title" id="dateSelectorModalLabel">
-          Fechas Programadas - {{ actividad?.nombreActividad }}
+          Fechas Programadas - {{ actividad?.nombre }}
         </h1>
         <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Cerrar" (click)="cerrar()"></button>
       </div>
@@ -12,10 +12,10 @@
         <div class="activity-info mb-3">
           <div class="row">
             <div class="col-md-6">
-              <strong>Actividad:</strong> {{ actividad?.nombreActividad }}
+              <strong>Actividad:</strong> {{ actividad?.nombre }}
             </div>
             <div class="col-md-6">
-              <strong>Colaborador:</strong> {{ actividad?.colaborador }}
+              <strong>Colaborador:</strong> {{ actividad?.nombreColaborador || 'Sin colaborador' }}
             </div>
           </div>
         </div>

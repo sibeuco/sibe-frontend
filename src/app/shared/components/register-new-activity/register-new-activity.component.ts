@@ -247,7 +247,7 @@ export class RegisterNewActivityComponent implements OnInit {
       return;
     }
 
-    const activityRequest: any = {
+    const activityRequest: ActivityRequest = {
       nombre: this.actividad.nombre.trim(),
       objetivo: this.actividad.objetivo.trim(),
       semestre: this.actividad.semestre.trim(),
