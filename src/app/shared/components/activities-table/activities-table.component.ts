@@ -19,10 +19,6 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   @Input() nombreArea: string = '';
   @Input() tipoEstructura: 'direccion' | 'area' | 'subarea' = 'direccion';
   
-  // Input opcional: si se pasan actividades directamente, se usan en lugar de cargar desde backend
-  // Temporalmente acepta tanto ActivityResponse[] como Actividad[] para compatibilidad
-  @Input() actividades: any[] = [];
-  
   @Input() rutaRedireccion: string = '';
   @Input() terminoBusqueda: string = '';
   @Output() actividadSeleccionada = new EventEmitter<any>();
@@ -55,17 +51,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit() {
-    // Si se pasan actividades directamente, usar esas (modo antiguo)
-    // Si se pasa nombreArea, cargar desde backend (modo nuevo)
-    if (this.actividades && this.actividades.length > 0) {
-      // Modo antiguo: convertir Actividad[] a ActivityResponse[] si es necesario
-      const actividadesNormalizadas = this.normalizarActividades(this.actividades);
-      this.actividadesCargadas = actividadesNormalizadas;
-      this.cargando = false;
-      // Cargar fechas programadas
-      this.cargarFechasProgramadas(actividadesNormalizadas);
-    } else if (this.nombreArea) {
-      // Modo nuevo: cargar desde backend
+    if (this.nombreArea) {
       this.cargarActividades();
     } else {
       this.cargando = false;
@@ -73,50 +59,10 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     }
   }
 
-  /**
-   * Normaliza las actividades al formato ActivityResponse
-   * Convierte Actividad[] antiguo a ActivityResponse[] si es necesario
-   */
-  private normalizarActividades(actividades: any[]): ActivityResponse[] {
-    return actividades.map(act => {
-      // Si ya es ActivityResponse, retornarlo tal cual
-      if (act.identificador && act.nombre) {
-        return act as ActivityResponse;
-      }
-      // Si es Actividad antiguo, convertir a ActivityResponse
-      return {
-        identificador: act.id?.toString() || '',
-        nombre: act.nombreActividad || '',
-        objetivo: '',
-        semestre: '',
-        rutaInsumos: '',
-        fechaCreacion: act.fechaCreacion ? (typeof act.fechaCreacion === 'string' ? act.fechaCreacion : act.fechaCreacion.toISOString()) : '',
-        indicador: {} as any,
-        colaborador: act.colaborador || '',
-        nombreColaborador: act.nombreColaborador || '',
-        creador: ''
-      } as ActivityResponse;
-    });
-  }
-
   ngOnChanges(changes: SimpleChanges) {
-    // Si cambian las actividades pasadas directamente, actualizar
-    if (changes['actividades']) {
-      const actividadesNormalizadas = this.actividades ? this.normalizarActividades(this.actividades) : [];
-      this.actividadesCargadas = actividadesNormalizadas;
-      this.cargando = false;
-      if (actividadesNormalizadas.length > 0) {
-        // Cargar fechas programadas
-        this.cargarFechasProgramadas(actividadesNormalizadas);
-      } else {
-        this.aplicarFiltrosYOrdenamiento();
-      }
-    }
-    
     // Si cambian los parámetros para cargar desde backend
     if (changes['nombreArea'] || changes['tipoEstructura']) {
-      // Solo cargar si no hay actividades pasadas directamente
-      if (this.nombreArea && (!this.actividades || this.actividades.length === 0)) {
+      if (this.nombreArea) {
         this.cargarActividades();
       }
     }
