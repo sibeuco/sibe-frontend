@@ -19,16 +19,11 @@ export class ActivitiesComponent implements AfterViewInit {
   constructor(private router: Router) {}
 
   ngAfterViewInit(): void {
-    // El ViewChild estará disponible después de esta fase
   }
 
   onActividadSeleccionada(actividad: ActivityResponse): void {
     console.log('Actividad seleccionada:', actividad);
     
-    // Aquí puedes agregar lógica adicional antes de la redirección
-    // Por ejemplo: guardar en un servicio, mostrar confirmación, etc.
-    
-    // TODO: Implementar lógica basada en el estado calculado de la actividad
     console.log(`Procesando actividad: ${actividad.nombre}`);
   }
 
@@ -38,7 +33,6 @@ export class ActivitiesComponent implements AfterViewInit {
   }
 
   onActividadCreada(): void {
-    // Recargar la tabla cuando se crea una nueva actividad
     if (this.activitiesTable) {
       this.activitiesTable.recargarActividades();
     }
