@@ -1,6 +1,6 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ActivityResponse, EstadoActividad } from 'src/app/shared/model/activity.model';
+import { ActivityResponse} from 'src/app/shared/model/activity.model';
 import { ActivitiesTableComponent } from 'src/app/shared/components/activities-table/activities-table.component';
 
 @Component({

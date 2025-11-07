@@ -1,13 +1,4 @@
-import { IndicatorRequest, IndicatorResponse } from "src/app/feature/manage-indicators/model/indicator.model";
-
-export interface Actividad {
-  id: number;
-  nombreActividad: string;
-  colaborador: string;
-  fechaCreacion: Date;
-  fechaProgramada?: Date;
-  estado: EstadoActividad;
-}
+import { IndicatorResponse } from "src/app/feature/manage-indicators/model/indicator.model";
 
 export interface ActivityRequest {
   nombre: string;
@@ -18,6 +9,20 @@ export interface ActivityRequest {
   colaborador: string;
   creador: string;
   fechasProgramadas: String[];
+  area: {
+    area: string;
+    tipoArea: string;
+  };
+}
+
+export interface EditActivityRequest {
+  nombre: string;
+  objetivo: string;
+  semestre: string;
+  rutaInsumos: string;
+  indicador: string;
+  colaborador: string;
+  fechasProgramada: String[];
   area: {
     area: string;
     tipoArea: string;

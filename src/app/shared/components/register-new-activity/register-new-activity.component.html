@@ -88,7 +88,24 @@
                         </div>     
                     </div>
 
-                    <div class="mb-3">
+                    <!-- Mostrar información del área si se pasa desde el padre -->
+                    <div class="mb-3" *ngIf="nombreArea && tipoEstructura">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label class="form-label">
+                                    <span *ngIf="tipoEstructura === 'direccion'">Dirección</span>
+                                    <span *ngIf="tipoEstructura === 'area'">Área</span>
+                                    <span *ngIf="tipoEstructura === 'subarea'">Subárea</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" [value]="nombreArea" readonly />
+                        </div>     
+                    </div>
+
+                    <!-- Campos de selección solo si NO se pasan desde el padre -->
+                    <div class="mb-3" *ngIf="!nombreArea || !tipoEstructura">
                         <div class="name-label-container d-flex justify-content-center align-items-center">
                             <div class="name-label">
                                 <label for="tipoEstructura" class="form-label">Tipo de Estructura Organizacional</label>
@@ -107,7 +124,7 @@
                         </div>     
                     </div>
 
-                    <div class="mb-3" *ngIf="tipoEstructura && listaFiltrada && listaFiltrada.length > 0">
+                    <div class="mb-3" *ngIf="(!nombreArea || !tipoEstructura) && tipoEstructura && listaFiltrada && listaFiltrada.length > 0">
                         <div class="name-label-container d-flex justify-content-center align-items-center">
                             <div class="name-label">
                                 <label for="area" class="form-label">

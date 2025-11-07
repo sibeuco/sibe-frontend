@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Modal } from 'bootstrap';
 import { IndicatorService } from 'src/app/feature/manage-indicators/service/indicator.service';
 import { IndicatorResponse } from 'src/app/feature/manage-indicators/model/indicator.model';
@@ -21,8 +21,10 @@ import { UserSession } from 'src/app/feature/login/model/user-session.model';
   templateUrl: './register-new-activity.component.html',
   styleUrls: ['./register-new-activity.component.scss']
 })
-export class RegisterNewActivityComponent implements OnInit {
+export class RegisterNewActivityComponent implements OnInit, OnChanges {
 
+  @Input() nombreArea: string = '';
+  @Input() tipoEstructura: 'direccion' | 'area' | 'subarea' | '' = '';
   @Output() actividadCreada = new EventEmitter<any>();
 
   actividad = {
@@ -46,7 +48,6 @@ export class RegisterNewActivityComponent implements OnInit {
   colaboradorSeleccionado: string = '';
 
   // Propiedades para estructura organizacional
-  tipoEstructura: string = '';
   direcciones: DepartmentResponse[] = [];
   areas: AreaResponse[] = [];
   subareas: SubAreaResponse[] = [];
@@ -82,6 +83,18 @@ export class RegisterNewActivityComponent implements OnInit {
     this.cargarIndicadores();
     this.cargarUsuarios();
     this.cargarEstructurasOrganizacionales();
+    
+    // Si ya tenemos los inputs al inicializar, precargar el área
+    if (this.nombreArea && this.tipoEstructura) {
+      this.buscarYPrecargarArea();
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Si cambian los inputs de área, buscar y precargar
+    if ((changes['nombreArea'] || changes['tipoEstructura']) && this.nombreArea && this.tipoEstructura) {
+      this.buscarYPrecargarArea();
+    }
   }
 
   cargarIndicadores(): void {
@@ -135,7 +148,50 @@ export class RegisterNewActivityComponent implements OnInit {
     });
   }
 
+  /**
+   * Busca el identificador del área usando consultarPorNombre y lo precarga
+   */
+  buscarYPrecargarArea(): void {
+    if (!this.nombreArea || !this.tipoEstructura) {
+      return;
+    }
+
+    let consulta$: any;
+
+    switch (this.tipoEstructura) {
+      case 'direccion':
+        consulta$ = this.departmentService.consultarPorNombre(this.nombreArea);
+        break;
+      case 'area':
+        consulta$ = this.areaService.consultarPorNombre(this.nombreArea);
+        break;
+      case 'subarea':
+        consulta$ = this.subAreaService.consultarPorNombre(this.nombreArea);
+        break;
+      default:
+        return;
+    }
+
+    consulta$.subscribe({
+      next: (estructura: any) => {
+        if (estructura && estructura.identificador) {
+          this.actividad.area = estructura.identificador;
+          this.actividad.tipoArea = this.determinarTipoArea();
+          this.areaSeleccionada = estructura.identificador;
+        }
+      },
+      error: () => {
+        // Error silencioso al buscar el área
+      }
+    });
+  }
+
   onTipoEstructuraChange(): void {
+    // Solo permitir cambios si no se pasaron los inputs desde el padre
+    if (this.nombreArea && this.tipoEstructura) {
+      return;
+    }
+
     this.areaSeleccionada = '';
     this.actividad.area = '';
     this.actividad.tipoArea = '';
