@@ -35,7 +35,6 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
 
   // Propiedades para el modal de fechas programadas
   actividadSeleccionadaParaModal: ActivityResponse | null = null;
-  fechasProgramadas: FechaProgramada[] = [];
 
   // Estados de carga
   cargando = false;
@@ -482,19 +481,9 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     
     // Configurar datos para el modal
     this.actividadSeleccionadaParaModal = actividad;
-    this.cargarFechasProgramadasParaModal(actividad.identificador);
     
     // Abrir el modal
     this.abrirModalFechas();
-  }
-
-  /**
-   * Carga las fechas programadas para una actividad específica (para el modal)
-   * TODO: Implementar la carga real de fechas programadas desde el servicio
-   */
-  private cargarFechasProgramadasParaModal(actividadIdentificador: string): void {
-    // TODO: Implementar llamada al servicio para obtener las fechas programadas
-    this.fechasProgramadas = [];
   }
 
   /**
@@ -532,7 +521,6 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
       }
     }
     this.actividadSeleccionadaParaModal = null;
-    this.fechasProgramadas = [];
   }
 
   /**
