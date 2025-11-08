@@ -7,12 +7,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class UploadDatabaseService {
-  // Probar diferentes endpoints posibles
   private readonly API_URL_BASE = `${environment.endpoint}/carga_masiva`;
-  // Alternativas comunes:
-  // private readonly API_URL_BASE = `${environment.endpoint}/empleados`;
-  // private readonly API_URL_BASE = `${environment.endpoint}/upload`;
-  // private readonly API_URL_BASE = `${environment.endpoint}/archivos`;
 
   constructor(private http: HttpClient) { }
 
