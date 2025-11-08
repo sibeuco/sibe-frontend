@@ -35,7 +35,6 @@ export class ActivityService extends HttpService {
     return this.doPut<EditActivityRequest, Response<string>>(url, actividad, opts);
   }
 
-
   consultarActividades(): Observable<ActivityResponse[]> {
     const opts = {
       headers: new HttpHeaders({

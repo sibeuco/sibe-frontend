@@ -50,6 +50,16 @@ export interface ActivityResponse {
   fechasProgramadas?: string[];
 }
 
+export interface ActivityInfo {
+  nombre: string;
+  colaborador: string;
+  objetivo: string;
+  indicador: string;
+  fechaProgramada?: string;
+  estado?: string;
+  fechaRealizacion?: string;
+}
+
 export enum EstadoActividad {
   PENDIENTE = 'Pendiente',
   EN_CURSO = 'En curso',

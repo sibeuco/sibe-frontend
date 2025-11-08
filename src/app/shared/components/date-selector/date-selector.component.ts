@@ -21,6 +21,9 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   fechasOrdenadas: FechaProgramada[] = [];
   cargando = false;
   error = '';
+  private readonly STORAGE_KEY = 'selectedActivityInfo';
+  private ejecuciones: ActivityExecutionResponse[] = [];
+  private ejecucionesPorId: Map<number, ActivityExecutionResponse> = new Map();
 
   constructor(
     private router: Router,
@@ -56,12 +59,21 @@ export class DateSelectorComponent implements OnInit, OnChanges {
         catchError(() => {
           this.error = 'Error al cargar las fechas programadas.';
           this.cargando = false;
+          this.ejecuciones = [];
+          this.ejecucionesPorId.clear();
           return of([]);
         })
       )
       .subscribe({
         next: (ejecuciones: ActivityExecutionResponse[]) => {
+          this.ejecuciones = ejecuciones || [];
+          this.ejecucionesPorId.clear();
           this.fechasOrdenadas = this.mapearEjecucionesAFechas(ejecuciones);
+          this.cargando = false;
+        },
+        error: () => {
+          this.ejecuciones = [];
+          this.ejecucionesPorId.clear();
           this.cargando = false;
         }
       });
@@ -72,13 +84,17 @@ export class DateSelectorComponent implements OnInit, OnChanges {
    */
   private mapearEjecucionesAFechas(ejecuciones: ActivityExecutionResponse[]): FechaProgramada[] {
     return ejecuciones
-      .filter(ej => ej.fechaProgramada) // Solo las que tienen fecha programada
-      .map((ej, index) => ({
-        id: parseInt(ej.identificador) || index + 1,
-        fecha: this.parseFechaLocal(ej.fechaProgramada),
-        estado: this.mapearEstado(ej.estadoActividad?.nombre),
-        actividadId: parseInt(this.actividad?.identificador || '0') || 0
-      }))
+      .filter(ej => ej.fechaProgramada)
+      .map((ej, index) => {
+        const id = this.generarIdEjecucion(ej, index);
+        this.ejecucionesPorId.set(id, ej);
+        return {
+          id,
+          fecha: this.parseFechaLocal(ej.fechaProgramada),
+          estado: this.mapearEstado(ej.estadoActividad?.nombre),
+          actividadId: parseInt(this.actividad?.identificador || '0') || 0
+        };
+      })
       .sort((a, b) => a.fecha.getTime() - b.fecha.getTime());
   }
 
@@ -144,13 +160,25 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   verFechaProgramada(fechaProgramada: FechaProgramada): void {
     // Emitir el evento para mantener compatibilidad
     this.verFecha.emit(fechaProgramada);
-    
+    const ejecucion = this.obtenerEjecucionPorFecha(fechaProgramada);
+
+    this.guardarSeleccion(this.actividad, ejecucion || null);
+
     // Cerrar el modal correctamente antes de navegar
     this.cerrarModalCompletamente();
-    
+
     // Si hay un link de redirección, navegar a él
     if (this.redirectLink) {
-      this.router.navigate([this.redirectLink]);
+      this.router.navigate([this.redirectLink], {
+        queryParams: {
+          actividadId: this.actividad?.identificador || null,
+          ejecucionId: ejecucion?.identificador || null
+        },
+        state: {
+          actividad: this.actividad,
+          ejecucion: ejecucion || null
+        }
+      });
     }
   }
 
@@ -192,5 +220,56 @@ export class DateSelectorComponent implements OnInit, OnChanges {
    */
   trackByFechaId(index: number, fecha: FechaProgramada): number {
     return fecha.id;
+  }
+
+  private obtenerEjecucionPorFecha(fechaProgramada: FechaProgramada): ActivityExecutionResponse | undefined {
+    if (!fechaProgramada) {
+      return undefined;
+    }
+
+    const ejecucionPorId = this.ejecucionesPorId.get(fechaProgramada.id);
+    if (ejecucionPorId) {
+      return ejecucionPorId;
+    }
+
+    const timestampFecha = fechaProgramada.fecha?.getTime();
+    if (timestampFecha) {
+      return this.ejecuciones.find(ej => this.parseFechaLocal(ej.fechaProgramada).getTime() === timestampFecha);
+    }
+
+    return undefined;
+  }
+
+  private generarIdEjecucion(ejecucion: ActivityExecutionResponse, index: number): number {
+    const idNumerico = Number(ejecucion.identificador);
+    if (!isNaN(idNumerico) && isFinite(idNumerico) && idNumerico > 0) {
+      return idNumerico;
+    }
+    return index + 1;
+  }
+
+  private guardarSeleccion(actividad: ActivityResponse | null, ejecucion: ActivityExecutionResponse | null): void {
+    const storage = this.obtenerStorage();
+    if (!storage) {
+      return;
+    }
+
+    if (!actividad) {
+      storage.removeItem(this.STORAGE_KEY);
+      return;
+    }
+
+    try {
+      storage.setItem(this.STORAGE_KEY, JSON.stringify({ actividad, ejecucion }));
+    } catch {
+      storage.removeItem(this.STORAGE_KEY);
+    }
+  }
+
+  private obtenerStorage(): Storage | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    return window.sessionStorage;
   }
 }

@@ -1,14 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-
-export interface ActividadInfo {
-  nombre: string;
-  colaborador: string;
-  objetivo: string;
-  indicador: string;
-  fechaProgramada?: string;
-  estado: string; // Mantenemos el estado internamente para la lógica
-  fechaRealizacion?: string;
-}
+import { Router } from '@angular/router';
+import { ActivityInfo, ActivityResponse } from '../../model/activity.model';
+import { ActivityExecutionResponse } from '../../model/activity-execution.model';
 
 @Component({
   selector: 'app-activity-info',
@@ -17,83 +10,146 @@ export interface ActividadInfo {
 })
 export class ActivityInfoComponent implements OnInit {
 
-  @Input() actividad: ActividadInfo | null = null;
-  
-  fechaActual: string = '';
+  @Input() actividad: ActivityInfo | null = null;
 
-  actividadesEjemplo: ActividadInfo[] = [
-    {
-      nombre: 'Taller de Bienestar Estudiantil',
-      colaborador: 'María González Pérez',
-      objetivo: 'Promover el bienestar integral de los estudiantes a través de actividades recreativas y de desarrollo personal',
-      indicador: 'Satisfacción grupos de Interés - eficacia',
-      fechaProgramada: '2024-12-25',
-      estado: 'FINALIZADA',
-      fechaRealizacion: '2024-12-25'
-    },
-    {
-      nombre: 'Programa de Evangelización Comunitaria',
-      colaborador: 'Carlos Rodríguez Martínez',
-      objetivo: 'Fortalecer los valores espirituales y la fe en la comunidad universitaria mediante actividades de evangelización',
-      indicador: 'Nivel satisfacción - impacto',
-      fechaProgramada: '2024-12-30',
-      estado: 'EN_CURSO',
-      fechaRealizacion: undefined
-    },
-    {
-      nombre: 'Actividad de Servicio Social',
-      colaborador: 'Ana Lucía Herrera',
-      objetivo: 'Desarrollar el sentido de responsabilidad social en los estudiantes a través de actividades de servicio comunitario',
-      indicador: 'Reducción de quejas y reclamos - efectividad',
-      fechaProgramada: '2025-01-15',
-      estado: 'FINALIZADA',
-      fechaRealizacion: '2024-12-25'
-    }
-  ];
+  actividadSeleccionada: ActivityInfo | null = null;
+  cargando = false;
+  error = '';
 
-  actividadEjemplo: ActividadInfo = this.actividadesEjemplo[2];
+  private readonly STORAGE_KEY = 'selectedActivityInfo';
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    if (!this.actividad) {
-      this.actividad = this.actividadEjemplo;
+    this.cargarDesdeEstado();
+    this.cargarDesdeStorage();
+
+    if (!this.actividadSeleccionada && this.actividad) {
+      this.actividadSeleccionada = this.actividad;
+    }
+
+    if (!this.actividadSeleccionada) {
+      this.error = 'No hay actividad seleccionada para mostrar.';
     }
   }
 
-  // Método para formatear la fecha programada si viene en formato ISO
-  formatearFechaProgramada(fechaISO: string): string {
+  formatearFechaProgramada(fechaISO?: string): string {
     if (!fechaISO) return '';
-    const fecha = new Date(fechaISO);
+    const fecha = this.parseFechaLocal(fechaISO);
     const dia = fecha.getDate().toString().padStart(2, '0');
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
     const año = fecha.getFullYear();
     return `${dia}/${mes}/${año}`;
   }
 
-  // Método para cambiar a una actividad específica de ejemplo (útil para testing)
-  cambiarActividadEjemplo(indice: number): void {
-    if (indice >= 0 && indice < this.actividadesEjemplo.length) {
-      this.actividad = this.actividadesEjemplo[indice];
-    }
-  }
-
-  // Método para obtener todas las actividades de ejemplo (útil para debugging)
-  obtenerActividadesEjemplo(): ActividadInfo[] {
-    return this.actividadesEjemplo;
-  }
-
-  // Método para verificar si el estado es FINALIZADA
   esActividadFinalizada(): boolean {
-    return this.actividad?.estado === 'FINALIZADA';
+    return (this.actividadSeleccionada?.estado || '').toUpperCase() === 'FINALIZADO' || (this.actividadSeleccionada?.estado || '').toUpperCase() === 'FINALIZADA';
   }
 
-  // Método para formatear la fecha de realización
-  formatearFechaRealizacion(fechaISO: string): string {
+  formatearFechaRealizacion(fechaISO?: string): string {
     if (!fechaISO) return '';
-    const fecha = new Date(fechaISO);
+    const fecha = this.parseFechaLocal(fechaISO);
     const dia = fecha.getDate().toString().padStart(2, '0');
     const mes = (fecha.getMonth() + 1).toString().padStart(2, '0');
     const año = fecha.getFullYear();
     return `${dia}/${mes}/${año}`;
   }
 
+  private cargarDesdeEstado(): void {
+    const navigationState = this.router.getCurrentNavigation()?.extras?.state as { actividad?: ActivityResponse | ActivityInfo; ejecucion?: ActivityExecutionResponse } | undefined;
+    if (navigationState?.actividad) {
+      this.setActividad(navigationState.actividad, navigationState.ejecucion || null);
+      return;
+    }
+
+    const historyState = window.history.state as { actividad?: ActivityResponse | ActivityInfo; ejecucion?: ActivityExecutionResponse } | undefined;
+    if (historyState?.actividad) {
+      this.setActividad(historyState.actividad, historyState.ejecucion || null);
+    }
+  }
+
+  private cargarDesdeStorage(): void {
+    if (this.actividadSeleccionada) {
+      return;
+    }
+
+    const storage = this.obtenerStorage();
+    const raw = storage?.getItem(this.STORAGE_KEY);
+    if (!raw) {
+      return;
+    }
+
+    try {
+      const data = JSON.parse(raw) as { actividad?: ActivityResponse | ActivityInfo; ejecucion?: ActivityExecutionResponse | null };
+      if (data.actividad) {
+        this.setActividad(data.actividad, data.ejecucion || null, false);
+      }
+    } catch {
+      storage?.removeItem(this.STORAGE_KEY);
+    }
+  }
+
+  private setActividad(actividadDato: ActivityResponse | ActivityInfo, ejecucion: ActivityExecutionResponse | null, persistir = true): void {
+    this.error = '';
+    this.actividadSeleccionada = this.construirActividadInfo(actividadDato, ejecucion);
+
+    if (persistir) {
+      const storage = this.obtenerStorage();
+      if (storage) {
+        try {
+          storage.setItem(this.STORAGE_KEY, JSON.stringify({ actividad: actividadDato, ejecucion }));
+        } catch {
+          storage.removeItem(this.STORAGE_KEY);
+        }
+      }
+    }
+  }
+
+  private construirActividadInfo(actividadDato: ActivityResponse | ActivityInfo, ejecucion: ActivityExecutionResponse | null): ActivityInfo {
+    const nombre = (actividadDato as any).nombre || '';
+    const colaborador = (actividadDato as any).nombreColaborador || (actividadDato as any).colaborador || 'Sin colaborador';
+    const objetivo = (actividadDato as any).objetivo || '';
+
+    const indicadorDato = (actividadDato as any).indicador;
+    let indicador = '';
+    if (typeof indicadorDato === 'string') {
+      indicador = indicadorDato;
+    } else if (indicadorDato && typeof indicadorDato === 'object') {
+      const nombreIndicador = indicadorDato.nombre || '';
+      const tipologia = indicadorDato.tipoIndicador?.tipologiaIndicador;
+      indicador = tipologia ? `${nombreIndicador} - ${tipologia}` : nombreIndicador;
+    }
+
+    return {
+      nombre,
+      colaborador,
+      objetivo,
+      indicador,
+      fechaProgramada: ejecucion?.fechaProgramada || (actividadDato as any).fechaProgramada,
+      estado: ejecucion?.estadoActividad?.nombre || (actividadDato as any).estado,
+      fechaRealizacion: ejecucion?.fechaRealizacion || (actividadDato as any).fechaRealizacion
+    };
+  }
+
+  private obtenerStorage(): Storage | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    return window.sessionStorage;
+  }
+
+  private parseFechaLocal(fechaStr: string): Date {
+    const soloFecha = /^\d{4}-\d{2}-\d{2}$/;
+    if (soloFecha.test(fechaStr)) {
+      const [y, m, d] = fechaStr.split('-').map(Number);
+      return new Date(y, m - 1, d);
+    }
+    const d = new Date(fechaStr);
+    if (!isNaN(d.getTime())) {
+      return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    }
+    return new Date();
+  }
 }
+
+
