@@ -19,16 +19,21 @@
                     [icon]="'bi bi-plus-circle'"
                     [text]="'Agregar nueva actividad'">
                 </app-primary-button>
-                <app-register-new-activity></app-register-new-activity>
+                <app-register-new-activity 
+                    [nombreArea]="nombreArea"
+                    [tipoEstructura]="tipoEstructura"
+                    (actividadCreada)="onActividadCreada()">
+                </app-register-new-activity>
             </div>
             <div class="activities-table-container">
-                 <app-activities-table 
-                     [actividades]="listaActividades"
-                     [rutaRedireccion]="'/home/area-bienestar/sub-area-banda-sinfonica/asistencia-actividad-subarea-banda'"
-                     [terminoBusqueda]="terminoBusqueda"
-                     (actividadSeleccionada)="onActividadSeleccionada($event)">
-                 </app-activities-table>
-             </div>
+                <app-activities-table 
+                    [nombreArea]="nombreArea"
+                    [tipoEstructura]="tipoEstructura"
+                    [rutaRedireccion]="'/home/area-bienestar/sub-area-banda-sinfonica/asistencia-actividad-subarea-banda'"
+                    [terminoBusqueda]="terminoBusqueda"
+                    (actividadSeleccionada)="onActividadSeleccionada($event)">
+                </app-activities-table>
+            </div>
         </div>
     </div>
 </div>

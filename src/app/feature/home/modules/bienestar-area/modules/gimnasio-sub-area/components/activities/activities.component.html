@@ -19,11 +19,16 @@
                     [icon]="'bi bi-plus-circle'"
                     [text]="'Agregar nueva actividad'">
                 </app-primary-button>
-                <app-register-new-activity></app-register-new-activity>
+                <app-register-new-activity 
+                    [nombreArea]="nombreArea"
+                    [tipoEstructura]="tipoEstructura"
+                    (actividadCreada)="onActividadCreada()">
+                </app-register-new-activity>
             </div>
             <div class="activities-table-container">
                 <app-activities-table 
-                    [actividades]="listaActividades"
+                    [nombreArea]="nombreArea"
+                    [tipoEstructura]="tipoEstructura"
                     [rutaRedireccion]="'/home/area-bienestar/sub-area-gimnasio/asistencia-actividad-subarea-gimnasio'"
                     [terminoBusqueda]="terminoBusqueda"
                     (actividadSeleccionada)="onActividadSeleccionada($event)">

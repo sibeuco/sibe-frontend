@@ -10,20 +10,28 @@ import { AreaResponse } from '../model/area.model';
 })
 export class AreaService extends HttpService {
     private readonly AREA_ENDPOINT = '/areas';
+    private readonly AREA_NAME_ENDPOINT = '/areas/nombre';
 
     constructor(http: HttpClient) {
         super(http);
     }
 
     consultarAreas(): Observable<AreaResponse[]> {
-            const opts = {
-                headers: new HttpHeaders({
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
-                })
-            };
-            const url = `${environment.endpoint}${this.AREA_ENDPOINT}`;
-            return this.http.get<AreaResponse[]>(url, opts);
-        }
+        const opts = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+            })
+        };
+        const url = `${environment.endpoint}${this.AREA_ENDPOINT}`;
+        return this.http.get<AreaResponse[]>(url, opts);
+    }
+
+    consultarPorNombre(nombre: string): Observable<AreaResponse> {
+        const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.AREA_NAME_ENDPOINT}/${nombre}`;
+
+        return this.doGet<AreaResponse>(url, opts);
+    }
 
 }
