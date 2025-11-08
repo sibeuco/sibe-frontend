@@ -7,6 +7,11 @@
                     <button type="button" class="btn-close position-absolute" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="mb-3 text-center">
+                        <span class="badge bg-success text-uppercase px-3 py-2">
+                            {{ obtenerEtiquetaTipo() }}
+                        </span>
+                    </div>
                     <!-- Información -->
                     <div class="mb-4 text-center">
                         <p class="info-text">{{ obtenerDescripcionModal() }}</p>
