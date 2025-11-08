@@ -79,8 +79,7 @@
             <button 
                 type="button" 
                 class="btn btn-outline-warning btn-sm edit-activity-button"
-                data-bs-toggle="modal" 
-                data-bs-target="#edit-activity-modal"
+                (click)="abrirModalEditar(actividad)"
                 title="Editar actividad">
                 <i class="bi bi-pencil"></i>
             </button>
@@ -93,7 +92,12 @@
       <p>Aún no hay actividades registradas.</p>
     </div>
   </div>
-  <app-edit-activity></app-edit-activity>
+  <app-edit-activity 
+    [actividad]="actividadSeleccionadaEdicion"
+    [nombreArea]="nombreArea"
+    [tipoEstructura]="tipoEstructura"
+    (actividadEditada)="recargarActividades()">
+  </app-edit-activity>
   <app-date-selector 
     [actividad]="actividadSeleccionadaParaModal"
     [redirectLink]="rutaRedireccion"

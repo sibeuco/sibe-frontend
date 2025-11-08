@@ -63,6 +63,7 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
   // Fecha temporal para agregar
   fechaTemporal: string = '';
   errorFecha: string = '';
+  minFechaProgramada: string = this.obtenerFechaActualISO();
 
   // Estados para el registro
   cargando = false;
@@ -88,6 +89,15 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
     if (this.nombreArea && this.tipoEstructura) {
       this.buscarYPrecargarArea();
     }
+  }
+
+  private obtenerFechaActualISO(): string {
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const year = hoy.getFullYear();
+    const month = String(hoy.getMonth() + 1).padStart(2, '0');
+    const day = String(hoy.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -232,6 +242,11 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
 
     if (!this.fechaTemporal) {
       this.errorFecha = 'Por favor seleccione una fecha';
+      return;
+    }
+
+    if (this.fechaTemporal < this.minFechaProgramada) {
+      this.errorFecha = 'La fecha no puede ser anterior a la fecha actual';
       return;
     }
 

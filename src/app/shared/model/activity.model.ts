@@ -40,6 +40,14 @@ export interface ActivityResponse {
   colaborador: string;
   nombreColaborador: string;
   creador: string;
+  area?: {
+    area: string;
+    tipoArea: string;
+    nombreArea?: string;
+  };
+  tipoArea?: string;
+  areaIdentificador?: string;
+  fechasProgramadas?: string[];
 }
 
 export enum EstadoActividad {

@@ -7,6 +7,18 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body">
+                    <div *ngIf="cargandoDatosActividad" class="mb-3 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando información de la actividad...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Cargando información de la actividad...</p>
+                    </div>
+
+                    <div *ngIf="soloColaboradorEditable" class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <div>Esta actividad tiene ejecuciones finalizadas. Solo es posible actualizar el colaborador asignado.</div>
+                    </div>
+
                     <div class="mb-3">
                         <div class="name-label-container d-flex justify-content-center align-items-center">
                             <div class="name-label">
@@ -14,7 +26,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="actividad.nombre" required />
+                            <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="actividadForm.nombre" [disabled]="soloColaboradorEditable" required />
                         </div>     
                     </div>
 
@@ -25,7 +37,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="objetivo" name="objetivo" [(ngModel)]="actividad.objetivo" required />
+                            <input type="text" class="form-control" id="objetivo" name="objetivo" [(ngModel)]="actividadForm.objetivo" [disabled]="soloColaboradorEditable" required />
                         </div>     
                     </div>
 
@@ -36,7 +48,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="semestre" name="semestre" [(ngModel)]="actividad.semestre" required />
+                            <input type="text" class="form-control" id="semestre" name="semestre" [(ngModel)]="actividadForm.semestre" [disabled]="soloColaboradorEditable" required />
                         </div>     
                     </div>
 
@@ -47,7 +59,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="ruta" name="ruta" [(ngModel)]="actividad.rutaInsumos" required />
+                            <input type="text" class="form-control" id="ruta" name="ruta" [(ngModel)]="actividadForm.rutaInsumos" [disabled]="soloColaboradorEditable" required />
                         </div>     
                     </div>
 
@@ -60,11 +72,12 @@
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <select class="form-select" id="indicador" name="indicador" 
                                     [(ngModel)]="indicadorSeleccionado" 
-                                    (change)="actividad.indicador = indicadorSeleccionado"
+                                    (change)="actividadForm.indicador = indicadorSeleccionado"
+                                    [disabled]="soloColaboradorEditable"
                                     required>
                                 <option value="">Seleccione un indicador</option>
-                                <option *ngFor="let indicador of indicadores" [value]="indicador.nombre">
-                                    {{ indicador.nombre }} - {{ indicador.tipologia }}
+                                <option *ngFor="let indicador of indicadores" [value]="indicador.identificador">
+                                    {{ indicador.nombre }} - {{ indicador.tipoIndicador.tipologiaIndicador }}
                                 </option>
                             </select>
                         </div>     
@@ -77,7 +90,76 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="colaborador" name="colaborador" [(ngModel)]="actividad.colaborador" required />
+                            <select class="form-select" id="colaborador" name="colaborador" 
+                                    [(ngModel)]="colaboradorSeleccionado" 
+                                    (change)="actividadForm.colaborador = colaboradorSeleccionado"
+                                    required>
+                                <option value="">Seleccione un colaborador</option>
+                                <option *ngFor="let usuario of usuarios" [value]="usuario.identificador">
+                                    {{ usuario.nombres }} {{ usuario.apellidos }} - {{ usuario.correo }}
+                                </option>
+                            </select>
+                        </div>     
+                    </div>
+
+                    <!-- Mostrar información del área si se pasa desde el padre -->
+                    <div class="mb-3" *ngIf="nombreArea && tipoEstructuraSeleccionado">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label class="form-label">
+                                    <span *ngIf="tipoEstructuraSeleccionado === 'direccion'">Dirección</span>
+                                    <span *ngIf="tipoEstructuraSeleccionado === 'area'">Área</span>
+                                    <span *ngIf="tipoEstructuraSeleccionado === 'subarea'">Subárea</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" [value]="nombreArea" readonly />
+                        </div>     
+                    </div>
+
+                    <!-- Campos de selección solo si NO se pasan desde el padre -->
+                    <div class="mb-3" *ngIf="!nombreArea || !tipoEstructuraSeleccionado">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="tipoEstructura" class="form-label">Tipo de Estructura Organizacional</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="tipoEstructura" name="tipoEstructura" 
+                                    [(ngModel)]="tipoEstructuraSeleccionado" 
+                                    (change)="onTipoEstructuraChange()"
+                                    [disabled]="soloColaboradorEditable"
+                                    required>
+                                <option value="">Seleccione el tipo</option>
+                                <option value="direccion">Dirección</option>
+                                <option value="area">Área</option>
+                                <option value="subarea">Subárea</option>
+                            </select>
+                        </div>     
+                    </div>
+
+                    <div class="mb-3" *ngIf="(!nombreArea || !tipoEstructuraSeleccionado) && tipoEstructuraSeleccionado && listaFiltrada && listaFiltrada.length > 0">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="area" class="form-label">
+                                    <span *ngIf="tipoEstructuraSeleccionado === 'direccion'">Seleccionar Dirección</span>
+                                    <span *ngIf="tipoEstructuraSeleccionado === 'area'">Seleccionar Área</span>
+                                    <span *ngIf="tipoEstructuraSeleccionado === 'subarea'">Seleccionar Subárea</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="area" name="area" 
+                                    [(ngModel)]="areaSeleccionada" 
+                                    (change)="actividadForm.area = areaSeleccionada; actividadForm.tipoArea = determinarTipoArea()"
+                                    [disabled]="soloColaboradorEditable"
+                                    required>
+                                <option value="">Seleccione una opción</option>
+                                <option *ngFor="let item of listaFiltrada" [value]="item.identificador">
+                                    {{ item.nombre }}
+                                </option>
+                            </select>
                         </div>     
                     </div>
 
@@ -100,11 +182,14 @@
                                     id="fechaTemporal" 
                                     name="fechaTemporal" 
                                     [(ngModel)]="fechaTemporal"
+                                    [min]="minFechaProgramada"
+                                    [disabled]="soloColaboradorEditable"
                                     style="flex: 1;" />
                                 <button 
                                     type="button" 
                                     class="btn btn-agregar btn-sm ms-2" 
                                     (click)="agregarFecha()"
+                                    [disabled]="soloColaboradorEditable"
                                     title="Agregar fecha a la lista">
                                     + Agregar
                                 </button>
@@ -117,20 +202,21 @@
                         </div>
                         
                         <!-- Lista de fechas agregadas -->
-                        <div *ngIf="actividad.fechasProgramadas.length > 0" class="fechas-lista mt-2">
+                        <div *ngIf="actividadForm.fechasProgramadas.length > 0" class="fechas-lista mt-2">
                             <div class="d-flex justify-content-center">
                                 <div style="width: 85%;">
                                     <small class="text-secondary">
-                                        <strong>Fechas agregadas ({{ actividad.fechasProgramadas.length }}):</strong>
+                                        <strong>Fechas agregadas ({{ actividadForm.fechasProgramadas.length }}):</strong>
                                     </small>
                                     <div class="d-flex flex-wrap gap-2 mt-2">
-                                        <span *ngFor="let fecha of actividad.fechasProgramadas; let i = index; trackBy: trackByIndex" 
+                                        <span *ngFor="let fecha of actividadForm.fechasProgramadas; let i = index; trackBy: trackByIndex" 
                                               class="badge bg-secondary d-flex align-items-center">
                                             <span>{{ fecha }}</span>
                                             <button 
                                                 type="button" 
                                                 class="btn-close btn-close-white ms-2" 
                                                 (click)="eliminarFecha(i)"
+                                                [disabled]="soloColaboradorEditable"
                                                 aria-label="Eliminar fecha"
                                                 style="font-size: 0.6rem; padding: 0.2rem;">
                                             </button>
@@ -144,24 +230,40 @@
                         <input 
                             type="hidden" 
                             name="fechasValidacion" 
-                            [ngModel]="actividad.fechasProgramadas.length > 0 ? 'valid' : ''" 
-                            required />
+                            [ngModel]="actividadForm.fechasProgramadas.length > 0 ? 'valid' : ''" 
+                            [required]="!soloColaboradorEditable" />
                     </div>
 
-                    <div class="mb-3">
-                        <div class="name-label-container d-flex justify-content-center align-items-center">
-                            <div class="name-label">
-                                <label for="areaActividad" class="form-label">Area que ejecuta la actividad</label>
-                            </div>
+                    <div *ngIf="cargando" class="mb-3 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Actualizando actividad...</span>
                         </div>
-                        <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="areaActividad" name="areaActividad" [(ngModel)]="actividad.areaPertenece" required />
-                        </div>     
+                        <p class="mt-2 text-muted">Actualizando actividad...</p>
+                    </div>
+
+                    <div *ngIf="error" class="mb-3">
+                        <div class="alert alert-danger d-flex align-items-center" role="alert">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            <div>{{ error }}</div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="mensajeExito" class="mb-3">
+                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <div>{{ mensajeExito }}</div>
+                        </div>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid">Registrar</button>
+                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid || cargando || cargandoDatosActividad">
+                    <span *ngIf="!cargando">Actualizar</span>
+                    <span *ngIf="cargando">
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                        Actualizando...
+                    </span>
+                </button>
                 <button type="button" class="cancel-button btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                 </div>
             </form>

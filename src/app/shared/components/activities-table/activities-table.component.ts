@@ -8,6 +8,7 @@ import { AreaService } from '../../service/area.service';
 import { SubAreaService } from '../../service/subarea.service';
 import { forkJoin, of } from 'rxjs';
 import { catchError, switchMap, map } from 'rxjs/operators';
+import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-activities-table',
@@ -31,6 +32,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
 
   // Propiedades para el modal de fechas programadas
   actividadSeleccionadaParaModal: ActivityResponse | null = null;
+  actividadSeleccionadaEdicion: ActivityResponse | null = null;
 
   // Estados de carga
   cargando = false;
@@ -430,6 +432,18 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     
     // Abrir el modal
     this.abrirModalFechas();
+  }
+
+  abrirModalEditar(actividad: ActivityResponse): void {
+    this.actividadSeleccionadaEdicion = actividad;
+
+    setTimeout(() => {
+      const modalElement = document.getElementById('edit-activity-modal');
+      if (modalElement) {
+        const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+        modal.show();
+      }
+    });
   }
 
   /**
