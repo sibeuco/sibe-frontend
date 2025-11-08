@@ -2,72 +2,67 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { EmployeeFileRequest } from '../model/employee.model';
+import { StudentFileRequest } from '../model/student.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadDatabaseService {
   private readonly API_URL_BASE = `${environment.endpoint}/carga_masiva`;
+  private readonly ENDPOINTS: Record<'empleados' | 'estudiantes', string> = {
+    empleados: `${this.API_URL_BASE}/empleados`,
+    estudiantes: `${this.API_URL_BASE}/estudiantes`
+  };
+
+  private readonly PARAM_NAME = 'archivo';
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Sube un archivo Excel al backend para empleados o estudiantes.
-   * @param archivo Archivo Excel (.xlsx)
-   * @param tipo 'empleados' | 'estudiantes'
-   */
-  subirArchivo(archivo: File, tipo: 'empleados' | 'estudiantes'): Observable<any> {
-    return this.subirArchivoConHeaders(archivo, tipo);
+  subirArchivoEmpleados(request: EmployeeFileRequest): Observable<any> {
+    return this.subirArchivoConHeaders(request.archivo, 'empleados');
   }
 
-  /**
-   * Método interno para subir archivo con headers de autorización
-   */
+  subirArchivoEstudiantes(request: StudentFileRequest): Observable<any> {
+    return this.subirArchivoConHeaders(request.archivo, 'estudiantes');
+  }
+
   private subirArchivoConHeaders(archivo: File, tipo: 'empleados' | 'estudiantes'): Observable<any> {
-    const formData = new FormData();
+    const formData = this.crearFormData(archivo);
 
-    // El nombre del parámetro debe coincidir con @RequestParam del backend
-    // Según el backend: @RequestParam(ARCHIVO_PARAM) donde ARCHIVO_PARAM = "archivo"
-    const paramName = 'archivo';
-    formData.append(paramName, archivo);
+    const headers = this.crearHeadersAutorizacion();
 
-    // Endpoint correcto según el backend: @RequestMapping(CARGA_MASIVA) + @PostMapping(EMPLEADOS/ESTUDIANTES)
-    const endpoint = `${environment.endpoint}/carga_masiva/${tipo}`;
-
-    // Obtener el token de autorización
-    const token = window.sessionStorage.getItem('Authorization');
-
-    // Headers para multipart/form-data con autorización
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token || ''}`
-    });
-    
-    return this.http.post(endpoint, formData, { headers }).pipe(
+    return this.http.post(this.ENDPOINTS[tipo], formData, { headers }).pipe(
       catchError(error => {
-        // Si es error de autorización, probar sin headers
         if (error.status === 401 || error.status === 403) {
+          // Si hay error de autenticación, probar sin headers
           return this.subirArchivoSinHeaders(archivo, tipo);
         }
-        
         return throwError(() => error);
       })
     );
   }
 
-  /**
-   * Método interno para subir archivo sin headers de autorización
-   */
   private subirArchivoSinHeaders(archivo: File, tipo: 'empleados' | 'estudiantes'): Observable<any> {
-    const formData = new FormData();
-    const paramName = 'archivo';
-    formData.append(paramName, archivo);
-    const endpoint = `${environment.endpoint}/carga_masiva/${tipo}`;
-
-    return this.http.post(endpoint, formData).pipe(
-      catchError(error => {
-        return throwError(() => error);
-      })
+    const formData = this.crearFormData(archivo);
+    return this.http.post(this.ENDPOINTS[tipo], formData).pipe(
+      catchError(error => throwError(() => error))
     );
+  }
+
+  private crearFormData(archivo: File): FormData {
+    const formData = new FormData();
+    formData.append(this.PARAM_NAME, archivo);
+    return formData;
+  }
+
+  private crearHeadersAutorizacion(): HttpHeaders {
+    let headers = new HttpHeaders();
+    const token = sessionStorage.getItem('Authorization') || localStorage.getItem('Authorization') || '';
+    if (token) {
+      const bearerToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+      headers = headers.set('Authorization', bearerToken);
+    }
+    return headers;
   }
 }
-

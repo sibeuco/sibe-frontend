@@ -1,11 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Modal } from 'bootstrap';
 import { UploadDatabaseService } from '../../service/upload-database.service';
+import { EmployeeFileRequest } from '../../model/employee.model';
+import { StudentFileRequest } from '../../model/student.model';
 
-/**
- * Componente para cargar archivos Excel de empleados o estudiantes al servidor.
- * Los archivos se envían automáticamente al backend mediante el servicio UploadDatabaseService.
- */
 @Component({
   selector: 'app-upload-database',
   templateUrl: './upload-database.component.html',
@@ -13,22 +11,22 @@ import { UploadDatabaseService } from '../../service/upload-database.service';
 })
 export class UploadDatabaseComponent {
   @Output() archivoSeleccionado = new EventEmitter<File>();
-  @Output() cargaCompleta = new EventEmitter<any>(); // Emite la respuesta del backend
+  @Output() cargaCompleta = new EventEmitter<any>();
 
   archivoActual: File | null = null;
   nombreArchivo: string = '';
   mensajeError: string = '';
   mensajeExito: string = '';
-  cargando: boolean = false; // Indica si se está subiendo el archivo
-  tipoBaseDatos: 'empleados' | 'estudiantes' = 'empleados'; // Tipo de base de datos a cargar
+  cargando: boolean = false;
+  tipoBaseDatos: 'empleados' | 'estudiantes' = 'empleados';
   
   // Configuracion de validaciones
   private readonly TAMANO_MAXIMO_MB = 40;
   private readonly TAMANO_MAXIMO_BYTES = this.TAMANO_MAXIMO_MB * 1024 * 1024;
   private readonly EXTENSIONES_PERMITIDAS = ['.xlsx', '.xls'];
   private readonly TIPOS_MIME_PERMITIDOS = [
-    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
-    'application/vnd.ms-excel' // .xls
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'application/vnd.ms-excel'
   ];
 
   constructor(private uploadService: UploadDatabaseService) { }
@@ -40,14 +38,13 @@ export class UploadDatabaseComponent {
     const archivo: File = event.target.files[0];
     
     if (archivo) {
-      // Validar que sea un archivo
+
       if (!archivo.name) {
         this.mensajeError = 'Por favor selecciona un archivo válido';
         this.limpiarSeleccion();
         return;
       }
 
-      // Validar extensión del archivo
       const extension = this.obtenerExtension(archivo.name);
       if (!this.EXTENSIONES_PERMITIDAS.includes(extension)) {
         this.mensajeError = `Solo se permiten archivos de Excel (${this.EXTENSIONES_PERMITIDAS.join(', ')})`;
@@ -62,24 +59,18 @@ export class UploadDatabaseComponent {
         return;
       }
 
-      // Validar tamano
       if (archivo.size > this.TAMANO_MAXIMO_BYTES) {
         this.mensajeError = `El archivo es demasiado grande. Tamano maximo: ${this.TAMANO_MAXIMO_MB}MB`;
         this.limpiarSeleccion();
         return;
       }
 
-      // Archivo válido
       this.archivoActual = archivo;
       this.nombreArchivo = archivo.name;
       this.mensajeExito = 'Archivo seleccionado correctamente';
     }
   }
 
-  /**
-   * Abre el modal para cargar base de datos
-   * @param tipo Tipo de base de datos: 'empleados' o 'estudiantes'
-   */
   abrirModal(tipo: 'empleados' | 'estudiantes') {
     this.tipoBaseDatos = tipo;
     this.limpiarFormulario();
@@ -100,13 +91,21 @@ export class UploadDatabaseComponent {
     this.mensajeError = '';
     this.mensajeExito = '';
 
+    const request = this.crearRequestCarga();
+    if (!request) {
+      this.cargando = false;
+      this.mensajeError = 'No se pudo preparar la solicitud de carga';
+      return;
+    }
 
-    // Enviar el archivo al backend con el tipo de base de datos
-    this.uploadService.subirArchivo(this.archivoActual, this.tipoBaseDatos).subscribe({
+    const carga$ = this.tipoBaseDatos === 'empleados'
+      ? this.uploadService.subirArchivoEmpleados(request as EmployeeFileRequest)
+      : this.uploadService.subirArchivoEstudiantes(request as StudentFileRequest);
+
+    carga$.subscribe({
       next: (respuesta) => {
         this.cargando = false;
         
-        // Mostrar mensaje de éxito del backend o mensaje por defecto
         if (respuesta && respuesta.mensaje) {
           this.mensajeExito = respuesta.mensaje;
         } else if (respuesta && respuesta.message) {
@@ -121,7 +120,6 @@ export class UploadDatabaseComponent {
         // Emitir la respuesta del backend
         this.cargaCompleta.emit(respuesta);
         
-        // Cerrar el modal después de un breve delay
         setTimeout(() => {
           this.cerrarModal();
           this.limpiarFormulario();
@@ -130,7 +128,6 @@ export class UploadDatabaseComponent {
       error: (error) => {
         this.cargando = false;
         
-        // Manejar diferentes tipos de errores con mensajes del backend
         if (error.status === 0) {
           this.mensajeError = 'No se pudo conectar con el servidor';
         } else if (error.status === 400) {
@@ -144,7 +141,8 @@ export class UploadDatabaseComponent {
         } else {
           this.mensajeError = error.error?.mensaje || error.error?.message || 'Error al cargar el archivo al servidor';
         }
-      }
+      },
+      complete: () => {}
     });
   }
 
@@ -172,6 +170,7 @@ export class UploadDatabaseComponent {
     this.limpiarSeleccion();
     this.mensajeError = '';
     this.mensajeExito = '';
+    this.cargando = false;
   }
 
   private cerrarModal() {
@@ -198,5 +197,21 @@ export class UploadDatabaseComponent {
     return this.tipoBaseDatos === 'empleados'
       ? 'Selecciona un archivo de Excel (.xlsx o .xls) para cargar la base de datos del personal universitario'
       : 'Selecciona un archivo de Excel (.xlsx o .xls) para cargar la base de datos de estudiantes';
+  }
+
+  obtenerEtiquetaTipo(): string {
+    return this.tipoBaseDatos === 'empleados' ? 'Empleados' : 'Estudiantes';
+  }
+
+  private crearRequestCarga(): EmployeeFileRequest | StudentFileRequest | null {
+    if (!this.archivoActual) {
+      return null;
+    }
+
+    if (this.tipoBaseDatos === 'empleados') {
+      return { archivo: this.archivoActual };
+    }
+
+    return { archivo: this.archivoActual };
   }
 }
