@@ -1,6 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { Participante, AsistenciaActividad } from 'src/app/core/model/participante.model';
 import { Modal } from 'bootstrap';
+import { UniversityMemberService } from '../../service/university-member.service';
+import { UniversityMemberResponse } from '../../model/university-member.model';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-attendance-record',
@@ -24,188 +27,26 @@ export class AttendanceRecordComponent implements OnInit {
   guardando: boolean = false;
   mensaje: string = '';
   tipoMensaje: 'success' | 'error' | 'warning' = 'success';
-  mostrarDatosPrueba: boolean = false;
+  actividadIniciada: boolean = false;
   
   // Lista de participantes
-  participantesAsistencia: Participante[] = [];
+  miembrosAsistencia: UniversityMemberResponse[] = [];
 
-  private participantesMock: Participante[] = [
-    {
-      id: 1,
-      tipoIdentificacion: 'CC',
-      documento: '1036965847',
-      primerNombre: 'Daniel',
-      segundoNombre: 'Felipe',
-      primerApellido: 'Garcia',
-      segundoApellido: 'Quiceno',
-      correo: 'daniel.garcia5847@gmail.com',
-      rfid: '0058844276',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 2,
-      tipoIdentificacion: 'CC',
-      documento: '1036945983',
-      primerNombre: 'Erika',
-      segundoNombre: 'Fernanda',
-      primerApellido: 'Torres',
-      segundoApellido: 'Marin',
-      correo: 'egresado.jefe@uco.edu.co',
-      rfid: '3620660411',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 3,
-      tipoIdentificacion: 'TI',
-      documento: 'TI123456',
-      primerNombre: 'Carlos',
-      segundoNombre: 'Alberto',
-      primerApellido: 'González',
-      segundoApellido: 'Martínez',
-      correo: 'carlos.gonzalez@email.com',
-      rfid: 'RF009012',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 4,
-      tipoIdentificacion: 'CC',
-      documento: '11223344',
-      primerNombre: 'Ana',
-      segundoNombre: 'Sofía',
-      primerApellido: 'Hernández',
-      segundoApellido: 'Díaz',
-      correo: 'ana.hernandez@email.com',
-      rfid: 'RF003456',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 5,
-      tipoIdentificacion: 'CC',
-      documento: '55667788',
-      primerNombre: 'Luis',
-      segundoNombre: 'Fernando',
-      primerApellido: 'Morales',
-      segundoApellido: 'Castro',
-      correo: 'luis.morales@email.com',
-      rfid: 'RF007890',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 6,
-      tipoIdentificacion: 'CC',
-      documento: '99887766',
-      primerNombre: 'Laura',
-      segundoNombre: 'Isabel',
-      primerApellido: 'Jiménez',
-      segundoApellido: 'Ruiz',
-      correo: 'laura.jimenez@email.com',
-      rfid: 'RF001122',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 7,
-      tipoIdentificacion: 'TI',
-      documento: 'TI789012',
-      primerNombre: 'Diego',
-      segundoNombre: 'Alejandro',
-      primerApellido: 'Vargas',
-      segundoApellido: 'Ramírez',
-      correo: 'diego.vargas@email.com',
-      rfid: 'RF004567',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 8,
-      tipoIdentificacion: 'CC',
-      documento: '33445566',
-      primerNombre: 'Sandra',
-      segundoNombre: 'Patricia',
-      primerApellido: 'Torres',
-      segundoApellido: 'Flores',
-      correo: 'sandra.torres@email.com',
-      rfid: 'RF008901',
-      tipoUsuario: 'Estudiante'
-    }
-  ];
-
-  constructor() {}
+  constructor(private universityMemberService: UniversityMemberService) {}
 
   ngOnInit(): void {
     this.limpiarMensaje();
-    this.cargarDatosPrueba();
+  }
+
+  iniciarActividad(): void {
+    this.actividadIniciada = true;
+    this.limpiarMensaje();
+    this.mostrarMensaje('La actividad fue iniciada. Puedes registrar la asistencia.', 'success');
   }
 
   /**
    * Carga datos de prueba para testing
    */
-  private cargarDatosPrueba(): void {
-    // Datos de actividad de prueba
-    if (!this.actividad) {
-      this.actividad = {
-        id: 1,
-        nombre: 'Taller de Bienestar Estudiantil',
-        colaborador: 'María González Pérez',
-        estado: 'EN_CURSO', // Cambiar a 'FINALIZADA' para probar el otro caso
-        objetivo: 'Promover el bienestar integral de los estudiantes',
-        indicador: 'Satisfacción grupos de Interés - eficacia',
-        fechaProgramada: '2024-12-25'
-      };
-    }
-
-    // Datos de usuario loggeado de prueba
-    if (!this.usuarioLoggeado) {
-      this.usuarioLoggeado = {
-        id: 1,
-        nombreCompleto: 'María González Pérez', // Coincide con el colaborador
-        email: 'maria.gonzalez@email.com',
-        documento: '1036965847',
-        tipoUsuario: 'Colaborador'
-      };
-    }
-
-    // Cargar algunos participantes de prueba si la actividad está finalizada
-    if (this.esActividadFinalizada()) {
-      this.participantesAsistencia = [
-        {
-          id: 1,
-          tipoIdentificacion: 'CC',
-          documento: '1036965847',
-          primerNombre: 'Daniel',
-          segundoNombre: 'Felipe',
-          primerApellido: 'Garcia',
-          segundoApellido: 'Quiceno',
-          correo: 'daniel.garcia5847@gmail.com',
-          rfid: '0058844276',
-          tipoUsuario: 'Estudiante'
-        },
-        {
-          id: 2,
-          tipoIdentificacion: 'CC',
-          documento: '87654321',
-          primerNombre: 'María',
-          segundoNombre: 'Elena',
-          primerApellido: 'Rodríguez',
-          segundoApellido: 'López',
-          correo: 'maria.rodriguez@email.com',
-          rfid: 'RF005678',
-          tipoUsuario: 'Estudiante'
-        },
-        {
-          id: 3,
-          tipoIdentificacion: 'TI',
-          documento: 'TI123456',
-          primerNombre: 'Carlos',
-          segundoNombre: 'Alberto',
-          primerApellido: 'González',
-          segundoApellido: 'Martínez',
-          correo: 'carlos.gonzalez@email.com',
-          rfid: 'RF009012',
-          tipoUsuario: 'Estudiante'
-        }
-      ];
-    }
-  }
-
   /**
    * Busca un participante por RFID o documento (usando datos mock)
    */
@@ -218,24 +59,30 @@ export class AttendanceRecordComponent implements OnInit {
     this.buscando = true;
     this.limpiarMensaje();
 
-    // Simular delay de búsqueda
-    setTimeout(() => {
-      this.buscando = false;
-      
-      // Buscar en los datos mock
-      const participanteEncontrado = this.participantesMock.find(p => 
-        (this.rfidSearch && p.rfid?.toLowerCase() === this.rfidSearch.toLowerCase()) ||
-        (this.documentoSearch && p.documento.toLowerCase() === this.documentoSearch.toLowerCase())
-      );
+    const carnet = this.rfidSearch?.trim();
+    const documento = this.documentoSearch?.trim();
 
-      if (participanteEncontrado) {
-        this.agregarParticipante(participanteEncontrado);
-        this.limpiarFormulario();
-      } else {
-        // Preguntar si desea agregar como participante externo
-        this.preguntarAgregarParticipanteExterno();
-      }
-    }, 1000); // Simular 1 segundo de búsqueda
+    const consulta$ = carnet
+      ? this.universityMemberService.consultarPorCarnet(carnet)
+      : this.universityMemberService.consultarPorIdentificacion(documento);
+
+    consulta$
+      .pipe(
+        catchError(() => {
+          this.buscando = false;
+          this.preguntarAgregarParticipanteExterno();
+          return of(null);
+        })
+      )
+      .subscribe(miembro => {
+        this.buscando = false;
+        if (miembro) {
+          this.agregarMiembro(miembro);
+          this.limpiarFormulario();
+        } else {
+          this.mostrarMensaje('No se encontró ningún miembro con los datos ingresados.', 'warning');
+        }
+      });
   }
 
   /**
@@ -293,22 +140,16 @@ export class AttendanceRecordComponent implements OnInit {
    * Maneja el evento cuando se agrega un participante externo
    */
   manejarParticipanteExterno(datos: any): void {
-    // Crear un objeto Participante a partir de los datos del participante externo
-    const participanteExterno: Participante = {
-      id: Date.now(), // Generar un ID temporal
-      tipoIdentificacion: 'EXT', // Tipo para identificar participantes externos
-      documento: datos.documento,
-      primerNombre: datos.nombreCompleto.split(' ')[0] || datos.nombreCompleto,
-      segundoNombre: datos.nombreCompleto.split(' ')[1] || '',
-      primerApellido: datos.nombreCompleto.split(' ')[2] || '',
-      segundoApellido: datos.nombreCompleto.split(' ')[3] || '',
-      correo: 'participante.externo@email.com', // Correo genérico para externos
-      rfid: this.rfidSearch || undefined,
-      tipoUsuario: 'Externo'
+    const miembroExterno: UniversityMemberResponse = {
+      identificador: `externo-${Date.now()}`,
+      nombreCompleto: datos.nombreCompleto,
+      documentoIdentificacion: datos.documento,
+      programaAcademico: 'N/A',
+      correoInstitucional: 'N/A',
+      tipo: 'Externo'
     };
 
-    // Agregar el participante externo a la lista
-    this.agregarParticipante(participanteExterno);
+    this.agregarMiembro(miembroExterno);
     this.limpiarFormulario();
     this.mostrarMensaje(`Participante externo ${datos.nombreCompleto} agregado exitosamente`, 'success');
   }
@@ -316,10 +157,10 @@ export class AttendanceRecordComponent implements OnInit {
   /**
    * Agrega un participante a la lista de asistencia
    */
-  private agregarParticipante(participante: Participante): void {
-    // Verificar si el participante ya está en la lista
-    const yaExiste = this.participantesAsistencia.some(p => 
-      p.documento === participante.documento || p.rfid === participante.rfid
+  private agregarMiembro(miembro: UniversityMemberResponse): void {
+    const yaExiste = this.miembrosAsistencia.some(existing =>
+      existing.documentoIdentificacion === miembro.documentoIdentificacion ||
+      existing.identificador === miembro.identificador
     );
 
     if (yaExiste) {
@@ -327,24 +168,24 @@ export class AttendanceRecordComponent implements OnInit {
       return;
     }
 
-    this.participantesAsistencia.push(participante);
-    this.mostrarMensaje(`Participante ${this.getNombreCompleto(participante)} agregado exitosamente`, 'success');
+    this.miembrosAsistencia.push(miembro);
+    this.mostrarMensaje(`Participante ${miembro.nombreCompleto} agregado exitosamente`, 'success');
   }
 
   /**
    * Remueve un participante de la lista de asistencia
    */
   removerParticipante(index: number): void {
-    const participante = this.participantesAsistencia[index];
-    this.participantesAsistencia.splice(index, 1);
-    this.mostrarMensaje(`Participante ${this.getNombreCompleto(participante)} removido de la lista`, 'success');
+    const participante = this.miembrosAsistencia[index];
+    this.miembrosAsistencia.splice(index, 1);
+    this.mostrarMensaje(`Participante ${participante.nombreCompleto} removido de la lista`, 'success');
   }
 
   /**
-   * Finaliza la actividad y guarda la asistencia (usando datos mock)
+   * Finaliza la actividad y guarda la asistencia
    */
   finalizarActividad(): void {
-    if (this.participantesAsistencia.length === 0) {
+    if (this.miembrosAsistencia.length === 0) {
       this.mostrarMensaje('No hay participantes registrados para finalizar la actividad', 'warning');
       return;
     }
@@ -355,27 +196,30 @@ export class AttendanceRecordComponent implements OnInit {
     // Simular delay de guardado
     setTimeout(() => {
       this.guardando = false;
-      
+
       // Crear la lista de asistencias
-      const asistencias: AsistenciaActividad[] = this.participantesAsistencia.map(participante => ({
-        idActividad: this.idActividad,
-        idParticipante: participante.id!,
-        fechaAsistencia: new Date(),
-        participante: participante
-      }));
+      const asistencias: AsistenciaActividad[] = this.miembrosAsistencia.map((miembro, index) => {
+        const participante = this.convertirAModeloParticipante(miembro, index);
+        return {
+          idActividad: this.idActividad,
+          idParticipante: participante.id ?? index + 1,
+          fechaAsistencia: new Date(),
+          participante
+        };
+      });
 
       // Simular guardado exitoso
       console.log('Asistencias a guardar:', asistencias);
       this.mostrarMensaje('Asistencia guardada exitosamente', 'success');
-      
+
       // Emitir evento de actividad finalizada
       this.actividadFinalizada.emit({
         idActividad: this.idActividad,
-        participantes: this.participantesAsistencia,
+        participantes: this.miembrosAsistencia,
         fechaFinalizacion: new Date(),
         asistencias: asistencias
       });
-      
+
       // Limpiar el componente
       this.limpiarTodo();
     }, 1500); // Simular 1.5 segundos de guardado
@@ -387,18 +231,9 @@ export class AttendanceRecordComponent implements OnInit {
   cancelarActividad(): void {
     this.actividadCancelada.emit({
       idActividad: this.idActividad,
-      participantes: this.participantesAsistencia
+      participantes: this.miembrosAsistencia
     });
     this.limpiarTodo();
-  }
-
-  /**
-   * Obtiene el nombre completo del participante
-   */
-  getNombreCompleto(participante: Participante): string {
-    const nombre = `${participante.primerNombre} ${participante.segundoNombre || ''}`.trim();
-    const apellido = `${participante.primerApellido} ${participante.segundoApellido || ''}`.trim();
-    return `${nombre} ${apellido}`.trim();
   }
 
   /**
@@ -414,7 +249,7 @@ export class AttendanceRecordComponent implements OnInit {
    */
   private limpiarTodo(): void {
     this.limpiarFormulario();
-    this.participantesAsistencia = [];
+    this.miembrosAsistencia = [];
     this.limpiarMensaje();
   }
 
@@ -442,62 +277,17 @@ export class AttendanceRecordComponent implements OnInit {
     return this.actividad?.estado === 'FINALIZADA';
   }
 
-  /**
-   * Verifica si el usuario loggeado es el colaborador de la actividad
-   */
-  esColaboradorActividad(): boolean {
-    if (!this.actividad || !this.usuarioLoggeado) {
-      return false;
-    }
-    // Comparar por documento o email del colaborador
-    return this.actividad.colaborador === this.usuarioLoggeado.nombreCompleto ||
-           this.actividad.colaborador === this.usuarioLoggeado.email ||
-           this.actividad.colaborador === this.usuarioLoggeado.documento;
+  private convertirAModeloParticipante(miembro: UniversityMemberResponse, index: number): Participante {
+    return {
+      id: index + 1,
+      tipoIdentificacion: '',
+      documento: miembro.documentoIdentificacion,
+      primerNombre: miembro.nombreCompleto,
+      segundoNombre: '',
+      primerApellido: '',
+      segundoApellido: '',
+      correo: miembro.correoInstitucional || '',
+      tipoUsuario: miembro.tipo || 'Miembro'
+    };
   }
-
-  /**
-   * Verifica si se debe mostrar el formulario de asistencia
-   */
-  debeMostrarFormularioAsistencia(): boolean {
-    return !this.esActividadFinalizada() && this.esColaboradorActividad();
-  }
-
-  /**
-   * Verifica si se debe mostrar solo la lista de participantes
-   */
-  debeMostrarSoloLista(): boolean {
-    return this.esActividadFinalizada();
-  }
-
-  /**
-   * Verifica si se debe mostrar mensaje de acceso denegado
-   */
-  debeMostrarAccesoDenegado(): boolean {
-    return !this.esActividadFinalizada() && !this.esColaboradorActividad();
-  }
-
-  /**
-   * Método para cambiar el escenario de prueba
-   * Útil para testing de diferentes casos
-   */
-  cambiarEscenarioPrueba(escenario: 'finalizada' | 'en_curso_colaborador' | 'en_curso_no_colaborador'): void {
-    switch (escenario) {
-      case 'finalizada':
-        this.actividad.estado = 'FINALIZADA';
-        this.usuarioLoggeado.nombreCompleto = 'María González Pérez';
-        break;
-      case 'en_curso_colaborador':
-        this.actividad.estado = 'EN_CURSO';
-        this.usuarioLoggeado.nombreCompleto = 'María González Pérez';
-        break;
-      case 'en_curso_no_colaborador':
-        this.actividad.estado = 'EN_CURSO';
-        this.usuarioLoggeado.nombreCompleto = 'Juan Pérez'; // Diferente al colaborador
-        break;
-    }
-    
-    // Recargar datos de prueba
-    this.cargarDatosPrueba();
-  }
-
 }

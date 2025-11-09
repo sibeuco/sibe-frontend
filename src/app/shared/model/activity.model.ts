@@ -50,6 +50,10 @@ export interface ActivityResponse {
   fechasProgramadas?: string[];
 }
 
+export interface StartActivityResponse{
+  identificador: string;
+}
+
 export interface ActivityInfo {
   nombre: string;
   colaborador: string;
