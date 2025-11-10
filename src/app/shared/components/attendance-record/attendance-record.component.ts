@@ -269,6 +269,24 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   /**
    * Cancela la actividad
    */
+  solicitarCancelacionActividad(): void {
+    const modalElement = document.getElementById('cancelActivityConfirmModal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  cerrarModalCancelacion(): void {
+    const modalElement = document.getElementById('cancelActivityConfirmModal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+  }
+
   cancelarActividad(): void {
     if (this.cancelandoActividad) {
       return;
@@ -279,6 +297,7 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       return;
     }
 
+    this.cerrarModalCancelacion();
     this.cancelandoActividad = true;
     this.limpiarMensaje();
     const participantesAnteriormenteRegistrados = [...this.miembrosAsistencia];

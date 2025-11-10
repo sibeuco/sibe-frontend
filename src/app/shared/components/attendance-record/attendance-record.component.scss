@@ -473,48 +473,77 @@
   border-width: 0.1em;
 }
 
+#cancelActivityConfirmModal,
 #confirmExternalParticipantModal {
-  .modal-container {
-    border-radius: $general-border-radius;
+  .modal-dialog {
+    max-width: 500px;
   }
 
   .modal-content {
     border: none;
     border-radius: $general-border-radius;
     box-shadow: $sombra-general;
-    width: 100%;
     overflow-y: auto;
   }
 
   .modal-header {
     background-color: $primary-color;
     border-radius: $general-border-radius $general-border-radius 0 0;
+    padding: 1.5rem 1.9rem;
+    justify-content: center;
+    position: relative;
 
     .modal-title {
       color: $white-color;
-      font-weight: bold;
+      font-weight: 600;
+      font-size: $font-general-size;
+      text-align: center;
+    }
+
+    .btn-close {
+      filter: brightness(0) invert(1);
+      opacity: 1;
+      transition: opacity 0.2s ease;
+      &:hover {
+        opacity: 0.8;
+      }
     }
   }
 
   .modal-body {
-    padding: 2rem;
+    padding: 1.75rem;
+    font-size: $font-general-size;
+    color: $black-color;
     text-align: center;
+
+    p {
+      margin-bottom: 0.75rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 
   .modal-footer {
     border-top: none;
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 1.75rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    text-align: center;
 
     .btn {
       border-radius: $buttons-border-radius;
       font-weight: 500;
       font-size: $font-general-size;
-      padding: 0.8rem 2rem;
+      padding: 0.75rem 1.8rem;
+      min-width: 150px;
 
-      &.confirm-button {
+      &.confirm-button,
+      &.btn-danger {
         background-color: $primary-color;
         border-color: $primary-color;
-        width: 30%;
 
         &:hover:not(:disabled) {
           background-color: darken($primary-color, 10%);
@@ -522,15 +551,20 @@
         }
       }
 
-      &.cancel-button {
+      &.cancel-button,
+      &.btn-secondary {
         background-color: #6c757d;
         border-color: #6c757d;
-        width: 30%;
 
         &:hover {
           background-color: #5a6268;
           border-color: #545b62;
         }
+      }
+
+      &:disabled {
+        opacity: 0.8;
+        cursor: not-allowed;
       }
     }
   }
@@ -538,15 +572,10 @@
   .btn-close {
     filter: brightness(0) invert(1);
     opacity: 1;
-    font-weight: bold;
-    font-size: 1.5rem;
-    top: 10px;
-    right: 15px;
-  }
-
-  .btn-close:hover {
-    filter: brightness(0) invert(1);
-    opacity: 0.8;
+    font-weight: 500;
+    font-size: 1.25rem;
+    top: 12px;
+    right: 18px;
   }
 }
 

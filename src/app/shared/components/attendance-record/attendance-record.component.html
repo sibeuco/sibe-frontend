@@ -107,9 +107,9 @@
         <button
           type="button"
           class="btn btn-secondary"
-          (click)="cancelarActividad()"
+          (click)="solicitarCancelacionActividad()"
           [disabled]="guardando || cancelandoActividad">
-          {{ cancelandoActividad ? 'Cancelando...' : 'Cancelar' }}
+          Cancelar
         </button>
       </div>
       <div class="success-bottom-container col-md-6 mb-2">
@@ -118,6 +118,35 @@
           <i *ngIf="!guardando"></i>
           <span class="spinner-border spinner-border-sm" *ngIf="guardando"></span>
           {{ guardando ? 'Guardando...' : 'Finalizar Actividad' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación de cancelación -->
+<div class="modal fade" id="cancelActivityConfirmModal" tabindex="-1" aria-labelledby="cancelActivityConfirmModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header d-flex align-items-center justify-content-center position-relative">
+          <h5 class="modal-title w-100 text-center mb-0" id="cancelActivityConfirmModalLabel">
+            Confirmar cancelación
+          </h5>
+          <button type="button" class="btn-close position-absolute end-0 me-3" aria-label="Cerrar"
+            (click)="cerrarModalCancelacion()"></button>
+      </div>
+      <div class="modal-body">
+        <p class="mb-2">¿Estás seguro de cancelar la actividad?</p>
+        <p class="mb-0">Se perderán las asistencias registradas hasta el momento.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary cancel-button" (click)="cerrarModalCancelacion()">
+          No, volver
+        </button>
+        <button type="button" class="btn btn-danger confirm-button" (click)="cancelarActividad()" [disabled]="cancelandoActividad">
+          <span class="spinner-border spinner-border-sm me-2" *ngIf="cancelandoActividad"></span>
+          {{ cancelandoActividad ? 'Cancelando...' : 'Sí, cancelar' }}
         </button>
       </div>
     </div>
