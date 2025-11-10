@@ -4,7 +4,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Response } from '../model/response.model';
 import { environment } from 'src/environments/environment';
-import { ActivityRequest, ActivityResponse, EditActivityRequest, StartActivityResponse } from '../model/activity.model';
+import { ActivityRequest, ActivityResponse, CancelActivityResponse, EditActivityRequest, StartActivityResponse } from '../model/activity.model';
 import { ActivityExecutionResponse } from '../model/activity-execution.model';
 
 @Injectable({
@@ -17,6 +17,7 @@ export class ActivityService extends HttpService {
   private readonly ACTIVITY_SUBAREA_ENDPOINT = '/actividades/subarea';
   private readonly ACTIVITY_EXECUTION_ENDPOINT = '/actividades/ejecuciones';
   private readonly START_ACTIVITY_ENDPOINT = '/actividades/iniciar';
+  private readonly CANCEL_ACTIVITY_ENDPOINT = '';
 
   constructor(http: HttpClient) {
     super(http);
@@ -79,6 +80,11 @@ export class ActivityService extends HttpService {
   iniciarActividad(identificador: string): Observable<StartActivityResponse> {
     const url = `${environment.endpoint}${this.START_ACTIVITY_ENDPOINT}`;
     return this.http.put<StartActivityResponse>(url, {});
+  }
+
+  cancelarActividad(identificador: string): Observable<CancelActivityResponse> {
+    const url = `${environment.endpoint}${this.CANCEL_ACTIVITY_ENDPOINT}`;
+    return this.http.put<CancelActivityResponse>(url, {});
   }
 
 }

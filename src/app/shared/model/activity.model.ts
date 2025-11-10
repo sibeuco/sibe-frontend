@@ -54,6 +54,10 @@ export interface StartActivityResponse{
   identificador: string;
 }
 
+export interface CancelActivityResponse{
+  identificador: string;
+}
+
 export interface ActivityInfo {
   nombre: string;
   colaborador: string;

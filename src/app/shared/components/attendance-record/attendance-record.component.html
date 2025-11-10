@@ -2,12 +2,16 @@
 
   <!-- Botón para iniciar la actividad -->
   <div class="start-activity-section mb-4" *ngIf="!actividadIniciada">
-    <button
-      type="button"
-      class="btn btn-primary"
-      (click)="iniciarActividad()">
-      Iniciar Actividad
-    </button>
+    <div class="alert text-center">
+      <i class="bi bi-info-circle me-2"></i>
+      <h4>La actividad no está iniciada</h4>
+      <p class="mb-0">Para tomar la asistencia de los participantes, debes iniciar la actividad.</p>
+    </div>
+    <div class="start-activity-btn-container">
+      <button type="button" class="btn start-activity-btn" (click)="iniciarActividad()">
+        Iniciar Actividad
+      </button>
+    </div>
   </div>
 
   <!-- Formulario de búsqueda - Se muestra después de iniciar la actividad -->
@@ -16,29 +20,16 @@
       <div class="row">
         <div class="col-md-5 mb-3">
           <label for="rfid" class="form-label">Código RFID</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="rfid" 
-            [(ngModel)]="rfidSearch" 
-            placeholder="Ingrese el código RFID del carnet"
-            (keyup.enter)="buscarParticipante()">
+          <input type="text" class="form-control" id="rfid" [(ngModel)]="rfidSearch"
+            placeholder="Ingrese el código RFID del carnet" (keyup.enter)="buscarParticipante()">
         </div>
         <div class="col-md-5 mb-3">
           <label for="documento" class="form-label">Documento</label>
-          <input 
-            type="text" 
-            class="form-control" 
-            id="documento" 
-            [(ngModel)]="documentoSearch" 
-            placeholder="Ingrese el número de documento"
-            (keyup.enter)="buscarParticipante()">
+          <input type="text" class="form-control" id="documento" [(ngModel)]="documentoSearch"
+            placeholder="Ingrese el número de documento" (keyup.enter)="buscarParticipante()">
         </div>
         <div class="search-button-container col-md-2 mb-3">
-          <button 
-            type="button" 
-            class="btn btn-primary search-btn"
-            (click)="buscarParticipante()"
+          <button type="button" class="btn btn-primary search-btn" (click)="buscarParticipante()"
             [disabled]="!rfidSearch && !documentoSearch || buscando">
             <i class="bi bi-search" *ngIf="!buscando"></i>
             <span class="spinner-border spinner-border-sm" *ngIf="buscando"></span>
@@ -82,10 +73,7 @@
             <td>{{ participante.correoInstitucional || 'N/A' }}</td>
             <td>{{ participante.tipo || 'N/A' }}</td>
             <td>
-              <button 
-                type="button" 
-                class="btn btn-sm btn-outline-danger"
-                (click)="removerParticipante(i)"
+              <button type="button" class="btn btn-sm btn-outline-danger" (click)="removerParticipante(i)"
                 title="Remover participante">
                 <i class="bi bi-trash"></i>
               </button>
@@ -112,19 +100,12 @@
   <div class="action-buttons-section" *ngIf="actividadIniciada">
     <div class="row">
       <div class="cancel-button-container col-md-6 mb-2">
-        <button 
-          type="button" 
-          class="btn btn-secondary"
-          (click)="cancelarActividad()"
-          [disabled]="guardando">
+        <button type="button" class="btn btn-secondary" (click)="cancelarActividad()" [disabled]="guardando">
           Cancelar
         </button>
       </div>
       <div class="success-bottom-container col-md-6 mb-2">
-        <button 
-          type="button" 
-          class="btn btn-success"
-          (click)="finalizarActividad()"
+        <button type="button" class="btn btn-success" (click)="finalizarActividad()"
           [disabled]="miembrosAsistencia.length === 0 || guardando">
           <i *ngIf="!guardando"></i>
           <span class="spinner-border spinner-border-sm" *ngIf="guardando"></span>
@@ -136,37 +117,41 @@
 </div>
 
 <!-- Modal de confirmación para participante externo -->
-<div class="modal-container modal fade" id="confirmExternalParticipantModal" tabindex="-1" aria-labelledby="confirmExternalParticipantModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header col d-flex align-items-center justify-content-center position-relative">
-                <h1 class="modal-title" id="confirmExternalParticipantModalLabel">
-                    <i class="bi bi-question-circle-fill me-2"></i>
-                    Participante No Encontrado
-                </h1>
-                <button type="button" class="btn-close position-absolute" (click)="cancelarAgregarParticipanteExterno()" aria-label="Cerrar"></button>
-            </div>
-            <div class="modal-body">
-                <div class="d-flex align-items-center justify-content-center mb-4">
-                    <div class="text-center">
-                        <i class="bi bi-person-plus text-warning" style="font-size: 4rem;"></i>
-                        <p class="mt-3 mb-1" style="font-size: 1.8rem;">No se encontró ningún participante con los datos ingresados.</p>
-                        <p class="mb-1" style="font-size: 1.6rem;">¿Deseas agregar este participante como participante externo?</p>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="cancel-button btn btn-secondary me-3" (click)="cancelarAgregarParticipanteExterno()">
-                    <i class="bi bi-x-circle me-1"></i>
-                    Cancelar
-                </button>
-                <button type="button" class="confirm-button btn btn-primary" (click)="confirmarAgregarParticipanteExterno()">
-                    <i class="bi bi-person-plus me-1"></i>
-                    Agregar
-                </button>
-            </div>
+<div class="modal-container modal fade" id="confirmExternalParticipantModal" tabindex="-1"
+  aria-labelledby="confirmExternalParticipantModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header col d-flex align-items-center justify-content-center position-relative">
+        <h1 class="modal-title" id="confirmExternalParticipantModalLabel">
+          <i class="bi bi-question-circle-fill me-2"></i>
+          Participante No Encontrado
+        </h1>
+        <button type="button" class="btn-close position-absolute" (click)="cancelarAgregarParticipanteExterno()"
+          aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex align-items-center justify-content-center mb-4">
+          <div class="text-center">
+            <i class="bi bi-person-plus text-warning" style="font-size: 4rem;"></i>
+            <p class="mt-3 mb-1" style="font-size: 1.8rem;">No se encontró ningún participante con los datos ingresados.
+            </p>
+            <p class="mb-1" style="font-size: 1.6rem;">¿Deseas agregar este participante como participante externo?</p>
+          </div>
         </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <button type="button" class="cancel-button btn btn-secondary me-3"
+          (click)="cancelarAgregarParticipanteExterno()">
+          <i class="bi bi-x-circle me-1"></i>
+          Cancelar
+        </button>
+        <button type="button" class="confirm-button btn btn-primary" (click)="confirmarAgregarParticipanteExterno()">
+          <i class="bi bi-person-plus me-1"></i>
+          Agregar
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
 <!-- Modal de participante externo -->

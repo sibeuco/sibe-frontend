@@ -1,43 +1,68 @@
 @use "src/assets/scss/modules/_var.scss" as *;
 
+.start-activity-btn-container {
+  height: 80px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.start-activity-btn {
+  width: 20%;
+  background-color: $primary-color;
+  color: white;
+  font-size: $font-general-size;
+
+  &:hover {
+    transform: scale(1.01);
+    background-color: darken($primary-color, 5%);
+    border-color: darken($primary-color, 5%);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
 .attendance-record-container {
   background-color: $white-color;
   margin-top: $general-margin-top;
   margin-bottom: 2rem;
+  min-height: 40%;
   width: 98%;
   margin-left: $general-margin-left;
   border-radius: $general-border-radius;
   box-shadow: $sombra-general;
 
-.header-section {
-  text-align: center;
-  margin-bottom: 30px;
+  .header-section {
+    text-align: center;
+    margin-bottom: 30px;
 
-  .test-data-panel {
-    margin-top: 20px;
-    text-align: left;
+    .test-data-panel {
+      margin-top: 20px;
+      text-align: left;
 
-    .alert {
-      border: 1px solid #bee5eb;
-      background-color: #d1ecf1;
-      color: #721c24;
+      .alert {
+        border: 1px solid #bee5eb;
+        background-color: #d1ecf1;
+        color: #721c24;
 
-      h6 {
-        margin-bottom: 15px;
-        font-weight: 600;
-      }
+        h6 {
+          margin-bottom: 15px;
+          font-weight: 600;
+        }
 
-      ul {
-        font-size: 0.9rem;
-        padding-left: 20px;
+        ul {
+          font-size: 0.9rem;
+          padding-left: 20px;
 
-        li {
-          margin-bottom: 5px;
-          font-family: 'Courier New', monospace;
+          li {
+            margin-bottom: 5px;
+            font-family: 'Courier New', monospace;
+          }
         }
       }
     }
-  }
 
     .show-test-data {
       margin-top: 15px;
@@ -93,15 +118,16 @@
           border-color: $secondary-color;
           transition: transform 0.2s ease, background-color 0.2s ease;
           border-radius: $buttons-border-radius;
+
           &:hover {
-              transform: scale(1.05);
-              background-color: darken($secondary-color, 5%);
-              border-color: darken($secondary-color, 5%);
+            transform: scale(1.05);
+            background-color: darken($secondary-color, 5%);
+            border-color: darken($secondary-color, 5%);
           }
 
           &:active {
-              transform: scale(0.97);
-        }
+            transform: scale(0.97);
+          }
 
           &:disabled {
             opacity: 0.6;
@@ -305,7 +331,7 @@
     }
   }
 
-  .cancel-button-container{
+  .cancel-button-container {
     justify-content: end;
     display: flex;
   }
@@ -430,6 +456,7 @@
     opacity: 0;
     transform: translateY(20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -462,7 +489,7 @@
   .modal-header {
     background-color: $primary-color;
     border-radius: $general-border-radius $general-border-radius 0 0;
-    
+
     .modal-title {
       color: $white-color;
       font-weight: bold;
@@ -477,29 +504,29 @@
   .modal-footer {
     border-top: none;
     padding: 1.5rem 2rem;
-    
+
     .btn {
       border-radius: $buttons-border-radius;
       font-weight: 500;
       font-size: $font-general-size;
       padding: 0.8rem 2rem;
-      
+
       &.confirm-button {
         background-color: $primary-color;
         border-color: $primary-color;
         width: 30%;
-        
+
         &:hover:not(:disabled) {
           background-color: darken($primary-color, 10%);
           border-color: darken($primary-color, 10%);
         }
       }
-      
+
       &.cancel-button {
         background-color: #6c757d;
         border-color: #6c757d;
         width: 30%;
-        
+
         &:hover {
           background-color: #5a6268;
           border-color: #545b62;
@@ -525,74 +552,74 @@
 
 .access-denied-section {
   margin-bottom: 2rem;
-  
+
   .access-denied-container {
     background: $white-color;
     border-radius: $general-border-radius;
     overflow: hidden;
     animation: slideInDown 0.5s ease-out;
-    
+
     .access-denied-content {
       display: flex;
       align-items: center;
       padding: 2rem;
       gap: 2rem;
-      
+
       .access-denied-icon {
         flex-shrink: 0;
-        
+
         i {
           font-size: 4rem;
           color: #64748b;
           animation: gentlePulse 3s infinite;
         }
       }
-      
+
       .access-denied-text {
         flex: 1;
-        
+
         .access-denied-title {
           color: #334155;
           font-weight: 600;
           font-size: 1.5rem;
           margin-bottom: 0.75rem;
         }
-        
+
         .access-denied-message {
           color: #475569;
           font-size: 1.1rem;
           margin-bottom: 1.5rem;
           line-height: 1.6;
         }
-        
+
         .access-denied-details {
           background-color: rgba(255, 255, 255, 0.8);
           border-radius: 8px;
           padding: 1rem;
           margin-bottom: 1rem;
           border-left: 4px solid #64748b;
-          
+
           .detail-item {
             display: flex;
             align-items: center;
             margin-bottom: 0.5rem;
-            
+
             &:last-child {
               margin-bottom: 0;
             }
-            
+
             i {
               color: #64748b;
               font-size: 1.1rem;
             }
-            
+
             .detail-label {
               font-weight: 600;
               color: #475569;
               margin-right: 0.5rem;
               min-width: 140px;
             }
-            
+
             .detail-value {
               color: #1e293b;
               font-weight: 500;
@@ -603,7 +630,7 @@
             }
           }
         }
-        
+
         .access-denied-note {
           background-color: #fff3cd;
           border: 1px solid #ffc107;
@@ -612,12 +639,12 @@
           display: flex;
           align-items: center;
           margin-top: 1.5rem;
-          
+
           i {
             color: #856404;
             font-size: 1.2rem;
           }
-          
+
           span {
             color: #856404;
             font-weight: 500;
@@ -635,6 +662,7 @@
     opacity: 0;
     transform: translateY(-30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -642,10 +670,13 @@
 }
 
 @keyframes gentlePulse {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.8;
   }
+
   50% {
     transform: scale(1.02);
     opacity: 1;
@@ -661,28 +692,28 @@
         text-align: center;
         padding: 1.5rem;
         gap: 1rem;
-        
+
         .access-denied-icon {
           i {
             font-size: 3rem;
           }
         }
-        
+
         .access-denied-text {
           .access-denied-title {
             font-size: 1.3rem;
           }
-          
+
           .access-denied-message {
             font-size: 1rem;
           }
-          
+
           .access-denied-details {
             .detail-item {
               flex-direction: column;
               align-items: flex-start;
               gap: 0.25rem;
-              
+
               .detail-label {
                 min-width: auto;
                 margin-right: 0;
