@@ -1,16 +1,20 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Participante, AsistenciaActividad } from 'src/app/core/model/participante.model';
 import { Modal } from 'bootstrap';
 import { UniversityMemberService } from '../../service/university-member.service';
 import { UniversityMemberResponse } from '../../model/university-member.model';
 import { catchError, of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { ActivityService } from '../../service/activity.service';
+import { ActivityExecutionResponse } from '../../model/activity-execution.model';
+import { EstadoActividad } from '../../model/activity.model';
 
 @Component({
   selector: 'app-attendance-record',
   templateUrl: './attendance-record.component.html',
   styleUrls: ['./attendance-record.component.scss']
 })
-export class AttendanceRecordComponent implements OnInit {
+export class AttendanceRecordComponent implements OnInit, OnChanges {
   
   @Input() idActividad: number = 0;
   @Input() actividad: any = null; // Datos de la actividad
@@ -28,20 +32,57 @@ export class AttendanceRecordComponent implements OnInit {
   mensaje: string = '';
   tipoMensaje: 'success' | 'error' | 'warning' = 'success';
   actividadIniciada: boolean = false;
+  iniciandoActividad: boolean = false;
+  cancelandoActividad: boolean = false;
   
   // Lista de participantes
   miembrosAsistencia: UniversityMemberResponse[] = [];
 
-  constructor(private universityMemberService: UniversityMemberService) {}
+  private readonly STORAGE_KEY = 'selectedActivityInfo';
+  private ejecucionSeleccionada: ActivityExecutionResponse | null = null;
+  ejecucionSeleccionadaId: string | null = null;
+
+  constructor(
+    private universityMemberService: UniversityMemberService,
+    private activityService: ActivityService
+  ) {}
 
   ngOnInit(): void {
     this.limpiarMensaje();
+    this.cargarEjecucionSeleccionada();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['actividad'] || changes['idActividad']) {
+      this.cargarEjecucionSeleccionada();
+    }
   }
 
   iniciarActividad(): void {
-    this.actividadIniciada = true;
+    if (this.iniciandoActividad) {
+      return;
+    }
+
+    if (!this.ejecucionSeleccionadaId) {
+      this.mostrarMensaje('No hay una ejecución de actividad seleccionada. Por favor, selecciona una fecha programada antes de iniciar.', 'error');
+      return;
+    }
+
+    this.iniciandoActividad = true;
     this.limpiarMensaje();
-    this.mostrarMensaje('La actividad fue iniciada. Puedes registrar la asistencia.', 'success');
+
+    this.activityService.iniciarActividad(this.ejecucionSeleccionadaId)
+      .pipe(finalize(() => this.iniciandoActividad = false))
+      .subscribe({
+        next: () => {
+          this.actualizarEstadoEjecucionLocal(EstadoActividad.EN_CURSO);
+          this.actividadIniciada = true;
+          this.mostrarMensaje('La actividad fue iniciada. Puedes registrar la asistencia.', 'success');
+        },
+        error: () => {
+          this.mostrarMensaje('No fue posible iniciar la actividad. Inténtalo nuevamente.', 'error');
+        }
+      });
   }
 
   /**
@@ -209,7 +250,6 @@ export class AttendanceRecordComponent implements OnInit {
       });
 
       // Simular guardado exitoso
-      console.log('Asistencias a guardar:', asistencias);
       this.mostrarMensaje('Asistencia guardada exitosamente', 'success');
 
       // Emitir evento de actividad finalizada
@@ -221,6 +261,7 @@ export class AttendanceRecordComponent implements OnInit {
       });
 
       // Limpiar el componente
+      this.actividadIniciada = false;
       this.limpiarTodo();
     }, 1500); // Simular 1.5 segundos de guardado
   }
@@ -229,11 +270,37 @@ export class AttendanceRecordComponent implements OnInit {
    * Cancela la actividad
    */
   cancelarActividad(): void {
-    this.actividadCancelada.emit({
-      idActividad: this.idActividad,
-      participantes: this.miembrosAsistencia
-    });
-    this.limpiarTodo();
+    if (this.cancelandoActividad) {
+      return;
+    }
+
+    if (!this.ejecucionSeleccionadaId) {
+      this.mostrarMensaje('No hay una ejecución de actividad seleccionada para cancelar.', 'error');
+      return;
+    }
+
+    this.cancelandoActividad = true;
+    this.limpiarMensaje();
+    const participantesAnteriormenteRegistrados = [...this.miembrosAsistencia];
+
+    this.activityService.cancelarActividad(this.ejecucionSeleccionadaId)
+      .pipe(finalize(() => this.cancelandoActividad = false))
+      .subscribe({
+        next: () => {
+          this.actualizarEstadoEjecucionLocal(EstadoActividad.PENDIENTE);
+          this.miembrosAsistencia = [];
+          this.limpiarFormulario();
+          this.actividadIniciada = false;
+          this.actividadCancelada.emit({
+            idActividad: this.idActividad,
+            participantes: participantesAnteriormenteRegistrados
+          });
+          this.mostrarMensaje('La actividad fue cancelada exitosamente.', 'success');
+        },
+        error: () => {
+          this.mostrarMensaje('No fue posible cancelar la actividad. Inténtalo nuevamente.', 'error');
+        }
+      });
   }
 
   /**
@@ -251,6 +318,8 @@ export class AttendanceRecordComponent implements OnInit {
     this.limpiarFormulario();
     this.miembrosAsistencia = [];
     this.limpiarMensaje();
+    this.cancelandoActividad = false;
+    this.iniciandoActividad = false;
   }
 
   /**
@@ -289,5 +358,87 @@ export class AttendanceRecordComponent implements OnInit {
       correo: miembro.correoInstitucional || '',
       tipoUsuario: miembro.tipo || 'Miembro'
     };
+  }
+
+  private cargarEjecucionSeleccionada(): void {
+    const storage = this.obtenerStorage();
+    if (!storage) {
+      return;
+    }
+
+    const raw = storage.getItem(this.STORAGE_KEY);
+    if (!raw) {
+      this.ejecucionSeleccionada = null;
+      this.ejecucionSeleccionadaId = null;
+      this.actividadIniciada = false;
+      return;
+    }
+
+    try {
+      const data = JSON.parse(raw) as { ejecucion?: ActivityExecutionResponse | null };
+      this.ejecucionSeleccionada = data?.ejecucion || null;
+      this.ejecucionSeleccionadaId = this.ejecucionSeleccionada?.identificador || null;
+      const estado = this.ejecucionSeleccionada?.estadoActividad?.nombre;
+      this.actividadIniciada = this.esEstadoEnCurso(estado);
+    } catch {
+      storage.removeItem(this.STORAGE_KEY);
+      this.ejecucionSeleccionada = null;
+      this.ejecucionSeleccionadaId = null;
+      this.actividadIniciada = false;
+    }
+  }
+
+  private actualizarEstadoEjecucionLocal(estado: EstadoActividad): void {
+    this.actividadIniciada = estado === EstadoActividad.EN_CURSO;
+
+    if (this.ejecucionSeleccionada) {
+      this.ejecucionSeleccionada = {
+        ...this.ejecucionSeleccionada,
+        estadoActividad: {
+          ...(this.ejecucionSeleccionada.estadoActividad || {}),
+          nombre: estado
+        }
+      };
+    }
+
+    const storage = this.obtenerStorage();
+    if (!storage) {
+      return;
+    }
+
+    const raw = storage.getItem(this.STORAGE_KEY);
+    if (!raw) {
+      return;
+    }
+
+    try {
+      const data = JSON.parse(raw) as { actividad?: any; ejecucion?: ActivityExecutionResponse | null };
+      if (data?.ejecucion) {
+        data.ejecucion = {
+          ...data.ejecucion,
+          estadoActividad: {
+            ...(data.ejecucion.estadoActividad || {}),
+            nombre: estado
+          }
+        };
+        storage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+      }
+    } catch {
+      storage.removeItem(this.STORAGE_KEY);
+    }
+  }
+
+  private esEstadoEnCurso(estado?: string): boolean {
+    if (!estado) {
+      return false;
+    }
+    return estado.trim().toLowerCase() === EstadoActividad.EN_CURSO.toLowerCase();
+  }
+
+  private obtenerStorage(): Storage | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    return window.sessionStorage;
   }
 }

@@ -8,8 +8,12 @@
       <p class="mb-0">Para tomar la asistencia de los participantes, debes iniciar la actividad.</p>
     </div>
     <div class="start-activity-btn-container">
-      <button type="button" class="btn start-activity-btn" (click)="iniciarActividad()">
-        Iniciar Actividad
+      <button
+        type="button"
+        class="btn start-activity-btn"
+        (click)="iniciarActividad()"
+        [disabled]="iniciandoActividad || !ejecucionSeleccionadaId">
+        {{ iniciandoActividad ? 'Iniciando...' : 'Iniciar Actividad' }}
       </button>
     </div>
   </div>
@@ -100,8 +104,12 @@
   <div class="action-buttons-section" *ngIf="actividadIniciada">
     <div class="row">
       <div class="cancel-button-container col-md-6 mb-2">
-        <button type="button" class="btn btn-secondary" (click)="cancelarActividad()" [disabled]="guardando">
-          Cancelar
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="cancelarActividad()"
+          [disabled]="guardando || cancelandoActividad">
+          {{ cancelandoActividad ? 'Cancelando...' : 'Cancelar' }}
         </button>
       </div>
       <div class="success-bottom-container col-md-6 mb-2">
