@@ -6,7 +6,7 @@ import { Response } from '../model/response.model';
 import { environment } from 'src/environments/environment';
 import { ActivityRequest, ActivityResponse, CancelActivityResponse, EditActivityRequest, StartActivityResponse } from '../model/activity.model';
 import { ActivityExecutionResponse } from '../model/activity-execution.model';
-import { ParticipantRequest } from '../model/participant.model';
+import { ParticipantRequest, ParticipantResponse } from '../model/participant.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +20,7 @@ export class ActivityService extends HttpService {
   private readonly START_ACTIVITY_ENDPOINT = '/actividades/iniciar';
   private readonly CANCEL_ACTIVITY_ENDPOINT = '/actividades/cancelar';
   private readonly END_ACTIVITY_ENDPOINT = '/actividades/finalizar';
+  private readonly PARTICIPANTS_ENDPOINT = '/actividades/ejecuciones/ejecucion/participantes';
 
   constructor(http: HttpClient) {
     super(http);
@@ -78,6 +79,13 @@ export class ActivityService extends HttpService {
     return this.doGet<ActivityExecutionResponse[]>(url, opts);
 
   }
+
+  consultarParticipantesPorEjecucion(identificador: string): Observable<ParticipantResponse[]> {
+  const opts = this.createDefaultOptions();
+  const url = `${environment.endpoint}${this.PARTICIPANTS_ENDPOINT}/${identificador}`;
+
+  return this.doGet<ParticipantResponse[]>(url, opts);
+}
 
   iniciarActividad(identificador: string): Observable<StartActivityResponse> {
     const url = `${environment.endpoint}${this.START_ACTIVITY_ENDPOINT}/${identificador}`;
