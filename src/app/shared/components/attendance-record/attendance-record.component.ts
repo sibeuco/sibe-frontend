@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { Participante, AsistenciaActividad } from 'src/app/core/model/participante.model';
 import { Modal } from 'bootstrap';
 import { UniversityMemberService } from '../../service/university-member.service';
 import { UniversityMemberResponse } from '../../model/university-member.model';
@@ -8,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { ActivityService } from '../../service/activity.service';
 import { ActivityExecutionResponse } from '../../model/activity-execution.model';
 import { EstadoActividad } from '../../model/activity.model';
+import { ParticipantRequest } from '../../model/participant.model';
 
 @Component({
   selector: 'app-attendance-record',
@@ -86,10 +86,7 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Carga datos de prueba para testing
-   */
-  /**
-   * Busca un participante por RFID o documento (usando datos mock)
+   * Busca un participante por RFID o documento
    */
   buscarParticipante(): void {
     if (!this.rfidSearch && !this.documentoSearch) {
@@ -226,44 +223,59 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
    * Finaliza la actividad y guarda la asistencia
    */
   finalizarActividad(): void {
+    if (this.guardando) {
+      return;
+    }
+
+    if (!this.ejecucionSeleccionadaId) {
+      this.mostrarMensaje('No hay una ejecución de actividad seleccionada para finalizar.', 'error');
+      return;
+    }
+
+    const ejecucionId = String(this.ejecucionSeleccionadaId).trim();
+
+    if (!ejecucionId) {
+      this.mostrarMensaje('El identificador de la ejecución seleccionada no es válido.', 'error');
+      return;
+    }
+
     if (this.miembrosAsistencia.length === 0) {
       this.mostrarMensaje('No hay participantes registrados para finalizar la actividad', 'warning');
       return;
     }
 
+    const participantesRegistrados = [...this.miembrosAsistencia];
+    const participantesRequest: ParticipantRequest[] = participantesRegistrados.map(miembro =>
+      this.convertirAParticipantRequest(miembro)
+    );
+
     this.guardando = true;
     this.limpiarMensaje();
 
-    // Simular delay de guardado
-    setTimeout(() => {
-      this.guardando = false;
+    this.activityService.finalizarActividad(ejecucionId, participantesRequest)
+      .pipe(finalize(() => this.guardando = false))
+      .subscribe({
+        next: () => {
+          this.actualizarEstadoEjecucionLocal(EstadoActividad.FINALIZADO);
+          this.actividadFinalizada.emit({
+            idActividad: this.idActividad,
+            participantes: participantesRegistrados,
+            fechaFinalizacion: new Date()
+          });
 
-      // Crear la lista de asistencias
-      const asistencias: AsistenciaActividad[] = this.miembrosAsistencia.map((miembro, index) => {
-        const participante = this.convertirAModeloParticipante(miembro, index);
-        return {
-          idActividad: this.idActividad,
-          idParticipante: participante.id ?? index + 1,
-          fechaAsistencia: new Date(),
-          participante
-        };
+          this.actividadIniciada = false;
+          this.limpiarTodo();
+          this.mostrarMensaje('La actividad fue finalizada exitosamente.', 'success');
+        },
+        error: (errorResponse) => {
+          const mensajeBackend = this.obtenerMensajeError(errorResponse);
+          if (mensajeBackend) {
+            this.mostrarMensaje(mensajeBackend, 'error');
+          } else {
+            this.mostrarMensaje('No fue posible finalizar la actividad. Inténtalo nuevamente.', 'error');
+          }
+        }
       });
-
-      // Simular guardado exitoso
-      this.mostrarMensaje('Asistencia guardada exitosamente', 'success');
-
-      // Emitir evento de actividad finalizada
-      this.actividadFinalizada.emit({
-        idActividad: this.idActividad,
-        participantes: this.miembrosAsistencia,
-        fechaFinalizacion: new Date(),
-        asistencias: asistencias
-      });
-
-      // Limpiar el componente
-      this.actividadIniciada = false;
-      this.limpiarTodo();
-    }, 1500); // Simular 1.5 segundos de guardado
   }
 
   /**
@@ -365,18 +377,31 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     return this.actividad?.estado === 'FINALIZADA';
   }
 
-  private convertirAModeloParticipante(miembro: UniversityMemberResponse, index: number): Participante {
+  private convertirAParticipantRequest(miembro: UniversityMemberResponse): ParticipantRequest {
+    const identificadorNormalizado = miembro.identificador ? miembro.identificador.trim() : '';
+    const tipoNormalizado = miembro.tipo ? miembro.tipo.trim().toLowerCase() : '';
+    const esExterno = tipoNormalizado === 'externo' || identificadorNormalizado.startsWith('externo-') || identificadorNormalizado === '';
+
     return {
-      id: index + 1,
-      tipoIdentificacion: '',
-      documento: miembro.documentoIdentificacion,
-      primerNombre: miembro.nombreCompleto,
-      segundoNombre: '',
-      primerApellido: '',
-      segundoApellido: '',
-      correo: miembro.correoInstitucional || '',
-      tipoUsuario: miembro.tipo || 'Miembro'
+      identificador: esExterno ? null : identificadorNormalizado,
+      nombreCompleto: miembro.nombreCompleto,
+      documentoIdentificacion: miembro.documentoIdentificacion
     };
+  }
+
+  private obtenerMensajeError(error: any): string {
+    if (!error) {
+      return '';
+    }
+
+    const mensaje =
+      error.error?.message ||
+      error.error?.mensaje ||
+      error.error?.detail ||
+      error.message ||
+      '';
+
+    return typeof mensaje === 'string' ? mensaje : '';
   }
 
   private cargarEjecucionSeleccionada(): void {

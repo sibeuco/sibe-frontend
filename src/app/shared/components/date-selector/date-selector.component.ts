@@ -106,17 +106,18 @@ export class DateSelectorComponent implements OnInit, OnChanges {
       return EstadoFechaProgramada.PENDIENTE;
     }
 
-    const estadoNormalizado = nombreEstado.toLowerCase().trim();
-    
-    if (estadoNormalizado === 'pendiente') {
-      return EstadoFechaProgramada.PENDIENTE;
-    } else if (estadoNormalizado === 'en curso') {
-      return EstadoFechaProgramada.EN_CURSO;
-    } else if (estadoNormalizado === 'finalizado') {
-      return EstadoFechaProgramada.FINALIZADO;
-    }
+    const estadoNormalizado = this.normalizarTexto(nombreEstado);
 
-    return EstadoFechaProgramada.PENDIENTE;
+    switch (estadoNormalizado) {
+      case 'pendiente':
+        return EstadoFechaProgramada.PENDIENTE;
+      case 'en curso':
+        return EstadoFechaProgramada.EN_CURSO;
+      case 'finalizada':
+        return EstadoFechaProgramada.FINALIZADO;
+      default:
+        return EstadoFechaProgramada.PENDIENTE;
+    }
   }
 
   /**
@@ -148,7 +149,7 @@ export class DateSelectorComponent implements OnInit, OnChanges {
       case EstadoFechaProgramada.EN_CURSO:
         return 'status-en-curso';
       case EstadoFechaProgramada.FINALIZADO:
-        return 'status-finalizado';
+        return 'status-finalizada';
       default:
         return 'status-pendiente';
     }
@@ -271,5 +272,14 @@ export class DateSelectorComponent implements OnInit, OnChanges {
       return null;
     }
     return window.sessionStorage;
+  }
+
+  private normalizarTexto(valor: string): string {
+    return valor
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 }

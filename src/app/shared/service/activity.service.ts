@@ -6,6 +6,7 @@ import { Response } from '../model/response.model';
 import { environment } from 'src/environments/environment';
 import { ActivityRequest, ActivityResponse, CancelActivityResponse, EditActivityRequest, StartActivityResponse } from '../model/activity.model';
 import { ActivityExecutionResponse } from '../model/activity-execution.model';
+import { ParticipantRequest } from '../model/participant.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class ActivityService extends HttpService {
   private readonly ACTIVITY_EXECUTION_ENDPOINT = '/actividades/ejecuciones';
   private readonly START_ACTIVITY_ENDPOINT = '/actividades/iniciar';
   private readonly CANCEL_ACTIVITY_ENDPOINT = '/actividades/cancelar';
+  private readonly END_ACTIVITY_ENDPOINT = '/actividades/finalizar';
 
   constructor(http: HttpClient) {
     super(http);
@@ -85,6 +87,13 @@ export class ActivityService extends HttpService {
   cancelarActividad(identificador: string): Observable<CancelActivityResponse> {
     const url = `${environment.endpoint}${this.CANCEL_ACTIVITY_ENDPOINT}/${identificador}`;
     return this.http.put<CancelActivityResponse>(url, {});
+  }
+
+  finalizarActividad(identificador: string, participantes: ParticipantRequest[]): Observable<Response<string>> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.END_ACTIVITY_ENDPOINT}/${identificador}`;  
+
+    return this.doPut<ParticipantRequest[], Response<string>>(url, participantes, opts);
   }
 
 }
