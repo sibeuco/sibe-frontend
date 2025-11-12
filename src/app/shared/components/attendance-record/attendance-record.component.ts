@@ -7,7 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { ActivityService } from '../../service/activity.service';
 import { ActivityExecutionResponse } from '../../model/activity-execution.model';
 import { EstadoActividad } from '../../model/activity.model';
-import { ParticipantRequest } from '../../model/participant.model';
+import { ParticipantRequest, ParticipantResponse } from '../../model/participant.model';
 
 @Component({
   selector: 'app-attendance-record',
@@ -32,8 +32,10 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   mensaje: string = '';
   tipoMensaje: 'success' | 'error' | 'warning' = 'success';
   actividadIniciada: boolean = false;
+  ejecucionFinalizada: boolean = false;
   iniciandoActividad: boolean = false;
   cancelandoActividad: boolean = false;
+  cargandoParticipantesFinalizados: boolean = false;
   
   // Lista de participantes
   miembrosAsistencia: UniversityMemberResponse[] = [];
@@ -374,7 +376,7 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
    * Verifica si la actividad está finalizada
    */
   esActividadFinalizada(): boolean {
-    return this.actividad?.estado === 'FINALIZADA';
+    return this.ejecucionFinalizada;
   }
 
   private convertirAParticipantRequest(miembro: UniversityMemberResponse): ParticipantRequest {
@@ -415,25 +417,38 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       this.ejecucionSeleccionada = null;
       this.ejecucionSeleccionadaId = null;
       this.actividadIniciada = false;
+      this.ejecucionFinalizada = false;
       return;
     }
 
     try {
       const data = JSON.parse(raw) as { ejecucion?: ActivityExecutionResponse | null };
+      const ejecucionAnteriorId = this.ejecucionSeleccionadaId;
       this.ejecucionSeleccionada = data?.ejecucion || null;
       this.ejecucionSeleccionadaId = this.ejecucionSeleccionada?.identificador || null;
       const estado = this.ejecucionSeleccionada?.estadoActividad?.nombre;
       this.actividadIniciada = this.esEstadoEnCurso(estado);
+      this.ejecucionFinalizada = this.esEstadoFinalizado(estado);
+
+      if (this.ejecucionSeleccionadaId !== ejecucionAnteriorId) {
+        this.miembrosAsistencia = [];
+      }
+
+      if (this.ejecucionFinalizada) {
+        this.cargarParticipantesDeActividadFinalizada();
+      }
     } catch {
       storage.removeItem(this.STORAGE_KEY);
       this.ejecucionSeleccionada = null;
       this.ejecucionSeleccionadaId = null;
       this.actividadIniciada = false;
+      this.ejecucionFinalizada = false;
     }
   }
 
   private actualizarEstadoEjecucionLocal(estado: EstadoActividad): void {
     this.actividadIniciada = estado === EstadoActividad.EN_CURSO;
+    this.ejecucionFinalizada = estado === EstadoActividad.FINALIZADO;
 
     if (this.ejecucionSeleccionada) {
       this.ejecucionSeleccionada = {
@@ -470,13 +485,63 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     } catch {
       storage.removeItem(this.STORAGE_KEY);
     }
+
+    if (this.ejecucionFinalizada) {
+      this.cargarParticipantesDeActividadFinalizada();
+    } else if (estado === EstadoActividad.PENDIENTE) {
+      this.miembrosAsistencia = [];
+    }
   }
 
   private esEstadoEnCurso(estado?: string): boolean {
     if (!estado) {
       return false;
     }
-    return estado.trim().toLowerCase() === EstadoActividad.EN_CURSO.toLowerCase();
+    const estadoNormalizado = this.normalizarTexto(estado);
+    return estadoNormalizado === this.normalizarTexto(EstadoActividad.EN_CURSO);
+  }
+
+  private esEstadoFinalizado(estado?: string): boolean {
+    if (!estado) {
+      return false;
+    }
+    const estadoNormalizado = this.normalizarTexto(estado);
+    return estadoNormalizado === this.normalizarTexto(EstadoActividad.FINALIZADO) || estadoNormalizado === 'finalizada';
+  }
+
+  private cargarParticipantesDeActividadFinalizada(): void {
+    if (!this.ejecucionFinalizada || !this.ejecucionSeleccionadaId) {
+      return;
+    }
+
+    const participantesPrevios = [...this.miembrosAsistencia];
+    this.cargandoParticipantesFinalizados = true;
+    this.miembrosAsistencia = [];
+
+    this.activityService.consultarParticipantesPorEjecucion(this.ejecucionSeleccionadaId)
+      .pipe(finalize(() => this.cargandoParticipantesFinalizados = false))
+      .subscribe({
+        next: (participantes) => {
+          this.miembrosAsistencia = participantes.map(participante =>
+            this.convertirParticipanteResponseAUniversityMember(participante)
+          );
+        },
+        error: () => {
+          this.miembrosAsistencia = participantesPrevios;
+          this.mostrarMensaje('No fue posible obtener los participantes de la actividad finalizada.', 'error');
+        }
+      });
+  }
+
+  private convertirParticipanteResponseAUniversityMember(participante: ParticipantResponse): UniversityMemberResponse {
+    return {
+      identificador: participante.identificador,
+      nombreCompleto: participante.nombreCompleto,
+      documentoIdentificacion: participante.numeroIdentificacion,
+      programaAcademico: participante.programaAcademico || 'N/A',
+      correoInstitucional: participante.correoInstitucional || 'N/A',
+      tipo: participante.tipoInterno || 'Interno'
+    };
   }
 
   private obtenerStorage(): Storage | null {
@@ -484,5 +549,14 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       return null;
     }
     return window.sessionStorage;
+  }
+
+  private normalizarTexto(valor: string): string {
+    return valor
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
   }
 }

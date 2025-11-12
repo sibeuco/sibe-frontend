@@ -1,7 +1,15 @@
+  <!-- Carga de participantes finalizados -->
+  <div class="participants-loading d-flex justify-content-center my-4" *ngIf="ejecucionFinalizada && cargandoParticipantesFinalizados">
+    <div class="spinner-border text-primary me-2" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+    <span>Cargando participantes de la actividad finalizada...</span>
+  </div>
+
 <div class="attendance-record-container">
 
   <!-- Botón para iniciar la actividad -->
-  <div class="start-activity-section mb-4" *ngIf="!actividadIniciada">
+  <div class="start-activity-section mb-4" *ngIf="!actividadIniciada && !ejecucionFinalizada">
     <div class="alert text-center">
       <i class="bi bi-info-circle me-2"></i>
       <h4>La actividad no está iniciada</h4>
@@ -18,8 +26,17 @@
     </div>
   </div>
 
+  <!-- Información de actividad finalizada -->
+  <div class="finalized-info-section mb-4" *ngIf="ejecucionFinalizada">
+    <div class="alert text-center">
+      <i class="bi bi-check-circle me-2"></i>
+      <h4>La actividad está finalizada</h4>
+      <p class="mb-0">La lista de participantes corresponde a la asistencia registrada.</p>
+    </div>
+  </div>
+
   <!-- Formulario de búsqueda - Se muestra después de iniciar la actividad -->
-  <div class="search-section" *ngIf="actividadIniciada">
+  <div class="search-section" *ngIf="actividadIniciada && !ejecucionFinalizada">
     <div class="search-form">
       <div class="row">
         <div class="col-md-5 mb-3">
@@ -56,7 +73,7 @@
   </div>
 
   <!-- Tabla de participantes -->
-  <div class="participants-section" *ngIf="actividadIniciada && miembrosAsistencia.length > 0">
+  <div class="participants-section" *ngIf="(actividadIniciada || ejecucionFinalizada) && miembrosAsistencia.length > 0">
     <div class="table-responsive">
       <table class="table table-striped table-hover">
         <thead class="table-dark">
@@ -66,7 +83,7 @@
             <th>Programa Académico</th>
             <th>Correo Institucional</th>
             <th>Tipo</th>
-            <th>Acciones</th>
+            <th *ngIf="!ejecucionFinalizada">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -76,7 +93,7 @@
             <td>{{ participante.programaAcademico || 'N/A' }}</td>
             <td>{{ participante.correoInstitucional || 'N/A' }}</td>
             <td>{{ participante.tipo || 'N/A' }}</td>
-            <td>
+            <td *ngIf="!ejecucionFinalizada">
               <button type="button" class="btn btn-sm btn-outline-danger" (click)="removerParticipante(i)"
                 title="Remover participante">
                 <i class="bi bi-trash"></i>
@@ -92,11 +109,12 @@
   </div>
 
   <!-- Mensaje cuando no hay participantes registrados aún -->
-  <div class="no-participants-section" *ngIf="actividadIniciada && miembrosAsistencia.length === 0">
+  <div class="no-participants-section" *ngIf="(actividadIniciada || ejecucionFinalizada) && miembrosAsistencia.length === 0">
     <div class="alert text-center">
       <i class="bi bi-info-circle me-2"></i>
       <h4>No hay participantes registrados</h4>
-      <p class="mb-0">Registra participantes utilizando el formulario superior.</p>
+      <p class="mb-0" *ngIf="actividadIniciada && !ejecucionFinalizada">Registra participantes utilizando el formulario superior.</p>
+      <p class="mb-0" *ngIf="ejecucionFinalizada">Esta actividad finalizada no tiene participantes registrados.</p>
     </div>
   </div>
 
