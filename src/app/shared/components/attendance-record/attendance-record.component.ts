@@ -540,7 +540,7 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       documentoIdentificacion: participante.numeroIdentificacion,
       programaAcademico: participante.programaAcademico || 'N/A',
       correoInstitucional: participante.correoInstitucional || 'N/A',
-      tipo: participante.tipoInterno || 'Interno'
+      tipo: participante.tipo || 'Interno'
     };
   }
 

@@ -13,7 +13,7 @@ export interface ParticipantResponse {
   numeroIdentificacion: string;
   relacionLaboral: EmploymentRelationshipResponse;
   centroCostos: CostCenterResponse;
-  tipoInterno: string;
+  tipo: string;
   fechaNacimiento: string;
   nacionalidad: string;
   estadoCivil: string;
