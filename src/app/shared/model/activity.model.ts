@@ -71,5 +71,5 @@ export interface ActivityInfo {
 export enum EstadoActividad {
   PENDIENTE = 'Pendiente',
   EN_CURSO = 'En curso',
-  FINALIZADO = 'Finalizado'
+  FINALIZADO = 'Finalizada'
 }
