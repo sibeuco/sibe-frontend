@@ -1,17 +1,24 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { Participante, AsistenciaActividad } from 'src/app/core/model/participante.model';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Modal } from 'bootstrap';
+import { UniversityMemberService } from '../../service/university-member.service';
+import { UniversityMemberResponse } from '../../model/university-member.model';
+import { catchError, of } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { ActivityService } from '../../service/activity.service';
+import { ActivityExecutionResponse } from '../../model/activity-execution.model';
+import { EstadoActividad, ActivityResponse } from '../../model/activity.model';
+import { ParticipantRequest, ParticipantResponse } from '../../model/participant.model';
 
 @Component({
   selector: 'app-attendance-record',
   templateUrl: './attendance-record.component.html',
   styleUrls: ['./attendance-record.component.scss']
 })
-export class AttendanceRecordComponent implements OnInit {
+export class AttendanceRecordComponent implements OnInit, OnChanges {
   
   @Input() idActividad: number = 0;
-  @Input() actividad: any = null; // Datos de la actividad
-  @Input() usuarioLoggeado: any = null; // Usuario actualmente loggeado
+  @Input() actividad: any = null;
+  @Input() usuarioLoggeado: any = null;
   @Output() actividadFinalizada = new EventEmitter<any>();
   @Output() actividadCancelada = new EventEmitter<any>();
 
@@ -24,191 +31,68 @@ export class AttendanceRecordComponent implements OnInit {
   guardando: boolean = false;
   mensaje: string = '';
   tipoMensaje: 'success' | 'error' | 'warning' = 'success';
-  mostrarDatosPrueba: boolean = false;
+  actividadIniciada: boolean = false;
+  ejecucionFinalizada: boolean = false;
+  iniciandoActividad: boolean = false;
+  cancelandoActividad: boolean = false;
+  cargandoParticipantesFinalizados: boolean = false;
   
   // Lista de participantes
-  participantesAsistencia: Participante[] = [];
+  miembrosAsistencia: UniversityMemberResponse[] = [];
 
-  private participantesMock: Participante[] = [
-    {
-      id: 1,
-      tipoIdentificacion: 'CC',
-      documento: '1036965847',
-      primerNombre: 'Daniel',
-      segundoNombre: 'Felipe',
-      primerApellido: 'Garcia',
-      segundoApellido: 'Quiceno',
-      correo: 'daniel.garcia5847@gmail.com',
-      rfid: '0058844276',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 2,
-      tipoIdentificacion: 'CC',
-      documento: '1036945983',
-      primerNombre: 'Erika',
-      segundoNombre: 'Fernanda',
-      primerApellido: 'Torres',
-      segundoApellido: 'Marin',
-      correo: 'egresado.jefe@uco.edu.co',
-      rfid: '3620660411',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 3,
-      tipoIdentificacion: 'TI',
-      documento: 'TI123456',
-      primerNombre: 'Carlos',
-      segundoNombre: 'Alberto',
-      primerApellido: 'González',
-      segundoApellido: 'Martínez',
-      correo: 'carlos.gonzalez@email.com',
-      rfid: 'RF009012',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 4,
-      tipoIdentificacion: 'CC',
-      documento: '11223344',
-      primerNombre: 'Ana',
-      segundoNombre: 'Sofía',
-      primerApellido: 'Hernández',
-      segundoApellido: 'Díaz',
-      correo: 'ana.hernandez@email.com',
-      rfid: 'RF003456',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 5,
-      tipoIdentificacion: 'CC',
-      documento: '55667788',
-      primerNombre: 'Luis',
-      segundoNombre: 'Fernando',
-      primerApellido: 'Morales',
-      segundoApellido: 'Castro',
-      correo: 'luis.morales@email.com',
-      rfid: 'RF007890',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 6,
-      tipoIdentificacion: 'CC',
-      documento: '99887766',
-      primerNombre: 'Laura',
-      segundoNombre: 'Isabel',
-      primerApellido: 'Jiménez',
-      segundoApellido: 'Ruiz',
-      correo: 'laura.jimenez@email.com',
-      rfid: 'RF001122',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 7,
-      tipoIdentificacion: 'TI',
-      documento: 'TI789012',
-      primerNombre: 'Diego',
-      segundoNombre: 'Alejandro',
-      primerApellido: 'Vargas',
-      segundoApellido: 'Ramírez',
-      correo: 'diego.vargas@email.com',
-      rfid: 'RF004567',
-      tipoUsuario: 'Estudiante'
-    },
-    {
-      id: 8,
-      tipoIdentificacion: 'CC',
-      documento: '33445566',
-      primerNombre: 'Sandra',
-      segundoNombre: 'Patricia',
-      primerApellido: 'Torres',
-      segundoApellido: 'Flores',
-      correo: 'sandra.torres@email.com',
-      rfid: 'RF008901',
-      tipoUsuario: 'Estudiante'
-    }
-  ];
+  private readonly STORAGE_KEY = 'selectedActivityInfo';
+  private ejecucionSeleccionada: ActivityExecutionResponse | null = null;
+  ejecucionSeleccionadaId: string | null = null;
+  actividadCargada: ActivityResponse | null = null;
 
-  constructor() {}
+  constructor(
+    private universityMemberService: UniversityMemberService,
+    private activityService: ActivityService
+  ) {}
 
   ngOnInit(): void {
     this.limpiarMensaje();
-    this.cargarDatosPrueba();
+    this.cargarEjecucionSeleccionada();
   }
 
-  /**
-   * Carga datos de prueba para testing
-   */
-  private cargarDatosPrueba(): void {
-    // Datos de actividad de prueba
-    if (!this.actividad) {
-      this.actividad = {
-        id: 1,
-        nombre: 'Taller de Bienestar Estudiantil',
-        colaborador: 'María González Pérez',
-        estado: 'EN_CURSO', // Cambiar a 'FINALIZADA' para probar el otro caso
-        objetivo: 'Promover el bienestar integral de los estudiantes',
-        indicador: 'Satisfacción grupos de Interés - eficacia',
-        fechaProgramada: '2024-12-25'
-      };
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['actividad'] || changes['idActividad']) {
+      this.cargarEjecucionSeleccionada();
+    }
+  }
+
+  iniciarActividad(): void {
+    if (this.iniciandoActividad) {
+      return;
     }
 
-    // Datos de usuario loggeado de prueba
-    if (!this.usuarioLoggeado) {
-      this.usuarioLoggeado = {
-        id: 1,
-        nombreCompleto: 'María González Pérez', // Coincide con el colaborador
-        email: 'maria.gonzalez@email.com',
-        documento: '1036965847',
-        tipoUsuario: 'Colaborador'
-      };
+    if (this.esEstadoPendienteOEnCurso() && !this.esUsuarioColaborador()) {
+      this.mostrarMensaje('No tienes permisos para iniciar esta actividad. Solo el colaborador asignado puede realizar esta acción.', 'error');
+      return;
     }
 
-    // Cargar algunos participantes de prueba si la actividad está finalizada
-    if (this.esActividadFinalizada()) {
-      this.participantesAsistencia = [
-        {
-          id: 1,
-          tipoIdentificacion: 'CC',
-          documento: '1036965847',
-          primerNombre: 'Daniel',
-          segundoNombre: 'Felipe',
-          primerApellido: 'Garcia',
-          segundoApellido: 'Quiceno',
-          correo: 'daniel.garcia5847@gmail.com',
-          rfid: '0058844276',
-          tipoUsuario: 'Estudiante'
+    if (!this.ejecucionSeleccionadaId) {
+      this.mostrarMensaje('No hay una ejecución de actividad seleccionada. Por favor, selecciona una fecha programada antes de iniciar.', 'error');
+      return;
+    }
+
+    this.iniciandoActividad = true;
+    this.limpiarMensaje();
+
+    this.activityService.iniciarActividad(this.ejecucionSeleccionadaId)
+      .pipe(finalize(() => this.iniciandoActividad = false))
+      .subscribe({
+        next: () => {
+          this.actualizarEstadoEjecucionLocal(EstadoActividad.EN_CURSO);
+          this.actividadIniciada = true;
+          this.mostrarMensaje('La actividad fue iniciada. Puedes registrar la asistencia.', 'success');
         },
-        {
-          id: 2,
-          tipoIdentificacion: 'CC',
-          documento: '87654321',
-          primerNombre: 'María',
-          segundoNombre: 'Elena',
-          primerApellido: 'Rodríguez',
-          segundoApellido: 'López',
-          correo: 'maria.rodriguez@email.com',
-          rfid: 'RF005678',
-          tipoUsuario: 'Estudiante'
-        },
-        {
-          id: 3,
-          tipoIdentificacion: 'TI',
-          documento: 'TI123456',
-          primerNombre: 'Carlos',
-          segundoNombre: 'Alberto',
-          primerApellido: 'González',
-          segundoApellido: 'Martínez',
-          correo: 'carlos.gonzalez@email.com',
-          rfid: 'RF009012',
-          tipoUsuario: 'Estudiante'
+        error: () => {
+          this.mostrarMensaje('No fue posible iniciar la actividad. Inténtalo nuevamente.', 'error');
         }
-      ];
-    }
+      });
   }
 
-  /**
-   * Busca un participante por RFID o documento (usando datos mock)
-   */
   buscarParticipante(): void {
     if (!this.rfidSearch && !this.documentoSearch) {
       this.mostrarMensaje('Por favor ingrese un código RFID o número de documento', 'warning');
@@ -218,29 +102,32 @@ export class AttendanceRecordComponent implements OnInit {
     this.buscando = true;
     this.limpiarMensaje();
 
-    // Simular delay de búsqueda
-    setTimeout(() => {
-      this.buscando = false;
-      
-      // Buscar en los datos mock
-      const participanteEncontrado = this.participantesMock.find(p => 
-        (this.rfidSearch && p.rfid?.toLowerCase() === this.rfidSearch.toLowerCase()) ||
-        (this.documentoSearch && p.documento.toLowerCase() === this.documentoSearch.toLowerCase())
-      );
+    const carnet = this.rfidSearch?.trim();
+    const documento = this.documentoSearch?.trim();
 
-      if (participanteEncontrado) {
-        this.agregarParticipante(participanteEncontrado);
-        this.limpiarFormulario();
-      } else {
-        // Preguntar si desea agregar como participante externo
-        this.preguntarAgregarParticipanteExterno();
-      }
-    }, 1000); // Simular 1 segundo de búsqueda
+    const consulta$ = carnet
+      ? this.universityMemberService.consultarPorCarnet(carnet)
+      : this.universityMemberService.consultarPorIdentificacion(documento);
+
+    consulta$
+      .pipe(
+        catchError(() => {
+          this.buscando = false;
+          this.preguntarAgregarParticipanteExterno();
+          return of(null);
+        })
+      )
+      .subscribe(miembro => {
+        this.buscando = false;
+        if (miembro) {
+          this.agregarMiembro(miembro);
+          this.limpiarFormulario();
+        } else {
+          this.mostrarMensaje('No se encontró ningún miembro con los datos ingresados.', 'warning');
+        }
+      });
   }
 
-  /**
-   * Pregunta al usuario si desea agregar un participante externo
-   */
   private preguntarAgregarParticipanteExterno(): void {
     const modalElement = document.getElementById('confirmExternalParticipantModal');
     if (modalElement) {
@@ -249,9 +136,6 @@ export class AttendanceRecordComponent implements OnInit {
     }
   }
 
-  /**
-   * Confirma agregar participante externo
-   */
   confirmarAgregarParticipanteExterno(): void {
     const modalElement = document.getElementById('confirmExternalParticipantModal');
     if (modalElement) {
@@ -263,9 +147,6 @@ export class AttendanceRecordComponent implements OnInit {
     this.abrirModalParticipanteExterno();
   }
 
-  /**
-   * Cancela agregar participante externo
-   */
   cancelarAgregarParticipanteExterno(): void {
     const modalElement = document.getElementById('confirmExternalParticipantModal');
     if (modalElement) {
@@ -278,9 +159,6 @@ export class AttendanceRecordComponent implements OnInit {
     this.limpiarFormulario();
   }
 
-  /**
-   * Abre el modal de participante externo
-   */
   private abrirModalParticipanteExterno(): void {
     const modalElement = document.getElementById('external-participant-modal');
     if (modalElement) {
@@ -289,37 +167,25 @@ export class AttendanceRecordComponent implements OnInit {
     }
   }
 
-  /**
-   * Maneja el evento cuando se agrega un participante externo
-   */
   manejarParticipanteExterno(datos: any): void {
-    // Crear un objeto Participante a partir de los datos del participante externo
-    const participanteExterno: Participante = {
-      id: Date.now(), // Generar un ID temporal
-      tipoIdentificacion: 'EXT', // Tipo para identificar participantes externos
-      documento: datos.documento,
-      primerNombre: datos.nombreCompleto.split(' ')[0] || datos.nombreCompleto,
-      segundoNombre: datos.nombreCompleto.split(' ')[1] || '',
-      primerApellido: datos.nombreCompleto.split(' ')[2] || '',
-      segundoApellido: datos.nombreCompleto.split(' ')[3] || '',
-      correo: 'participante.externo@email.com', // Correo genérico para externos
-      rfid: this.rfidSearch || undefined,
-      tipoUsuario: 'Externo'
+    const miembroExterno: UniversityMemberResponse = {
+      identificador: `externo-${Date.now()}`,
+      nombreCompleto: datos.nombreCompleto,
+      documentoIdentificacion: datos.documento,
+      programaAcademico: 'N/A',
+      correoInstitucional: 'N/A',
+      tipo: 'Externo'
     };
 
-    // Agregar el participante externo a la lista
-    this.agregarParticipante(participanteExterno);
+    this.agregarMiembro(miembroExterno);
     this.limpiarFormulario();
     this.mostrarMensaje(`Participante externo ${datos.nombreCompleto} agregado exitosamente`, 'success');
   }
 
-  /**
-   * Agrega un participante a la lista de asistencia
-   */
-  private agregarParticipante(participante: Participante): void {
-    // Verificar si el participante ya está en la lista
-    const yaExiste = this.participantesAsistencia.some(p => 
-      p.documento === participante.documento || p.rfid === participante.rfid
+  private agregarMiembro(miembro: UniversityMemberResponse): void {
+    const yaExiste = this.miembrosAsistencia.some(existing =>
+      existing.documentoIdentificacion === miembro.documentoIdentificacion ||
+      existing.identificador === miembro.identificador
     );
 
     if (yaExiste) {
@@ -327,105 +193,151 @@ export class AttendanceRecordComponent implements OnInit {
       return;
     }
 
-    this.participantesAsistencia.push(participante);
-    this.mostrarMensaje(`Participante ${this.getNombreCompleto(participante)} agregado exitosamente`, 'success');
+    this.miembrosAsistencia.push(miembro);
+    this.mostrarMensaje(`Participante ${miembro.nombreCompleto} agregado exitosamente`, 'success');
   }
 
-  /**
-   * Remueve un participante de la lista de asistencia
-   */
   removerParticipante(index: number): void {
-    const participante = this.participantesAsistencia[index];
-    this.participantesAsistencia.splice(index, 1);
-    this.mostrarMensaje(`Participante ${this.getNombreCompleto(participante)} removido de la lista`, 'success');
+    const participante = this.miembrosAsistencia[index];
+    this.miembrosAsistencia.splice(index, 1);
+    this.mostrarMensaje(`Participante ${participante.nombreCompleto} removido de la lista`, 'success');
   }
 
-  /**
-   * Finaliza la actividad y guarda la asistencia (usando datos mock)
-   */
   finalizarActividad(): void {
-    if (this.participantesAsistencia.length === 0) {
+    if (this.guardando) {
+      return;
+    }
+
+    if (!this.esUsuarioColaborador()) {
+      this.mostrarMensaje('No tienes permisos para finalizar esta actividad. Solo el colaborador asignado puede realizar esta acción.', 'error');
+      return;
+    }
+
+    if (!this.ejecucionSeleccionadaId) {
+      this.mostrarMensaje('No hay una ejecución de actividad seleccionada para finalizar.', 'error');
+      return;
+    }
+
+    const ejecucionId = String(this.ejecucionSeleccionadaId).trim();
+
+    if (!ejecucionId) {
+      this.mostrarMensaje('El identificador de la ejecución seleccionada no es válido.', 'error');
+      return;
+    }
+
+    if (this.miembrosAsistencia.length === 0) {
       this.mostrarMensaje('No hay participantes registrados para finalizar la actividad', 'warning');
       return;
     }
 
+    const participantesRegistrados = [...this.miembrosAsistencia];
+    const participantesRequest: ParticipantRequest[] = participantesRegistrados.map(miembro =>
+      this.convertirAParticipantRequest(miembro)
+    );
+
     this.guardando = true;
     this.limpiarMensaje();
 
-    // Simular delay de guardado
-    setTimeout(() => {
-      this.guardando = false;
-      
-      // Crear la lista de asistencias
-      const asistencias: AsistenciaActividad[] = this.participantesAsistencia.map(participante => ({
-        idActividad: this.idActividad,
-        idParticipante: participante.id!,
-        fechaAsistencia: new Date(),
-        participante: participante
-      }));
+    this.activityService.finalizarActividad(ejecucionId, participantesRequest)
+      .pipe(finalize(() => this.guardando = false))
+      .subscribe({
+        next: () => {
+          this.actualizarEstadoEjecucionLocal(EstadoActividad.FINALIZADO);
+          this.actividadFinalizada.emit({
+            idActividad: this.idActividad,
+            participantes: participantesRegistrados,
+            fechaFinalizacion: new Date()
+          });
 
-      // Simular guardado exitoso
-      console.log('Asistencias a guardar:', asistencias);
-      this.mostrarMensaje('Asistencia guardada exitosamente', 'success');
-      
-      // Emitir evento de actividad finalizada
-      this.actividadFinalizada.emit({
-        idActividad: this.idActividad,
-        participantes: this.participantesAsistencia,
-        fechaFinalizacion: new Date(),
-        asistencias: asistencias
+          this.actividadIniciada = false;
+          this.limpiarTodo();
+          this.mostrarMensaje('La actividad fue finalizada exitosamente.', 'success');
+        },
+        error: (errorResponse) => {
+          const mensajeBackend = this.obtenerMensajeError(errorResponse);
+          if (mensajeBackend) {
+            this.mostrarMensaje(mensajeBackend, 'error');
+          } else {
+            this.mostrarMensaje('No fue posible finalizar la actividad. Inténtalo nuevamente.', 'error');
+          }
+        }
       });
-      
-      // Limpiar el componente
-      this.limpiarTodo();
-    }, 1500); // Simular 1.5 segundos de guardado
   }
 
-  /**
-   * Cancela la actividad
-   */
+  solicitarCancelacionActividad(): void {
+    const modalElement = document.getElementById('cancelActivityConfirmModal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
+      modal.show();
+    }
+  }
+
+  cerrarModalCancelacion(): void {
+    const modalElement = document.getElementById('cancelActivityConfirmModal');
+    if (modalElement) {
+      const modal = Modal.getInstance(modalElement);
+      if (modal) {
+        modal.hide();
+      }
+    }
+  }
+
   cancelarActividad(): void {
-    this.actividadCancelada.emit({
-      idActividad: this.idActividad,
-      participantes: this.participantesAsistencia
-    });
-    this.limpiarTodo();
+    if (this.cancelandoActividad) {
+      return;
+    }
+
+    if (!this.esUsuarioColaborador()) {
+      this.mostrarMensaje('No tienes permisos para cancelar esta actividad. Solo el colaborador asignado puede realizar esta acción.', 'error');
+      return;
+    }
+
+    if (!this.ejecucionSeleccionadaId) {
+      this.mostrarMensaje('No hay una ejecución de actividad seleccionada para cancelar.', 'error');
+      return;
+    }
+
+    this.cerrarModalCancelacion();
+    this.cancelandoActividad = true;
+    this.limpiarMensaje();
+    const participantesAnteriormenteRegistrados = [...this.miembrosAsistencia];
+
+    this.activityService.cancelarActividad(this.ejecucionSeleccionadaId)
+      .pipe(finalize(() => this.cancelandoActividad = false))
+      .subscribe({
+        next: () => {
+          this.actualizarEstadoEjecucionLocal(EstadoActividad.PENDIENTE);
+          this.miembrosAsistencia = [];
+          this.limpiarFormulario();
+          this.actividadIniciada = false;
+          this.actividadCancelada.emit({
+            idActividad: this.idActividad,
+            participantes: participantesAnteriormenteRegistrados
+          });
+          this.mostrarMensaje('La actividad fue cancelada exitosamente.', 'success');
+        },
+        error: () => {
+          this.mostrarMensaje('No fue posible cancelar la actividad. Inténtalo nuevamente.', 'error');
+        }
+      });
   }
 
-  /**
-   * Obtiene el nombre completo del participante
-   */
-  getNombreCompleto(participante: Participante): string {
-    const nombre = `${participante.primerNombre} ${participante.segundoNombre || ''}`.trim();
-    const apellido = `${participante.primerApellido} ${participante.segundoApellido || ''}`.trim();
-    return `${nombre} ${apellido}`.trim();
-  }
-
-  /**
-   * Limpia el formulario de búsqueda
-   */
   private limpiarFormulario(): void {
     this.rfidSearch = '';
     this.documentoSearch = '';
   }
 
-  /**
-   * Limpia todos los datos del componente
-   */
   private limpiarTodo(): void {
     this.limpiarFormulario();
-    this.participantesAsistencia = [];
+    this.miembrosAsistencia = [];
     this.limpiarMensaje();
+    this.cancelandoActividad = false;
+    this.iniciandoActividad = false;
   }
 
-  /**
-   * Muestra un mensaje al usuario
-   */
   private mostrarMensaje(mensaje: string, tipo: 'success' | 'error' | 'warning'): void {
     this.mensaje = mensaje;
     this.tipoMensaje = tipo;
-    
-    // Limpiar mensaje después de 5 segundos
     setTimeout(() => {
       this.limpiarMensaje();
     }, 5000);
@@ -435,69 +347,279 @@ export class AttendanceRecordComponent implements OnInit {
     this.mensaje = '';
   }
 
-  /**
-   * Verifica si la actividad está finalizada
-   */
   esActividadFinalizada(): boolean {
-    return this.actividad?.estado === 'FINALIZADA';
+    return this.ejecucionFinalizada;
   }
 
   /**
-   * Verifica si el usuario loggeado es el colaborador de la actividad
+   * Convierte miembro universitario a ParticipantRequest. Los externos no tienen identificador.
    */
-  esColaboradorActividad(): boolean {
-    if (!this.actividad || !this.usuarioLoggeado) {
+  private convertirAParticipantRequest(miembro: UniversityMemberResponse): ParticipantRequest {
+    const identificadorNormalizado = miembro.identificador ? miembro.identificador.trim() : '';
+    const tipoNormalizado = miembro.tipo ? miembro.tipo.trim().toLowerCase() : '';
+    const esExterno = tipoNormalizado === 'externo' || identificadorNormalizado.startsWith('externo-') || identificadorNormalizado === '';
+
+    return {
+      identificador: esExterno ? null : identificadorNormalizado,
+      nombreCompleto: miembro.nombreCompleto,
+      documentoIdentificacion: miembro.documentoIdentificacion
+    };
+  }
+
+  private obtenerMensajeError(error: any): string {
+    if (!error) {
+      return '';
+    }
+
+    const mensaje =
+      error.error?.message ||
+      error.error?.mensaje ||
+      error.error?.detail ||
+      error.message ||
+      '';
+
+    return typeof mensaje === 'string' ? mensaje : '';
+  }
+
+  /**
+   * Carga actividad y ejecución desde sessionStorage (guardados por date-selector).
+   * Si cambia la ejecución, limpia participantes para evitar inconsistencias.
+   */
+  private cargarEjecucionSeleccionada(): void {
+    const storage = this.obtenerStorage();
+    if (!storage) {
+      return;
+    }
+
+    const raw = storage.getItem(this.STORAGE_KEY);
+    if (!raw) {
+      this.ejecucionSeleccionada = null;
+      this.ejecucionSeleccionadaId = null;
+      this.actividadCargada = null;
+      this.actividadIniciada = false;
+      this.ejecucionFinalizada = false;
+      return;
+    }
+
+    try {
+      const data = JSON.parse(raw) as { actividad?: ActivityResponse | null; ejecucion?: ActivityExecutionResponse | null };
+      const ejecucionAnteriorId = this.ejecucionSeleccionadaId;
+      
+      this.actividadCargada = data?.actividad || null;
+      
+      if (!this.actividad && this.actividadCargada) {
+        this.actividad = this.actividadCargada;
+      }
+      
+      this.ejecucionSeleccionada = data?.ejecucion || null;
+      this.ejecucionSeleccionadaId = this.ejecucionSeleccionada?.identificador || null;
+      const estado = this.ejecucionSeleccionada?.estadoActividad?.nombre;
+      this.actividadIniciada = this.esEstadoEnCurso(estado);
+      this.ejecucionFinalizada = this.esEstadoFinalizado(estado);
+
+      if (this.ejecucionSeleccionadaId !== ejecucionAnteriorId) {
+        this.miembrosAsistencia = [];
+      }
+
+      if (this.ejecucionFinalizada) {
+        this.cargarParticipantesDeActividadFinalizada();
+      }
+    } catch {
+      storage.removeItem(this.STORAGE_KEY);
+      this.ejecucionSeleccionada = null;
+      this.ejecucionSeleccionadaId = null;
+      this.actividadCargada = null;
+      this.actividadIniciada = false;
+      this.ejecucionFinalizada = false;
+    }
+  }
+
+  /**
+   * Actualiza el estado de la ejecución en memoria y sessionStorage para mantener sincronización.
+   */
+  private actualizarEstadoEjecucionLocal(estado: EstadoActividad): void {
+    this.actividadIniciada = estado === EstadoActividad.EN_CURSO;
+    this.ejecucionFinalizada = estado === EstadoActividad.FINALIZADO;
+
+    if (this.ejecucionSeleccionada) {
+      this.ejecucionSeleccionada = {
+        ...this.ejecucionSeleccionada,
+        estadoActividad: {
+          ...(this.ejecucionSeleccionada.estadoActividad || {}),
+          nombre: estado
+        }
+      };
+    }
+
+    const storage = this.obtenerStorage();
+    if (!storage) {
+      return;
+    }
+
+    const raw = storage.getItem(this.STORAGE_KEY);
+    if (!raw) {
+      return;
+    }
+
+    try {
+      const data = JSON.parse(raw) as { actividad?: any; ejecucion?: ActivityExecutionResponse | null };
+      if (data?.ejecucion) {
+        data.ejecucion = {
+          ...data.ejecucion,
+          estadoActividad: {
+            ...(data.ejecucion.estadoActividad || {}),
+            nombre: estado
+          }
+        };
+        storage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+      }
+    } catch {
+      storage.removeItem(this.STORAGE_KEY);
+    }
+
+    if (this.ejecucionFinalizada) {
+      this.cargarParticipantesDeActividadFinalizada();
+    } else if (estado === EstadoActividad.PENDIENTE) {
+      this.miembrosAsistencia = [];
+    }
+  }
+
+  private esEstadoEnCurso(estado?: string): boolean {
+    if (!estado) {
       return false;
     }
-    // Comparar por documento o email del colaborador
-    return this.actividad.colaborador === this.usuarioLoggeado.nombreCompleto ||
-           this.actividad.colaborador === this.usuarioLoggeado.email ||
-           this.actividad.colaborador === this.usuarioLoggeado.documento;
+    const estadoNormalizado = this.normalizarTexto(estado);
+    return estadoNormalizado === this.normalizarTexto(EstadoActividad.EN_CURSO);
   }
 
-  /**
-   * Verifica si se debe mostrar el formulario de asistencia
-   */
-  debeMostrarFormularioAsistencia(): boolean {
-    return !this.esActividadFinalizada() && this.esColaboradorActividad();
-  }
-
-  /**
-   * Verifica si se debe mostrar solo la lista de participantes
-   */
-  debeMostrarSoloLista(): boolean {
-    return this.esActividadFinalizada();
-  }
-
-  /**
-   * Verifica si se debe mostrar mensaje de acceso denegado
-   */
-  debeMostrarAccesoDenegado(): boolean {
-    return !this.esActividadFinalizada() && !this.esColaboradorActividad();
-  }
-
-  /**
-   * Método para cambiar el escenario de prueba
-   * Útil para testing de diferentes casos
-   */
-  cambiarEscenarioPrueba(escenario: 'finalizada' | 'en_curso_colaborador' | 'en_curso_no_colaborador'): void {
-    switch (escenario) {
-      case 'finalizada':
-        this.actividad.estado = 'FINALIZADA';
-        this.usuarioLoggeado.nombreCompleto = 'María González Pérez';
-        break;
-      case 'en_curso_colaborador':
-        this.actividad.estado = 'EN_CURSO';
-        this.usuarioLoggeado.nombreCompleto = 'María González Pérez';
-        break;
-      case 'en_curso_no_colaborador':
-        this.actividad.estado = 'EN_CURSO';
-        this.usuarioLoggeado.nombreCompleto = 'Juan Pérez'; // Diferente al colaborador
-        break;
+  private esEstadoFinalizado(estado?: string): boolean {
+    if (!estado) {
+      return false;
     }
-    
-    // Recargar datos de prueba
-    this.cargarDatosPrueba();
+    const estadoNormalizado = this.normalizarTexto(estado);
+    return estadoNormalizado === this.normalizarTexto(EstadoActividad.FINALIZADO) || estadoNormalizado === 'finalizada';
   }
 
+  private cargarParticipantesDeActividadFinalizada(): void {
+    if (!this.ejecucionFinalizada || !this.ejecucionSeleccionadaId) {
+      return;
+    }
+
+    const participantesPrevios = [...this.miembrosAsistencia];
+    this.cargandoParticipantesFinalizados = true;
+    this.miembrosAsistencia = [];
+
+    this.activityService.consultarParticipantesPorEjecucion(this.ejecucionSeleccionadaId)
+      .pipe(finalize(() => this.cargandoParticipantesFinalizados = false))
+      .subscribe({
+        next: (participantes) => {
+          this.miembrosAsistencia = participantes.map(participante =>
+            this.convertirParticipanteResponseAUniversityMember(participante)
+          );
+        },
+        error: () => {
+          this.miembrosAsistencia = participantesPrevios;
+          this.mostrarMensaje('No fue posible obtener los participantes de la actividad finalizada.', 'error');
+        }
+      });
+  }
+
+  private convertirParticipanteResponseAUniversityMember(participante: ParticipantResponse): UniversityMemberResponse {
+    return {
+      identificador: participante.identificador,
+      nombreCompleto: participante.nombreCompleto,
+      documentoIdentificacion: participante.numeroIdentificacion,
+      programaAcademico: participante.programaAcademico || 'N/A',
+      correoInstitucional: participante.correoInstitucional || 'N/A',
+      tipo: participante.tipo || 'Interno'
+    };
+  }
+
+  private obtenerStorage(): Storage | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    return window.sessionStorage;
+  }
+
+  /**
+   * Normaliza texto usando descomposición Unicode (NFD) para comparaciones sin acentos.
+   * Separa caracteres base de diacríticos: á -> a + ´, luego elimina los diacríticos.
+   */
+  private normalizarTexto(valor: string): string {
+    return valor
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /**
+   * Extrae el identificador del usuario desde el token JWT (formato: header.payload.signature).
+   * Decodifica el payload (segunda parte) que contiene la información del usuario.
+   */
+  private obtenerIdentificadorUsuario(): string | null {
+    try {
+      const token = window.sessionStorage.getItem('Authorization');
+      if (!token || !token.includes('.')) {
+        return null;
+      }
+
+      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+      return tokenPayload.identificador || tokenPayload.id || null;
+    } catch {
+      return null;
+    }
+  }
+
+  private esEstadoPendienteOEnCurso(): boolean {
+    if (!this.ejecucionSeleccionada || !this.ejecucionSeleccionada.estadoActividad) {
+      return false;
+    }
+    const estado = this.ejecucionSeleccionada.estadoActividad.nombre;
+    const estadoNormalizado = this.normalizarTexto(estado);
+    const pendienteNormalizado = this.normalizarTexto(EstadoActividad.PENDIENTE);
+    const enCursoNormalizado = this.normalizarTexto(EstadoActividad.EN_CURSO);
+    return estadoNormalizado === pendienteNormalizado || estadoNormalizado === enCursoNormalizado;
+  }
+
+  esUsuarioColaborador(): boolean {
+    const actividadParaValidar = this.actividad || this.actividadCargada;
+    if (!actividadParaValidar || !actividadParaValidar.colaborador) {
+      return false;
+    }
+
+    const usuarioId = this.obtenerIdentificadorUsuario();
+    if (!usuarioId) {
+      return false;
+    }
+
+    const colaboradorId = actividadParaValidar.colaborador;
+    return String(usuarioId) === String(colaboradorId);
+  }
+
+  obtenerNombreColaborador(): string {
+    const actividadParaValidar = this.actividad || this.actividadCargada;
+    if (!actividadParaValidar) {
+      return 'No disponible';
+    }
+    return actividadParaValidar.nombreColaborador || 'Sin colaborador asignado';
+  }
+
+  /**
+   * Determina si mostrar error de permisos: solo para estados Pendiente/En curso cuando el usuario no es el colaborador.
+   */
+  debeMostrarErrorPermisos(): boolean {
+    const actividadParaValidar = this.actividad || this.actividadCargada;
+    if (!actividadParaValidar || !this.ejecucionSeleccionada) {
+      return false;
+    }
+
+    if (!this.esEstadoPendienteOEnCurso()) {
+      return false;
+    }
+
+    return !this.esUsuarioColaborador();
+  }
 }

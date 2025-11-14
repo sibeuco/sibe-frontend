@@ -8,5 +8,5 @@ export interface FechaProgramada {
 export enum EstadoFechaProgramada {
   PENDIENTE = 'Pendiente',
   EN_CURSO = 'En curso',
-  FINALIZADO = 'Finalizado'
+  FINALIZADO = 'Finalizada'
 }
