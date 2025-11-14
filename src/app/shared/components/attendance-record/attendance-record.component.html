@@ -8,25 +8,31 @@
 
 <div class="attendance-record-container">
 
-  <!-- Botón para iniciar la actividad -->
   <div class="start-activity-section mb-4" *ngIf="!actividadIniciada && !ejecucionFinalizada">
-    <div class="alert text-center">
-      <i class="bi bi-info-circle me-2"></i>
-      <h4>La actividad no está iniciada</h4>
-      <p class="mb-0">Para tomar la asistencia de los participantes, debes iniciar la actividad.</p>
+    <div class="alert alert-danger text-center" *ngIf="debeMostrarErrorPermisos()">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      <h4>No puedes realizar esta actividad</h4>
+      <p class="mb-2">Solo el colaborador asignado puede iniciar y tomar la asistencia de esta actividad.</p>
+      <p class="mb-0"><strong>Colaborador encargado:</strong> {{ obtenerNombreColaborador() }}</p>
     </div>
-    <div class="start-activity-btn-container">
-      <button
-        type="button"
-        class="btn start-activity-btn"
-        (click)="iniciarActividad()"
-        [disabled]="iniciandoActividad || !ejecucionSeleccionadaId">
-        {{ iniciandoActividad ? 'Iniciando...' : 'Iniciar Actividad' }}
-      </button>
+    <div *ngIf="!debeMostrarErrorPermisos()">
+      <div class="alert text-center">
+        <i class="bi bi-info-circle me-2"></i>
+        <h4>La actividad no está iniciada</h4>
+        <p class="mb-0">Para tomar la asistencia de los participantes, debes iniciar la actividad.</p>
+      </div>
+      <div class="start-activity-btn-container">
+        <button
+          type="button"
+          class="btn start-activity-btn"
+          (click)="iniciarActividad()"
+          [disabled]="iniciandoActividad || !ejecucionSeleccionadaId">
+          {{ iniciandoActividad ? 'Iniciando...' : 'Iniciar Actividad' }}
+        </button>
+      </div>
     </div>
   </div>
 
-  <!-- Información de actividad finalizada -->
   <div class="finalized-info-section mb-4" *ngIf="ejecucionFinalizada">
     <div class="alert text-center">
       <i class="bi bi-check-circle me-2"></i>
@@ -35,8 +41,7 @@
     </div>
   </div>
 
-  <!-- Formulario de búsqueda - Se muestra después de iniciar la actividad -->
-  <div class="search-section" *ngIf="actividadIniciada && !ejecucionFinalizada">
+  <div class="search-section" *ngIf="actividadIniciada && !ejecucionFinalizada && esUsuarioColaborador()">
     <div class="search-form">
       <div class="row">
         <div class="col-md-5 mb-3">
@@ -61,7 +66,6 @@
     </div>
   </div>
 
-  <!-- Mensajes de estado -->
   <div class="alert-section" *ngIf="mensaje">
     <div class="alert" [ngClass]="{
       'alert-success': tipoMensaje === 'success',
@@ -72,7 +76,6 @@
     </div>
   </div>
 
-  <!-- Tabla de participantes -->
   <div class="participants-section" *ngIf="(actividadIniciada || ejecucionFinalizada) && miembrosAsistencia.length > 0">
     <div class="table-responsive">
       <table class="table table-striped table-hover">
@@ -108,7 +111,6 @@
     </div>
   </div>
 
-  <!-- Mensaje cuando no hay participantes registrados aún -->
   <div class="no-participants-section" *ngIf="(actividadIniciada || ejecucionFinalizada) && miembrosAsistencia.length === 0">
     <div class="alert text-center">
       <i class="bi bi-info-circle me-2"></i>
@@ -118,8 +120,7 @@
     </div>
   </div>
 
-  <!-- Botones de acción -->
-  <div class="action-buttons-section" *ngIf="actividadIniciada">
+  <div class="action-buttons-section" *ngIf="actividadIniciada && esUsuarioColaborador()">
     <div class="row">
       <div class="cancel-button-container col-md-6 mb-2">
         <button
@@ -142,7 +143,6 @@
   </div>
 </div>
 
-<!-- Modal de confirmación de cancelación -->
 <div class="modal fade" id="cancelActivityConfirmModal" tabindex="-1" aria-labelledby="cancelActivityConfirmModalLabel"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -171,7 +171,6 @@
   </div>
 </div>
 
-<!-- Modal de confirmación para participante externo -->
 <div class="modal-container modal fade" id="confirmExternalParticipantModal" tabindex="-1"
   aria-labelledby="confirmExternalParticipantModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -209,5 +208,4 @@
   </div>
 </div>
 
-<!-- Modal de participante externo -->
 <app-external-participant (participanteAgregado)="manejarParticipanteExterno($event)"></app-external-participant>

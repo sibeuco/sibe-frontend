@@ -6,7 +6,7 @@ import { catchError, of } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { ActivityService } from '../../service/activity.service';
 import { ActivityExecutionResponse } from '../../model/activity-execution.model';
-import { EstadoActividad } from '../../model/activity.model';
+import { EstadoActividad, ActivityResponse } from '../../model/activity.model';
 import { ParticipantRequest, ParticipantResponse } from '../../model/participant.model';
 
 @Component({
@@ -17,8 +17,8 @@ import { ParticipantRequest, ParticipantResponse } from '../../model/participant
 export class AttendanceRecordComponent implements OnInit, OnChanges {
   
   @Input() idActividad: number = 0;
-  @Input() actividad: any = null; // Datos de la actividad
-  @Input() usuarioLoggeado: any = null; // Usuario actualmente loggeado
+  @Input() actividad: any = null;
+  @Input() usuarioLoggeado: any = null;
   @Output() actividadFinalizada = new EventEmitter<any>();
   @Output() actividadCancelada = new EventEmitter<any>();
 
@@ -43,6 +43,7 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   private readonly STORAGE_KEY = 'selectedActivityInfo';
   private ejecucionSeleccionada: ActivityExecutionResponse | null = null;
   ejecucionSeleccionadaId: string | null = null;
+  actividadCargada: ActivityResponse | null = null;
 
   constructor(
     private universityMemberService: UniversityMemberService,
@@ -62,6 +63,11 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
 
   iniciarActividad(): void {
     if (this.iniciandoActividad) {
+      return;
+    }
+
+    if (this.esEstadoPendienteOEnCurso() && !this.esUsuarioColaborador()) {
+      this.mostrarMensaje('No tienes permisos para iniciar esta actividad. Solo el colaborador asignado puede realizar esta acción.', 'error');
       return;
     }
 
@@ -87,9 +93,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       });
   }
 
-  /**
-   * Busca un participante por RFID o documento
-   */
   buscarParticipante(): void {
     if (!this.rfidSearch && !this.documentoSearch) {
       this.mostrarMensaje('Por favor ingrese un código RFID o número de documento', 'warning');
@@ -125,9 +128,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       });
   }
 
-  /**
-   * Pregunta al usuario si desea agregar un participante externo
-   */
   private preguntarAgregarParticipanteExterno(): void {
     const modalElement = document.getElementById('confirmExternalParticipantModal');
     if (modalElement) {
@@ -136,9 +136,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     }
   }
 
-  /**
-   * Confirma agregar participante externo
-   */
   confirmarAgregarParticipanteExterno(): void {
     const modalElement = document.getElementById('confirmExternalParticipantModal');
     if (modalElement) {
@@ -150,9 +147,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     this.abrirModalParticipanteExterno();
   }
 
-  /**
-   * Cancela agregar participante externo
-   */
   cancelarAgregarParticipanteExterno(): void {
     const modalElement = document.getElementById('confirmExternalParticipantModal');
     if (modalElement) {
@@ -165,9 +159,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     this.limpiarFormulario();
   }
 
-  /**
-   * Abre el modal de participante externo
-   */
   private abrirModalParticipanteExterno(): void {
     const modalElement = document.getElementById('external-participant-modal');
     if (modalElement) {
@@ -176,9 +167,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     }
   }
 
-  /**
-   * Maneja el evento cuando se agrega un participante externo
-   */
   manejarParticipanteExterno(datos: any): void {
     const miembroExterno: UniversityMemberResponse = {
       identificador: `externo-${Date.now()}`,
@@ -194,9 +182,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     this.mostrarMensaje(`Participante externo ${datos.nombreCompleto} agregado exitosamente`, 'success');
   }
 
-  /**
-   * Agrega un participante a la lista de asistencia
-   */
   private agregarMiembro(miembro: UniversityMemberResponse): void {
     const yaExiste = this.miembrosAsistencia.some(existing =>
       existing.documentoIdentificacion === miembro.documentoIdentificacion ||
@@ -212,20 +197,19 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     this.mostrarMensaje(`Participante ${miembro.nombreCompleto} agregado exitosamente`, 'success');
   }
 
-  /**
-   * Remueve un participante de la lista de asistencia
-   */
   removerParticipante(index: number): void {
     const participante = this.miembrosAsistencia[index];
     this.miembrosAsistencia.splice(index, 1);
     this.mostrarMensaje(`Participante ${participante.nombreCompleto} removido de la lista`, 'success');
   }
 
-  /**
-   * Finaliza la actividad y guarda la asistencia
-   */
   finalizarActividad(): void {
     if (this.guardando) {
+      return;
+    }
+
+    if (!this.esUsuarioColaborador()) {
+      this.mostrarMensaje('No tienes permisos para finalizar esta actividad. Solo el colaborador asignado puede realizar esta acción.', 'error');
       return;
     }
 
@@ -280,9 +264,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       });
   }
 
-  /**
-   * Cancela la actividad
-   */
   solicitarCancelacionActividad(): void {
     const modalElement = document.getElementById('cancelActivityConfirmModal');
     if (modalElement) {
@@ -303,6 +284,11 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
 
   cancelarActividad(): void {
     if (this.cancelandoActividad) {
+      return;
+    }
+
+    if (!this.esUsuarioColaborador()) {
+      this.mostrarMensaje('No tienes permisos para cancelar esta actividad. Solo el colaborador asignado puede realizar esta acción.', 'error');
       return;
     }
 
@@ -336,17 +322,11 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       });
   }
 
-  /**
-   * Limpia el formulario de búsqueda
-   */
   private limpiarFormulario(): void {
     this.rfidSearch = '';
     this.documentoSearch = '';
   }
 
-  /**
-   * Limpia todos los datos del componente
-   */
   private limpiarTodo(): void {
     this.limpiarFormulario();
     this.miembrosAsistencia = [];
@@ -355,14 +335,9 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     this.iniciandoActividad = false;
   }
 
-  /**
-   * Muestra un mensaje al usuario
-   */
   private mostrarMensaje(mensaje: string, tipo: 'success' | 'error' | 'warning'): void {
     this.mensaje = mensaje;
     this.tipoMensaje = tipo;
-    
-    // Limpiar mensaje después de 5 segundos
     setTimeout(() => {
       this.limpiarMensaje();
     }, 5000);
@@ -372,13 +347,13 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     this.mensaje = '';
   }
 
-  /**
-   * Verifica si la actividad está finalizada
-   */
   esActividadFinalizada(): boolean {
     return this.ejecucionFinalizada;
   }
 
+  /**
+   * Convierte miembro universitario a ParticipantRequest. Los externos no tienen identificador.
+   */
   private convertirAParticipantRequest(miembro: UniversityMemberResponse): ParticipantRequest {
     const identificadorNormalizado = miembro.identificador ? miembro.identificador.trim() : '';
     const tipoNormalizado = miembro.tipo ? miembro.tipo.trim().toLowerCase() : '';
@@ -406,6 +381,10 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     return typeof mensaje === 'string' ? mensaje : '';
   }
 
+  /**
+   * Carga actividad y ejecución desde sessionStorage (guardados por date-selector).
+   * Si cambia la ejecución, limpia participantes para evitar inconsistencias.
+   */
   private cargarEjecucionSeleccionada(): void {
     const storage = this.obtenerStorage();
     if (!storage) {
@@ -416,14 +395,22 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     if (!raw) {
       this.ejecucionSeleccionada = null;
       this.ejecucionSeleccionadaId = null;
+      this.actividadCargada = null;
       this.actividadIniciada = false;
       this.ejecucionFinalizada = false;
       return;
     }
 
     try {
-      const data = JSON.parse(raw) as { ejecucion?: ActivityExecutionResponse | null };
+      const data = JSON.parse(raw) as { actividad?: ActivityResponse | null; ejecucion?: ActivityExecutionResponse | null };
       const ejecucionAnteriorId = this.ejecucionSeleccionadaId;
+      
+      this.actividadCargada = data?.actividad || null;
+      
+      if (!this.actividad && this.actividadCargada) {
+        this.actividad = this.actividadCargada;
+      }
+      
       this.ejecucionSeleccionada = data?.ejecucion || null;
       this.ejecucionSeleccionadaId = this.ejecucionSeleccionada?.identificador || null;
       const estado = this.ejecucionSeleccionada?.estadoActividad?.nombre;
@@ -441,11 +428,15 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       storage.removeItem(this.STORAGE_KEY);
       this.ejecucionSeleccionada = null;
       this.ejecucionSeleccionadaId = null;
+      this.actividadCargada = null;
       this.actividadIniciada = false;
       this.ejecucionFinalizada = false;
     }
   }
 
+  /**
+   * Actualiza el estado de la ejecución en memoria y sessionStorage para mantener sincronización.
+   */
   private actualizarEstadoEjecucionLocal(estado: EstadoActividad): void {
     this.actividadIniciada = estado === EstadoActividad.EN_CURSO;
     this.ejecucionFinalizada = estado === EstadoActividad.FINALIZADO;
@@ -551,6 +542,10 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     return window.sessionStorage;
   }
 
+  /**
+   * Normaliza texto usando descomposición Unicode (NFD) para comparaciones sin acentos.
+   * Separa caracteres base de diacríticos: á -> a + ´, luego elimina los diacríticos.
+   */
   private normalizarTexto(valor: string): string {
     return valor
       .toLowerCase()
@@ -558,5 +553,73 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/\s+/g, ' ')
       .trim();
+  }
+
+  /**
+   * Extrae el identificador del usuario desde el token JWT (formato: header.payload.signature).
+   * Decodifica el payload (segunda parte) que contiene la información del usuario.
+   */
+  private obtenerIdentificadorUsuario(): string | null {
+    try {
+      const token = window.sessionStorage.getItem('Authorization');
+      if (!token || !token.includes('.')) {
+        return null;
+      }
+
+      const tokenPayload = JSON.parse(atob(token.split('.')[1]));
+      return tokenPayload.identificador || tokenPayload.id || null;
+    } catch {
+      return null;
+    }
+  }
+
+  private esEstadoPendienteOEnCurso(): boolean {
+    if (!this.ejecucionSeleccionada || !this.ejecucionSeleccionada.estadoActividad) {
+      return false;
+    }
+    const estado = this.ejecucionSeleccionada.estadoActividad.nombre;
+    const estadoNormalizado = this.normalizarTexto(estado);
+    const pendienteNormalizado = this.normalizarTexto(EstadoActividad.PENDIENTE);
+    const enCursoNormalizado = this.normalizarTexto(EstadoActividad.EN_CURSO);
+    return estadoNormalizado === pendienteNormalizado || estadoNormalizado === enCursoNormalizado;
+  }
+
+  esUsuarioColaborador(): boolean {
+    const actividadParaValidar = this.actividad || this.actividadCargada;
+    if (!actividadParaValidar || !actividadParaValidar.colaborador) {
+      return false;
+    }
+
+    const usuarioId = this.obtenerIdentificadorUsuario();
+    if (!usuarioId) {
+      return false;
+    }
+
+    const colaboradorId = actividadParaValidar.colaborador;
+    return String(usuarioId) === String(colaboradorId);
+  }
+
+  obtenerNombreColaborador(): string {
+    const actividadParaValidar = this.actividad || this.actividadCargada;
+    if (!actividadParaValidar) {
+      return 'No disponible';
+    }
+    return actividadParaValidar.nombreColaborador || 'Sin colaborador asignado';
+  }
+
+  /**
+   * Determina si mostrar error de permisos: solo para estados Pendiente/En curso cuando el usuario no es el colaborador.
+   */
+  debeMostrarErrorPermisos(): boolean {
+    const actividadParaValidar = this.actividad || this.actividadCargada;
+    if (!actividadParaValidar || !this.ejecucionSeleccionada) {
+      return false;
+    }
+
+    if (!this.esEstadoPendienteOEnCurso()) {
+      return false;
+    }
+
+    return !this.esUsuarioColaborador();
   }
 }
