@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { environment } from 'src/environments/environment';
-import { AreaResponse } from '../model/area.model';
+import { AreaDetailResponse, AreaResponse } from '../model/area.model';
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +11,7 @@ import { AreaResponse } from '../model/area.model';
 export class AreaService extends HttpService {
     private readonly AREA_ENDPOINT = '/areas';
     private readonly AREA_NAME_ENDPOINT = '/areas/nombre';
+    private readonly AREA_DETAIL_ENDPOINT = '/areas/detalle';
 
     constructor(http: HttpClient) {
         super(http);
@@ -32,6 +33,13 @@ export class AreaService extends HttpService {
         const url = `${environment.endpoint}${this.AREA_NAME_ENDPOINT}/${nombre}`;
 
         return this.doGet<AreaResponse>(url, opts);
+    }
+
+    consultarDetalle(identificador: string): Observable<AreaDetailResponse> {
+        const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.AREA_DETAIL_ENDPOINT}/${identificador}`;
+
+        return this.doGet<AreaDetailResponse>(url, opts);
     }
 
 }

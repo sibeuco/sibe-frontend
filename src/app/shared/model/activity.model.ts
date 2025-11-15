@@ -1,4 +1,5 @@
 import { IndicatorResponse } from "src/app/feature/manage-indicators/model/indicator.model";
+import { ActivityExecutionDetailResponse } from "./activity-execution.model";
 
 export interface ActivityRequest {
   nombre: string;
@@ -48,6 +49,17 @@ export interface ActivityResponse {
   tipoArea?: string;
   areaIdentificador?: string;
   fechasProgramadas?: string[];
+}
+
+export interface ActivityDetailResponse{
+  identificador: string;
+  nombre: string;
+  objetivo: string;
+  semestre: string;
+  fechaCreacion: string;
+  indicador: IndicatorResponse;
+  colaborador: string;
+  fechasProgramadas: ActivityExecutionDetailResponse[];
 }
 
 export interface StartActivityResponse{
