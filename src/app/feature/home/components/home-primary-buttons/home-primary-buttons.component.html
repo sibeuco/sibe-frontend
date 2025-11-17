@@ -9,9 +9,10 @@
         Ver Resumen
     </button>
 
-    <button class="btn btn-primary flex-fill">
+    <button class="btn btn-primary flex-fill" (click)="generarExcel()" [disabled]="generandoExcel">
         <i class="bi bi-journal-plus"></i>
-        Generar Informes
+        <span *ngIf="!generandoExcel">Generar Informes</span>
+        <span *ngIf="generandoExcel">Generando...</span>
     </button>
 
 </div>
