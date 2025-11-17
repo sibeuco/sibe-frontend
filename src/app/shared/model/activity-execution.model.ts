@@ -19,3 +19,8 @@ export interface ActivityExecutionDetailResponse{
     estadoActividad: ActivityStateResponse;
     participantes: ParticipantResponse[];
 }
+
+export interface EditActivityExecutionRquest{
+    identificador: string;
+    fechaProgramada: string;
+}

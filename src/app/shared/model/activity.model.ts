@@ -1,5 +1,5 @@
 import { IndicatorResponse } from "src/app/feature/manage-indicators/model/indicator.model";
-import { ActivityExecutionDetailResponse } from "./activity-execution.model";
+import { ActivityExecutionDetailResponse, EditActivityExecutionRquest } from "./activity-execution.model";
 
 export interface ActivityRequest {
   nombre: string;
@@ -23,7 +23,7 @@ export interface EditActivityRequest {
   rutaInsumos: string;
   indicador: string;
   colaborador: string;
-  fechasProgramada: String[];
+  fechasProgramada: EditActivityExecutionRquest[];
   area: {
     area: string;
     tipoArea: string;
