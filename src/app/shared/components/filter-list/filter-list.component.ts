@@ -5,6 +5,10 @@ export interface FilterData {
   semester: string;
   relation: string;
   month: string;
+  costCenter: string;
+  academicProgram: string;
+  programType: string;
+  indicator: string;
 }
 
 @Component({
@@ -21,6 +25,10 @@ export class FilterListComponent implements OnInit{
   selectedSemester: string = '';
   selectedRelation: string = '';
   selectedMonth: string = '';
+  selectedCostCenter: string = '';
+  selectedAcademicProgram: string = '';
+  selectedProgramType: string = '';
+  selectedIndicator: string = '';
 
   // Opciones para los filtros
   years: number[] = [];
@@ -31,6 +39,10 @@ export class FilterListComponent implements OnInit{
     'Profesor',
     'Externo'
   ];
+  costCenters: string[] = [];
+  academicPrograms: string[] = [];
+  programTypes: string[] = [];
+  indicators: string[] = [];
 
   constructor() {
     this.generateYears();
@@ -53,7 +65,11 @@ export class FilterListComponent implements OnInit{
       year: this.selectedYear,
       semester: this.selectedSemester,
       relation: this.selectedRelation,
-      month: this.selectedMonth
+      month: this.selectedMonth,
+      costCenter: this.selectedCostCenter,
+      academicProgram: this.selectedAcademicProgram,
+      programType: this.selectedProgramType,
+      indicator: this.selectedIndicator
     };
 
     this.filterApplied.emit(filterData);
@@ -63,6 +79,11 @@ export class FilterListComponent implements OnInit{
     this.selectedYear = '';
     this.selectedSemester = '';
     this.selectedRelation = '';
+    this.selectedMonth = '';
+    this.selectedCostCenter = '';
+    this.selectedAcademicProgram = '';
+    this.selectedProgramType = '';
+    this.selectedIndicator = '';
   }
 
 }
