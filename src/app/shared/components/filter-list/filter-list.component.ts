@@ -4,6 +4,7 @@ export interface FilterData {
   year: string;
   semester: string;
   relation: string;
+  month: string;
 }
 
 @Component({
@@ -19,10 +20,12 @@ export class FilterListComponent implements OnInit{
   selectedYear: string = '';
   selectedSemester: string = '';
   selectedRelation: string = '';
+  selectedMonth: string = '';
 
   // Opciones para los filtros
   years: number[] = [];
   semesters: string[] = ['1', '2'];
+  months: string[] = ['Enero - Junio', 'Agosto - Diciembre'];
   academicRelations: string[] = [
     'Estudiante',
     'Profesor',
@@ -51,7 +54,8 @@ export class FilterListComponent implements OnInit{
     const filterData: FilterData = {
       year: this.selectedYear,
       semester: this.selectedSemester,
-      relation: this.selectedRelation
+      relation: this.selectedRelation,
+      month: this.selectedMonth
     };
 
     this.filterApplied.emit(filterData);
