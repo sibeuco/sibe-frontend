@@ -10,7 +10,7 @@
   <div class="filter-group">
     <label for="month-filter">Mes:</label>
     <select id="month-filter" [(ngModel)]="selectedMonth" class="filter-select">
-      <option value="">Todas las relaciones</option>
+      <option value="">Todas los meses</option>
       <option *ngFor="let month of months" [value]="month">{{ month }}</option>
     </select>
   </div>
@@ -24,10 +24,10 @@
   </div>
 
   <div class="filter-group">
-    <label for="month-filter">Mes:</label>
-    <select id="month-filter" [(ngModel)]="selectedMonth" class="filter-select">
+    <label for="relation-filter">Relación:</label>
+    <select id="relation-filter" [(ngModel)]="selectedRelation" class="filter-select">
       <option value="">Todas las relaciones</option>
-      <option *ngFor="let month of months" [value]="month">{{ month }}</option>
+      <option *ngFor="let relation of academicRelations" [value]="relation">{{ relation }}</option>
     </select>
   </div>
 

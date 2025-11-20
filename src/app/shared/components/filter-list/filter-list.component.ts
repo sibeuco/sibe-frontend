@@ -29,8 +29,6 @@ export class FilterListComponent implements OnInit{
   academicRelations: string[] = [
     'Estudiante',
     'Profesor',
-    'Administrativo',
-    'Egresado',
     'Externo'
   ];
 
