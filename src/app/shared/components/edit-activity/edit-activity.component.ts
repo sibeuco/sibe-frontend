@@ -11,7 +11,7 @@ import { DepartmentResponse } from 'src/app/shared/model/department.model';
 import { AreaResponse } from 'src/app/shared/model/area.model';
 import { SubAreaResponse } from 'src/app/shared/model/subarea.model';
 import { ActivityService } from 'src/app/shared/service/activity.service';
-import { ActivityExecutionResponse } from 'src/app/shared/model/activity-execution.model';
+import { ActivityExecutionResponse, EditActivityExecutionRquest } from 'src/app/shared/model/activity-execution.model';
 import { ActivityResponse, EditActivityRequest, EstadoActividad } from 'src/app/shared/model/activity.model';
 
 @Component({
@@ -35,7 +35,7 @@ export class EditActivityComponent implements OnInit, OnChanges {
     colaborador: '',
     area: '',
     tipoArea: '',
-    fechasProgramadas: [] as string[],
+    fechasProgramadas: [] as EditActivityExecutionRquest[],
   };
 
   indicadores: IndicatorResponse[] = [];
@@ -183,22 +183,36 @@ export class EditActivityComponent implements OnInit, OnChanges {
     this.activityService.consultarEjecuciones(identificador).subscribe({
       next: (ejecuciones) => {
         this.ejecuciones = ejecuciones || [];
+        // Mapear las ejecuciones a EditActivityExecutionRquest con identificador y fechaProgramada
         this.actividadForm.fechasProgramadas = (this.ejecuciones || [])
-          .map(ej => ej.fechaProgramada)
-          .filter((fecha): fecha is string => !!fecha);
+          .map(ej => ({
+            identificador: ej.identificador || '',
+            fechaProgramada: ej.fechaProgramada || ''
+          }))
+          .filter(fecha => !!fecha.fechaProgramada);
 
         const hayFinalizadas = (this.ejecuciones || []).some(ej => this.esEstadoFinalizado(ej.estadoActividad?.nombre));
         this.soloColaboradorEditable = hayFinalizadas;
 
         if (!hayFinalizadas && !this.actividadForm.fechasProgramadas.length) {
-          this.actividadForm.fechasProgramadas = [...(this.actividad?.fechasProgramadas ?? [])];
+          // Si no hay ejecuciones, usar las fechas programadas de la actividad como nuevas (sin identificador)
+          this.actividadForm.fechasProgramadas = (this.actividad?.fechasProgramadas ?? [])
+            .map(fecha => ({
+              identificador: null as any,
+              fechaProgramada: fecha
+            }));
         }
 
         this.cargandoDatosActividad = false;
       },
       error: () => {
         this.soloColaboradorEditable = false;
-        this.actividadForm.fechasProgramadas = [...(this.actividad?.fechasProgramadas ?? [])];
+        // En caso de error, usar las fechas programadas de la actividad como nuevas (sin identificador)
+        this.actividadForm.fechasProgramadas = (this.actividad?.fechasProgramadas ?? [])
+          .map(fecha => ({
+            identificador: null as any,
+            fechaProgramada: fecha
+          }));
         this.cargandoDatosActividad = false;
       }
     });
@@ -367,12 +381,21 @@ export class EditActivityComponent implements OnInit, OnChanges {
       return;
     }
 
-    if (this.actividadForm.fechasProgramadas.includes(this.fechaTemporal)) {
+    // Verificar si la fecha ya está agregada
+    const fechaYaExiste = this.actividadForm.fechasProgramadas.some(
+      fecha => fecha.fechaProgramada === this.fechaTemporal
+    );
+
+    if (fechaYaExiste) {
       this.errorFecha = 'Esta fecha ya está agregada';
       return;
     }
 
-    this.actividadForm.fechasProgramadas.push(this.fechaTemporal);
+    // Agregar nueva fecha con identificador null (fecha nueva)
+    this.actividadForm.fechasProgramadas.push({
+      identificador: null as any,
+      fechaProgramada: this.fechaTemporal
+    });
     this.fechaTemporal = '';
   }
 
@@ -411,7 +434,10 @@ export class EditActivityComponent implements OnInit, OnChanges {
       rutaInsumos: this.actividadForm.rutaInsumos.trim(),
       indicador: this.indicadorSeleccionado.trim(),
       colaborador: this.colaboradorSeleccionado.trim(),
-      fechasProgramada: this.actividadForm.fechasProgramadas.map(f => f.trim()).filter(f => f),
+      fechasProgramada: this.actividadForm.fechasProgramadas.map(f => ({
+        identificador: f.identificador || null as any,
+        fechaProgramada: f.fechaProgramada.trim()
+      })).filter(f => f.fechaProgramada),
       area: {
         area: this.actividadForm.area.trim(),
         tipoArea: this.actividadForm.tipoArea || this.determinarTipoArea()
