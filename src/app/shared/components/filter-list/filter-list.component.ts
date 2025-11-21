@@ -206,8 +206,10 @@ export class FilterListComponent implements OnInit {
       this.isSemesterDisabled = true;
       this.selectedSemester = '';
     } else {
-      // Si se deselecciona el año, reactivar el semestre
-      this.isSemesterDisabled = false;
+      // Si se deselecciona el año, reactivar el semestre solo si el mes también está deseleccionado
+      if (!this.selectedMonth || this.selectedMonth === '') {
+        this.isSemesterDisabled = false;
+      }
     }
   }
 
@@ -231,8 +233,10 @@ export class FilterListComponent implements OnInit {
       this.isSemesterDisabled = true;
       this.selectedSemester = '';
     } else {
-      // Si se deselecciona el mes, reactivar el semestre
-      this.isSemesterDisabled = false;
+      // Si se deselecciona el mes, reactivar el semestre solo si el año también está deseleccionado
+      if (!this.selectedYear || this.selectedYear === '') {
+        this.isSemesterDisabled = false;
+      }
     }
   }
 
