@@ -41,6 +41,11 @@ export class FilterListComponent implements OnInit {
   programTypes: string[] = [];
   indicators: string[] = [];
 
+  // Control de exclusividad entre semestre, mes y año
+  isMonthDisabled: boolean = false;
+  isSemesterDisabled: boolean = false;
+  isYearDisabled: boolean = false;
+
   constructor(private activityService: ActivityService) { }
 
   ngOnInit(): void {
@@ -190,6 +195,45 @@ export class FilterListComponent implements OnInit {
     this.selectedAcademicProgram = '';
     this.selectedProgramType = '';
     this.selectedIndicator = '';
+    this.isMonthDisabled = false;
+    this.isSemesterDisabled = false;
+    this.isYearDisabled = false;
+  }
+
+  onYearChange(): void {
+    if (this.selectedYear && this.selectedYear !== '') {
+      // Si se selecciona un año, desactivar semestre y limpiar su valor
+      this.isSemesterDisabled = true;
+      this.selectedSemester = '';
+    } else {
+      // Si se deselecciona el año, reactivar el semestre
+      this.isSemesterDisabled = false;
+    }
+  }
+
+  onSemesterChange(): void {
+    if (this.selectedSemester && this.selectedSemester !== '') {
+      // Si se selecciona un semestre, desactivar año, mes y limpiar sus valores
+      this.isYearDisabled = true;
+      this.isMonthDisabled = true;
+      this.selectedYear = '';
+      this.selectedMonth = '';
+    } else {
+      // Si se deselecciona el semestre, reactivar año y mes
+      this.isYearDisabled = false;
+      this.isMonthDisabled = false;
+    }
+  }
+
+  onMonthChange(): void {
+    if (this.selectedMonth && this.selectedMonth !== '') {
+      // Si se selecciona un mes, desactivar semestre y limpiar su valor
+      this.isSemesterDisabled = true;
+      this.selectedSemester = '';
+    } else {
+      // Si se deselecciona el mes, reactivar el semestre
+      this.isSemesterDisabled = false;
+    }
   }
 
 }

@@ -1,24 +1,24 @@
 <div class="filters-container">
   <div class="filter-row">
-    <div class="filter-group">
+    <div class="filter-group" [class.disabled]="isYearDisabled">
       <label for="year-filter">Año:</label>
-      <select id="year-filter" [(ngModel)]="selectedYear" class="filter-select">
+      <select id="year-filter" [(ngModel)]="selectedYear" (ngModelChange)="onYearChange()" [disabled]="isYearDisabled" class="filter-select">
         <option value="">Todos los años</option>
         <option *ngFor="let year of years" [value]="year">{{ year }}</option>
       </select>
     </div>
 
-    <div class="filter-group">
+    <div class="filter-group" [class.disabled]="isMonthDisabled">
       <label for="month-filter">Mes:</label>
-      <select id="month-filter" [(ngModel)]="selectedMonth" class="filter-select">
+      <select id="month-filter" [(ngModel)]="selectedMonth" (ngModelChange)="onMonthChange()" [disabled]="isMonthDisabled" class="filter-select">
         <option value="">Todas los meses</option>
         <option *ngFor="let month of months" [value]="month">{{ month }}</option>
       </select>
     </div>
 
-    <div class="filter-group">
+    <div class="filter-group" [class.disabled]="isSemesterDisabled">
       <label for="semester-filter">Semestre:</label>
-      <select id="semester-filter" [(ngModel)]="selectedSemester" class="filter-select">
+      <select id="semester-filter" [(ngModel)]="selectedSemester" (ngModelChange)="onSemesterChange()" [disabled]="isSemesterDisabled" class="filter-select">
         <option value="">Todos los semestres</option>
         <option *ngFor="let semester of semesters" [value]="semester">{{ semester }}</option>
       </select>
