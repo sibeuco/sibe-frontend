@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ActivityRequest, ActivityResponse, CancelActivityResponse, EditActivityRequest, StartActivityResponse } from '../model/activity.model';
 import { ActivityExecutionResponse } from '../model/activity-execution.model';
 import { ParticipantRequest, ParticipantResponse } from '../model/participant.model';
+import { AcademicProgramsResponse, AcademicProgramTypesResponse, CostCentersResponse, FiltersRequest, IndicatorsResponse, MonthsResponse, ParticipantTypesResponse, SemestersResponse, YearsResponse } from '../model/filters.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +22,15 @@ export class ActivityService extends HttpService {
   private readonly CANCEL_ACTIVITY_ENDPOINT = '/actividades/cancelar';
   private readonly END_ACTIVITY_ENDPOINT = '/actividades/finalizar';
   private readonly PARTICIPANTS_ENDPOINT = '/actividades/ejecuciones/ejecucion/participantes';
+  private readonly CONTAR_PARTICIPANTES_ENDPOINT = '/actividades/ejecuciones/finalizadas/participantes/conteo';
+  private readonly MESES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/meses';
+  private readonly ANNOS_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/annos';
+  private readonly SEMESTRES_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/semestres';
+  private readonly CENTROS_COSTOS_EMPLEADOS_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/centros-costos';
+  private readonly TIPOS_PARTICIPANTES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/tipos-participantes';
+  private readonly PROGRAMAS_ACADEMICOS_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/programas-academicos';
+  private readonly NIVELES_FORMACION_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/niveles-formacion';
+  private readonly INDICADORES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/indicadores';
 
   constructor(http: HttpClient) {
     super(http);
@@ -81,11 +91,11 @@ export class ActivityService extends HttpService {
   }
 
   consultarParticipantesPorEjecucion(identificador: string): Observable<ParticipantResponse[]> {
-  const opts = this.createDefaultOptions();
-  const url = `${environment.endpoint}${this.PARTICIPANTS_ENDPOINT}/${identificador}`;
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.PARTICIPANTS_ENDPOINT}/${identificador}`;
 
-  return this.doGet<ParticipantResponse[]>(url, opts);
-}
+    return this.doGet<ParticipantResponse[]>(url, opts);
+  }
 
   iniciarActividad(identificador: string): Observable<StartActivityResponse> {
     const url = `${environment.endpoint}${this.START_ACTIVITY_ENDPOINT}/${identificador}`;
@@ -99,9 +109,72 @@ export class ActivityService extends HttpService {
 
   finalizarActividad(identificador: string, participantes: ParticipantRequest[]): Observable<Response<string>> {
     const opts = this.createDefaultOptions();
-    const url = `${environment.endpoint}${this.END_ACTIVITY_ENDPOINT}/${identificador}`;  
+    const url = `${environment.endpoint}${this.END_ACTIVITY_ENDPOINT}/${identificador}`;
 
     return this.doPut<ParticipantRequest[], Response<string>>(url, participantes, opts);
+  }
+
+  contarParticipantesTotales(filtro: FiltersRequest): Observable<number> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.CONTAR_PARTICIPANTES_ENDPOINT}`;
+
+    return this.doPost<FiltersRequest, number>(url, filtro, opts);
+  }
+
+  consultarMesesEjecucionesFinalizadas(): Observable<MonthsResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.MESES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
+
+    return this.doGet<MonthsResponse[]>(url, opts);
+  }
+
+  consultarAnnosEjecucionesFinalizadas(): Observable<YearsResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.ANNOS_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
+
+    return this.doGet<YearsResponse[]>(url, opts);
+  }
+
+  consultarSemestresEstudiantesEnEjecucionesFinalizadas(): Observable<SemestersResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.SEMESTRES_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
+
+    return this.doGet<SemestersResponse[]>(url, opts);
+  }
+
+  consultarCentrosCostosEmpleadosEnEjecucionesFinalizadas(): Observable<CostCentersResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.CENTROS_COSTOS_EMPLEADOS_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
+
+    return this.doGet<CostCentersResponse[]>(url, opts);
+  }
+
+  consultarTiposParticipantesEnEjecucionesFinalizadas(): Observable<ParticipantTypesResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.TIPOS_PARTICIPANTES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
+
+    return this.doGet<ParticipantTypesResponse[]>(url, opts);
+  }
+
+  consultarProgramasAcademicosEstudiantesEnEjecucionesFinalizadas(): Observable<AcademicProgramsResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.PROGRAMAS_ACADEMICOS_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
+
+    return this.doGet<AcademicProgramsResponse[]>(url, opts);
+  }
+
+  consultarNivelesFormacionEstudiantesEnEjecucionesFinalizadas(): Observable<AcademicProgramTypesResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.NIVELES_FORMACION_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
+
+    return this.doGet<AcademicProgramTypesResponse[]>(url, opts);
+  }
+
+  consultarIndicadoresEnEjecucionesFinalizadas(): Observable<IndicatorsResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.INDICADORES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
+
+    return this.doGet<IndicatorsResponse[]>(url, opts);
   }
 
 }
