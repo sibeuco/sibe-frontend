@@ -17,7 +17,7 @@ export interface FilterData {
   templateUrl: './filter-list.component.html',
   styleUrls: ['./filter-list.component.scss']
 })
-export class FilterListComponent implements OnInit{
+export class FilterListComponent implements OnInit {
 
   @Output() filterApplied = new EventEmitter<FilterData>();
 
@@ -33,22 +33,25 @@ export class FilterListComponent implements OnInit{
 
   // Opciones para los filtros
   years: string[] = [];
-  semesters: string[] = ['1', '2'];
-  months: string[] = ['Enero - Junio', 'Agosto - Diciembre'];
-  academicRelations: string[] = [
-    'Estudiante',
-    'Profesor',
-    'Externo'
-  ];
+  semesters: string[] = [];
+  months: string[] = [];
+  academicRelations: string[] = [];
   costCenters: string[] = [];
   academicPrograms: string[] = [];
   programTypes: string[] = [];
   indicators: string[] = [];
 
-  constructor(private activityService: ActivityService) {}
+  constructor(private activityService: ActivityService) { }
 
   ngOnInit(): void {
     this.loadYears();
+    this.loadMonths();
+    this.loadSemesters();
+    this.loadAcademicRelations();
+    this.loadCostCenters();
+    this.loadAcademicPrograms();
+    this.loadProgramTypes();
+    this.loadIndicators();
   }
 
   private loadYears(): void {
@@ -61,6 +64,104 @@ export class FilterListComponent implements OnInit{
       error: (error) => {
         console.error('Error al cargar los años:', error);
         this.years = [];
+      }
+    });
+  }
+
+  private loadMonths(): void {
+    this.activityService.consultarMesesEjecucionesFinalizadas().subscribe({
+      next: (response: string[]) => {
+        if (response && response.length > 0) {
+          this.months = response;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar los meses:', error);
+        this.months = [];
+      }
+    });
+  }
+
+  private loadSemesters(): void {
+    this.activityService.consultarSemestresEstudiantesEnEjecucionesFinalizadas().subscribe({
+      next: (response: string[]) => {
+        if (response && response.length > 0) {
+          this.semesters = response;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar los semestres:', error);
+        this.semesters = [];
+      }
+    });
+  }
+
+  private loadAcademicRelations(): void {
+    this.activityService.consultarTiposParticipantesEnEjecucionesFinalizadas().subscribe({
+      next: (response: string[]) => {
+        if (response && response.length > 0) {
+          this.academicRelations = response;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar las relaciones académicas:', error);
+        this.academicRelations = [];
+      }
+    });
+  }
+
+  private loadCostCenters(): void {
+    this.activityService.consultarCentrosCostosEmpleadosEnEjecucionesFinalizadas().subscribe({
+      next: (response: string[]) => {
+        if (response && response.length > 0) {
+          this.costCenters = response;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar los centros de costos:', error);
+        this.costCenters = [];
+      }
+    });
+  }
+
+  private loadAcademicPrograms(): void {
+    this.activityService.consultarProgramasAcademicosEstudiantesEnEjecucionesFinalizadas().subscribe({
+      next: (response: string[]) => {
+        if (response && response.length > 0) {
+          this.academicPrograms = response;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar los programas académicos:', error);
+        this.academicPrograms = [];
+      }
+    });
+  }
+
+  private loadProgramTypes(): void {
+    this.activityService.consultarNivelesFormacionEstudiantesEnEjecucionesFinalizadas().subscribe({
+      next: (response: string[]) => {
+        if (response && response.length > 0) {
+          this.programTypes = response;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar los tipos de programa:', error);
+        this.programTypes = [];
+      }
+    });
+  }
+
+  private loadIndicators(): void {
+    this.activityService.consultarIndicadoresEnEjecucionesFinalizadas().subscribe({
+      next: (response: string[]) => {
+        if (response && response.length > 0) {
+          this.indicators = response;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar los indicadores:', error);
+        this.indicators = [];
       }
     });
   }
