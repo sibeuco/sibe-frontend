@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ActivityRequest, ActivityResponse, CancelActivityResponse, EditActivityRequest, StartActivityResponse } from '../model/activity.model';
 import { ActivityExecutionResponse } from '../model/activity-execution.model';
 import { ParticipantRequest, ParticipantResponse } from '../model/participant.model';
-import { AcademicProgramsResponse, AcademicProgramTypesResponse, CostCentersResponse, FiltersRequest, IndicatorsResponse, MonthsResponse, ParticipantTypesResponse, SemestersResponse, YearsResponse } from '../model/filters.model';
+import { FiltersRequest } from '../model/filters.model';
 
 @Injectable({
   providedIn: 'root'
@@ -121,60 +121,60 @@ export class ActivityService extends HttpService {
     return this.doPost<FiltersRequest, number>(url, filtro, opts);
   }
 
-  consultarMesesEjecucionesFinalizadas(): Observable<MonthsResponse[]> {
+  consultarMesesEjecucionesFinalizadas(): Observable<string[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.MESES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
-    return this.doGet<MonthsResponse[]>(url, opts);
+    return this.doGet<string[]>(url, opts);
   }
 
-  consultarAnnosEjecucionesFinalizadas(): Observable<YearsResponse[]> {
+  consultarAnnosEjecucionesFinalizadas(): Observable<string[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.ANNOS_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
-    return this.doGet<YearsResponse[]>(url, opts);
+    return this.doGet<string[]>(url, opts);
   }
 
-  consultarSemestresEstudiantesEnEjecucionesFinalizadas(): Observable<SemestersResponse[]> {
+  consultarSemestresEstudiantesEnEjecucionesFinalizadas(): Observable<string[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.SEMESTRES_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
-    return this.doGet<SemestersResponse[]>(url, opts);
+    return this.doGet<string[]>(url, opts);
   }
 
-  consultarCentrosCostosEmpleadosEnEjecucionesFinalizadas(): Observable<CostCentersResponse[]> {
+  consultarCentrosCostosEmpleadosEnEjecucionesFinalizadas(): Observable<string[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.CENTROS_COSTOS_EMPLEADOS_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
-    return this.doGet<CostCentersResponse[]>(url, opts);
+    return this.doGet<string[]>(url, opts);
   }
 
-  consultarTiposParticipantesEnEjecucionesFinalizadas(): Observable<ParticipantTypesResponse[]> {
+  consultarTiposParticipantesEnEjecucionesFinalizadas(): Observable<string[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.TIPOS_PARTICIPANTES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
-    return this.doGet<ParticipantTypesResponse[]>(url, opts);
+    return this.doGet<string[]>(url, opts);
   }
 
-  consultarProgramasAcademicosEstudiantesEnEjecucionesFinalizadas(): Observable<AcademicProgramsResponse[]> {
+  consultarProgramasAcademicosEstudiantesEnEjecucionesFinalizadas(): Observable<string[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.PROGRAMAS_ACADEMICOS_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
-    return this.doGet<AcademicProgramsResponse[]>(url, opts);
+    return this.doGet<string[]>(url, opts);
   }
 
-  consultarNivelesFormacionEstudiantesEnEjecucionesFinalizadas(): Observable<AcademicProgramTypesResponse[]> {
+  consultarNivelesFormacionEstudiantesEnEjecucionesFinalizadas(): Observable<string[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.NIVELES_FORMACION_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
-    return this.doGet<AcademicProgramTypesResponse[]>(url, opts);
+    return this.doGet<string[]>(url, opts);
   }
 
-  consultarIndicadoresEnEjecucionesFinalizadas(): Observable<IndicatorsResponse[]> {
+  consultarIndicadoresEnEjecucionesFinalizadas(): Observable<string[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.INDICADORES_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
-    return this.doGet<IndicatorsResponse[]>(url, opts);
+    return this.doGet<string[]>(url, opts);
   }
 
 }

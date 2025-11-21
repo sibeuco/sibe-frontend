@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import { ActivityService } from 'src/app/shared/service/activity.service';
 
 export interface FilterData {
   year: string;
@@ -31,7 +32,7 @@ export class FilterListComponent implements OnInit{
   selectedIndicator: string = '';
 
   // Opciones para los filtros
-  years: number[] = [];
+  years: string[] = [];
   semesters: string[] = ['1', '2'];
   months: string[] = ['Enero - Junio', 'Agosto - Diciembre'];
   academicRelations: string[] = [
@@ -44,20 +45,24 @@ export class FilterListComponent implements OnInit{
   programTypes: string[] = [];
   indicators: string[] = [];
 
-  constructor() {
-    this.generateYears();
+  constructor(private activityService: ActivityService) {}
+
+  ngOnInit(): void {
+    this.loadYears();
   }
 
-  ngOnInit(): void {}
-
-  private generateYears(): void {
-    const currentYear = new Date().getFullYear();
-    const startYear = 2020;
-    const endYear = currentYear + 2;
-
-    for (let year = startYear; year <= endYear; year++) {
-      this.years.push(year);
-    }
+  private loadYears(): void {
+    this.activityService.consultarAnnosEjecucionesFinalizadas().subscribe({
+      next: (response: string[]) => {
+        if (response && response.length > 0) {
+          this.years = response;
+        }
+      },
+      error: (error) => {
+        console.error('Error al cargar los años:', error);
+        this.years = [];
+      }
+    });
   }
 
   onFilter(): void {
