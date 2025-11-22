@@ -1,16 +1,6 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { ActivityService } from 'src/app/shared/service/activity.service';
-
-export interface FilterData {
-  year: string;
-  semester: string;
-  relation: string;
-  month: string;
-  costCenter: string;
-  academicProgram: string;
-  programType: string;
-  indicator: string;
-}
+import { FiltersRequestWithoutArea } from 'src/app/shared/model/filters.model';
 
 @Component({
   selector: 'app-filter-list',
@@ -19,7 +9,7 @@ export interface FilterData {
 })
 export class FilterListComponent implements OnInit {
 
-  @Output() filterApplied = new EventEmitter<FilterData>();
+  @Output() filterApplied = new EventEmitter<FiltersRequestWithoutArea>();
 
   // Propiedades para los valores seleccionados
   selectedYear: string = '';
@@ -57,6 +47,8 @@ export class FilterListComponent implements OnInit {
     this.loadAcademicPrograms();
     this.loadProgramTypes();
     this.loadIndicators();
+    // Emitir el estado inicial de los filtros (todos null)
+    this.updateFilters();
   }
 
   private loadYears(): void {
@@ -171,19 +163,26 @@ export class FilterListComponent implements OnInit {
     });
   }
 
-  onFilter(): void {
-    const filterData: FilterData = {
-      year: this.selectedYear,
-      semester: this.selectedSemester,
-      relation: this.selectedRelation,
-      month: this.selectedMonth,
-      costCenter: this.selectedCostCenter,
-      academicProgram: this.selectedAcademicProgram,
-      programType: this.selectedProgramType,
-      indicator: this.selectedIndicator
-    };
+  private buildFiltersRequest(): FiltersRequestWithoutArea {
+    return {
+      mes: this.selectedMonth && this.selectedMonth !== '' ? this.selectedMonth : null,
+      anno: this.selectedYear && this.selectedYear !== '' ? Number(this.selectedYear) : null,
+      semestre: this.selectedSemester && this.selectedSemester !== '' ? this.selectedSemester : null,
+      programaAcademico: this.selectedAcademicProgram && this.selectedAcademicProgram !== '' ? this.selectedAcademicProgram : null,
+      tipoProgramaAcademico: this.selectedProgramType && this.selectedProgramType !== '' ? this.selectedProgramType : null,
+      centroCostos: this.selectedCostCenter && this.selectedCostCenter !== '' ? this.selectedCostCenter : null,
+      tipoParticipante: this.selectedRelation && this.selectedRelation !== '' ? this.selectedRelation : null,
+      indicador: this.selectedIndicator && this.selectedIndicator !== '' ? this.selectedIndicator : null
+    } as FiltersRequestWithoutArea;
+  }
 
-    this.filterApplied.emit(filterData);
+  updateFilters(): void {
+    const filtersRequest = this.buildFiltersRequest();
+    this.filterApplied.emit(filtersRequest);
+  }
+
+  onFilter(): void {
+    this.updateFilters();
   }
 
   clearFilters(): void {
@@ -198,6 +197,7 @@ export class FilterListComponent implements OnInit {
     this.isMonthDisabled = false;
     this.isSemesterDisabled = false;
     this.isYearDisabled = false;
+    this.updateFilters();
   }
 
   onYearChange(): void {
@@ -211,6 +211,7 @@ export class FilterListComponent implements OnInit {
         this.isSemesterDisabled = false;
       }
     }
+    this.updateFilters();
   }
 
   onSemesterChange(): void {
@@ -225,6 +226,7 @@ export class FilterListComponent implements OnInit {
       this.isYearDisabled = false;
       this.isMonthDisabled = false;
     }
+    this.updateFilters();
   }
 
   onMonthChange(): void {
@@ -238,6 +240,7 @@ export class FilterListComponent implements OnInit {
         this.isSemesterDisabled = false;
       }
     }
+    this.updateFilters();
   }
 
 }

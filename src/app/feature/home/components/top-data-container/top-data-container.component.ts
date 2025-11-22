@@ -1,6 +1,7 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Input } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { FiltersRequestWithoutArea } from 'src/app/shared/model/filters.model';
 
 Chart.register(...registerables);
 
@@ -10,6 +11,11 @@ Chart.register(...registerables);
   styleUrls: ['./top-data-container.component.scss']
 })
 export class TopDataContainerComponent implements AfterViewInit{
+  @Input() filtersRequest: FiltersRequestWithoutArea | null = null;
+  
+  tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'DIRECCION';
+  nombreArea: string = 'Dirección de Bienestar y Evangelización';
+  imageUrl: string = 'assets/images/home-college.png';
 
   ngAfterViewInit(): void {
     const ctx = document.getElementById('participantsChart') as HTMLCanvasElement;

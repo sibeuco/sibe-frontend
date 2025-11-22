@@ -10,3 +10,14 @@ export interface FiltersRequest {
     tipoArea: string;
     idArea: string;
 }
+
+export interface FiltersRequestWithoutArea {
+    mes: string | null;
+    anno: number | null;
+    semestre: string | null;
+    programaAcademico: string | null;
+    tipoProgramaAcademico: string | null;
+    centroCostos: string | null;
+    tipoParticipante: string | null;
+    indicador: string | null;
+}
