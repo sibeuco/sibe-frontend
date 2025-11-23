@@ -12,4 +12,5 @@ export class TopDataComponent {
   tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'SUBAREA';
   nombreArea: string = 'Unidad de Salud';
   imageUrl: string = 'assets/images/Phisiotherapy-amico.png';
+  imageUrl2: string = 'assets/images/Doctors-amico.png';
 }
