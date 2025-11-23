@@ -20,6 +20,7 @@ import { ExternalParticipantComponent } from './components/external-participant/
 import { DateSelectorComponent } from './components/date-selector/date-selector.component';
 import { TotalParticipantsComponent } from './components/data-visualization/total-participants/total-participants.component';
 import { CompletedActivitiesComponent } from './components/data-visualization/completed-activities/completed-activities.component';
+import { TotalParticipantsMonthsComponent } from './components/data-visualization/total-participants-months/total-participants-months.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CompletedActivitiesComponent } from './components/data-visualization/co
     ExternalParticipantComponent,
     DateSelectorComponent,
     TotalParticipantsComponent,
-    CompletedActivitiesComponent
+    CompletedActivitiesComponent,
+    TotalParticipantsMonthsComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +66,8 @@ import { CompletedActivitiesComponent } from './components/data-visualization/co
     UploadDatabaseComponent,
     ExternalParticipantComponent,
     TotalParticipantsComponent,
-    CompletedActivitiesComponent
+    CompletedActivitiesComponent,
+    TotalParticipantsMonthsComponent
   ]
 })
 export class SharedModule { }

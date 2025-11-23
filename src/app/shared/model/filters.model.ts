@@ -28,3 +28,9 @@ export interface StadisticAreasResponse{
     cantidadParticipantes: number;
     cantidadAsistencias: number;
 }
+
+export interface StadisticMonthsResponse{
+    mes: string;
+    cantidadParticipantes: number;
+    cantidadAsistencias: number;
+}
