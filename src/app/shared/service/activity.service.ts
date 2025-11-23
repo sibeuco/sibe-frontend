@@ -33,7 +33,7 @@ export class ActivityService extends HttpService {
   private readonly INDICADORES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/indicadores';
   private readonly CONTAR_ASISTENCIAS_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/asistencias/conteo';
   private readonly CONTAR_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/conteo';
-  private readonly CONTAR_PARTICIPANTES_POR_ESTRUCTURA = '/actividades/ejecuciones/finalizadas/estadisticas/estructuras';
+  private readonly CONTAR_PARTICIPANTES_POR_ESTRUCTURA = '/actividades/ejecuciones/finalizadas/participantes/estadisticas-estructura';
 
   constructor(http: HttpClient) {
     super(http);
