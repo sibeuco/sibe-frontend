@@ -12,4 +12,5 @@ export class TopDataComponent {
   tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'SUBAREA';
   nombreArea: string = 'Banda Sinfónica';
   imageUrl: string = 'assets/images/Orchestra-amico.png';
+  imageUrl2: string = 'assets/images/Creative team-amico.png';
 }
