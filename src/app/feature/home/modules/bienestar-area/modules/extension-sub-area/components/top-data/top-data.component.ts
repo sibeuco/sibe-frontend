@@ -12,4 +12,5 @@ export class TopDataComponent {
   tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'SUBAREA';
   nombreArea: string = 'Extensión cultural';
   imageUrl: string = 'assets/images/Team spirit-amico.png';
+  imageUrl2: string = 'assets/images/Team goals-amico.png';
 }
