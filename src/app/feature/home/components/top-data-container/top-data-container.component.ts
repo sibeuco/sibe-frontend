@@ -52,13 +52,22 @@ export class TopDataContainerComponent implements AfterViewInit, OnInit, OnChang
       type: 'bar',
       data: {
         labels: [],
-        datasets: [{
-          label: 'Participantes',
-          data: [],
-          backgroundColor: 'rgba(77, 153, 122, 1)',
-          borderColor: 'rgba(77, 153, 122, 1)',
-          borderWidth: 1
-        }]
+        datasets: [
+          {
+            label: 'Participantes',
+            data: [],
+            backgroundColor: 'rgba(0, 139, 80, 0.5)',
+            borderColor: 'rgba(0, 139, 80, 0.5)',
+            borderWidth: 1
+          },
+          {
+            label: 'Asistencias',
+            data: [],
+            backgroundColor: 'rgba(255, 202, 0, 0.3)',
+            borderColor: 'rgba(255, 202, 0, 0.3)',
+            borderWidth: 1
+          }
+        ]
       },
       options: {
         responsive: true,
@@ -83,6 +92,10 @@ export class TopDataContainerComponent implements AfterViewInit, OnInit, OnChang
               size: 10
             },
             formatter: (value) => value
+          },
+          legend: {
+            display: true,
+            position: 'top'
           }
         }
       },
@@ -92,7 +105,7 @@ export class TopDataContainerComponent implements AfterViewInit, OnInit, OnChang
 
   private loadStatistics(): void {
     if (!this.filtersRequest || !this.nombreArea || !this.tipoEstructura) {
-      this.updateChart([], []);
+      this.updateChart([], [], []);
       return;
     }
 
@@ -122,16 +135,22 @@ export class TopDataContainerComponent implements AfterViewInit, OnInit, OnChang
         return of([]);
       })
     ).subscribe((statistics: StadisticAreasResponse[]) => {
-      const labels = statistics.map(stat => stat.nombre);
-      const data = statistics.map(stat => stat.cantidad);
-      this.updateChart(labels, data);
+      // Filtrar solo las áreas donde tipoArea === 'AREA'
+      const filteredStatistics = statistics.filter(stat => stat.tipoArea === 'AREA');
+      
+      const labels = filteredStatistics.map(stat => stat.nombre);
+      const participantesData = filteredStatistics.map(stat => stat.cantidadParticipantes);
+      const asistenciasData = filteredStatistics.map(stat => stat.cantidadAsistencias);
+      
+      this.updateChart(labels, participantesData, asistenciasData);
     });
   }
 
-  private updateChart(labels: string[], data: number[]): void {
+  private updateChart(labels: string[], participantesData: number[], asistenciasData: number[]): void {
     if (this.participantsChart) {
       this.participantsChart.data.labels = labels;
-      this.participantsChart.data.datasets[0].data = data;
+      this.participantsChart.data.datasets[0].data = participantesData;
+      this.participantsChart.data.datasets[1].data = asistenciasData;
       this.participantsChart.update();
     }
   }

@@ -24,5 +24,7 @@ export interface FiltersRequestWithoutArea {
 
 export interface StadisticAreasResponse{
     nombre: string;
-    cantidad: number;
+    tipoArea: string;
+    cantidadParticipantes: number;
+    cantidadAsistencias: number;
 }
