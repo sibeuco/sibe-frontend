@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 import { ActivityRequest, ActivityResponse, CancelActivityResponse, EditActivityRequest, StartActivityResponse } from '../model/activity.model';
 import { ActivityExecutionResponse } from '../model/activity-execution.model';
 import { ParticipantRequest, ParticipantResponse } from '../model/participant.model';
-import { FiltersRequest } from '../model/filters.model';
+import { FiltersRequest, StadisticAreasResponse } from '../model/filters.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +33,7 @@ export class ActivityService extends HttpService {
   private readonly INDICADORES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/indicadores';
   private readonly CONTAR_ASISTENCIAS_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/asistencias/conteo';
   private readonly CONTAR_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/conteo';
+  private readonly CONTAR_PARTICIPANTES_POR_ESTRUCTURA = '/actividades/ejecuciones/finalizadas/estadisticas/estructuras';
 
   constructor(http: HttpClient) {
     super(http);
@@ -135,6 +136,13 @@ export class ActivityService extends HttpService {
     const url = `${environment.endpoint}${this.CONTAR_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
     return this.doPost<FiltersRequest, number>(url, filtro, opts);
+  }
+
+  consultarEstadisticasParticipantesPorEstructura(filtro: FiltersRequest): Observable<StadisticAreasResponse[]> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.CONTAR_PARTICIPANTES_POR_ESTRUCTURA}`;
+
+    return this.http.post<StadisticAreasResponse[]>(url, filtro, opts);
   }
 
   consultarMesesEjecucionesFinalizadas(): Observable<string[]> {
