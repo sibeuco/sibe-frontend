@@ -12,4 +12,5 @@ export class TopDataComponent {
   tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'SUBAREA';
   nombreArea: string = 'Trabajo social';
   imageUrl: string = 'assets/images/Appreciation-amico.png';
+  imageUrl2: string = 'assets/images/actividades-hogar.png';
 }
