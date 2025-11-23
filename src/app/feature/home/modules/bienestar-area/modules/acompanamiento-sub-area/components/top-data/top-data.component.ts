@@ -12,4 +12,5 @@ export class TopDataComponent {
   tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'SUBAREA';
   nombreArea: string = 'Acompañamiento psicosocial';
   imageUrl: string = 'assets/images/Group discussion-amico.png';
+  imageUrl2: string = 'assets/images/Creative team-amico.png';
 }
