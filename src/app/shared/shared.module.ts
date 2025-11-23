@@ -63,7 +63,8 @@ import { CompletedActivitiesComponent } from './components/data-visualization/co
     ChangePasswordComponent,
     UploadDatabaseComponent,
     ExternalParticipantComponent,
-    TotalParticipantsComponent
+    TotalParticipantsComponent,
+    CompletedActivitiesComponent
   ]
 })
 export class SharedModule { }
