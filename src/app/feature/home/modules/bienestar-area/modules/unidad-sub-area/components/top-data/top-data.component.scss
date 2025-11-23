@@ -17,10 +17,6 @@
 .right-data-container{
     margin-right: $general-margin-right;
     width: 48%;
-    background-color: $white-color;
-    border-radius: $general-border-radius;
-    box-shadow: $sombra-general;
-    overflow: hidden;
 }
 
 .left-data-title{
@@ -28,20 +24,6 @@
     font-size: $font-general-size;
     font-weight: bold;
     color: $dark-green;
-}
-
-.right-data-title{
-    margin-top: $general-margin-top;
-    font-size: $font-general-size;
-    font-weight: bold;
-    color: $dark-green;
-}
-
-.img-fluid{
-    max-height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    margin-bottom: 10%;
 }
 
 .separator{
@@ -55,10 +37,4 @@
 .cuantity{
     font-size: 6rem;
     font-weight: bold;
-}
-
-.data-image-container{
-    margin-left: $general-margin-left;
-    max-height: 80%;
-    width: 100%;
 }
