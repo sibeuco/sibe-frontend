@@ -12,4 +12,5 @@ export class TopDataContainerComponent {
   tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'AREA';
   nombreArea: string = 'Servicio y atención al usuario';
   imageUrl: string = 'assets/images/estudiantes-servicio.png';
+  imageUrl2: string = 'assets/images/actividades-servicio.png';
 }
