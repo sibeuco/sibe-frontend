@@ -16,10 +16,10 @@
         <app-activities></app-activities>
     </div>
     <div id="gimnasio-filters-section" class="filters-container">
-        <app-filters></app-filters>
+        <app-filters (filtersChanged)="onFiltersChanged($event)"></app-filters>
     </div>
     <div class="top-data-container">
-        <app-top-data></app-top-data>
+        <app-top-data [filtersRequest]="filtersRequest"></app-top-data>
     </div>
     <div class="botton-data-container">
         <app-bottom-data></app-bottom-data>
