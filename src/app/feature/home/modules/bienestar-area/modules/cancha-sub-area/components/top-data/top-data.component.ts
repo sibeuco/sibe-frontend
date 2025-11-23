@@ -12,4 +12,5 @@ export class TopDataComponent {
   tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'SUBAREA';
   nombreArea: string = 'Cancha sintética';
   imageUrl: string = 'assets/images/High five-amico.png';
+  imageUrl2: string = 'assets/images/Soccer-amico.png';
 }
