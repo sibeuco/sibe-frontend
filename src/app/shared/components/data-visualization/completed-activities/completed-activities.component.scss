@@ -1,9 +1,5 @@
 @use "src/assets/scss/modules/_var.scss" as *;
 
-.principal-container{
-    margin-top: $general-margin-top;
-}
-
 .left-data-container{
     margin-right: $general-margin-right;
     width: 48%;
@@ -12,11 +8,6 @@
     box-shadow: $sombra-general;
     overflow: hidden;
     margin-left: $general-margin-left;
-}
-
-.right-data-container{
-    margin-right: $general-margin-right;
-    width: 48%;
 }
 
 .left-data-title{

@@ -31,6 +31,7 @@ export class ActivityService extends HttpService {
   private readonly PROGRAMAS_ACADEMICOS_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/programas-academicos';
   private readonly NIVELES_FORMACION_ESTUDIANTES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/niveles-formacion';
   private readonly INDICADORES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/indicadores';
+  private readonly CONTAR_ASISTENCIAS_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/asistencias/conteo';
 
   constructor(http: HttpClient) {
     super(http);
@@ -117,6 +118,13 @@ export class ActivityService extends HttpService {
   contarParticipantesTotales(filtro: FiltersRequest): Observable<number> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.CONTAR_PARTICIPANTES_ENDPOINT}`;
+
+    return this.doPost<FiltersRequest, number>(url, filtro, opts);
+  }
+
+  contarAsistenciasTotales(filtro: FiltersRequest): Observable<number> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.CONTAR_ASISTENCIAS_EJECUCIONES_FINALIZADAS_ENDPOINT}`;
 
     return this.doPost<FiltersRequest, number>(url, filtro, opts);
   }

@@ -20,6 +20,7 @@ export class TotalParticipantsComponent implements OnInit, OnChanges {
   @Input() filtersRequest: FiltersRequestWithoutArea | null = null;
   
   totalParticipantes: number = 0;
+  totalAsistencias: number = 0;
 
   constructor(
     private activityService: ActivityService,
@@ -30,11 +31,13 @@ export class TotalParticipantsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.loadTotalParticipants();
+    this.loadTotalAsistencias();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['filtersRequest'] || changes['tipoEstructura'] || changes['nombreArea']) {
       this.loadTotalParticipants();
+      this.loadTotalAsistencias();
     }
   }
 
@@ -74,6 +77,45 @@ export class TotalParticipantsComponent implements OnInit, OnChanges {
       })
     ).subscribe((total: number) => {
       this.totalParticipantes = total;
+    });
+  }
+
+  private loadTotalAsistencias(): void {
+    if (!this.filtersRequest || !this.nombreArea || !this.tipoEstructura) {
+      this.totalAsistencias = 0;
+      return;
+    }
+
+    // Obtener el identificador del área según el tipo de estructura
+    this.getAreaIdentifier().pipe(
+      switchMap((idArea: string | null) => {
+        if (!idArea) {
+          return of(0);
+        }
+
+        // Construir el FiltersRequest completo
+        const filtersRequest: FiltersRequest = {
+          mes: this.filtersRequest!.mes ?? '',
+          anno: this.filtersRequest!.anno ?? 0,
+          semestre: this.filtersRequest!.semestre ?? '',
+          programaAcademico: this.filtersRequest!.programaAcademico ?? '',
+          tipoProgramaAcademico: this.filtersRequest!.tipoProgramaAcademico ?? '',
+          centroCostos: this.filtersRequest!.centroCostos ?? '',
+          tipoParticipante: this.filtersRequest!.tipoParticipante ?? '',
+          indicador: this.filtersRequest!.indicador ?? '',
+          tipoArea: this.tipoEstructura,
+          idArea: idArea
+        };
+
+        // Llamar al servicio
+        return this.activityService.contarAsistenciasTotales(filtersRequest);
+      }),
+      catchError(error => {
+        console.error('Error al contar asistencias totales:', error);
+        return of(0);
+      })
+    ).subscribe((total: number) => {
+      this.totalAsistencias = total;
     });
   }
 

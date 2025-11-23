@@ -19,6 +19,7 @@ import { UploadDatabaseComponent } from './components/upload-database/upload-dat
 import { ExternalParticipantComponent } from './components/external-participant/external-participant.component';
 import { DateSelectorComponent } from './components/date-selector/date-selector.component';
 import { TotalParticipantsComponent } from './components/data-visualization/total-participants/total-participants.component';
+import { CompletedActivitiesComponent } from './components/data-visualization/completed-activities/completed-activities.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { TotalParticipantsComponent } from './components/data-visualization/tota
     UploadDatabaseComponent,
     ExternalParticipantComponent,
     DateSelectorComponent,
-    TotalParticipantsComponent
+    TotalParticipantsComponent,
+    CompletedActivitiesComponent
   ],
   imports: [
     CommonModule,
