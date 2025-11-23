@@ -21,23 +21,8 @@
     </div>
 
     <div class="right-data-container">
-        <div class="title-container col d-flex justify-content-center align-items-center">
-            <h1 class="right-data-title">Participantes por área</h1>
-        </div>
-        <div class="data-image-container row justify-content-center align-items-center">
-            <div class="img-container col-5 d-flex justify-content-center">
-                <img src="assets\images\Orchestra-amico.png" alt="Grupo de personas" class="img-fluid" />
-            </div>
-
-            <div class="data-container col-7">
-                <div class="cuantity-container col d-flex align-items-center justify-content-center">
-                    <p class="cuantity">1455</p>
-                </div>
-                <div class="form-container col d-flex align-items-center justify-content-center">
-                    <form class="separator"></form>
-                </div>
-            </div>
-        </div>
-        
+        <app-total-participants [imageUrl]="imageUrl" [tipoEstructura]="tipoEstructura"
+            [nombreArea]="nombreArea" [filtersRequest]="filtersRequest">
+        </app-total-participants>
     </div>
 </div>
