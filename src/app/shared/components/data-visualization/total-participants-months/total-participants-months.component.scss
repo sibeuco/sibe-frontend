@@ -24,10 +24,12 @@
     flex: 1;
     position: relative;
     overflow: hidden;
+    max-height: 500px;
+    min-height: 400px;
 }
 
 .chart-container canvas {
-    width: 70%;
-    height: 70%;
+    width: 100% !important;
+    height: 100% !important;
     margin-bottom: $general-margin-bottom;
 }
