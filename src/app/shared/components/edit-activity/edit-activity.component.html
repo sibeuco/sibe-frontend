@@ -16,7 +16,7 @@
 
                     <div *ngIf="soloColaboradorEditable" class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                        <div>Esta actividad tiene ejecuciones finalizadas. Solo es posible actualizar el colaborador asignado.</div>
+                        <div>Esta actividad tiene ejecuciones finalizadas. Solo es posible actualizar el colaborador asignado y agregar nuevas fechas. Las fechas existentes no se pueden modificar.</div>
                     </div>
 
                     <div class="mb-3">
@@ -183,13 +183,11 @@
                                     name="fechaTemporal" 
                                     [(ngModel)]="fechaTemporal"
                                     [min]="minFechaProgramada"
-                                    [disabled]="soloColaboradorEditable"
                                     style="flex: 1;" />
                                 <button 
                                     type="button" 
                                     class="btn btn-agregar btn-sm ms-2" 
                                     (click)="agregarFecha()"
-                                    [disabled]="soloColaboradorEditable"
                                     title="Agregar fecha a la lista">
                                     + Agregar
                                 </button>
@@ -212,11 +210,12 @@
                                         <span *ngFor="let fecha of actividadForm.fechasProgramadas; let i = index; trackBy: trackByIndex" 
                                               class="badge bg-secondary d-flex align-items-center">
                                             <span>{{ fecha.fechaProgramada }}</span>
+                                            <span *ngIf="mostrarCandado(fecha)" class="ms-2" style="font-size: 0.7rem;" title="Fecha existente (no se puede eliminar)">🔒</span>
                                             <button 
+                                                *ngIf="esFechaEditable(fecha)"
                                                 type="button" 
                                                 class="btn-close btn-close-white ms-2" 
                                                 (click)="eliminarFecha(i)"
-                                                [disabled]="soloColaboradorEditable"
                                                 aria-label="Eliminar fecha"
                                                 style="font-size: 0.6rem; padding: 0.2rem;">
                                             </button>

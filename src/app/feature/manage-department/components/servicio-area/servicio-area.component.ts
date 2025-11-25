@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./servicio-area.component.scss']
 })
 export class ServicioAreaComponent {
-
+  tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'AREA';
+  nombreArea: string = 'Servicio y atención al usuario';
 }

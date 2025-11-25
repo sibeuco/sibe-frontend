@@ -400,8 +400,26 @@ export class EditActivityComponent implements OnInit, OnChanges {
   }
 
   eliminarFecha(index: number) {
+    const fecha = this.actividadForm.fechasProgramadas[index];
+    // Solo permitir eliminar fechas nuevas (sin identificador) cuando hay ejecuciones finalizadas
+    if (this.soloColaboradorEditable && fecha.identificador) {
+      return; // No permitir eliminar fechas existentes
+    }
     this.actividadForm.fechasProgramadas.splice(index, 1);
     this.errorFecha = '';
+  }
+
+  esFechaEditable(fecha: EditActivityExecutionRquest): boolean {
+    // Si hay ejecuciones finalizadas, solo las fechas nuevas (sin identificador) son editables
+    if (this.soloColaboradorEditable) {
+      return !fecha.identificador; // Si no tiene identificador, es nueva y se puede eliminar
+    }
+    return true; // Si no hay ejecuciones finalizadas, todas son editables (incluso las existentes)
+  }
+
+  mostrarCandado(fecha: EditActivityExecutionRquest): boolean {
+    // Solo mostrar candado si hay ejecuciones finalizadas Y la fecha es existente (tiene identificador)
+    return this.soloColaboradorEditable && !!fecha.identificador;
   }
 
   trackByIndex(index: number): number {

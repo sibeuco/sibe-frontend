@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./bienestar-area.component.scss']
 })
 export class BienestarAreaComponent {
-
+  tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'AREA';
+  nombreArea: string = 'Bienestar';
 }
