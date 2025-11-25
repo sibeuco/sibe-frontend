@@ -129,7 +129,7 @@ export class EditUserComponent implements OnInit, OnChanges {
         numeroIdentificacion: this.usuarioAEditar.identificacion?.numeroIdentificacion || '',
         correo: this.usuarioAEditar.correo || '',
         tipoUsuario: this.usuarioAEditar.tipoUsuario?.identificador || '',
-        estructuraOrganizacional: this.usuarioAEditar.area?.area || '',
+        estructuraOrganizacional: this.usuarioAEditar.area?.identificador || '',
         tipoEstructura: this.determinarTipoEstructuraInicial()
       };
       
@@ -145,15 +145,15 @@ export class EditUserComponent implements OnInit, OnChanges {
       return '';
     }
     
-    if (this.tipoComponente === 'area' && this.usuarioAEditar?.area?.area) {
+    if (this.tipoComponente === 'area' && this.usuarioAEditar?.area?.identificador) {
       // Verificar si el área actual está en la lista de áreas
-      const esArea = this.listaAreas.some(area => area.identificador === this.usuarioAEditar?.area?.area);
+      const esArea = this.listaAreas.some(area => area.identificador === this.usuarioAEditar?.area?.identificador);
       if (esArea) {
         return 'area';
       }
       
       // Verificar si está en la lista de subáreas
-      const esSubarea = this.listaSubareas.some(subarea => subarea.identificador === this.usuarioAEditar?.area?.area);
+      const esSubarea = this.listaSubareas.some(subarea => subarea.identificador === this.usuarioAEditar?.area?.identificador);
       if (esSubarea) {
         return 'subarea';
       }
