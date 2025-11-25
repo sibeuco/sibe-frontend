@@ -35,6 +35,9 @@
               </span>
             </span>
           </th>
+          <th>
+            <span>Ruta Insumos</span>
+          </th>
           <th class="sortable" (click)="ordenarPor('estado')">
             <span>
               Estado
@@ -49,12 +52,12 @@
       </thead>
       <tbody>
         <tr *ngIf="cargando">
-          <td colspan="7" class="text-center">
+          <td colspan="8" class="text-center">
             <p>Cargando actividades...</p>
           </td>
         </tr>
         <tr *ngIf="!cargando && error">
-          <td colspan="7" class="text-center error-message">
+          <td colspan="8" class="text-center error-message">
             <p>{{ error }}</p>
           </td>
         </tr>
@@ -63,6 +66,7 @@
           <td class="collaborator">{{ obtenerNombreColaborador(actividad) }}</td>
           <td class="creation-date">{{ (actividad.fechaCreacion | date:'dd/MM/yyyy') || 'Sin fecha' }}</td>
           <td class="programmed-date">{{ obtenerFechaProgramada(actividad) ? (obtenerFechaProgramada(actividad)! | date:'dd/MM/yyyy') : 'Sin fecha' }}</td>
+          <td class="ruta-insumos">{{ actividad.rutaInsumos || 'Sin ruta' }}</td>
           <td class="status">
             <span class="status-badge" [ngClass]="getStatusClass(actividad)">
               {{ calcularEstado(actividad) }}

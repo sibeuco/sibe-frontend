@@ -81,10 +81,13 @@
           
           // Anchos específicos para cada columna
           &:nth-child(1) { width: 25%; } // Nombre Actividad
-          &:nth-child(2) { width: 20%; } // Colaborador
-          &:nth-child(3) { width: 15%; } // Fecha Creación
-          &:nth-child(4) { width: 15%; } // Estado
-          &:nth-child(5) { width: 25%; } // Acción
+          &:nth-child(2) { width: 18%; } // Colaborador
+          &:nth-child(3) { width: 12%; } // Fecha Creación
+          &:nth-child(4) { width: 12%; } // Fecha Programada
+          &:nth-child(5) { width: 10%; } // Ruta Insumos
+          &:nth-child(6) { width: 10%; } // Estado
+          &:nth-child(7) { width: 8%; } // Acción Gestionar
+          &:nth-child(8) { width: 5%; } // Acción Editar
 
           // Estilos para encabezados ordenables
           &.sortable {
@@ -173,10 +176,13 @@
             
             // Aplicar los mismos anchos que las columnas del encabezado
             &:nth-child(1) { width: 25%; } // Nombre Actividad
-            &:nth-child(2) { width: 20%; } // Colaborador
-            &:nth-child(3) { width: 15%; } // Fecha Creación
-            &:nth-child(4) { width: 15%; } // Estado
-            &:nth-child(5) { width: 25%; } // Acción
+            &:nth-child(2) { width: 18%; } // Colaborador
+            &:nth-child(3) { width: 12%; } // Fecha Creación
+            &:nth-child(4) { width: 12%; } // Fecha Programada
+            &:nth-child(5) { width: 10%; } // Ruta Insumos
+            &:nth-child(6) { width: 10%; } // Estado
+            &:nth-child(7) { width: 8%; } // Acción Gestionar
+            &:nth-child(8) { width: 5%; } // Acción Editar
             
             &.activity-name {
               font-weight: 500;
@@ -189,6 +195,17 @@
             
             &.creation-date {
               color: $black-color;
+            }
+            
+            &.programmed-date {
+              color: $black-color;
+            }
+            
+            &.ruta-insumos {
+              color: $black-color;
+              font-size: 0.9rem;
+              word-break: break-word;
+              max-width: 150px;
             }
             
             &.status {
