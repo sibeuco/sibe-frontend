@@ -12,13 +12,13 @@
         <app-activities></app-activities>
     </div>
     <div id="home-filters-section" class="filters-home justify-content-center align-items-center">
-        <app-home-filters></app-home-filters>
+        <app-home-filters (filtersChanged)="onFiltersChanged($event)"></app-home-filters>
     </div>
     <div class="top-data-container justify-content-center align-items-center">
-        <app-top-data-container></app-top-data-container>
+        <app-top-data-container [filtersRequest]="filtersRequest"></app-top-data-container>
     </div>
     <div class="botton-data-container justify-content-center align-items-center">
-        <app-botton-data-container></app-botton-data-container>
+        <app-botton-data-container [filtersRequest]="filtersRequest"></app-botton-data-container>
     </div>
     <router-outlet></router-outlet>
 </div>

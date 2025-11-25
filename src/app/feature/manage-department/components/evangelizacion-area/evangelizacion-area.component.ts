@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./evangelizacion-area.component.scss']
 })
 export class EvangelizacionAreaComponent {
-
+  tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'AREA';
+  nombreArea: string = 'Evangelización';
 }

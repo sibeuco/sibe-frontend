@@ -11,46 +11,13 @@
                 <div class="form-container">
                 </div>
             </div>
-            <div class="stadistics row">
-                <div class="activities col">
-                    <div class="number col d-flex align-items-center justify-content-center">
-                        <p class="cuantity">45</p>
-                    </div>
-                </div>
-                <div class="participants col">
-                    <div class="number col d-flex align-items-center justify-content-center">
-                        <p class="cuantity">248</p>
-                    </div>
-                </div>
-                <div class="users col">
-                    <div class="number col d-flex align-items-center justify-content-center">
-                        <p class="cuantity">8</p>
-                    </div>
-                </div>
-            </div>
-            <div class="names row">
-                <div class="activities-name col">
-                    <div class="name col d-flex align-items-center justify-content-center">
-                        <p class="data-name">Actividades realizadas</p>
-                    </div>
-                </div>
-                <div class="participants col">
-                    <div class="name col d-flex align-items-center justify-content-center">
-                        <p class="data-name">Número de participantes</p>
-                    </div>
-                </div>
-                <div class="users col">
-                    <div class="name col d-flex align-items-center justify-content-center">
-                        <p class="data-name">Usuarios del área</p>
-                    </div>
-                </div>
-            </div>
+            <app-area-statistics [tipoEstructura]="tipoEstructura" [nombreArea]="nombreArea"></app-area-statistics>
             <div class="button-container col d-flex justify-content-center align-items-center">
                 <button type="button" class="btn btn-lg" routerLink="/home/area-bienestar">
                     <i class="bi"></i>
                     Ir al área
                 </button>
-            </div>  
+            </div>
         </div>
     </div>
 </div>
