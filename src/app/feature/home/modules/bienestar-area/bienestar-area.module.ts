@@ -8,7 +8,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { AreaFiltersComponent } from './components/area-filters/area-filters.component';
 import { TopDataContainerComponent } from './components/top-data-container/top-data-container.component';
 import { BottonDataContainerComponent } from './components/botton-data-container/botton-data-container.component';
-import { RegisterNewActivityComponent } from './components/register-new-activity/register-new-activity.component';
 import { SubAreasComponent } from './components/sub-areas/sub-areas.component';
 import { FormsModule } from '@angular/forms';
 import { BienestarAreaActivityAttendanceRecordComponent } from './components/bienestar-area-activity-attendance-record/bienestar-area-activity-attendance-record.component';
