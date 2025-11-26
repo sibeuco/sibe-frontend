@@ -33,10 +33,20 @@
                         <div class="name-label-container d-flex justify-content-center align-items-center">
                             <div class="name-label">
                                 <label for="semestre" class="form-label">Semestre</label>
+                                <small class="form-text text-muted d-block" style="font-size: 0.85rem; margin-top: 0.25rem;">
+                                    Ejemplo: 202501, 202502, 202601
+                                </small>
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="semestre" name="semestre" [(ngModel)]="actividad.semestre" required />
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="semestre" 
+                                name="semestre" 
+                                [(ngModel)]="actividad.semestre" 
+                                maxlength="6"
+                                required />
                         </div>     
                     </div>
 

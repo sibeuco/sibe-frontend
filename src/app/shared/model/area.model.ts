@@ -9,6 +9,7 @@ export interface AreaRequest{
 export interface AreaResponse{
     identificador: string;
     nombre: string;
+    tipoArea: string;
 }
 
 export interface AreaDetailResponse{

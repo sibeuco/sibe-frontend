@@ -90,7 +90,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="tipoUsuario" name="tipoUsuario" [(ngModel)]="usuario.tipoUsuario" required [disabled]="cargandoTiposUsuario">
+                            <select class="form-select" id="tipoUsuario" name="tipoUsuario" [(ngModel)]="usuario.tipoUsuario" (change)="onTipoUsuarioChange()" required [disabled]="cargandoTiposUsuario">
                                 <option value="">Selecciona</option>
                                 <option *ngFor="let tipo of tiposUsuario" [value]="tipo.identificador">
                                     {{ tipo.nombre }}
@@ -115,32 +115,15 @@
                         </div>   
                     </div>
 
-                    <!-- Campo selector de tipo (solo para area-users) -->
-                    <div class="mb-3" *ngIf="tipoComponente === 'area'">
+                    <!-- Campo selector de Departamento (solo para Administrador de dirección) -->
+                    <div class="mb-3" *ngIf="esAdministradorDireccion() && listaDepartamentos && listaDepartamentos.length > 0">
                         <div class="name-label-container d-flex justify-content-center align-items-center">
                             <div class="name-label">
-                                <label for="tipoEstructura" class="form-label">Tipo de Estructura</label>
+                                <label for="departamento" class="form-label">Departamento</label>
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="tipoEstructura" name="tipoEstructura" [(ngModel)]="usuario.tipoEstructura" (change)="onTipoEstructuraChange()" required>
-                                <option value="">Selecciona el tipo</option>
-                                <option *ngFor="let opcion of opcionesTipoEstructura" [value]="opcion.valor">
-                                    {{ opcion.etiqueta }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Campo dinámico desplegable para department-users -->
-                    <div class="mb-3" *ngIf="tipoComponente === 'department' && listaDepartamentos && listaDepartamentos.length > 0">
-                        <div class="name-label-container d-flex justify-content-center align-items-center">
-                            <div class="name-label">
-                                <label for="estructuraOrganizacional" class="form-label">Departamento</label>
-                            </div>
-                        </div>
-                        <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="estructuraOrganizacional" name="estructuraOrganizacional" [(ngModel)]="usuario.estructuraOrganizacional" required>
+                            <select class="form-select" id="departamento" name="departamento" [(ngModel)]="usuario.estructuraOrganizacional" required [disabled]="cargandoEstructuras">
                                 <option value="">Selecciona</option>
                                 <option *ngFor="let item of listaDepartamentos" [value]="item.identificador">
                                     {{ item.nombre }}
@@ -149,8 +132,25 @@
                         </div>
                     </div>
 
-                    <!-- Campo desplegable condicional para area-users -->
-                    <div class="mb-3" *ngIf="tipoComponente === 'area' && usuario.tipoEstructura && listaFiltrada && listaFiltrada.length > 0">
+                    <!-- Campo selector de tipo estructura (para otros tipos de usuario) -->
+                    <div class="mb-3" *ngIf="!esAdministradorDireccion()">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
+                                <label for="tipoEstructura" class="form-label">Tipo de Estructura</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <select class="form-select" id="tipoEstructura" name="tipoEstructura" [(ngModel)]="usuario.tipoEstructura" (change)="onTipoEstructuraChange()" required [disabled]="cargandoEstructuras">
+                                <option value="">Selecciona el tipo</option>
+                                <option *ngFor="let opcion of opcionesTipoEstructura" [value]="opcion.valor">
+                                    {{ opcion.etiqueta }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campo desplegable condicional (para otros tipos de usuario) -->
+                    <div class="mb-3" *ngIf="!esAdministradorDireccion() && usuario.tipoEstructura && listaFiltrada && listaFiltrada.length > 0">
                         <div class="name-label-container d-flex justify-content-center align-items-center">
                             <div class="name-label">
                                 <label for="estructuraOrganizacional" class="form-label">
@@ -159,7 +159,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="estructuraOrganizacional" name="estructuraOrganizacional" [(ngModel)]="usuario.estructuraOrganizacional" required>
+                            <select class="form-select" id="estructuraOrganizacional" name="estructuraOrganizacional" [(ngModel)]="usuario.estructuraOrganizacional" required [disabled]="cargandoEstructuras">
                                 <option value="">Selecciona</option>
                                 <option *ngFor="let item of listaFiltrada" [value]="item.identificador">
                                     {{ item.nombre }}

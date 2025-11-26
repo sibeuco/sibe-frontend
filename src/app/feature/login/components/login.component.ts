@@ -15,7 +15,7 @@ import { UserSession } from '../model/user-session.model';
 
 export class LoginComponent implements OnInit {
 
-  formularioLogin: FormGroup | any;
+  formularioLogin!: FormGroup;
   mensajeError: string = '';
 
   constructor(private formBuilder: FormBuilder,
