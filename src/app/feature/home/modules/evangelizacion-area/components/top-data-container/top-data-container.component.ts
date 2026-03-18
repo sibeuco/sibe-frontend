@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { FiltersRequestWithoutArea } from 'src/app/shared/model/filters.model';
 
 @Component({
   selector: 'app-top-data-container',
@@ -6,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./top-data-container.component.scss']
 })
 export class TopDataContainerComponent {
-
+  @Input() filtersRequest: FiltersRequestWithoutArea | null = null;
+  
+  tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'AREA';
+  nombreArea: string = 'Evangelización';
+  imageUrl: string = 'assets/images/estudiantes-evang.png';
+  imageUrl2: string = 'assets/images/actividades-evang.png';
 }

@@ -4,7 +4,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
 import { DepartmentService } from 'src/app/shared/service/department.service';
 import { AreaService } from 'src/app/shared/service/area.service';
 import { SubAreaService } from 'src/app/shared/service/subarea.service';
-import { DepartmentResponse } from 'src/app/shared/model/departmen.model';
+import { DepartmentResponse } from 'src/app/shared/model/department.model';
 import { AreaResponse } from 'src/app/shared/model/area.model';
 import { SubAreaResponse } from 'src/app/shared/model/subarea.model';
 
@@ -69,7 +69,7 @@ export class ManageUsersComponent implements OnInit {
     });
 
     // Cargar subáreas
-    this.subAreaService.consultarDirecciones().subscribe({
+    this.subAreaService.consultarSubareas().subscribe({
       next: (subareas: SubAreaResponse[]) => {
         this.listaSubareas = subareas.map(subarea => ({
           identificador: subarea.identificador,

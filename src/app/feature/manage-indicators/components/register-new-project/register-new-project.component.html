@@ -83,7 +83,7 @@
                                                     type="checkbox" 
                                                     [value]="accion.value"
                                                     [checked]="isActionSelected(accion.value)"
-                                                    (change)="toggleAction(accion.value)"
+                                                    (click)="toggleAction(accion.value)"
                                                     class="action-checkbox" />
                                                 <span class="action-label">{{ accion.label }}</span>
                                             </label>
@@ -98,7 +98,7 @@
                                 <!-- Información de selección -->
                                 <div class="selected-actions">
                                     <small class="text-muted actions-info">
-                                        Seleccionadas: {{ proyecto.acciones.length || 0 }} acciones
+                                        Seleccionadas: {{ (proyecto.acciones && proyecto.acciones.length) || 0 }} acciones
                                     </small>
                                     <div class="selected-tags" *ngIf="proyecto.acciones && proyecto.acciones.length > 0">
                                         <span 

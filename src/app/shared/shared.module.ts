@@ -18,6 +18,9 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
 import { UploadDatabaseComponent } from './components/upload-database/upload-database.component';
 import { ExternalParticipantComponent } from './components/external-participant/external-participant.component';
 import { DateSelectorComponent } from './components/date-selector/date-selector.component';
+import { TotalParticipantsComponent } from './components/data-visualization/total-participants/total-participants.component';
+import { CompletedActivitiesComponent } from './components/data-visualization/completed-activities/completed-activities.component';
+import { TotalParticipantsMonthsComponent } from './components/data-visualization/total-participants-months/total-participants-months.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +38,10 @@ import { DateSelectorComponent } from './components/date-selector/date-selector.
     ChangePasswordComponent,
     UploadDatabaseComponent,
     ExternalParticipantComponent,
-    DateSelectorComponent
+    DateSelectorComponent,
+    TotalParticipantsComponent,
+    CompletedActivitiesComponent,
+    TotalParticipantsMonthsComponent
   ],
   imports: [
     CommonModule,
@@ -58,7 +64,10 @@ import { DateSelectorComponent } from './components/date-selector/date-selector.
     FilterListComponent,
     ChangePasswordComponent,
     UploadDatabaseComponent,
-    ExternalParticipantComponent
+    ExternalParticipantComponent,
+    TotalParticipantsComponent,
+    CompletedActivitiesComponent,
+    TotalParticipantsMonthsComponent
   ]
 })
 export class SharedModule { }

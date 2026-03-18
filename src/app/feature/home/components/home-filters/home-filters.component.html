@@ -4,6 +4,6 @@
     </div>
     <app-separator></app-separator>
     <div class="filter-list-component">
-        <app-filter-list></app-filter-list>
+        <app-filter-list (filterApplied)="onFilterApplied($event)"></app-filter-list>
     </div>
 </div>

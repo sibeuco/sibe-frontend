@@ -30,11 +30,14 @@ export class ActionService extends HttpService {
     agregarNuevaAccion(accion: ActionRequest): Observable<Response<string>> {
         const opts = this.createDefaultOptions();
         const url = `${environment.endpoint}${this.ACTION_ENDPOINT}`;
-        
-        console.log('URL:', url);
-        console.log('Body:', JSON.stringify(accion));
-        console.log('Options:', opts);
 
         return this.doPost<ActionRequest, Response<string>>(url, accion, opts);
+    }
+
+    modificarAccion(identificador: string, accion: ActionRequest): Observable<{ valor: string }> {
+        const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.ACTION_ENDPOINT}/${identificador}`;
+
+        return this.http.put<{ valor: string }>(url, accion, opts);
     }
 }

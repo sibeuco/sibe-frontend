@@ -1,62 +1,68 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../../environments/environment';
+import { EmployeeFileRequest } from '../model/employee.model';
+import { StudentFileRequest } from '../model/student.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadDatabaseService {
-  private readonly API_URL_BASE = `${environment.endpoint}`; // Base URL del backend
+  private readonly API_URL_BASE = `${environment.endpoint}/carga_masiva`;
+  private readonly ENDPOINTS: Record<'empleados' | 'estudiantes', string> = {
+    empleados: `${this.API_URL_BASE}/empleados`,
+    estudiantes: `${this.API_URL_BASE}/estudiantes`
+  };
+
+  private readonly PARAM_NAME = 'archivo';
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Sube un archivo Excel al backend para ser procesado y guardado en la base de datos
-   * @param archivo El archivo Excel a subir
-   * @param tipo Tipo de base de datos: 'empleados' o 'estudiantes'
-   * @returns Observable con la respuesta del backend
-   */
-  subirArchivo(archivo: File, tipo: 'empleados' | 'estudiantes'): Observable<any> {
-    const formData = new FormData();
-    formData.append('archivo', archivo);
-
-    // Determinar el endpoint según el tipo de base de datos
-    const endpoint = tipo === 'empleados' 
-      ? `${this.API_URL_BASE}/upload/empleados`
-      : `${this.API_URL_BASE}/upload/estudiantes`;
-
-    // Para archivos, no se debe establecer el Content-Type manualmente
-    // Angular lo establecerá automáticamente con el boundary correcto
-    const headers = new HttpHeaders();
-    // No incluir 'Content-Type': 'multipart/form-data' 
-    // Angular lo añadirá automáticamente con el boundary
-
-    return this.http.post<any>(endpoint, formData, { headers });
+  subirArchivoEmpleados(request: EmployeeFileRequest): Observable<any> {
+    return this.subirArchivoConHeaders(request.archivo, 'empleados');
   }
 
-  /**
-   * Sube un archivo Excel con datos adicionales
-   * @param archivo El archivo Excel a subir
-   * @param tipo Tipo de base de datos: 'empleados' o 'estudiantes'
-   * @param datosAdicionales Objeto con datos adicionales para enviar
-   * @returns Observable con la respuesta del backend
-   */
-  subirArchivoConDatos(archivo: File, tipo: 'empleados' | 'estudiantes', datosAdicionales: any): Observable<any> {
+  subirArchivoEstudiantes(request: StudentFileRequest): Observable<any> {
+    return this.subirArchivoConHeaders(request.archivo, 'estudiantes');
+  }
+
+  private subirArchivoConHeaders(archivo: File, tipo: 'empleados' | 'estudiantes'): Observable<any> {
+    const formData = this.crearFormData(archivo);
+
+    const headers = this.crearHeadersAutorizacion();
+
+    return this.http.post(this.ENDPOINTS[tipo], formData, { headers }).pipe(
+      catchError(error => {
+        if (error.status === 401 || error.status === 403) {
+          // Si hay error de autenticación, probar sin headers
+          return this.subirArchivoSinHeaders(archivo, tipo);
+        }
+        return throwError(() => error);
+      })
+    );
+  }
+
+  private subirArchivoSinHeaders(archivo: File, tipo: 'empleados' | 'estudiantes'): Observable<any> {
+    const formData = this.crearFormData(archivo);
+    return this.http.post(this.ENDPOINTS[tipo], formData).pipe(
+      catchError(error => throwError(() => error))
+    );
+  }
+
+  private crearFormData(archivo: File): FormData {
     const formData = new FormData();
-    formData.append('archivo', archivo);
-    
-    // Agregar datos adicionales al FormData
-    Object.keys(datosAdicionales).forEach(key => {
-      formData.append(key, datosAdicionales[key]);
-    });
+    formData.append(this.PARAM_NAME, archivo);
+    return formData;
+  }
 
-    // Determinar el endpoint según el tipo de base de datos
-    const endpoint = tipo === 'empleados' 
-      ? `${this.API_URL_BASE}/upload/empleados`
-      : `${this.API_URL_BASE}/upload/estudiantes`;
-
-    return this.http.post<any>(endpoint, formData);
+  private crearHeadersAutorizacion(): HttpHeaders {
+    let headers = new HttpHeaders();
+    const token = sessionStorage.getItem('Authorization') || localStorage.getItem('Authorization') || '';
+    if (token) {
+      const bearerToken = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+      headers = headers.set('Authorization', bearerToken);
+    }
+    return headers;
   }
 }
-

@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { environment } from 'src/environments/environment';
-import { ProjectResponse, ProjectRequest } from '../model/project.model';
+import { ProjectResponse, ProjectRequest, EditProjectRequest } from '../model/project.model';
 import { Response } from 'src/app/shared/model/response.model';
 
 @Injectable({
@@ -32,6 +32,13 @@ export class ProjectService extends HttpService {
         const url = `${environment.endpoint}${this.PROJECT_ENDPOINT}`;
 
         return this.doPost<ProjectRequest, Response<string>>(url, proyecto, opts);
+    }
+
+    modificarProyecto(identificador: string, proyecto: EditProjectRequest): Observable<{ valor: string }> {
+        const opts = this.createDefaultOptions();
+        const url = `${environment.endpoint}${this.PROJECT_ENDPOINT}/${identificador}`;
+
+        return this.http.put<{ valor: string }>(url, proyecto, opts);
     }
 
 }

@@ -3,4 +3,8 @@ export interface UserSession{
     identificador: string;
     authorities: string[];
     logged: boolean;
+    rol: string;
+    direccionId: string;
+    areaId: string;
+    subareaId: string;
 }

@@ -5,7 +5,7 @@ import { UserNotificationService } from '../../service/user-notification.service
 import { Subscription } from 'rxjs';
 import { Modal } from 'bootstrap';
 import { DepartmentService } from 'src/app/shared/service/department.service';
-import { DepartmentResponse } from 'src/app/shared/model/departmen.model';
+import { DepartmentResponse } from 'src/app/shared/model/department.model';
 import { UsuarioSeleccionadoParaEditar } from '../manage-users.component';
 
 @Component({

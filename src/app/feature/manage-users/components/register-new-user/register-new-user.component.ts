@@ -7,6 +7,13 @@ import { UserTypeResponse } from 'src/app/shared/model/user-type.model';
 import { IdentificationTypeService } from 'src/app/shared/service/identification-type.service';
 import { IdentificationTypeResponse } from 'src/app/shared/model/identification-type.model';
 import { UserNotificationService } from '../../service/user-notification.service';
+import { DepartmentService } from 'src/app/shared/service/department.service';
+import { AreaService } from 'src/app/shared/service/area.service';
+import { SubAreaService } from 'src/app/shared/service/subarea.service';
+import { DepartmentResponse } from 'src/app/shared/model/department.model';
+import { AreaResponse } from 'src/app/shared/model/area.model';
+import { SubAreaResponse } from 'src/app/shared/model/subarea.model';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-register-new-user',
@@ -15,13 +22,7 @@ import { UserNotificationService } from '../../service/user-notification.service
 })
 export class RegisterNewUserComponent implements OnInit {
   @Output() usuarioCreado = new EventEmitter<any>();
-  @Input() listaDesplegable: { identificador: string; nombre: string }[] = [];
-  @Input() etiquetaCampo: string = 'Estructura Organizacional';
-  @Input() nombreCampo: string = 'estructuraOrganizacional';
   @Input() modalId: string = 'register-user-modal';
-  @Input() tipoComponente: 'department' | 'area' = 'department'; // Nuevo input para identificar el tipo de componente
-  @Input() listaAreas: { identificador: string; nombre: string }[] = []; // Lista de áreas para comparar
-  @Input() listaSubareas: { identificador: string; nombre: string }[] = []; // Lista de subáreas para comparar
 
   usuario = {
     nombres: '',
@@ -33,7 +34,7 @@ export class RegisterNewUserComponent implements OnInit {
     confirmarClave: '',
     tipoUsuario: '',
     estructuraOrganizacional: '',
-    tipoEstructura: '' // Nuevo campo para seleccionar Área o Subárea
+    tipoEstructura: ''
   };
 
 
@@ -53,6 +54,10 @@ export class RegisterNewUserComponent implements OnInit {
 
   // Propiedades para manejo de listas condicionales
   listaFiltrada: { identificador: string; nombre: string }[] = [];
+  listaDepartamentos: { identificador: string; nombre: string }[] = [];
+  listaAreas: { identificador: string; nombre: string }[] = [];
+  listaSubareas: { identificador: string; nombre: string }[] = [];
+  cargandoEstructuras = false;
   opcionesTipoEstructura = [
     { valor: 'area', etiqueta: 'Área' },
     { valor: 'subarea', etiqueta: 'Subárea' }
@@ -62,12 +67,51 @@ export class RegisterNewUserComponent implements OnInit {
     private userService: UserService,
     private userTypeService: UserTypeService,
     private identificationTypeService: IdentificationTypeService,
-    private userNotificationService: UserNotificationService
+    private userNotificationService: UserNotificationService,
+    private departmentService: DepartmentService,
+    private areaService: AreaService,
+    private subAreaService: SubAreaService
   ) {}
 
   ngOnInit(): void {
     this.cargarTiposUsuario();
     this.cargarTiposIdentificacion();
+    this.cargarEstructurasOrganizacionales();
+  }
+
+  cargarEstructurasOrganizacionales(): void {
+    this.cargandoEstructuras = true;
+    forkJoin({
+      departamentos: this.departmentService.consultarDirecciones(),
+      areas: this.areaService.consultarAreas(),
+      subareas: this.subAreaService.consultarSubareas()
+    }).subscribe({
+      next: ({ departamentos, areas, subareas }) => {
+        this.listaDepartamentos = departamentos.map(d => ({ identificador: d.identificador, nombre: d.nombre }));
+        this.listaAreas = areas.map(a => ({ identificador: a.identificador, nombre: a.nombre }));
+        this.listaSubareas = subareas.map(s => ({ identificador: s.identificador, nombre: s.nombre }));
+        this.cargandoEstructuras = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar estructuras organizacionales:', err);
+        this.cargandoEstructuras = false;
+      }
+    });
+  }
+
+  onTipoUsuarioChange(): void {
+    // Limpiar campos cuando cambia el tipo de usuario
+    this.usuario.tipoEstructura = '';
+    this.usuario.estructuraOrganizacional = '';
+    this.listaFiltrada = [];
+  }
+
+  esAdministradorDireccion(): boolean {
+    if (!this.usuario.tipoUsuario) {
+      return false;
+    }
+    const tipoUsuario = this.tiposUsuario.find(t => t.identificador === this.usuario.tipoUsuario);
+    return tipoUsuario?.nombre === 'Administrador de dirección';
   }
 
   cargarTiposIdentificacion(): void {
@@ -118,11 +162,10 @@ export class RegisterNewUserComponent implements OnInit {
     }
   }
 
-  determinarTipoArea(identificadorSeleccionado: string): string {
-    if (this.tipoComponente === 'department') {
+  determinarTipoArea(): string {
+    if (this.esAdministradorDireccion()) {
       return 'DIRECCION';
-    } else if (this.tipoComponente === 'area') {
-      
+    } else {
       if (this.usuario.tipoEstructura === 'area') {
         return 'AREA';
       } else if (this.usuario.tipoEstructura === 'subarea') {
@@ -151,7 +194,7 @@ export class RegisterNewUserComponent implements OnInit {
     this.error = '';
     this.mensajeExito = '';
 
-      const tipoArea = this.determinarTipoArea(this.usuario.estructuraOrganizacional);
+      const tipoArea = this.determinarTipoArea();
       
       const userRequest: UserRequest = {
         tipoIdentificacion: this.usuario.tipoIdentificacion, // Solo el identificador
@@ -211,19 +254,15 @@ export class RegisterNewUserComponent implements OnInit {
       this.usuario.tipoUsuario
     );
 
-    // Para department-users, solo necesita estructuraOrganizacional
-    if (this.tipoComponente === 'department') {
+    // Si es Administrador de dirección, solo necesita estructuraOrganizacional (departamento)
+    if (this.esAdministradorDireccion()) {
       return camposBasicos && !!this.usuario.estructuraOrganizacional;
     }
 
-    // Para area-users, necesita tipoEstructura y estructuraOrganizacional
-    if (this.tipoComponente === 'area') {
-      return camposBasicos && 
-             !!this.usuario.tipoEstructura && 
-             !!this.usuario.estructuraOrganizacional;
-    }
-
-    return camposBasicos;
+    // Para otros tipos de usuario, necesita tipoEstructura y estructuraOrganizacional
+    return camposBasicos && 
+           !!this.usuario.tipoEstructura && 
+           !!this.usuario.estructuraOrganizacional;
   }
 
   cerrarModal() {

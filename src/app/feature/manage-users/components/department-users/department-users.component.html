@@ -22,11 +22,7 @@
                     [text]="'Agregar nuevo usuario'">
                 </app-primary-button>
                 <app-register-new-user 
-                    [listaDesplegable]="listaDepartamentos"
-                    etiquetaCampo="Departamento"
-                    nombreCampo="departamento"
                     modalId="register-department-user-modal"
-                    tipoComponente="department"
                     (usuarioCreado)="onUsuarioCreado($event)">
                 </app-register-new-user> 
             </div>

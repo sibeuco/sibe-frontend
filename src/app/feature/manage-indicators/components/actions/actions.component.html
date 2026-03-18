@@ -67,8 +67,7 @@
                             <button 
                                 type="button" 
                                 class="btn btn-outline-warning btn-sm edit-action-button"
-                                data-bs-toggle="modal" 
-                                data-bs-target="#edit-action-modal"
+                                (click)="abrirModalEdicion(action)"
                                 title="Editar acción">
                                 <i class="bi bi-pencil"></i>
                             </button>
@@ -78,5 +77,9 @@
             </table>
         </div>
     </div>
-    <app-edit-action></app-edit-action>
+    <app-edit-action 
+        [accionAEditar]="accionSeleccionada"
+        (accionModificada)="onAccionModificada($event)"
+        (accionCancelada)="onAccionCancelada()">
+    </app-edit-action>
 </div>

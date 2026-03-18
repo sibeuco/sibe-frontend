@@ -8,7 +8,7 @@ import { UserSession } from 'src/app/feature/login/model/user-session.model';
   providedIn: 'root'
 })
 export class StateService {
-  
+
   private stateProps: Map<StateProps, any> = new Map();
   private state = new BehaviorSubject<Map<StateProps, any>>(new Map());
 
@@ -26,7 +26,11 @@ export class StateService {
           correo: tokenPayload.email,
           identificador: tokenPayload.id || tokenPayload.identificador,
           authorities: tokenPayload.authorities.split(','),
-          logged: true
+          logged: true,
+          rol: tokenPayload.rol || '',
+          direccionId: tokenPayload.direccionId || '',
+          areaId: tokenPayload.areaId || '',
+          subareaId: tokenPayload.subareaId || ''
         };
         this.updateState(StateProps.USER_SESSION, userSession);
 
@@ -54,7 +58,7 @@ export class StateService {
   select<T>(prop:StateProps):Observable<T | undefined>{
     return this.state.asObservable().pipe(
       map(stateMap => stateMap.get(prop) as T | undefined),
-      distinctUntilChanged() 
+      distinctUntilChanged()
     );
   }
 }

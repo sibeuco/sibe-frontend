@@ -10,6 +10,7 @@ import { BienestarAreaComponent } from './components/bienestar-area/bienestar-ar
 import { EvangelizacionAreaComponent } from './components/evangelizacion-area/evangelizacion-area.component';
 import { SantaMariaAreaComponent } from './components/santa-maria-area/santa-maria-area.component';
 import { ServicioAreaComponent } from './components/servicio-area/servicio-area.component';
+import { AreaStatisticsComponent } from './components/area-statistics/area-statistics.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ServicioAreaComponent } from './components/servicio-area/servicio-area.
     BienestarAreaComponent,
     EvangelizacionAreaComponent,
     SantaMariaAreaComponent,
-    ServicioAreaComponent
+    ServicioAreaComponent,
+    AreaStatisticsComponent
   ],
   imports: [
     CommonModule,

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FiltersRequestWithoutArea } from 'src/app/shared/model/filters.model';
 
 @Component({
   selector: 'app-bienestar-area',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./bienestar-area.component.scss']
 })
 export class BienestarAreaComponent {
+  filtersRequest: FiltersRequestWithoutArea | null = null;
 
+  onFiltersChanged(filters: FiltersRequestWithoutArea): void {
+    this.filtersRequest = filters;
+  }
 }

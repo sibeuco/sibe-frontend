@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./santa-maria-area.component.scss']
 })
 export class SantaMariaAreaComponent {
-
+  tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'AREA';
+  nombreArea: string = 'Hogar Juvenil Santa María';
 }
