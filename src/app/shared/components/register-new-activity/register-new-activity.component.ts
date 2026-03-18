@@ -53,7 +53,7 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
   subareas: SubAreaResponse[] = [];
   listaFiltrada: { identificador: string; nombre: string }[] = [];
   areaSeleccionada: string = '';
-  
+
   opcionesTipoEstructura = [
     { valor: 'direccion', etiqueta: 'Dirección' },
     { valor: 'area', etiqueta: 'Área' },
@@ -84,7 +84,7 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
     this.cargarIndicadores();
     this.cargarUsuarios();
     this.cargarEstructurasOrganizacionales();
-    
+
     // Si ya tenemos los inputs al inicializar, precargar el área
     if (this.nombreArea && this.tipoEstructura) {
       this.buscarYPrecargarArea();
@@ -108,7 +108,7 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
   }
 
   cargarIndicadores(): void {
-    this.indicatorService.consultarIndicadores().subscribe({
+    this.indicatorService.consultarIndicadoresParaActividades().subscribe({
       next: (indicadores) => {
         this.indicadores = indicadores;
       },
@@ -205,7 +205,7 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
     this.areaSeleccionada = '';
     this.actividad.area = '';
     this.actividad.tipoArea = '';
-    
+
     if (this.tipoEstructura === 'direccion') {
       this.listaFiltrada = this.direcciones.map(direccion => ({
         identificador: direccion.identificador,
@@ -280,7 +280,7 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
     let creador = '';
     const userSession = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
     creador = userSession?.identificador || '';
-    
+
     if (!creador) {
       try {
         const token = window.sessionStorage.getItem('Authorization');
@@ -338,9 +338,9 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
       next: (response) => {
         this.cargando = false;
         this.mensajeExito = 'Actividad creada exitosamente';
-        
+
         this.actividadCreada.emit(response);
-        
+
         setTimeout(() => {
           this.limpiarFormulario();
           this.cerrarModal();
@@ -348,7 +348,7 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
       },
       error: (err) => {
         this.cargando = false;
-        
+
         if (err.error) {
           if (err.error.mensaje) {
             this.error = err.error.mensaje;
@@ -385,7 +385,7 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
     if (modalElement) {
       const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
       modal.hide();
-      
+
       setTimeout(() => {
         const backdrops = document.querySelectorAll('.modal-backdrop');
         backdrops.forEach(backdrop => backdrop.remove());

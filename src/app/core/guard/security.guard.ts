@@ -1,6 +1,15 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
+const ADMINISTRADOR_DIRECCION = 'ADMINISTRADOR_DIRECCION';
+const ADMINISTRADOR_AREA = 'ADMINISTRADOR_AREA';
+
+const ROLE_ROUTES: Record<string, string[]> = {
+  '/gestionar-direccion': [ADMINISTRADOR_DIRECCION],
+  '/gestionar-usuarios': [ADMINISTRADOR_DIRECCION],
+  '/gestionar-indicadores': [ADMINISTRADOR_DIRECCION, ADMINISTRADOR_AREA],
+};
+
 export const securityGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const token = sessionStorage.getItem('Authorization');
@@ -12,11 +21,9 @@ export const securityGuard: CanActivateFn = (route, state) => {
 
   // 🔹 Si no hay token
   if (!token) {
-    // Si está intentando acceder a una ruta pública, permitir
     if (isPublicRoute) {
       return true;
     }
-    // Si no es ruta pública, redirigir al login
     router.navigate(['/login']);
     return false;
   }
@@ -24,23 +31,30 @@ export const securityGuard: CanActivateFn = (route, state) => {
   // 🔹 Si hay token pero está vencido
   if (token && tokenExpired(token)) {
     sessionStorage.removeItem('Authorization');
-    // Si está en una ruta pública, permitir acceso
     if (isPublicRoute) {
       return true;
     }
-    // Si no es ruta pública, redirigir al login
     router.navigate(['/login']);
     return false;
   }
 
   // 🔹 Si hay token válido y el usuario intenta ir a una ruta pública
   if (token && !tokenExpired(token) && isPublicRoute) {
-    // Redirigir al home si intenta acceder al login o recuperar contraseña
     router.navigate(['/home']);
     return false;
   }
 
-  // 🔹 Si hay token válido y está accediendo a una ruta protegida
+  // 🔹 Validar acceso por rol a rutas restringidas
+  const rolUsuario = getRolFromToken(token);
+  const basePath = '/' + currentUrl.split('/').filter(Boolean)[0];
+  const allowedRoles = ROLE_ROUTES[basePath];
+
+  if (allowedRoles && !allowedRoles.includes(rolUsuario)) {
+    router.navigate(['/home']);
+    return false;
+  }
+
+  // 🔹 Si hay token válido y está accediendo a una ruta protegida permitida
   return true;
 };
 
@@ -49,7 +63,14 @@ function tokenExpired(token: string): boolean {
     const expiry = JSON.parse(atob(token.split('.')[1])).exp;
     return Math.floor(Date.now() / 1000) >= expiry;
   } catch {
-    // Si falla la decodificación, lo tratamos como expirado
     return true;
+  }
+}
+
+function getRolFromToken(token: string): string {
+  try {
+    return JSON.parse(atob(token.split('.')[1])).rol || '';
+  } catch {
+    return '';
   }
 }

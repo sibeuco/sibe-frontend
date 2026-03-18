@@ -99,7 +99,7 @@ export class EditActivityComponent implements OnInit, OnChanges {
   }
 
   cargarIndicadores(): void {
-    this.indicatorService.consultarIndicadores().subscribe({
+    this.indicatorService.consultarIndicadoresParaActividades().subscribe({
       next: (indicadores) => {
         this.indicadores = indicadores;
       },

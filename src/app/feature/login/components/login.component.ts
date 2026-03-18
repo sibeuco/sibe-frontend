@@ -55,9 +55,13 @@ export class LoginComponent implements OnInit {
         const tokenPayload= JSON.parse(atob(token.split('.')[1]));
         const userSession: UserSession = {
           correo: tokenPayload.email,
-          identificador: tokenPayload.identificador,
+          identificador: tokenPayload.id,
           authorities: tokenPayload.authorities.split(','),
-          logged: true
+          logged: true,
+          rol: tokenPayload.rol || '',
+          direccionId: tokenPayload.direccionId || '',
+          areaId: tokenPayload.areaId || '',
+          subareaId: tokenPayload.subareaId || ''
         };
         this.stateService.updateState(StateProps.USER_SESSION, userSession);
         this.router.navigate(['/home']);
