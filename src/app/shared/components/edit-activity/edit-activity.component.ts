@@ -102,6 +102,7 @@ export class EditActivityComponent implements OnInit, OnChanges {
     this.indicatorService.consultarIndicadoresParaActividades().subscribe({
       next: (indicadores) => {
         this.indicadores = indicadores;
+        this.asegurarIndicadorEnLista();
       },
       error: () => {}
     });
@@ -111,6 +112,7 @@ export class EditActivityComponent implements OnInit, OnChanges {
     this.userService.consultarUsuarios().subscribe({
       next: (usuarios) => {
         this.usuarios = usuarios;
+        this.asegurarColaboradorEnLista();
       },
       error: () => {}
     });
@@ -169,6 +171,9 @@ export class EditActivityComponent implements OnInit, OnChanges {
     this.indicadorSeleccionado = this.actividadForm.indicador;
     this.colaboradorSeleccionado = this.actividadForm.colaborador;
     this.areaSeleccionada = this.actividadForm.area;
+
+    this.asegurarIndicadorEnLista();
+    this.asegurarColaboradorEnLista();
 
     this.buscarYPrecargarArea();
     this.cargarEjecuciones(this.actividad.identificador);
@@ -524,6 +529,38 @@ export class EditActivityComponent implements OnInit, OnChanges {
 
   limpiarFormulario() {
     this.resetFormulario();
+  }
+
+  private asegurarIndicadorEnLista(): void {
+    if (!this.actividad?.indicador?.identificador || this.indicadores.length === 0) {
+      return;
+    }
+    const existe = this.indicadores.some(i => i.identificador === this.actividad!.indicador.identificador);
+    if (!existe) {
+      this.indicadores = [...this.indicadores, this.actividad.indicador];
+    }
+  }
+
+  private asegurarColaboradorEnLista(): void {
+    if (!this.actividad?.colaborador || this.usuarios.length === 0) {
+      return;
+    }
+    const existe = this.usuarios.some(u => u.identificador === this.actividad!.colaborador);
+    if (!existe) {
+      const nombreCompleto = this.actividad.nombreColaborador || '';
+      const partes = nombreCompleto.split(' ');
+      const nombres = partes.length > 1 ? partes.slice(0, -1).join(' ') : nombreCompleto;
+      const apellidos = partes.length > 1 ? partes[partes.length - 1] : '';
+      this.usuarios = [...this.usuarios, {
+        identificador: this.actividad.colaborador,
+        nombres: nombres,
+        apellidos: apellidos,
+        correo: '',
+        identificacion: {} as any,
+        tipoUsuario: {} as any,
+        estaActivo: false
+      }];
+    }
   }
 
   private resetFormulario(): void {
