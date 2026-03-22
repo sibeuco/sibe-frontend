@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { ActivityService } from 'src/app/shared/service/activity.service';
+import { IndicatorService } from 'src/app/feature/manage-indicators/service/indicator.service';
 import { FiltersRequestWithoutArea } from 'src/app/shared/model/filters.model';
 
 @Component({
@@ -36,7 +37,10 @@ export class FilterListComponent implements OnInit {
   isSemesterDisabled: boolean = false;
   isYearDisabled: boolean = false;
 
-  constructor(private activityService: ActivityService) { }
+  constructor(
+    private activityService: ActivityService,
+    private indicatorService: IndicatorService
+  ) { }
 
   ngOnInit(): void {
     this.loadYears();
@@ -150,10 +154,10 @@ export class FilterListComponent implements OnInit {
   }
 
   private loadIndicators(): void {
-    this.activityService.consultarIndicadoresEnEjecucionesFinalizadas().subscribe({
-      next: (response: string[]) => {
+    this.indicatorService.consultarIndicadores().subscribe({
+      next: (response) => {
         if (response && response.length > 0) {
-          this.indicators = response;
+          this.indicators = response.map(i => i.nombre);
         }
       },
       error: (error) => {
