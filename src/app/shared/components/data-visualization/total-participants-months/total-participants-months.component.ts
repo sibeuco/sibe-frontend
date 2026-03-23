@@ -6,8 +6,10 @@ import { ActivityService } from 'src/app/shared/service/activity.service';
 import { DepartmentService } from 'src/app/shared/service/department.service';
 import { AreaService } from 'src/app/shared/service/area.service';
 import { SubAreaService } from 'src/app/shared/service/subarea.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
+
+const INDICADOR_COBERTURA = 'Cobertura';
 
 Chart.register(...registerables);
 
@@ -38,7 +40,7 @@ export class TotalParticipantsMonthsComponent implements AfterViewInit, OnInit, 
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ((changes['filtersRequest'] || changes['tipoEstructura'] || changes['nombreArea'] || 
+    if ((changes['filtersRequest'] || changes['tipoEstructura'] || changes['nombreArea'] ||
          changes['participantesColor'] || changes['asistenciasColor']) && this.myBarChart) {
       this.loadStatistics();
     }
@@ -114,10 +116,12 @@ export class TotalParticipantsMonthsComponent implements AfterViewInit, OnInit, 
       return;
     }
 
+    const esCobertura = this.filtersRequest?.indicador?.toLowerCase().trim() === INDICADOR_COBERTURA.toLowerCase();
+
     this.getAreaIdentifier().pipe(
       switchMap((idArea: string | null) => {
         if (!idArea) {
-          return of([]);
+          return of({ statistics: [] as StadisticMonthsResponse[], poblacion: 0 });
         }
 
         const filtersRequest: FiltersRequest = {
@@ -133,27 +137,56 @@ export class TotalParticipantsMonthsComponent implements AfterViewInit, OnInit, 
           idArea: idArea
         };
 
-        return this.activityService.consultarEstadisticasParticipantesPorMes(filtersRequest);
+        if (esCobertura) {
+          const filtersRequestPoblacion: FiltersRequest = {
+            mes: '',
+            anno: 0,
+            semestre: '',
+            programaAcademico: this.filtersRequest!.programaAcademico ?? '',
+            tipoProgramaAcademico: this.filtersRequest!.tipoProgramaAcademico ?? '',
+            centroCostos: this.filtersRequest!.centroCostos ?? '',
+            tipoParticipante: this.filtersRequest!.tipoParticipante ?? '',
+            indicador: '',
+            tipoArea: '',
+            idArea: ''
+          };
+
+          return forkJoin({
+            statistics: this.activityService.consultarEstadisticasParticipantesPorMes(filtersRequest),
+            poblacion: this.activityService.contarPoblacionTotal(filtersRequestPoblacion)
+          });
+        }
+
+        return this.activityService.consultarEstadisticasParticipantesPorMes(filtersRequest).pipe(
+          switchMap(stats => of({ statistics: stats, poblacion: 0 }))
+        );
       }),
-      catchError(error => {
-        console.error('Error al consultar estadísticas de participantes por mes:', error);
-        return of([]);
-      })
-    ).subscribe((statistics: StadisticMonthsResponse[]) => {
-      const labels = statistics.map(stat => stat.mes);
-      const participantesData = statistics.map(stat => stat.cantidadParticipantes);
-      const asistenciasData = statistics.map(stat => stat.cantidadAsistencias);
-      
-      this.updateChart(labels, participantesData, asistenciasData);
+      catchError(() => of({ statistics: [] as StadisticMonthsResponse[], poblacion: 0 }))
+    ).subscribe((result: { statistics: StadisticMonthsResponse[]; poblacion: number }) => {
+      const labels = result.statistics.map(stat => stat.mes);
+
+      if (esCobertura && result.poblacion > 0) {
+        const coberturaData = result.statistics.map(stat =>
+          Math.round((stat.cantidadParticipantes / result.poblacion) * 10000) / 100
+        );
+        this.updateChart(labels, coberturaData, [], 'Cobertura (%)', '');
+      } else {
+        const participantesData = result.statistics.map(stat => stat.cantidadParticipantes);
+        const asistenciasData = result.statistics.map(stat => stat.cantidadAsistencias);
+        this.updateChart(labels, participantesData, asistenciasData, 'Participantes', 'Asistencias');
+      }
     });
   }
 
-  private updateChart(labels: string[], participantesData: number[], asistenciasData: number[]): void {
+  private updateChart(labels: string[], participantesData: number[], asistenciasData: number[],
+                      labelDataset1: string = 'Participantes', labelDataset2: string = 'Asistencias'): void {
     if (this.myBarChart) {
       this.myBarChart.data.labels = labels;
+      this.myBarChart.data.datasets[0].label = labelDataset1;
       this.myBarChart.data.datasets[0].data = participantesData;
       this.myBarChart.data.datasets[0].backgroundColor = this.participantesColor;
       this.myBarChart.data.datasets[0].borderColor = this.participantesColor;
+      this.myBarChart.data.datasets[1].label = labelDataset2;
       this.myBarChart.data.datasets[1].data = asistenciasData;
       this.myBarChart.data.datasets[1].backgroundColor = this.asistenciasColor;
       this.myBarChart.data.datasets[1].borderColor = this.asistenciasColor;

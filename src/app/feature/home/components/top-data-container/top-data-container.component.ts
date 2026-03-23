@@ -4,8 +4,10 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { FiltersRequestWithoutArea, FiltersRequest, StadisticAreasResponse } from 'src/app/shared/model/filters.model';
 import { ActivityService } from 'src/app/shared/service/activity.service';
 import { DepartmentService } from 'src/app/shared/service/department.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, forkJoin } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
+
+const INDICADOR_COBERTURA = 'Cobertura';
 
 Chart.register(...registerables);
 
@@ -16,7 +18,7 @@ Chart.register(...registerables);
 })
 export class TopDataContainerComponent implements AfterViewInit, OnInit, OnChanges {
   @Input() filtersRequest: FiltersRequestWithoutArea | null = null;
-  
+
   tipoEstructura: 'DIRECCION' | 'AREA' | 'SUBAREA' = 'DIRECCION';
   nombreArea: string = 'Dirección de Bienestar y Evangelización';
   imageUrl: string = 'assets/images/home-college.png';
@@ -109,10 +111,12 @@ export class TopDataContainerComponent implements AfterViewInit, OnInit, OnChang
       return;
     }
 
+    const esCobertura = this.filtersRequest?.indicador?.toLowerCase().trim() === INDICADOR_COBERTURA.toLowerCase();
+
     this.getAreaIdentifier().pipe(
       switchMap((idArea: string | null) => {
         if (!idArea) {
-          return of([]);
+          return of({ statistics: [] as StadisticAreasResponse[], poblacion: 0 });
         }
 
         const filtersRequest: FiltersRequest = {
@@ -128,28 +132,55 @@ export class TopDataContainerComponent implements AfterViewInit, OnInit, OnChang
           idArea: idArea
         };
 
-        return this.activityService.consultarEstadisticasParticipantesPorEstructura(filtersRequest);
+        if (esCobertura) {
+          const filtersRequestPoblacion: FiltersRequest = {
+            mes: '',
+            anno: 0,
+            semestre: '',
+            programaAcademico: this.filtersRequest!.programaAcademico ?? '',
+            tipoProgramaAcademico: this.filtersRequest!.tipoProgramaAcademico ?? '',
+            centroCostos: this.filtersRequest!.centroCostos ?? '',
+            tipoParticipante: this.filtersRequest!.tipoParticipante ?? '',
+            indicador: '',
+            tipoArea: '',
+            idArea: ''
+          };
+
+          return forkJoin({
+            statistics: this.activityService.consultarEstadisticasParticipantesPorEstructura(filtersRequest),
+            poblacion: this.activityService.contarPoblacionTotal(filtersRequestPoblacion)
+          });
+        }
+
+        return this.activityService.consultarEstadisticasParticipantesPorEstructura(filtersRequest).pipe(
+          switchMap(stats => of({ statistics: stats, poblacion: 0 }))
+        );
       }),
-      catchError(error => {
-        console.error('Error al consultar estadísticas de participantes por estructura:', error);
-        return of([]);
-      })
-    ).subscribe((statistics: StadisticAreasResponse[]) => {
-      // Filtrar solo las áreas donde tipoArea === 'AREA'
-      const filteredStatistics = statistics.filter(stat => stat.tipoArea === 'AREA');
-      
+      catchError(() => of({ statistics: [] as StadisticAreasResponse[], poblacion: 0 }))
+    ).subscribe((result: { statistics: StadisticAreasResponse[]; poblacion: number }) => {
+      const filteredStatistics = result.statistics.filter(stat => stat.tipoArea === 'AREA');
       const labels = filteredStatistics.map(stat => stat.nombre);
-      const participantesData = filteredStatistics.map(stat => stat.cantidadParticipantes);
-      const asistenciasData = filteredStatistics.map(stat => stat.cantidadAsistencias);
-      
-      this.updateChart(labels, participantesData, asistenciasData);
+
+      if (esCobertura && result.poblacion > 0) {
+        const coberturaData = filteredStatistics.map(stat =>
+          Math.round((stat.cantidadParticipantes / result.poblacion) * 10000) / 100
+        );
+        this.updateChart(labels, coberturaData, [], 'Cobertura (%)', '');
+      } else {
+        const participantesData = filteredStatistics.map(stat => stat.cantidadParticipantes);
+        const asistenciasData = filteredStatistics.map(stat => stat.cantidadAsistencias);
+        this.updateChart(labels, participantesData, asistenciasData, 'Participantes', 'Asistencias');
+      }
     });
   }
 
-  private updateChart(labels: string[], participantesData: number[], asistenciasData: number[]): void {
+  private updateChart(labels: string[], participantesData: number[], asistenciasData: number[],
+                      labelDataset1: string = 'Participantes', labelDataset2: string = 'Asistencias'): void {
     if (this.participantsChart) {
       this.participantsChart.data.labels = labels;
+      this.participantsChart.data.datasets[0].label = labelDataset1;
       this.participantsChart.data.datasets[0].data = participantesData;
+      this.participantsChart.data.datasets[1].label = labelDataset2;
       this.participantsChart.data.datasets[1].data = asistenciasData;
       this.participantsChart.update();
     }

@@ -35,6 +35,7 @@ export class ActivityService extends HttpService {
   private readonly CONTAR_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/conteo';
   private readonly CONTAR_PARTICIPANTES_POR_ESTRUCTURA = '/actividades/ejecuciones/finalizadas/participantes/estadisticas-estructura';
   private readonly CONTAR_PARTICIPANTES_POR_MES = '/actividades/ejecuciones/finalizadas/participantes/estadisticas-mes';
+  private readonly CONTAR_POBLACION_TOTAL_ENDPOINT = '/actividades/ejecuciones/finalizadas/poblacion/conteo';
 
   constructor(http: HttpClient) {
     super(http);
@@ -152,6 +153,13 @@ export class ActivityService extends HttpService {
 
     return this.http.post<StadisticMonthsResponse[]>(url, filtro, opts);
 
+  }
+
+  contarPoblacionTotal(filtro: FiltersRequest): Observable<number> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.CONTAR_POBLACION_TOTAL_ENDPOINT}`;
+
+    return this.doPost<FiltersRequest, number>(url, filtro, opts);
   }
 
   consultarMesesEjecucionesFinalizadas(): Observable<string[]> {
