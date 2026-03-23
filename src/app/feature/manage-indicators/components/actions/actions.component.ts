@@ -15,7 +15,13 @@ export class ActionsComponent implements OnInit{
   accionesFiltradas: ActionResponse[] = [];
   cargando: boolean = false;
   error: string = '';
-  
+
+  // Paginación
+  paginaActual = 0;
+  totalPaginas = 0;
+  totalElementos = 0;
+  tamanioPagina = 10;
+
   // Propiedades para el modal de edición
   accionSeleccionada: ActionResponse | null = null;
 
@@ -28,11 +34,15 @@ export class ActionsComponent implements OnInit{
   obtenerAcciones(): void {
     this.cargando = true;
     this.error = '';
+    const busqueda = this.searchTerm?.trim() || undefined;
 
-    this.actionService.consultarAcciones().subscribe({
-      next: (data) => {
-        this.acciones = data;
+    this.actionService.consultarAccionesPaginado(this.paginaActual, this.tamanioPagina, busqueda).subscribe({
+      next: (respuesta) => {
+        this.acciones = respuesta.contenido || [];
         this.accionesFiltradas = [...this.acciones];
+        this.totalElementos = respuesta.totalElementos;
+        this.totalPaginas = respuesta.totalPaginas;
+        this.paginaActual = respuesta.paginaActual;
         this.cargando = false;
       },
       error: (err) => {
@@ -44,18 +54,19 @@ export class ActionsComponent implements OnInit{
   }
 
   filterActions(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.accionesFiltradas = this.acciones.filter(action =>
-      Object.values(action).some(value =>
-        value && value.toString().toLowerCase().includes(term)
-      )
-    );
+    this.paginaActual = 0;
+    this.obtenerAcciones();
+  }
+
+  cambiarPagina(pagina: number): void {
+    this.paginaActual = pagina;
+    this.obtenerAcciones();
   }
 
   // Métodos para el modal de edición
   abrirModalEdicion(accion: ActionResponse): void {
     this.accionSeleccionada = accion;
-    
+
     // Abrir el modal usando Bootstrap
     const modalElement = document.getElementById('edit-action-modal');
     if (modalElement) {
@@ -71,7 +82,7 @@ export class ActionsComponent implements OnInit{
       this.acciones[index] = accionModificada;
       this.accionesFiltradas = [...this.acciones];
     }
-    
+
     // Cerrar el modal
     this.cerrarModal();
   }

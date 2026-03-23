@@ -1,0 +1,1933 @@
+- Generating browser application bundles (phase: setup)...
+Γ£ö Browser application bundle generation complete.
+23 03 2026 00:01:14.703:INFO [karma-server]: Karma v6.4.4 server started at http://localhost:9876/
+23 03 2026 00:01:14.707:INFO [launcher]: Launching browsers ChromeHeadless with concurrency unlimited
+23 03 2026 00:01:14.722:INFO [launcher]: Starting browser ChromeHeadless
+23 03 2026 00:01:16.019:INFO [Chrome Headless 146.0.0.0 (Windows 10)]: Connected on socket mX3X9pIPwVKFawh5AAAB with id 87446083
+Chrome Headless 146.0.0.0 (Windows 10): Executed 0 of 142[32m SUCCESS[39m (0 secs / 0 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 1 of 142[31m (1 FAILED)[39m (0 secs / 0.029 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BandaSubareaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'BandaSubareaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BandaSubareaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 2 of 142[31m (2 FAILED)[39m (0 secs / 0.035 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 3 of 142[31m (3 FAILED)[39m (0 secs / 0.04 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AreaFiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'AreaFiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///AreaFiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 4 of 142[31m (4 FAILED)[39m (0 secs / 0.046 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TrabajoSocialSubAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'TrabajoSocialSubAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TrabajoSocialSubAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 5 of 142[31m (5 FAILED)[39m (0 secs / 0.054 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TotalParticipantsComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 6 of 142[31m (6 FAILED)[39m (0 secs / 0.064 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) GimnasioSubareaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'GimnasioSubareaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///GimnasioSubareaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 7 of 142[31m (7 FAILED)[39m (0 secs / 0.069 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ExtensionSubAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'ExtensionSubAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ExtensionSubAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 8 of 142[31m (8 FAILED)[39m (0 secs / 0.075 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) DeportesSubareaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'DeportesSubareaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///DeportesSubareaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 9 of 142[31m (9 FAILED)[39m (0 secs / 0.081 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) EditActivityComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[IndicatorService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'IndicatorService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///IndicatorService/╔╡fac.js:4:44)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 10 of 142[31m (10 FAILED)[39m (0 secs / 0.103 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) HogarAreaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'HogarAreaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///HogarAreaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 11 of 142[31m (11 FAILED)[39m (0 secs / 0.108 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) GimnasioSubAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'GimnasioSubAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///GimnasioSubAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 12 of 142[31m (12 FAILED)[39m (0 secs / 0.125 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottonDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottonDataContainerComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottonDataContainerComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 13 of 142[31m (13 FAILED)[39m (0 secs / 0.13 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ExtensionSubareaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'ExtensionSubareaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ExtensionSubareaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 14 of 142[31m (14 FAILED)[39m (0 secs / 0.134 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottonDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottonDataContainerComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottonDataContainerComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 15 of 142[31m (15 FAILED)[39m (0 secs / 0.136 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ExternalParticipantComponent should create FAILED[39m
+	Error: NG0301: Export of name 'ngForm' not found! Find more at https://angular.io/errors/NG0301
+	error properties: Object({ code: -301 })
+	    at cacheMatchingLocalNames (node_modules/@angular/core/fesm2022/core.mjs:12756:23)
+	    at resolveDirectives (node_modules/@angular/core/fesm2022/core.mjs:12505:13)
+	    at elementStartFirstCreatePass (node_modules/@angular/core/fesm2022/core.mjs:16277:5)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16313:9)
+	    at templateFn (ng:///ExternalParticipantComponent.js:23:62)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 16 of 142[31m (16 FAILED)[39m (0 secs / 0.142 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 17 of 142[31m (17 FAILED)[39m (0 secs / 0.149 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 18 of 142[31m (18 FAILED)[39m (0 secs / 0.154 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'FiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///FiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 19 of 142[31m (19 FAILED)[39m (0 secs / 0.158 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AreaUsersComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[UserService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UserService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///UserService/╔╡fac.js:4:39)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 20 of 142[31m (20 FAILED)[39m (0 secs / 0.168 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AreasComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'AreasComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///AreasComponent.js:37:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 21 of 142[31m (21 FAILED)[39m (0 secs / 0.173 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 22 of 142[31m (22 FAILED)[39m (0 secs / 0.176 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'FiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///FiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 23 of 142[31m (23 FAILED)[39m (0 secs / 0.178 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'FiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///FiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 24 of 142[31m (24 FAILED)[39m (0 secs / 0.181 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 25 of 142[31m (25 FAILED)[39m (0 secs / 0.183 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) LoginComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[LoginService -> LoginService]: 
+	  NullInjectorError: No provider for LoginService!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'LoginService', 'LoginService' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at ChainedInjector.get (node_modules/@angular/core/fesm2022/core.mjs:14018:36)
+	    at lookupTokenUsingModuleInjector (node_modules/@angular/core/fesm2022/core.mjs:4608:39)
+	    at getOrCreateInjectable (node_modules/@angular/core/fesm2022/core.mjs:4656:12)
+	    at ╔╡╔╡directiveInject (node_modules/@angular/core/fesm2022/core.mjs:11801:19)
+	    at NodeInjectorFactory.factory (ng:///LoginComponent/╔╡fac.js:5:51)
+	    at getNodeInjectable (node_modules/@angular/core/fesm2022/core.mjs:4862:44)
+	    at createRootComponent (node_modules/@angular/core/fesm2022/core.mjs:14273:35)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 26 of 142[31m (26 FAILED)[39m (0 secs / 0.189 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 27 of 142[31m (27 FAILED)[39m (0 secs / 0.191 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 28 of 142[31m (27 FAILED)[39m (0 secs / 0.194 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 29 of 142[31m (27 FAILED)[39m (0 secs / 0.195 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 30 of 142[31m (27 FAILED)[39m (0 secs / 0.196 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 31 of 142[31m (27 FAILED)[39m (0 secs / 0.198 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 32 of 142[31m (27 FAILED)[39m (0 secs / 0.199 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 33 of 142[31m (27 FAILED)[39m (0 secs / 0.2 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) SubAreasComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'SubAreasComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///SubAreasComponent.js:37:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 34 of 142[31m (28 FAILED)[39m (0 secs / 0.205 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 35 of 142[31m (29 FAILED)[39m (0 secs / 0.21 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ManageIndicatorsComponent should create FAILED[39m
+	Error: NG0304: 'app-indicators' is not a known element (used in the 'ManageIndicatorsComponent' component template):
+	1. If 'app-indicators' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-indicators' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ManageIndicatorsComponent.js:9:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 36 of 142[31m (30 FAILED)[39m (0 secs / 0.213 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AttendanceRecordComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 37 of 142[31m (31 FAILED)[39m (0 secs / 0.227 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 38 of 142[31m (32 FAILED)[39m (0 secs / 0.229 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) DepartmentAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'DepartmentAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///DepartmentAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 39 of 142[31m (33 FAILED)[39m (0 secs / 0.233 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AreaFiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'AreaFiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///AreaFiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 40 of 142[31m (34 FAILED)[39m (0 secs / 0.236 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) LoginService should be created FAILED[39m
+	NullInjectorError: R3InjectorError[LoginService -> LoginService]: 
+	  NullInjectorError: No provider for LoginService!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'LoginService', 'LoginService' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:27429:62)
+	    at TestBedImpl.inject (node_modules/@angular/core/fesm2022/testing.mjs:27287:37)
+	    at UserContext.apply (src/app/feature/login/service/login.service.spec.ts:10:23)
+	    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:368:26)
+	    at ProxyZoneSpec.onInvoke (node_modules/zone.js/fesm2015/zone-testing.js:273:39)
+	    at _ZoneDelegate.invoke (node_modules/zone.js/fesm2015/zone.js:367:52)
+	    at Zone.run (node_modules/zone.js/fesm2015/zone.js:129:43)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 41 of 142[31m (35 FAILED)[39m (0 secs / 0.238 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 42 of 142[31m (36 FAILED)[39m (0 secs / 0.24 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 43 of 142[31m (37 FAILED)[39m (0 secs / 0.243 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ChangePasswordComponent should create FAILED[39m
+	Error: NG0301: Export of name 'ngForm' not found! Find more at https://angular.io/errors/NG0301
+	error properties: Object({ code: -301 })
+	    at cacheMatchingLocalNames (node_modules/@angular/core/fesm2022/core.mjs:12756:23)
+	    at resolveDirectives (node_modules/@angular/core/fesm2022/core.mjs:12505:13)
+	    at elementStartFirstCreatePass (node_modules/@angular/core/fesm2022/core.mjs:16277:5)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16313:9)
+	    at templateFn (ng:///ChangePasswordComponent.js:72:62)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 44 of 142[31m (38 FAILED)[39m (0 secs / 0.248 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataContainerComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataContainerComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 45 of 142[31m (39 FAILED)[39m (0 secs / 0.253 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesTableComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 46 of 142[31m (40 FAILED)[39m (0 secs / 0.271 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 47 of 142[31m (40 FAILED)[39m (0 secs / 0.272 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) HomePrimaryButtonsComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[DepartmentService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'DepartmentService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///DepartmentService/╔╡fac.js:4:45)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 48 of 142[31m (41 FAILED)[39m (0 secs / 0.276 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActionsComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActionService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActionService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActionService/╔╡fac.js:4:41)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 49 of 142[31m (42 FAILED)[39m (0 secs / 0.283 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 50 of 142[31m (42 FAILED)[39m (0 secs / 0.286 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataContainerComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataContainerComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 51 of 142[31m (43 FAILED)[39m (0 secs / 0.289 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 52 of 142[31m (43 FAILED)[39m (0 secs / 0.292 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TrabajoSubareaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'TrabajoSubareaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TrabajoSubareaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 53 of 142[31m (44 FAILED)[39m (0 secs / 0.297 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataContainerComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataContainerComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 54 of 142[31m (45 FAILED)[39m (0 secs / 0.303 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 55 of 142[31m (45 FAILED)[39m (0 secs / 0.309 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) RegisterNewUserComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[UserService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UserService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///UserService/╔╡fac.js:4:39)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 56 of 142[31m (46 FAILED)[39m (0 secs / 0.319 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'FiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///FiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 57 of 142[31m (47 FAILED)[39m (0 secs / 0.322 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FilterListComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 58 of 142[31m (48 FAILED)[39m (0 secs / 0.329 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) EditActionComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActionService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActionService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActionService/╔╡fac.js:4:41)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 59 of 142[31m (49 FAILED)[39m (0 secs / 0.334 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 60 of 142[31m (49 FAILED)[39m (0 secs / 0.34 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 61 of 142[31m (50 FAILED)[39m (0 secs / 0.344 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BienestarAreaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'BienestarAreaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BienestarAreaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 62 of 142[31m (51 FAILED)[39m (0 secs / 0.348 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 63 of 142[31m (52 FAILED)[39m (0 secs / 0.351 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 64 of 142[31m (53 FAILED)[39m (0 secs / 0.355 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AreaFiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'AreaFiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///AreaFiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 65 of 142[31m (54 FAILED)[39m (0 secs / 0.357 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) DepartmentUsersComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[UserService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UserService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///UserService/╔╡fac.js:4:39)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 66 of 142[31m (55 FAILED)[39m (0 secs / 0.363 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ServicioAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'ServicioAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ServicioAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 67 of 142[31m (56 FAILED)[39m (0 secs / 0.367 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) PasswordRecoveryComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[PasswordRecoveryService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'PasswordRecoveryService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///PasswordRecoveryService/╔╡fac.js:4:51)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 68 of 142[31m (57 FAILED)[39m (0 secs / 0.376 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) EditUserComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[UserService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UserService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///UserService/╔╡fac.js:4:39)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 69 of 142[31m (58 FAILED)[39m (0 secs / 0.39 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataContainerComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataContainerComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 70 of 142[31m (59 FAILED)[39m (0 secs / 0.394 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) EvangelizacionAreaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'EvangelizacionAreaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///EvangelizacionAreaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 71 of 142[31m (60 FAILED)[39m (0 secs / 0.399 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) UnidadSubAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'UnidadSubAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///UnidadSubAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 72 of 142[31m (61 FAILED)[39m (0 secs / 0.405 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) UploadDatabaseComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[UploadDatabaseService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UploadDatabaseService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///UploadDatabaseService/╔╡fac.js:4:49)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 73 of 142[31m (62 FAILED)[39m (0 secs / 0.413 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 74 of 142[31m (62 FAILED)[39m (0 secs / 0.416 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) HogarAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'HogarAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///HogarAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 75 of 142[31m (63 FAILED)[39m (0 secs / 0.422 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 76 of 142[31m (64 FAILED)[39m (0 secs / 0.427 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) DateSelectorComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 77 of 142[31m (65 FAILED)[39m (0 secs / 0.437 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AreaStatisticsComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 78 of 142[31m (66 FAILED)[39m (0 secs / 0.441 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 79 of 142[31m (67 FAILED)[39m (0 secs / 0.445 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 80 of 142[31m (68 FAILED)[39m (0 secs / 0.449 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) EditIndicatorComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[IndicatorService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'IndicatorService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///IndicatorService/╔╡fac.js:4:44)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 81 of 142[31m (69 FAILED)[39m (0 secs / 0.459 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataContainerComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataContainerComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 82 of 142[31m (70 FAILED)[39m (0 secs / 0.461 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) HeaderComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[UserService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'UserService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///UserService/╔╡fac.js:4:39)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 83 of 142[31m (71 FAILED)[39m (0 secs / 0.467 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) RegisterNewProjectComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActionService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActionService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActionService/╔╡fac.js:4:41)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 84 of 142[31m (72 FAILED)[39m (0 secs / 0.475 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 85 of 142[31m (73 FAILED)[39m (0 secs / 0.479 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) UnidadSubareaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'UnidadSubareaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///UnidadSubareaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 86 of 142[31m (74 FAILED)[39m (0 secs / 0.484 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) SantaMariaAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-statistics' is not a known element (used in the 'SantaMariaAreaComponent' component template):
+	1. If 'app-area-statistics' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-statistics' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///SantaMariaAreaComponent.js:24:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 87 of 142[31m (75 FAILED)[39m (0 secs / 0.49 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) RegisterNewActivityComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[IndicatorService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'IndicatorService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///IndicatorService/╔╡fac.js:4:44)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 88 of 142[31m (76 FAILED)[39m (0 secs / 0.505 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) EditProjectComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ProjectService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ProjectService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ProjectService/╔╡fac.js:4:42)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 89 of 142[31m (77 FAILED)[39m (0 secs / 0.515 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ServicioAreaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'ServicioAreaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ServicioAreaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 90 of 142[31m (78 FAILED)[39m (0 secs / 0.521 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 91 of 142[31m (79 FAILED)[39m (0 secs / 0.526 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) IndicatorsComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[IndicatorService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'IndicatorService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///IndicatorService/╔╡fac.js:4:44)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 92 of 142[31m (80 FAILED)[39m (0 secs / 0.53 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) CanchaSubareaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'CanchaSubareaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///CanchaSubareaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 93 of 142[31m (81 FAILED)[39m (0 secs / 0.534 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BienestarAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-statistics' is not a known element (used in the 'BienestarAreaComponent' component template):
+	1. If 'app-area-statistics' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-statistics' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BienestarAreaComponent.js:24:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 94 of 142[31m (82 FAILED)[39m (0 secs / 0.54 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 95 of 142[31m (83 FAILED)[39m (0 secs / 0.544 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 96 of 142[31m (84 FAILED)[39m (0 secs / 0.547 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 97 of 142[31m (84 FAILED)[39m (0 secs / 0.549 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 98 of 142[31m (84 FAILED)[39m (0 secs / 0.554 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 99 of 142[31m (84 FAILED)[39m (0 secs / 0.556 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 100 of 142[31m (84 FAILED)[39m (0 secs / 0.561 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 101 of 142[31m (84 FAILED)[39m (0 secs / 0.562 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 102 of 142[31m (84 FAILED)[39m (0 secs / 0.565 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 103 of 142[31m (84 FAILED)[39m (0 secs / 0.568 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AcompanamientoSubAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'AcompanamientoSubAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///AcompanamientoSubAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 104 of 142[31m (85 FAILED)[39m (0 secs / 0.572 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) EvangelizacionAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-statistics' is not a known element (used in the 'EvangelizacionAreaComponent' component template):
+	1. If 'app-area-statistics' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-statistics' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///EvangelizacionAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 105 of 142[31m (86 FAILED)[39m (0 secs / 0.578 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 106 of 142[31m (87 FAILED)[39m (0 secs / 0.582 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AreaFiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'AreaFiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///AreaFiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 107 of 142[31m (88 FAILED)[39m (0 secs / 0.585 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AppComponent should create the app FAILED[39m
+	Error: NG0304: 'app-header' is not a known element (used in the 'AppComponent' component template):
+	1. If 'app-header' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-header' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///AppComponent.js:8:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 108 of 142[31m (89 FAILED)[39m (0 secs / 0.589 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 109 of 142[31m (89 FAILED)[39m (0 secs / 0.591 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) RegisterNewActionComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActionService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActionService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActionService/╔╡fac.js:4:41)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 110 of 142[31m (90 FAILED)[39m (0 secs / 0.594 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ServicioAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-statistics' is not a known element (used in the 'ServicioAreaComponent' component template):
+	1. If 'app-area-statistics' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-statistics' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ServicioAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 111 of 142[31m (91 FAILED)[39m (0 secs / 0.598 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) HomeFiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'HomeFiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///HomeFiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 112 of 142[31m (92 FAILED)[39m (0 secs / 0.603 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'FiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///FiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 113 of 142[31m (93 FAILED)[39m (0 secs / 0.605 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) DepartmentComponent should create FAILED[39m
+	Error: NG0304: 'app-upload-database' is not a known element (used in the 'DepartmentComponent' component template):
+	1. If 'app-upload-database' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-upload-database' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at templateFn (ng:///DepartmentComponent.js:54:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+	    at initComponent (node_modules/@angular/core/fesm2022/testing.mjs:27492:51)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 114 of 142[31m (94 FAILED)[39m (0 secs / 0.611 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 115 of 142[31m (95 FAILED)[39m (0 secs / 0.615 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataContainerComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataContainerComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 116 of 142[31m (96 FAILED)[39m (0 secs / 0.617 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 117 of 142[31m (97 FAILED)[39m (0 secs / 0.62 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataContainerComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 118 of 142[31m (98 FAILED)[39m (0 secs / 0.624 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 119 of 142[31m (98 FAILED)[39m (0 secs / 0.626 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) RegisterNewIndicatorComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ProjectService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ProjectService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ProjectService/╔╡fac.js:4:42)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 120 of 142[31m (99 FAILED)[39m (0 secs / 0.631 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'FiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///FiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 121 of 142[31m (100 FAILED)[39m (0 secs / 0.635 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 122 of 142[31m (101 FAILED)[39m (0 secs / 0.638 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) EvangelizacionAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'EvangelizacionAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///EvangelizacionAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 123 of 142[31m (102 FAILED)[39m (0 secs / 0.64 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BandaSubAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'BandaSubAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BandaSubAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 124 of 142[31m (103 FAILED)[39m (0 secs / 0.649 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ProjectsComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ProjectService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ProjectService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ProjectService/╔╡fac.js:4:42)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 125 of 142[31m (104 FAILED)[39m (0 secs / 0.652 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) CanchaSubAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'CanchaSubAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///CanchaSubAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 126 of 142[31m (105 FAILED)[39m (0 secs / 0.657 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ManageUsersComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[DepartmentService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'DepartmentService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///DepartmentService/╔╡fac.js:4:45)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 127 of 142[31m (106 FAILED)[39m (0 secs / 0.659 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TotalParticipantsMonthsComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 128 of 142[31m (107 FAILED)[39m (0 secs / 0.662 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 129 of 142[31m (108 FAILED)[39m (0 secs / 0.664 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BienestarAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'BienestarAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BienestarAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 130 of 142[31m (109 FAILED)[39m (0 secs / 0.666 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) BottomDataComponent should create FAILED[39m
+	Error: NG0304: 'app-total-participants-months' is not a known element (used in the 'BottomDataComponent' component template):
+	1. If 'app-total-participants-months' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-total-participants-months' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///BottomDataComponent.js:7:21)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 131 of 142[31m (110 FAILED)[39m (0 secs / 0.669 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'FiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///FiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 132 of 142[31m (111 FAILED)[39m (0 secs / 0.671 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataContainerComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataContainerComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataContainerComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 133 of 142[31m (112 FAILED)[39m (0 secs / 0.674 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) AcompanamientoSubareaActivityAttendanceRecordComponent should create FAILED[39m
+	Error: NG0304: 'app-activity-info' is not a known element (used in the 'AcompanamientoSubareaActivityAttendanceRecordComponent' component template):
+	1. If 'app-activity-info' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-activity-info' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///AcompanamientoSubareaActivityAttendanceRecordComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 134 of 142[31m (113 FAILED)[39m (0 secs / 0.678 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) DeportesSubAreaComponent should create FAILED[39m
+	Error: NG0304: 'app-area-top-image' is not a known element (used in the 'DeportesSubAreaComponent' component template):
+	1. If 'app-area-top-image' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-area-top-image' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///DeportesSubAreaComponent.js:21:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 135 of 142[31m (114 FAILED)[39m (0 secs / 0.682 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ActivitiesComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'ActivitiesComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ActivitiesComponent.js:25:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 136 of 142[31m (115 FAILED)[39m (0 secs / 0.687 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) GoToAreaButtonComponent should create FAILED[39m
+	Error: NG0303: Can't bind to 'routerLink' since it isn't a known property of 'a' (used in the 'GoToAreaButtonComponent' component template).
+	1. If 'a' is an Angular component and it has the 'routerLink' input, then verify that it is a part of an @NgModule where this component is declared.
+	2. To allow any property add 'NO_ERRORS_SCHEMA' to the '@NgModule.schemas' of this component.
+	error properties: Object({ code: 303 })
+	    at reportUnknownPropertyError (node_modules/@angular/core/fesm2022/core.mjs:6304:15)
+	    at handleUnknownPropertyError (node_modules/@angular/core/fesm2022/core.mjs:6300:5)
+	    at elementPropertyInternal (node_modules/@angular/core/fesm2022/core.mjs:12426:17)
+	    at ╔╡╔╡property (node_modules/@angular/core/fesm2022/core.mjs:16255:9)
+	    at templateFn (ng:///GoToAreaButtonComponent.js:13:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at refreshView (node_modules/@angular/core/fesm2022/core.mjs:13498:13)
+	    at detectChangesInView (node_modules/@angular/core/fesm2022/core.mjs:13663:9)
+	    at detectChangesInComponent (node_modules/@angular/core/fesm2022/core.mjs:13638:5)
+	    at detectChangesInChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13676:9)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 137 of 142[31m (116 FAILED)[39m (0 secs / 0.693 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) HomeComponent should create FAILED[39m
+	Error: NG0304: 'app-principal-home' is not a known element (used in the 'HomeComponent' component template):
+	1. If 'app-principal-home' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-principal-home' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///HomeComponent.js:13:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 138 of 142[31m (117 FAILED)[39m (0 secs / 0.699 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) FiltersComponent should create FAILED[39m
+	Error: NG0304: 'app-separator' is not a known element (used in the 'FiltersComponent' component template):
+	1. If 'app-separator' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-separator' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///FiltersComponent.js:12:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 139 of 142[31m (118 FAILED)[39m (0 secs / 0.701 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) CompletedActivitiesComponent should create FAILED[39m
+	NullInjectorError: R3InjectorError(DynamicTestModule)[ActivityService -> HttpClient -> HttpClient]: 
+	  NullInjectorError: No provider for HttpClient!
+	error properties: Object({ ngTempTokenPath: null, ngTokenPath: [ 'ActivityService', 'HttpClient', 'HttpClient' ] })
+	    at NullInjector.get (node_modules/@angular/core/fesm2022/core.mjs:8890:27)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9334:33)
+	    at injectInjectorOnly (node_modules/@angular/core/fesm2022/core.mjs:842:40)
+	    at ╔╡╔╡inject (node_modules/@angular/core/fesm2022/core.mjs:848:60)
+	    at Object.factory (ng:///ActivityService/╔╡fac.js:4:43)
+	    at callback (node_modules/@angular/core/fesm2022/core.mjs:9454:43)
+	    at runInInjectorProfilerContext (node_modules/@angular/core/fesm2022/core.mjs:798:9)
+	    at R3Injector.hydrate (node_modules/@angular/core/fesm2022/core.mjs:9453:17)
+	    at R3Injector.get (node_modules/@angular/core/fesm2022/core.mjs:9323:33)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 140 of 142[31m (119 FAILED)[39m (0 secs / 0.704 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) TopDataComponent should create FAILED[39m
+	Error: NG0304: 'app-completed-activities' is not a known element (used in the 'TopDataComponent' component template):
+	1. If 'app-completed-activities' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-completed-activities' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///TopDataComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 141 of 142[31m (120 FAILED)[39m (0 secs / 0.706 secs)
+[1A[2K[31mChrome Headless 146.0.0.0 (Windows 10) ManageDepartmentComponent should create FAILED[39m
+	Error: NG0304: 'app-department' is not a known element (used in the 'ManageDepartmentComponent' component template):
+	1. If 'app-department' is an Angular component, then verify that it is a part of an @NgModule where this component is declared.
+	2. If 'app-department' is a Web Component then add 'CUSTOM_ELEMENTS_SCHEMA' to the '@NgModule.schemas' of this component to suppress this message.
+	error properties: Object({ code: 304 })
+	    at validateElementIsKnown (node_modules/@angular/core/fesm2022/core.mjs:6212:23)
+	    at ╔╡╔╡elementStart (node_modules/@angular/core/fesm2022/core.mjs:16319:9)
+	    at ╔╡╔╡element (node_modules/@angular/core/fesm2022/core.mjs:16394:5)
+	    at templateFn (ng:///ManageDepartmentComponent.js:10:9)
+	    at executeTemplate (node_modules/@angular/core/fesm2022/core.mjs:12003:13)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13201:13)
+	    at renderComponent (node_modules/@angular/core/fesm2022/core.mjs:13148:5)
+	    at renderChildComponents (node_modules/@angular/core/fesm2022/core.mjs:13246:9)
+	    at renderView (node_modules/@angular/core/fesm2022/core.mjs:13226:13)
+	    at ComponentFactory.create (node_modules/@angular/core/fesm2022/core.mjs:14138:13)
+Chrome Headless 146.0.0.0 (Windows 10): Executed 142 of 142[31m (121 FAILED)[39m (0 secs / 0.709 secs)
+[1A[2KChrome Headless 146.0.0.0 (Windows 10): Executed 142 of 142[31m (121 FAILED)[39m (0.858 secs / 0.709 secs)
+[31mTOTAL: 121 FAILED, 21 SUCCESS[39m
+Γ£ö Browser application bundle generation complete.
+Γ£ö Browser application bundle generation complete.

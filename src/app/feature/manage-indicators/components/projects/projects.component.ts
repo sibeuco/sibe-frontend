@@ -9,13 +9,19 @@ import { ProjectService } from '../../service/project.service';
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent implements OnInit{
-  
+
   searchTerm: string = '';
   proyectos: ProjectResponse[] = [];
   proyectosFiltrados: ProjectResponse[] = [];
   cargando: boolean = false;
   error: string = '';
-  
+
+  // Paginación
+  paginaActual = 0;
+  totalPaginas = 0;
+  totalElementos = 0;
+  tamanioPagina = 10;
+
   // Propiedades para el modal de edición
   proyectoSeleccionado: ProjectResponse | null = null;
 
@@ -27,10 +33,16 @@ export class ProjectsComponent implements OnInit{
 
   cargarProyectos(): void {
     this.cargando = true;
-    this.projectService.consultarProyectos().subscribe({
-      next: (data) => {
-        this.proyectos = data;
+    this.error = '';
+    const busqueda = this.searchTerm?.trim() || undefined;
+
+    this.projectService.consultarProyectosPaginado(this.paginaActual, this.tamanioPagina, busqueda).subscribe({
+      next: (respuesta) => {
+        this.proyectos = respuesta.contenido || [];
         this.proyectosFiltrados = [...this.proyectos];
+        this.totalElementos = respuesta.totalElementos;
+        this.totalPaginas = respuesta.totalPaginas;
+        this.paginaActual = respuesta.paginaActual;
         this.cargando = false;
       },
       error: (err) => {
@@ -42,18 +54,19 @@ export class ProjectsComponent implements OnInit{
   }
 
   filterProjects(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.proyectosFiltrados = this.proyectos.filter(project =>
-      Object.values(project).some(value =>
-        String(value).toLowerCase().includes(term)
-      )
-    );
+    this.paginaActual = 0;
+    this.cargarProyectos();
+  }
+
+  cambiarPagina(pagina: number): void {
+    this.paginaActual = pagina;
+    this.cargarProyectos();
   }
 
   // Métodos para el modal de edición
   abrirModalEdicion(proyecto: ProjectResponse): void {
     this.proyectoSeleccionado = proyecto;
-    
+
     // Abrir el modal usando Bootstrap
     const modalElement = document.getElementById('edit-project-modal');
     if (modalElement) {
@@ -65,7 +78,7 @@ export class ProjectsComponent implements OnInit{
   onProyectoModificado(proyectoModificado: ProjectResponse): void {
     // Recargar todos los proyectos desde el backend
     this.cargarProyectos();
-    
+
     // Cerrar el modal
     this.cerrarModal();
   }

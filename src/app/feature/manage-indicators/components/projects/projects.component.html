@@ -43,7 +43,7 @@
                             </div>
                         </td>
                     </tr>
-                    
+
                     <!-- Mensaje de error -->
                     <tr *ngIf="!cargando && error">
                         <td colspan="4" class="text-center py-4">
@@ -52,22 +52,22 @@
                             </div>
                         </td>
                     </tr>
-                    
+
                     <!-- Mensaje cuando no hay datos -->
                     <tr *ngIf="!cargando && !error && proyectosFiltrados.length === 0">
                         <td colspan="4" class="text-center py-4 text-muted">
                             No se encontraron proyectos
                         </td>
                     </tr>
-                    
+
                     <!-- Datos de la tabla -->
                     <tr *ngFor="let project of proyectosFiltrados">
                         <td>{{ project.numeroProyecto }}</td>
                         <td>{{ project.nombre }}</td>
                         <td>{{ project.objetivo }}</td>
                         <td class="text-center">
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 class="btn btn-outline-warning btn-sm edit-project-button"
                                 (click)="abrirModalEdicion(project)"
                                 title="Editar proyecto">
@@ -77,9 +77,18 @@
                     </tr>
                 </tbody>
             </table>
+
+            <app-pagination
+                *ngIf="!cargando && !error && totalElementos > 0"
+                [paginaActual]="paginaActual"
+                [totalPaginas]="totalPaginas"
+                [totalElementos]="totalElementos"
+                [tamanioPagina]="tamanioPagina"
+                (cambioPagina)="cambiarPagina($event)">
+            </app-pagination>
         </div>
     </div>
-    <app-edit-project 
+    <app-edit-project
         [proyectoAEditar]="proyectoSeleccionado"
         (proyectoModificado)="onProyectoModificado($event)"
         (proyectoCancelado)="onProyectoCancelado()">

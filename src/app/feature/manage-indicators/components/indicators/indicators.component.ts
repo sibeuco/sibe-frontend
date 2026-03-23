@@ -13,7 +13,15 @@ export class IndicatorsComponent implements OnInit{
   searchTerm: string = '';
   indicadores: IndicatorResponse[] = [];
   indicadoresFiltrados: IndicatorResponse[] = [];
-  
+  cargando = false;
+  error = '';
+
+  // Paginación
+  paginaActual = 0;
+  totalPaginas = 0;
+  totalElementos = 0;
+  tamanioPagina = 10;
+
   // Propiedades para el modal de edición
   indicadorSeleccionado: IndicatorResponse | null = null;
 
@@ -24,30 +32,41 @@ export class IndicatorsComponent implements OnInit{
   }
 
   loadIndicators(): void {
-    this.indicatorService.consultarIndicadores().subscribe({
-      next: (indicadores) => {
-        this.indicadores = indicadores;
-        this.indicadoresFiltrados = indicadores;
+    this.cargando = true;
+    this.error = '';
+    const busqueda = this.searchTerm?.trim() || undefined;
+
+    this.indicatorService.consultarIndicadoresPaginado(this.paginaActual, this.tamanioPagina, busqueda).subscribe({
+      next: (respuesta) => {
+        this.indicadores = respuesta.contenido || [];
+        this.indicadoresFiltrados = [...this.indicadores];
+        this.totalElementos = respuesta.totalElementos;
+        this.totalPaginas = respuesta.totalPaginas;
+        this.paginaActual = respuesta.paginaActual;
+        this.cargando = false;
       },
       error: (error) => {
         console.error('Error al cargar los indicadores:', error);
+        this.error = 'No se pudieron cargar los indicadores.';
+        this.cargando = false;
       }
     });
   }
 
   filterIndicators(): void {
-    const term = this.searchTerm.toLowerCase();
-    this.indicadoresFiltrados = this.indicadores.filter(indicator =>
-      indicator.nombre.toLowerCase().includes(term) ||
-      indicator.tipoIndicador.tipologiaIndicador.toLowerCase().includes(term) ||
-      indicator.proyecto.nombre.toLowerCase().includes(term)
-    );
+    this.paginaActual = 0;
+    this.loadIndicators();
+  }
+
+  cambiarPagina(pagina: number): void {
+    this.paginaActual = pagina;
+    this.loadIndicators();
   }
 
   // Métodos para el modal de edición
   abrirModalEdicion(indicator: IndicatorResponse): void {
     this.indicadorSeleccionado = indicator;
-    
+
     // Abrir el modal usando Bootstrap
     const modalElement = document.getElementById('edit-indicator-modal');
     if (modalElement) {
@@ -59,7 +78,7 @@ export class IndicatorsComponent implements OnInit{
   onIndicadorModificado(indicadorModificado: IndicatorResponse): void {
     // Recargar todos los indicadores desde el backend
     this.loadIndicators();
-    
+
     // Cerrar el modal
     this.cerrarModal();
   }

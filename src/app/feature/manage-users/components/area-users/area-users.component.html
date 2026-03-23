@@ -21,10 +21,9 @@
                     [icon]="'bi bi-person-add'"
                     [text]="'Agregar nuevo usuario'">
                 </app-primary-button>
-                <app-register-new-user 
-                    modalId="register-area-user-modal"
-                    (usuarioCreado)="onUsuarioCreado($event)">
-                </app-register-new-user> 
+                <app-register-new-user
+                    modalId="register-area-user-modal">
+                </app-register-new-user>
             </div>
         </div>
     </div>
@@ -35,15 +34,15 @@
             <span class="visually-hidden">Cargando...</span>
         </div>
         <span class="ms-2">Cargando usuarios...</span>
-    </div> 
+    </div>
 
     <!-- Estado de error por si no cargan los usuarios-->
     <div *ngIf="error && !cargando" class="col-12 d-flex justify-content-center align-items-center py-4">
         <div class="alert alert-danger d-flex align-items-center" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             <div>{{ error }}</div>
-            <button 
-                type="button" 
+            <button
+                type="button"
                 class="btn btn-outline-danger btn-sm ms-3"
                 (click)="obtenerUsuarios()">
                 Reintentar
@@ -57,7 +56,7 @@
             <div *ngIf="usuariosFiltrados.length === 0" class="text-center py-4">
                 <i class="bi bi-people fs-1 text-muted"></i>
                 <p class="text-muted mt-2">
-                    {{ usuarios.length === 0 ? 'No hay usuarios registrados' : 'No se encontraron usuarios con ese criterio' }}
+                    {{ totalElementos === 0 ? 'No hay usuarios registrados' : 'No se encontraron usuarios con ese criterio' }}
                 </p>
             </div>
 
@@ -77,8 +76,8 @@
                         <td>{{ user.correo }}</td>
                         <td>{{ user.tipoUsuario.nombre }}</td>
                         <td class="text-center">
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 class="btn btn-outline-warning btn-sm edit-user-button me-2"
                                 (click)="seleccionarUsuarioParaEditar(user)"
                                 title="Editar usuario">
@@ -86,8 +85,8 @@
                             </button>
                         </td>
                         <td class="text-center">
-                            <button 
-                                type="button" 
+                            <button
+                                type="button"
                                 class="btn btn-outline-danger btn-sm delete-user-button"
                                 (click)="eliminarUsuario(user)"
                                 title="Eliminar usuario">
@@ -97,6 +96,15 @@
                     </tr>
                 </tbody>
             </table>
+
+            <app-pagination
+                *ngIf="!cargando && !error && totalElementos > 0"
+                [paginaActual]="paginaActual"
+                [totalPaginas]="totalPaginas"
+                [totalElementos]="totalElementos"
+                [tamanioPagina]="tamanioPagina"
+                (cambioPagina)="cambiarPagina($event)">
+            </app-pagination>
         </div>
     </div>
 
@@ -124,7 +132,7 @@
                         <i class="bi bi-info-circle-fill me-2"></i>
                         <span style="font-size: 1.6rem;">Esta acción no se puede deshacer.</span>
                     </div>
-                    
+
                     <!-- Mensaje de éxito -->
                     <div *ngIf="mostrarMensajeExito" class="d-flex align-items-center justify-content-center mb-4">
                         <div class="text-center">
@@ -139,9 +147,9 @@
                         <i class="bi bi-x-circle me-1"></i>
                         Cancelar
                     </button>
-                    <button 
-                        type="button" 
-                        class="delete-button btn btn-danger" 
+                    <button
+                        type="button"
+                        class="delete-button btn btn-danger"
                         (click)="confirmarEliminacion()"
                         [disabled]="eliminando">
                         <span *ngIf="!eliminando">

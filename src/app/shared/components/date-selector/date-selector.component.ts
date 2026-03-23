@@ -23,7 +23,13 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   error = '';
   private readonly STORAGE_KEY = 'selectedActivityInfo';
   private ejecuciones: ActivityExecutionResponse[] = [];
-  private ejecucionesPorId: Map<number, ActivityExecutionResponse> = new Map();
+  private ejecucionesPorId: Map<string, ActivityExecutionResponse> = new Map();
+
+  // Propiedades de paginación
+  paginaActual = 0;
+  totalPaginas = 0;
+  totalElementos = 0;
+  tamanioPagina = 10;
 
   constructor(
     private router: Router,
@@ -38,12 +44,13 @@ export class DateSelectorComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['actividad'] && this.actividad) {
+      this.paginaActual = 0;
       this.cargarEjecuciones();
     }
   }
 
   /**
-   * Carga las ejecuciones de la actividad desde el servicio
+   * Carga las ejecuciones de la actividad desde el servicio (paginado)
    */
   private cargarEjecuciones(): void {
     if (!this.actividad || !this.actividad.identificador) {
@@ -54,19 +61,24 @@ export class DateSelectorComponent implements OnInit, OnChanges {
     this.cargando = true;
     this.error = '';
 
-    this.activityService.consultarEjecuciones(this.actividad.identificador)
+    this.activityService.consultarEjecucionesPaginado(this.actividad.identificador, this.paginaActual, this.tamanioPagina)
       .pipe(
         catchError(() => {
           this.error = 'Error al cargar las fechas programadas.';
           this.cargando = false;
           this.ejecuciones = [];
           this.ejecucionesPorId.clear();
-          return of([]);
+          return of(null);
         })
       )
       .subscribe({
-        next: (ejecuciones: ActivityExecutionResponse[]) => {
-          this.ejecuciones = ejecuciones || [];
+        next: (respuesta) => {
+          if (!respuesta) return;
+          const ejecuciones = respuesta.contenido || [];
+          this.totalElementos = respuesta.totalElementos;
+          this.totalPaginas = respuesta.totalPaginas;
+          this.paginaActual = respuesta.paginaActual;
+          this.ejecuciones = ejecuciones;
           this.ejecucionesPorId.clear();
           this.fechasOrdenadas = this.mapearEjecucionesAFechas(ejecuciones);
           this.cargando = false;
@@ -80,19 +92,27 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   }
 
   /**
+   * Maneja el cambio de página
+   */
+  cambiarPagina(pagina: number): void {
+    this.paginaActual = pagina;
+    this.cargarEjecuciones();
+  }
+
+  /**
    * Mapea las ejecuciones a fechas programadas
    */
   private mapearEjecucionesAFechas(ejecuciones: ActivityExecutionResponse[]): FechaProgramada[] {
     return ejecuciones
       .filter(ej => ej.fechaProgramada)
-      .map((ej, index) => {
-        const id = this.generarIdEjecucion(ej, index);
-        this.ejecucionesPorId.set(id, ej);
+      .map((ej) => {
+        const ejecucionId = ej.identificador;
+        this.ejecucionesPorId.set(ejecucionId, ej);
         return {
-          id,
+          ejecucionId,
           fecha: this.parseFechaLocal(ej.fechaProgramada),
           estado: this.mapearEstado(ej.estadoActividad?.nombre),
-          actividadId: parseInt(this.actividad?.identificador || '0') || 0
+          actividadId: this.actividad?.identificador || ''
         };
       })
       .sort((a, b) => a.fecha.getTime() - b.fecha.getTime());
@@ -219,8 +239,8 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   /**
    * Función para realizar el tracking de las fechas por ID
    */
-  trackByFechaId(index: number, fecha: FechaProgramada): number {
-    return fecha.id;
+  trackByFechaId(index: number, fecha: FechaProgramada): string {
+    return fecha.ejecucionId;
   }
 
   private obtenerEjecucionPorFecha(fechaProgramada: FechaProgramada): ActivityExecutionResponse | undefined {
@@ -228,7 +248,7 @@ export class DateSelectorComponent implements OnInit, OnChanges {
       return undefined;
     }
 
-    const ejecucionPorId = this.ejecucionesPorId.get(fechaProgramada.id);
+    const ejecucionPorId = this.ejecucionesPorId.get(fechaProgramada.ejecucionId);
     if (ejecucionPorId) {
       return ejecucionPorId;
     }
@@ -239,14 +259,6 @@ export class DateSelectorComponent implements OnInit, OnChanges {
     }
 
     return undefined;
-  }
-
-  private generarIdEjecucion(ejecucion: ActivityExecutionResponse, index: number): number {
-    const idNumerico = Number(ejecucion.identificador);
-    if (!isNaN(idNumerico) && isFinite(idNumerico) && idNumerico > 0) {
-      return idNumerico;
-    }
-    return index + 1;
   }
 
   private guardarSeleccion(actividad: ActivityResponse | null, ejecucion: ActivityExecutionResponse | null): void {

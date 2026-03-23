@@ -107,8 +107,17 @@
       </table>
     </div>
     <div class="participants-count">
-      <span class="badge ">Total: {{ miembrosAsistencia.length }} participantes</span>
+      <span class="badge ">Total: {{ ejecucionFinalizada ? totalElementosParticipantes : miembrosAsistencia.length }} participantes</span>
     </div>
+
+    <app-pagination
+      *ngIf="ejecucionFinalizada && totalElementosParticipantes > 0"
+      [paginaActual]="paginaActual"
+      [totalPaginas]="totalPaginas"
+      [totalElementos]="totalElementosParticipantes"
+      [tamanioPagina]="tamanioPagina"
+      (cambioPagina)="cambiarPaginaParticipantes($event)">
+    </app-pagination>
   </div>
 
   <div class="no-participants-section" *ngIf="(actividadIniciada || ejecucionFinalizada) && miembrosAsistencia.length === 0">

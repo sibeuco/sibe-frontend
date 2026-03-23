@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { UserResponse, UserRequest, EditUserRequest } from '../model/user.model';
 import { Response } from '../model/response.model';
 import { environment } from 'src/environments/environment';
 import { EditPasswordRequest } from '../model/password.model';
+import { PaginatedResponse } from '../model/paginated-response.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService extends HttpService {
   private readonly USER_ENDPOINT = '/usuarios';
+  private readonly USER_PAGINADO_ENDPOINT = '/usuarios/paginado';
   private readonly  USER_ID_ENDPOINT = '/usuarios/usuario/id';
   private readonly EDIT_PASSWORD_ENDPOINT = '/usuarios/modificar/clave';
 
@@ -22,7 +24,7 @@ export class UserService extends HttpService {
   consultarUsuarioPorIdentificador(identificador: string): Observable<UserResponse> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.USER_ID_ENDPOINT}/${identificador}`;
-    
+
     return this.doGet<UserResponse>(url, opts);
   }
 
@@ -37,31 +39,41 @@ export class UserService extends HttpService {
     return this.http.get<UserResponse[]>(url, opts);
   }
 
+  consultarUsuariosPaginado(page: number, size: number, busqueda?: string, tipoUsuario?: string, excluirTipoUsuario?: string): Observable<PaginatedResponse<UserResponse>> {
+    const opts = this.createDefaultOptions();
+    const url = `${environment.endpoint}${this.USER_PAGINADO_ENDPOINT}`;
+    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
+    if (busqueda) params = params.set('busqueda', busqueda);
+    if (tipoUsuario) params = params.set('tipoUsuario', tipoUsuario);
+    if (excluirTipoUsuario) params = params.set('excluirTipoUsuario', excluirTipoUsuario);
+    return this.doGetParameters<PaginatedResponse<UserResponse>>(url, params, opts);
+  }
+
   consultarUsuarioPorCorreo(correo: string): Observable<UserResponse> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.USER_ENDPOINT}/usuario/correo/${correo}`;
-    
+
     return this.doGet<UserResponse>(url, opts);
   }
 
   agregarNuevoUsuario(usuario: UserRequest): Observable<Response<string>> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.USER_ENDPOINT}`;
-    
+
     return this.doPost<UserRequest, Response<string>>(url, usuario, opts);
   }
 
   modificarUsuario(identificador: string, usuario: EditUserRequest): Observable<Response<string>> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.USER_ENDPOINT}/usuario/${identificador}`;
-    
+
     return this.doPut<EditUserRequest, Response<string>>(url, usuario, opts);
   }
 
   eliminarUsuario(identificador: string): Observable<Response<string>> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.USER_ENDPOINT}/usuario/${identificador}`;
-    
+
     return this.doDelete<Response<string>>(url, opts);
   }
 
