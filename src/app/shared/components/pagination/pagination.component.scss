@@ -2,6 +2,11 @@
   .page-link {
     font-size: 1rem;
     color: #000;
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .page-item.active .page-link {
@@ -12,8 +17,7 @@
 
   .page-item:first-child .page-link,
   .page-item:last-child .page-link {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    line-height: 1;
   }
 }
