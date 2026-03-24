@@ -1,11 +1,19 @@
 .pagination {
   .page-link {
     font-size: 1rem;
+    color: #000;
   }
 
   .page-item.active .page-link {
     background-color: #6c757d;
     border-color: #6c757d;
     color: #fff;
+  }
+
+  .page-item:first-child .page-link,
+  .page-item:last-child .page-link {
+    font-size: 1.25rem;
+    font-weight: bold;
+    line-height: 1;
   }
 }
