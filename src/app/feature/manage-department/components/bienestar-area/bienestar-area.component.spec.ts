@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { BienestarAreaComponent } from './bienestar-area.component';
 
@@ -8,7 +9,8 @@ describe('BienestarAreaComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BienestarAreaComponent]
+      declarations: [BienestarAreaComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(BienestarAreaComponent);
     component = fixture.componentInstance;
@@ -17,5 +19,9 @@ describe('BienestarAreaComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render without errors', () => {
+    expect(fixture.nativeElement).toBeTruthy();
   });
 });

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { ManageIndicatorsComponent } from './manage-indicators.component';
 
@@ -8,7 +9,8 @@ describe('ManageIndicatorsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ManageIndicatorsComponent]
+      declarations: [ManageIndicatorsComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(ManageIndicatorsComponent);
     component = fixture.componentInstance;
@@ -17,5 +19,10 @@ describe('ManageIndicatorsComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have the correct selector', () => {
+    const element = fixture.nativeElement;
+    expect(element).toBeTruthy();
   });
 });

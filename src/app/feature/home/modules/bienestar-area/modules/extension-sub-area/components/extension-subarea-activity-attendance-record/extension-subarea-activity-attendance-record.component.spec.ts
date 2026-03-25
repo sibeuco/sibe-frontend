@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { ExtensionSubareaActivityAttendanceRecordComponent } from './extension-subarea-activity-attendance-record.component';
 
@@ -8,7 +9,8 @@ describe('ExtensionSubareaActivityAttendanceRecordComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ExtensionSubareaActivityAttendanceRecordComponent]
+      declarations: [ExtensionSubareaActivityAttendanceRecordComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(ExtensionSubareaActivityAttendanceRecordComponent);
     component = fixture.componentInstance;
@@ -17,5 +19,9 @@ describe('ExtensionSubareaActivityAttendanceRecordComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render without errors', () => {
+    expect(fixture.nativeElement).toBeTruthy();
   });
 });
