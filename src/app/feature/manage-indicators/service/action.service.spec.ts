@@ -1,0 +1,52 @@
+import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { ActionService } from './action.service';
+import { environment } from 'src/environments/environment';
+
+describe('ActionService', () => {
+  let service: ActionService;
+  let httpMock: HttpTestingController;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [ActionService]
+    });
+    service = TestBed.inject(ActionService);
+    httpMock = TestBed.inject(HttpTestingController);
+  });
+
+  afterEach(() => httpMock.verify());
+
+  it('should be created', () => expect(service).toBeTruthy());
+
+  it('should call GET to consult actions', () => {
+    service.consultarAcciones().subscribe();
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/acciones`);
+    expect(req.request.method).toBe('GET');
+    req.flush([]);
+  });
+
+  it('should call GET with pagination to consult actions paginated', () => {
+    service.consultarAccionesPaginado(0, 10).subscribe();
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/acciones/paginado`);
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: [] });
+  });
+
+  it('should call POST to add a new action', () => {
+    const accion = { detalle: 'Test' } as any;
+    service.agregarNuevaAccion(accion).subscribe();
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/acciones`);
+    expect(req.request.method).toBe('POST');
+    req.flush({});
+  });
+
+  it('should call PUT to modify an action', () => {
+    const accion = { detalle: 'Updated' } as any;
+    service.modificarAccion('123', accion).subscribe();
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/acciones/123`);
+    expect(req.request.method).toBe('PUT');
+    req.flush({});
+  });
+});

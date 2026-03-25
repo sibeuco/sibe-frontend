@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { PrincipalHomeComponent } from './principal-home.component';
 
@@ -8,7 +9,8 @@ describe('PrincipalHomeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PrincipalHomeComponent]
+      declarations: [PrincipalHomeComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(PrincipalHomeComponent);
     component = fixture.componentInstance;
@@ -17,5 +19,9 @@ describe('PrincipalHomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render without errors', () => {
+    expect(fixture.nativeElement).toBeTruthy();
   });
 });
