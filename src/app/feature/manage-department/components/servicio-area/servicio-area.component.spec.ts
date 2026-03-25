@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { ServicioAreaComponent } from './servicio-area.component';
 
@@ -9,8 +8,7 @@ describe('ServicioAreaComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ServicioAreaComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      declarations: [ServicioAreaComponent]
     });
     fixture = TestBed.createComponent(ServicioAreaComponent);
     component = fixture.componentInstance;
@@ -19,9 +17,5 @@ describe('ServicioAreaComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should render without errors', () => {
-    expect(fixture.nativeElement).toBeTruthy();
   });
 });

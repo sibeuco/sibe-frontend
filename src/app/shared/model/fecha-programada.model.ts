@@ -1,8 +1,8 @@
 export interface FechaProgramada {
-  ejecucionId: string;
+  id: number;
   fecha: Date;
   estado: EstadoFechaProgramada;
-  actividadId: string;
+  actividadId: number;
 }
 
 export enum EstadoFechaProgramada {

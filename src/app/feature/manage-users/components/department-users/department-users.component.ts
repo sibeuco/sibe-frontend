@@ -23,13 +23,7 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
     error = '';
     searchTerm = '';
     private subscriptions: Subscription[] = [];
-
-    // Paginación
-    paginaActual = 0;
-    totalPaginas = 0;
-    totalElementos = 0;
-    tamanioPagina = 10;
-
+    
     // Propiedades para el modal de confirmación
     usuarioAEliminar: UserResponse | null = null;
     eliminando = false;
@@ -39,13 +33,13 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
     // Propiedades para la lista desplegable
     listaDepartamentos: { identificador: string; nombre: string }[] = [];
     cargandoDepartamentos = false;
-
+  
     constructor(
       private userService: UserService,
       private userNotificationService: UserNotificationService,
       private departmentService: DepartmentService
     ) {}
-
+  
     ngOnInit(): void {
       this.obtenerUsuarios();
       this.suscribirseANotificaciones();
@@ -58,16 +52,19 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
     }
 
     suscribirseANotificaciones(): void {
+      // Suscribirse a notificaciones de usuarios creados
       const subCreado = this.userNotificationService.usuarioCreado$.subscribe(() => {
         this.obtenerUsuarios();
       });
       this.subscriptions.push(subCreado);
 
+      // Suscribirse a notificaciones de usuarios actualizados
       const subActualizado = this.userNotificationService.usuarioActualizado$.subscribe(() => {
         this.obtenerUsuarios();
       });
       this.subscriptions.push(subActualizado);
 
+      // Suscribirse a notificaciones de usuarios eliminados
       const subEliminado = this.userNotificationService.usuarioEliminado$.subscribe(() => {
         this.obtenerUsuarios();
       });
@@ -94,23 +91,16 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
     obtenerUsuarios(): void {
     this.cargando = true;
     this.error = '';
-    const busqueda = this.searchTerm?.trim() || undefined;
 
-    this.userService.consultarUsuariosPaginado(this.paginaActual, this.tamanioPagina, busqueda, 'Administrador de dirección').subscribe({
-      next: (respuesta) => {
-        this.totalElementos = respuesta.totalElementos;
-        this.totalPaginas = respuesta.totalPaginas;
-        this.paginaActual = respuesta.paginaActual;
+    this.userService.consultarUsuarios().subscribe({
+      next: (res: UserResponse[]) => {
+        console.log('Usuarios obtenidos del servicio (department-users):', res); // Debug log
+        this.usuarios = res.filter(
+          usuario => usuario.tipoUsuario?.nombre === 'Administrador de dirección'
+        );
+        console.log('Usuarios filtrados (department-users):', this.usuarios); // Debug log
 
-        // Ajuste de página tras eliminación: si la página actual quedó vacía y no es la primera
-        if ((respuesta.contenido || []).length === 0 && this.paginaActual > 0 && this.totalPaginas > 0) {
-          this.paginaActual = this.totalPaginas - 1;
-          this.cargando = false;
-          this.obtenerUsuarios();
-          return;
-        }
-
-        this.usuarios = respuesta.contenido || [];
+        // Guarda también la lista filtrada para búsquedas
         this.usuariosFiltrados = [...this.usuarios];
         this.cargando = false;
       },
@@ -121,18 +111,35 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
       }
     });
   }
-
+  
+    // para filtrar los usuarios por algún término de busqueda
     filtrarUsuarios(): void {
-      this.paginaActual = 0;
+      if (!this.searchTerm.trim()) {
+        this.usuariosFiltrados = [...this.usuarios];
+      } else {
+        const termino = this.searchTerm.toLowerCase().trim();
+        this.usuariosFiltrados = this.usuarios.filter(usuario => 
+          usuario.nombres?.toLowerCase().includes(termino) ||
+          usuario.apellidos?.toLowerCase().includes(termino) ||
+          usuario.correo?.toLowerCase().includes(termino) ||
+          usuario.tipoUsuario?.nombre?.toLowerCase().includes(termino)
+        );
+      }
+    }
+
+    // Se ejecuta cuando se crea un nuevo usuario desde el modal
+    onUsuarioCreado(response: any): void {
+      console.log('Usuario creado:', response);
+      // Recargar la lista de usuarios para mostrar el nuevo usuario
       this.obtenerUsuarios();
     }
 
-    cambiarPagina(pagina: number): void {
-      this.paginaActual = pagina;
+    // Se ejecuta cuando se actualiza un usuario desde el modal
+    onUsuarioActualizado(response: any): void {
+      console.log('Usuario actualizado:', response);
+      // Recargar la lista de usuarios para mostrar los cambios
       this.obtenerUsuarios();
     }
-
-
 
     // Selecciona el usuario para editar
     seleccionarUsuarioParaEditar(usuario: UserResponse): void {
@@ -157,10 +164,10 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
     eliminarUsuario(usuario: UserResponse): void {
       // Limpiar estado previo antes de abrir el modal
       this.limpiarEstadoModal();
-
+      
       // Establecer el nuevo usuario a eliminar
       this.usuarioAEliminar = usuario;
-
+      
       const modalElement = document.getElementById('confirmDeleteDepartmentModal');
       if (modalElement) {
         const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
@@ -179,15 +186,17 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
         next: (response) => {
           console.log('Usuario eliminado exitosamente (department):', response); // Debug log
           this.eliminando = false;
-
+          
           // Mostrar mensaje de éxito en el modal
           this.mensajeExito = 'Usuario eliminado exitosamente';
           this.mostrarMensajeExito = true;
-
+          
           // Notificar a través del servicio para que todos los componentes se actualicen
-          // (la suscripción a usuarioEliminado$ ya llama obtenerUsuarios con ajuste de página)
           this.userNotificationService.notificarUsuarioEliminado(response);
-
+          
+          // Recargar la lista de usuarios
+          this.obtenerUsuarios();
+          
           // Cerrar el modal después de 2 segundos
           setTimeout(() => {
             const modalElement = document.getElementById('confirmDeleteDepartmentModal');
@@ -197,7 +206,7 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
                 modal.hide();
               }
             }
-
+            
             // Limpiar el estado del modal
             this.limpiarEstadoModal();
           }, 2000);
@@ -205,14 +214,14 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
         error: (err) => {
           this.eliminando = false;
           console.error('Error al eliminar usuario (department):', err); // Debug log
-
+          
           let mensajeError = 'Error al eliminar el usuario. Por favor, intente nuevamente.';
           if (err.error && err.error.mensaje) {
             mensajeError = err.error.mensaje;
           } else if (err.error && err.error.message) {
             mensajeError = err.error.message;
           }
-
+          
           alert(mensajeError);
         }
       });

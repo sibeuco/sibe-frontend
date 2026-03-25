@@ -410,19 +410,13 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
     };
     this.indicadorSeleccionado = '';
     this.colaboradorSeleccionado = '';
+    this.tipoEstructura = '';
     this.areaSeleccionada = '';
     this.listaFiltrada = [];
     this.fechaTemporal = '';
     this.errorFecha = '';
     this.error = '';
     this.mensajeExito = '';
-
-    // Restaurar el tipo de estructura y re-precargar el área desde los @Input() del padre
-    // porque el modal Bootstrap reutiliza la misma instancia del componente (hide, no destroy)
-    // y ngOnChanges no se dispara de nuevo si los inputs no cambian
-    if (this.nombreArea && this.tipoEstructura) {
-      this.buscarYPrecargarArea();
-    }
   }
 
 }

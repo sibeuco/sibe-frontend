@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StateService } from './service/state.service';
 import { GoToAreaButtonComponent } from './components/go-to-area-button/go-to-area-button.component';
 import { RouterModule } from '@angular/router';
 import { SeparatorComponent } from './components/separator/separator.component';
@@ -20,7 +21,6 @@ import { DateSelectorComponent } from './components/date-selector/date-selector.
 import { TotalParticipantsComponent } from './components/data-visualization/total-participants/total-participants.component';
 import { CompletedActivitiesComponent } from './components/data-visualization/completed-activities/completed-activities.component';
 import { TotalParticipantsMonthsComponent } from './components/data-visualization/total-participants-months/total-participants-months.component';
-import { PaginationComponent } from './components/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -41,13 +41,15 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     DateSelectorComponent,
     TotalParticipantsComponent,
     CompletedActivitiesComponent,
-    TotalParticipantsMonthsComponent,
-    PaginationComponent
+    TotalParticipantsMonthsComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     FormsModule
+  ],
+  providers:[
+    StateService
   ],
   exports: [
     GoToAreaButtonComponent,
@@ -65,8 +67,7 @@ import { PaginationComponent } from './components/pagination/pagination.componen
     ExternalParticipantComponent,
     TotalParticipantsComponent,
     CompletedActivitiesComponent,
-    TotalParticipantsMonthsComponent,
-    PaginationComponent
+    TotalParticipantsMonthsComponent
   ]
 })
 export class SharedModule { }

@@ -1,11 +1,9 @@
 <div class="buttons-container d-flex justify-content-between gap-3">
-  <button
+  <button 
     *ngFor="let btn of buttons"
     class="btn btn-primary flex-fill"
-    [disabled]="btn.action === 'generarInforme' && generandoExcel"
-    (click)="onButtonClick(btn)">
+    (click)="navigateTo(btn)">
     <i class="{{ btn.icon }}"></i>
-    <span *ngIf="!(btn.action === 'generarInforme' && generandoExcel)">{{ btn.text }}</span>
-    <span *ngIf="btn.action === 'generarInforme' && generandoExcel">Generando...</span>
+    {{ btn.text }}
   </button>
 </div>

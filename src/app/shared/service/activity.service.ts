@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Response } from '../model/response.model';
@@ -8,7 +8,6 @@ import { ActivityRequest, ActivityResponse, CancelActivityResponse, EditActivity
 import { ActivityExecutionResponse } from '../model/activity-execution.model';
 import { ParticipantRequest, ParticipantResponse } from '../model/participant.model';
 import { FiltersRequest, StadisticAreasResponse, StadisticMonthsResponse } from '../model/filters.model';
-import { PaginatedResponse } from '../model/paginated-response.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +22,6 @@ export class ActivityService extends HttpService {
   private readonly CANCEL_ACTIVITY_ENDPOINT = '/actividades/cancelar';
   private readonly END_ACTIVITY_ENDPOINT = '/actividades/finalizar';
   private readonly PARTICIPANTS_ENDPOINT = '/actividades/ejecuciones/ejecucion/participantes';
-  private readonly ACTIVITY_EXECUTION_PAGINADO_ENDPOINT = '/actividades/ejecuciones/paginado';
   private readonly CONTAR_PARTICIPANTES_ENDPOINT = '/actividades/ejecuciones/finalizadas/participantes/conteo';
   private readonly MESES_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/meses';
   private readonly ANNOS_EJECUCIONES_FINALIZADAS_ENDPOINT = '/actividades/ejecuciones/finalizadas/annos';
@@ -68,36 +66,25 @@ export class ActivityService extends HttpService {
     return this.http.get<ActivityResponse[]>(url, opts);
   }
 
-
-
-  consultarActividadesPorAreaPaginado(areaId: string, page: number, size: number, busqueda?: string, sort?: string, direction?: string): Observable<PaginatedResponse<ActivityResponse>> {
+  consultarPorArea(identificador: string): Observable<ActivityResponse[]> {
     const opts = this.createDefaultOptions();
-    const url = `${environment.endpoint}${this.ACTIVITY_AREA_ENDPOINT}/${areaId}`;
-    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    if (busqueda) params = params.set('busqueda', busqueda);
-    if (sort) params = params.set('sort', sort);
-    if (direction) params = params.set('direction', direction);
-    return this.doGetParameters<PaginatedResponse<ActivityResponse>>(url, params, opts);
+    const url = `${environment.endpoint}${this.ACTIVITY_AREA_ENDPOINT}/${identificador}`;
+
+    return this.doGet<ActivityResponse[]>(url, opts);
   }
 
-  consultarActividadesPorDireccionPaginado(direccionId: string, page: number, size: number, busqueda?: string, sort?: string, direction?: string): Observable<PaginatedResponse<ActivityResponse>> {
+  consultarPorDireccion(identificador: string): Observable<ActivityResponse[]> {
     const opts = this.createDefaultOptions();
-    const url = `${environment.endpoint}${this.ACTIVITY_DEPARTMENT_ENDPOINT}/${direccionId}`;
-    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    if (busqueda) params = params.set('busqueda', busqueda);
-    if (sort) params = params.set('sort', sort);
-    if (direction) params = params.set('direction', direction);
-    return this.doGetParameters<PaginatedResponse<ActivityResponse>>(url, params, opts);
+    const url = `${environment.endpoint}${this.ACTIVITY_DEPARTMENT_ENDPOINT}/${identificador}`;
+
+    return this.doGet<ActivityResponse[]>(url, opts);
   }
 
-  consultarActividadesPorSubareaPaginado(subareaId: string, page: number, size: number, busqueda?: string, sort?: string, direction?: string): Observable<PaginatedResponse<ActivityResponse>> {
+  consultarPorSubarea(identificador: string): Observable<ActivityResponse[]> {
     const opts = this.createDefaultOptions();
-    const url = `${environment.endpoint}${this.ACTIVITY_SUBAREA_ENDPOINT}/${subareaId}`;
-    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    if (busqueda) params = params.set('busqueda', busqueda);
-    if (sort) params = params.set('sort', sort);
-    if (direction) params = params.set('direction', direction);
-    return this.doGetParameters<PaginatedResponse<ActivityResponse>>(url, params, opts);
+    const url = `${environment.endpoint}${this.ACTIVITY_SUBAREA_ENDPOINT}/${identificador}`;
+
+    return this.doGet<ActivityResponse[]>(url, opts);
   }
 
   consultarEjecuciones(identificador: string): Observable<ActivityExecutionResponse[]> {
@@ -108,18 +95,11 @@ export class ActivityService extends HttpService {
 
   }
 
-  consultarEjecucionesPaginado(actividadId: string, page: number, size: number): Observable<PaginatedResponse<ActivityExecutionResponse>> {
+  consultarParticipantesPorEjecucion(identificador: string): Observable<ParticipantResponse[]> {
     const opts = this.createDefaultOptions();
-    const url = `${environment.endpoint}${this.ACTIVITY_EXECUTION_PAGINADO_ENDPOINT}/${actividadId}`;
-    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    return this.doGetParameters<PaginatedResponse<ActivityExecutionResponse>>(url, params, opts);
-  }
+    const url = `${environment.endpoint}${this.PARTICIPANTS_ENDPOINT}/${identificador}`;
 
-  consultarParticipantesPorEjecucionPaginado(ejecucionId: string, page: number, size: number): Observable<PaginatedResponse<ParticipantResponse>> {
-    const opts = this.createDefaultOptions();
-    const url = `${environment.endpoint}${this.PARTICIPANTS_ENDPOINT}/${ejecucionId}`;
-    const params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    return this.doGetParameters<PaginatedResponse<ParticipantResponse>>(url, params, opts);
+    return this.doGet<ParticipantResponse[]>(url, opts);
   }
 
   iniciarActividad(identificador: string): Observable<StartActivityResponse> {

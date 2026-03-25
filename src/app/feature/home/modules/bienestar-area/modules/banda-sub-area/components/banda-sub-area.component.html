@@ -1,17 +1,15 @@
 <div class="col-12 align-items-center justify-content-center">
     <div class="top-image-container">
-        <app-area-top-image
+        <app-area-top-image 
         imageSrc="assets\images\sinfonica.webp"
         text="Banda Sinfónica">
         </app-area-top-image>
     </div>
     <div class="area-buttons-container">
         <app-area-buttons
-        tipoEstructura="subarea"
-        nombreEstructura="Banda Sinfónica"
         [buttons]="[
             { text: 'Ver Resumen', icon: 'bi bi-clipboard-data', scrollTarget: 'banda-filters-section' },
-            { text: 'Generar Informes', icon: 'bi bi-journal-plus', action: 'generarInforme' }]">
+            { text: 'Generar Informes', icon: 'bi bi-journal-plus', link: '/informes' }]">
         </app-area-buttons>
     </div>
     <div class="activities-container">

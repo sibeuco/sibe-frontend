@@ -15,7 +15,7 @@ import { ParticipantRequest, ParticipantResponse } from '../../model/participant
   styleUrls: ['./attendance-record.component.scss']
 })
 export class AttendanceRecordComponent implements OnInit, OnChanges {
-
+  
   @Input() idActividad: number = 0;
   @Input() actividad: any = null;
   @Input() usuarioLoggeado: any = null;
@@ -25,7 +25,7 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   // Variables del formulario
   rfidSearch: string = '';
   documentoSearch: string = '';
-
+  
   // Variables de estado
   buscando: boolean = false;
   guardando: boolean = false;
@@ -36,16 +36,9 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   iniciandoActividad: boolean = false;
   cancelandoActividad: boolean = false;
   cargandoParticipantesFinalizados: boolean = false;
-
-  // Lista de participantes (local en modo EN_CURSO, paginada en modo FINALIZADO)
+  
+  // Lista de participantes
   miembrosAsistencia: UniversityMemberResponse[] = [];
-  // Total real de participantes (para FINALIZADO paginado)
-  totalElementosParticipantes = 0;
-
-  // Paginación de participantes
-  paginaActual = 0;
-  totalPaginas = 0;
-  tamanioPagina = 10;
 
   private readonly STORAGE_KEY = 'selectedActivityInfo';
   private ejecucionSeleccionada: ActivityExecutionResponse | null = null;
@@ -411,13 +404,13 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     try {
       const data = JSON.parse(raw) as { actividad?: ActivityResponse | null; ejecucion?: ActivityExecutionResponse | null };
       const ejecucionAnteriorId = this.ejecucionSeleccionadaId;
-
+      
       this.actividadCargada = data?.actividad || null;
-
+      
       if (!this.actividad && this.actividadCargada) {
         this.actividad = this.actividadCargada;
       }
-
+      
       this.ejecucionSeleccionada = data?.ejecucion || null;
       this.ejecucionSeleccionadaId = this.ejecucionSeleccionada?.identificador || null;
       const estado = this.ejecucionSeleccionada?.estadoActividad?.nombre;
@@ -426,9 +419,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
 
       if (this.ejecucionSeleccionadaId !== ejecucionAnteriorId) {
         this.miembrosAsistencia = [];
-        this.paginaActual = 0;
-        this.totalElementosParticipantes = 0;
-        this.totalPaginas = 0;
       }
 
       if (this.ejecucionFinalizada) {
@@ -519,14 +509,10 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     this.cargandoParticipantesFinalizados = true;
     this.miembrosAsistencia = [];
 
-    this.activityService.consultarParticipantesPorEjecucionPaginado(this.ejecucionSeleccionadaId, this.paginaActual, this.tamanioPagina)
+    this.activityService.consultarParticipantesPorEjecucion(this.ejecucionSeleccionadaId)
       .pipe(finalize(() => this.cargandoParticipantesFinalizados = false))
       .subscribe({
-        next: (respuesta) => {
-          const participantes = respuesta.contenido || [];
-          this.totalElementosParticipantes = respuesta.totalElementos;
-          this.totalPaginas = respuesta.totalPaginas;
-          this.paginaActual = respuesta.paginaActual;
+        next: (participantes) => {
           this.miembrosAsistencia = participantes.map(participante =>
             this.convertirParticipanteResponseAUniversityMember(participante)
           );
@@ -536,14 +522,6 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
           this.mostrarMensaje('No fue posible obtener los participantes de la actividad finalizada.', 'error');
         }
       });
-  }
-
-  /**
-   * Maneja el cambio de página de participantes
-   */
-  cambiarPaginaParticipantes(pagina: number): void {
-    this.paginaActual = pagina;
-    this.cargarParticipantesDeActividadFinalizada();
   }
 
   private convertirParticipanteResponseAUniversityMember(participante: ParticipantResponse): UniversityMemberResponse {

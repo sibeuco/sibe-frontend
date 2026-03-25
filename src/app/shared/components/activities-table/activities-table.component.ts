@@ -6,8 +6,7 @@ import { ActivityService } from '../../service/activity.service';
 import { DepartmentService } from '../../service/department.service';
 import { AreaService } from '../../service/area.service';
 import { SubAreaService } from '../../service/subarea.service';
-import { PaginatedResponse } from '../../model/paginated-response.model';
-import { forkJoin, of, Observable } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 import { catchError, switchMap, map } from 'rxjs/operators';
 import { Modal } from 'bootstrap';
 
@@ -20,7 +19,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   // Inputs para cargar desde backend
   @Input() nombreArea: string = '';
   @Input() tipoEstructura: 'direccion' | 'area' | 'subarea' = 'direccion';
-
+  
   @Input() rutaRedireccion: string = '';
   @Input() terminoBusqueda: string = '';
   @Output() actividadSeleccionada = new EventEmitter<any>();
@@ -30,12 +29,6 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   direccionOrdenamiento: 'asc' | 'desc' = 'asc';
   actividadesOrdenadas: ActivityResponse[] = [];
   actividadesCargadas: ActivityResponse[] = []; // Actividades cargadas desde backend o recibidas como input
-
-  // Propiedades de paginación
-  paginaActual = 0;
-  totalPaginas = 0;
-  totalElementos = 0;
-  tamanioPagina = 10;
 
   // Propiedades para el modal de fechas programadas
   actividadSeleccionadaParaModal: ActivityResponse | null = null;
@@ -47,12 +40,9 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
 
   // Mapa para almacenar fechas programadas más cercanas (identificador actividad -> fecha)
   fechasProgramadasMap: Map<string, Date | null> = new Map();
-
+  
   // Mapa para almacenar ejecuciones de cada actividad (identificador actividad -> ejecuciones)
   ejecucionesMap: Map<string, ActivityExecutionResponse[]> = new Map();
-
-  // Identificador de la estructura actual (dirección, área o subárea)
-  private estructuraId: string = '';
 
   constructor(
     private activityService: ActivityService,
@@ -75,17 +65,12 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     // Si cambian los parámetros para cargar desde backend
     if (changes['nombreArea'] || changes['tipoEstructura']) {
       if (this.nombreArea) {
-        this.paginaActual = 0;
-        this.estructuraId = '';
         this.cargarActividades();
       }
     }
-
+    
     if (changes['terminoBusqueda']) {
-      this.paginaActual = 0;
-      if (this.estructuraId) {
-        this.cargarPagina();
-      }
+      this.aplicarFiltrosYOrdenamiento();
     }
   }
 
@@ -94,9 +79,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
    * Método público para poder recargar desde componentes padre
    */
   recargarActividades(): void {
-    if (this.estructuraId) {
-      this.cargarPagina();
-    } else if (this.nombreArea && this.tipoEstructura) {
+    if (this.nombreArea && this.tipoEstructura) {
       this.cargarActividades();
     }
   }
@@ -133,99 +116,38 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
 
     consultaPorNombre$
       .pipe(
-        catchError(() => {
-          this.error = 'Error al cargar las actividades. Por favor, intente nuevamente.';
-          this.cargando = false;
-          return of(null);
-        })
-      )
-      .subscribe({
-        next: (estructura: any) => {
+        switchMap((estructura: any) => {
           if (!estructura || !estructura.identificador) {
-            this.error = 'No se pudo obtener el identificador de la estructura';
-            this.cargando = false;
-            return;
+            throw new Error('No se pudo obtener el identificador de la estructura');
           }
-          this.estructuraId = estructura.identificador;
-          this.cargarPagina();
-        }
-      });
-  }
 
-  /**
-   * Mapea las claves de ordenamiento UI → backend
-   */
-  private mapearColumnaOrdenamiento(): string | undefined {
-    const mapa: Record<string, string> = {
-      'nombreActividad': 'nombre',
-      'colaborador': 'colaborador',
-      'fechaCreacion': 'fechaCreacion'
-    };
-    return mapa[this.columnaOrdenamiento];
-  }
-
-  /**
-   * Carga una página de actividades desde el backend
-   */
-  private cargarPagina(): void {
-    if (!this.estructuraId) {
-      return;
-    }
-
-    this.cargando = true;
-    this.error = '';
-
-    const busqueda = this.terminoBusqueda?.trim() || undefined;
-    const sort = this.mapearColumnaOrdenamiento();
-    const direction = sort ? this.direccionOrdenamiento : undefined;
-
-    let consulta$: Observable<PaginatedResponse<ActivityResponse>>;
-
-    switch (this.tipoEstructura) {
-      case 'direccion':
-        consulta$ = this.activityService.consultarActividadesPorDireccionPaginado(
-          this.estructuraId, this.paginaActual, this.tamanioPagina, busqueda, sort, direction);
-        break;
-      case 'area':
-        consulta$ = this.activityService.consultarActividadesPorAreaPaginado(
-          this.estructuraId, this.paginaActual, this.tamanioPagina, busqueda, sort, direction);
-        break;
-      case 'subarea':
-        consulta$ = this.activityService.consultarActividadesPorSubareaPaginado(
-          this.estructuraId, this.paginaActual, this.tamanioPagina, busqueda, sort, direction);
-        break;
-      default:
-        this.error = 'Tipo de estructura no válido';
-        this.cargando = false;
-        return;
-    }
-
-    consulta$
-      .pipe(
+          // Luego consultar las actividades según el tipo
+          switch (this.tipoEstructura) {
+            case 'direccion':
+              return this.activityService.consultarPorDireccion(estructura.identificador);
+            case 'area':
+              return this.activityService.consultarPorArea(estructura.identificador);
+            case 'subarea':
+              return this.activityService.consultarPorSubarea(estructura.identificador);
+            default:
+              return of([]);
+          }
+        }),
         catchError(() => {
           this.error = 'Error al cargar las actividades. Por favor, intente nuevamente.';
-          this.cargando = false;
-          return of(null);
+          return of([]);
         })
       )
       .subscribe({
-        next: (respuesta) => {
-          if (!respuesta) return;
-          this.actividadesCargadas = respuesta.contenido || [];
-          this.totalElementos = respuesta.totalElementos;
-          this.totalPaginas = respuesta.totalPaginas;
-          this.paginaActual = respuesta.paginaActual;
-          this.cargarFechasProgramadas(this.actividadesCargadas);
+        next: (actividades: ActivityResponse[]) => {
+          this.actividadesCargadas = actividades || [];
+          // Cargar fechas programadas
+          this.cargarFechasProgramadas(actividades);
+        },
+        error: () => {
+          this.cargando = false;
         }
       });
-  }
-
-  /**
-   * Maneja el cambio de página desde el componente de paginación
-   */
-  cambiarPagina(pagina: number): void {
-    this.paginaActual = pagina;
-    this.cargarPagina();
   }
 
   /**
@@ -253,14 +175,14 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
       this.activityService.consultarEjecuciones(actividad.identificador).pipe(
         map((ejecuciones: ActivityExecutionResponse[]) => {
           const fechaMasCercana = this.calcularFechaMasCercana(ejecuciones);
-          return {
-            identificador: actividad.identificador,
+          return { 
+            identificador: actividad.identificador, 
             fecha: fechaMasCercana,
             ejecuciones: ejecuciones
           };
         }),
-        catchError(() => of({
-          identificador: actividad.identificador,
+        catchError(() => of({ 
+          identificador: actividad.identificador, 
           fecha: null,
           ejecuciones: [] as ActivityExecutionResponse[]
         }))
@@ -345,10 +267,24 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   }
 
   /**
-   * Aplica ordenamiento client-side a las actividades de la página actual
+   * Aplica filtros de búsqueda y ordenamiento a las actividades
    */
   private aplicarFiltrosYOrdenamiento(): void {
-    this.actividadesOrdenadas = [...this.actividadesCargadas];
+    // Primero aplicar filtro de búsqueda
+    let actividadesFiltradas = this.actividadesCargadas;
+    
+    if (this.terminoBusqueda && this.terminoBusqueda.trim() !== '') {
+      const termino = this.terminoBusqueda.toLowerCase().trim();
+      actividadesFiltradas = this.actividadesCargadas.filter(actividad => 
+        actividad.nombre.toLowerCase().includes(termino) ||
+        (actividad.nombreColaborador && actividad.nombreColaborador.toLowerCase().includes(termino)) ||
+        this.calcularEstado(actividad).toLowerCase().includes(termino) ||
+        (this.obtenerFechaProgramada(actividad) && this.obtenerFechaProgramada(actividad)!.toLocaleDateString().toLowerCase().includes(termino))
+      );
+    }
+    
+    // Luego aplicar ordenamiento
+    this.actividadesOrdenadas = [...actividadesFiltradas];
     if (this.columnaOrdenamiento) {
       this.ordenarPorColumna(this.columnaOrdenamiento, this.direccionOrdenamiento);
     }
@@ -359,21 +295,15 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
    */
   ordenarPor(columna: string): void {
     if (this.columnaOrdenamiento === columna) {
+      // Si ya está ordenando por esta columna, cambiar la dirección
       this.direccionOrdenamiento = this.direccionOrdenamiento === 'asc' ? 'desc' : 'asc';
     } else {
+      // Si es una nueva columna, empezar con ascendente
       this.columnaOrdenamiento = columna;
       this.direccionOrdenamiento = 'asc';
     }
-
-    // Columnas delegables al backend: reiniciar a página 0 y recargar
-    const columnasBackend = ['nombreActividad', 'colaborador', 'fechaCreacion'];
-    if (columnasBackend.includes(columna)) {
-      this.paginaActual = 0;
-      this.cargarPagina();
-    } else {
-      // fechaProgramada, estado: ordenamiento client-side sobre la página actual
-      this.aplicarFiltrosYOrdenamiento();
-    }
+    
+    this.aplicarFiltrosYOrdenamiento();
   }
 
   /**
@@ -462,15 +392,15 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
    */
   calcularEstado(actividad: ActivityResponse): EstadoActividad {
     const ejecuciones = this.ejecucionesMap.get(actividad.identificador);
-
+    
     // Si no hay ejecuciones, retornar PENDIENTE por defecto
     if (!ejecuciones || ejecuciones.length === 0) {
       return EstadoActividad.PENDIENTE;
     }
 
     // Verificar si todas las ejecuciones están FINALIZADAS
-    const todasFinalizadas = ejecuciones.every(ej =>
-      ej.estadoActividad &&
+    const todasFinalizadas = ejecuciones.every(ej => 
+      ej.estadoActividad && 
       ej.estadoActividad.nombre === EstadoActividad.FINALIZADO
     );
 
@@ -496,10 +426,10 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   realizarActividad(actividad: ActivityResponse): void {
     // Emitir evento para que el componente padre maneje la lógica
     this.actividadSeleccionada.emit(actividad);
-
+    
     // Configurar datos para el modal
     this.actividadSeleccionadaParaModal = actividad;
-
+    
     // Abrir el modal
     this.abrirModalFechas();
   }

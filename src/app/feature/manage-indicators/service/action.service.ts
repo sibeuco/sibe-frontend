@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { environment } from 'src/environments/environment';
 import { ActionRequest, ActionResponse } from '../model/action.model';
 import { Response } from 'src/app/shared/model/response.model';
-import { PaginatedResponse } from 'src/app/shared/model/paginated-response.model';
 
 @Injectable({
     providedIn: 'root'
@@ -26,14 +25,6 @@ export class ActionService extends HttpService {
         };
         const url = `${environment.endpoint}${this.ACTION_ENDPOINT}`;
         return this.http.get<ActionResponse[]>(url, opts);
-    }
-
-    consultarAccionesPaginado(page: number, size: number, busqueda?: string): Observable<PaginatedResponse<ActionResponse>> {
-        const opts = this.createDefaultOptions();
-        const url = `${environment.endpoint}${this.ACTION_ENDPOINT}/paginado`;
-        let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-        if (busqueda) params = params.set('busqueda', busqueda);
-        return this.doGetParameters<PaginatedResponse<ActionResponse>>(url, params, opts);
     }
 
     agregarNuevaAccion(accion: ActionRequest): Observable<Response<string>> {

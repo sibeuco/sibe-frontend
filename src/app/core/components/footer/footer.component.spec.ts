@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 import { FooterComponent } from './footer.component';
 
@@ -9,8 +8,7 @@ describe('FooterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FooterComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      declarations: [FooterComponent]
     });
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
@@ -19,9 +17,5 @@ describe('FooterComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should render without errors', () => {
-    expect(fixture.nativeElement).toBeTruthy();
   });
 });

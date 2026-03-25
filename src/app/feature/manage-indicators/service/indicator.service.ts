@@ -4,8 +4,7 @@ import { Observable } from 'rxjs';
 import { Response } from 'src/app/shared/model/response.model';
 import { environment } from 'src/environments/environment';
 import { EditIndicatorRequest, IndicatorRequest, IndicatorResponse } from '../model/indicator.model';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { PaginatedResponse } from 'src/app/shared/model/paginated-response.model';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -37,14 +36,6 @@ export class IndicatorService extends HttpService {
     };
     const url = `${environment.endpoint}${this.INDICATOR_ENDPOINT}/actividades`;
     return this.http.get<IndicatorResponse[]>(url, opts);
-  }
-
-  consultarIndicadoresPaginado(page: number, size: number, busqueda?: string): Observable<PaginatedResponse<IndicatorResponse>> {
-    const opts = this.createDefaultOptions();
-    const url = `${environment.endpoint}${this.INDICATOR_ENDPOINT}/paginado`;
-    let params = new HttpParams().set('page', page.toString()).set('size', size.toString());
-    if (busqueda) params = params.set('busqueda', busqueda);
-    return this.doGetParameters<PaginatedResponse<IndicatorResponse>>(url, params, opts);
   }
 
   agregarNuevoIndicador(indicador: IndicatorRequest): Observable<Response<string>> {

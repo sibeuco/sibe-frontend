@@ -73,15 +73,15 @@
             </span>
           </td>
           <td class="action">
-            <button
+            <button 
               class="realizar-actividad-btn"
               (click)="realizarActividad(actividad)">
               Gestionar
             </button>
           </td>
           <td class="edit-action">
-            <button
-                type="button"
+            <button 
+                type="button" 
                 class="btn btn-outline-warning btn-sm edit-activity-button"
                 (click)="abrirModalEditar(actividad)"
                 title="Editar actividad">
@@ -91,27 +91,18 @@
         </tr>
       </tbody>
     </table>
-
+    
     <div *ngIf="!cargando && !error && actividadesCargadas.length === 0" class="no-activities">
       <p>Aún no hay actividades registradas.</p>
     </div>
-
-    <app-pagination
-      *ngIf="!cargando && !error && totalElementos > 0"
-      [paginaActual]="paginaActual"
-      [totalPaginas]="totalPaginas"
-      [totalElementos]="totalElementos"
-      [tamanioPagina]="tamanioPagina"
-      (cambioPagina)="cambiarPagina($event)">
-    </app-pagination>
   </div>
-  <app-edit-activity
+  <app-edit-activity 
     [actividad]="actividadSeleccionadaEdicion"
     [nombreArea]="nombreArea"
     [tipoEstructura]="tipoEstructura"
     (actividadEditada)="recargarActividades()">
   </app-edit-activity>
-  <app-date-selector
+  <app-date-selector 
     [actividad]="actividadSeleccionadaParaModal"
     [redirectLink]="rutaRedireccion"
     (verFecha)="verFechaProgramada($event)"
