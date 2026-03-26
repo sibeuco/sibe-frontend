@@ -74,16 +74,17 @@ export class ExcelReportService {
 
   private exportarAreaAExcel(detail: AreaDetailResponse): void {
     const datos: any[] = [];
+    const direccionNombre = detail.direccionNombre || '';
 
     if (detail.actividades && detail.actividades.length > 0) {
       detail.actividades.forEach(actividad => {
-        this.procesarActividad(actividad, '', detail.nombre, '', datos);
+        this.procesarActividad(actividad, direccionNombre, detail.nombre, '', datos);
       });
     }
 
     if (detail.subareas && detail.subareas.length > 0) {
       detail.subareas.forEach((subarea: SubAreaDetailResponse) => {
-        this.procesarActividadesSubarea(subarea, '', detail.nombre, datos);
+        this.procesarActividadesSubarea(subarea, direccionNombre, detail.nombre, datos);
       });
     }
 
@@ -92,7 +93,9 @@ export class ExcelReportService {
 
   private exportarSubareaAExcel(detail: SubAreaDetailResponse): void {
     const datos: any[] = [];
-    this.procesarActividadesSubarea(detail, '', '', datos);
+    const areaNombre = detail.areaNombre || '';
+    const direccionNombre = detail.direccionNombre || '';
+    this.procesarActividadesSubarea(detail, direccionNombre, areaNombre, datos);
     this.generarArchivoExcel(datos, detail.nombre);
   }
 

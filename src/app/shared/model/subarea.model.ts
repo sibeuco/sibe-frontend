@@ -9,4 +9,6 @@ export interface SubAreaDetailResponse{
     identificador: string;
     nombre: string;
     actividades: ActivityDetailResponse;
+    areaNombre: string;
+    direccionNombre: string;
 }

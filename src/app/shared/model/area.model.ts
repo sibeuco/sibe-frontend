@@ -17,4 +17,5 @@ export interface AreaDetailResponse{
     nombre: string;
     subareas: SubAreaDetailResponse[];
     actividades: ActivityDetailResponse[];
+    direccionNombre: string;
 }
