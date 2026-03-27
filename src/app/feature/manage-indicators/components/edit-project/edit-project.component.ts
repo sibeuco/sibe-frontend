@@ -14,7 +14,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
   @Input() proyectoAEditar: ProjectResponse | null = null;
   @Output() proyectoModificado = new EventEmitter<ProjectResponse>();
   @Output() proyectoCancelado = new EventEmitter<void>();
-    
+
       proyecto = {
         nombre: '',
         objetivo: '',
@@ -48,6 +48,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
 
       ngOnChanges(changes: SimpleChanges): void {
         if (changes['proyectoAEditar'] && changes['proyectoAEditar'].currentValue) {
+          this.cargarAcciones();
           this.cargarDatosProyecto();
         }
       }
@@ -84,7 +85,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
           this.cargando = false;
         }
       }
-    
+
       modificarProyecto() {
         if (this.cargando || !this.proyectoAEditar) return;
 
@@ -109,7 +110,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
         this.projectService.modificarProyecto(this.proyectoAEditar.identificador, proyectoRequest).subscribe({
           next: (response) => {
             this.exito = 'Proyecto modificado exitosamente';
-            
+
             // Crear el objeto de respuesta actualizado
             const proyectoModificado: ProjectResponse = {
               identificador: this.proyectoAEditar!.identificador,
@@ -127,10 +128,10 @@ export class EditProjectComponent implements OnInit, OnChanges {
           },
           error: (error) => {
             console.error('Error al modificar el proyecto:', error);
-            
+
             // Extraer el mensaje de error
             let mensajeError = 'Error al modificar el proyecto. Por favor, intente nuevamente.';
-            
+
             if (error?.error) {
               if (typeof error.error === 'string') {
                 mensajeError = error.error;
@@ -152,7 +153,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
       cancelar() {
         this.proyectoCancelado.emit();
       }
-    
+
       limpiarFormulario() {
         this.proyecto = {
           nombre: '',
@@ -186,7 +187,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
         if (!this.proyecto.acciones) {
           this.proyecto.acciones = [];
         }
-        
+
         const index = this.proyecto.acciones.indexOf(value);
         if (index > -1) {
           this.proyecto.acciones.splice(index, 1);

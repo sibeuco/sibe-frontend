@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, AfterViewInit, OnDestroy, Output } from '@angular/core';
 import { Modal } from 'bootstrap';
 import { ActionService } from '../../service/action.service';
 import { ActionResponse } from '../../model/action.model';
@@ -10,10 +10,11 @@ import { ProjectRequest } from '../../model/project.model';
   templateUrl: './register-new-project.component.html',
   styleUrls: ['./register-new-project.component.scss']
 })
-export class RegisterNewProjectComponent implements OnInit {
+export class RegisterNewProjectComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Output() proyectoCreado = new EventEmitter<any>();
-    
+  private modalShowListener: (() => void) | null = null;
+
       proyecto = {
         numeroProyecto: '',
         nombre: '',
@@ -45,6 +46,21 @@ export class RegisterNewProjectComponent implements OnInit {
         this.suscripcionEventoAccion();
       }
 
+      ngAfterViewInit(): void {
+        const modalElement = document.getElementById('register-project-modal');
+        if (modalElement) {
+          this.modalShowListener = () => this.cargarAcciones();
+          modalElement.addEventListener('show.bs.modal', this.modalShowListener);
+        }
+      }
+
+      ngOnDestroy(): void {
+        const modalElement = document.getElementById('register-project-modal');
+        if (modalElement && this.modalShowListener) {
+          modalElement.removeEventListener('show.bs.modal', this.modalShowListener);
+        }
+      }
+
       suscripcionEventoAccion(): void {
         // Escuchar cuando se crea una nueva acción desde cualquier lugar
         // Este método se puede llamar manualmente para actualizar la lista
@@ -73,7 +89,7 @@ export class RegisterNewProjectComponent implements OnInit {
           }
         });
       }
-    
+
       registrarProyecto() {
         if (this.cargando) return;
 
@@ -100,7 +116,7 @@ export class RegisterNewProjectComponent implements OnInit {
           next: (response) => {
             this.exito = 'Proyecto creado exitosamente';
             this.proyectoCreado.emit(this.proyecto);
-            
+
             // Esperar un momento antes de cerrar para que se vea el mensaje
             setTimeout(() => {
               this.limpiarFormulario();
@@ -111,7 +127,7 @@ export class RegisterNewProjectComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error completo:', JSON.stringify(error));
-            
+
             // Extraer el mensaje de error de diferentes formatos posibles
             let mensajeError = 'Error al registrar el proyecto. Por favor, intente nuevamente.';
 
@@ -146,7 +162,7 @@ export class RegisterNewProjectComponent implements OnInit {
           modal.hide();
         }
       }
-    
+
       limpiarFormulario() {
         this.proyecto = {
           numeroProyecto: '',
@@ -167,7 +183,7 @@ export class RegisterNewProjectComponent implements OnInit {
           this.accionesFiltradas = [];
           return;
         }
-        
+
         if (term.trim() === '') {
           this.accionesFiltradas = [...this.accionesDisponibles];
         } else {
@@ -185,7 +201,7 @@ export class RegisterNewProjectComponent implements OnInit {
         if (!this.proyecto.acciones) {
           this.proyecto.acciones = [];
         }
-        
+
         const index = this.proyecto.acciones.indexOf(value);
         if (index > -1) {
           this.proyecto.acciones.splice(index, 1);
