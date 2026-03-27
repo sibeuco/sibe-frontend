@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, AfterViewInit, OnDestroy, Output } from '@angular/core';
 import { Modal } from 'bootstrap';
 import { ProjectService } from '../../service/project.service';
 import { ProjectResponse } from '../../model/project.model';
@@ -16,9 +16,10 @@ import { IndicatorRequest } from '../../model/indicator.model';
   templateUrl: './register-new-indicator.component.html',
   styleUrls: ['./register-new-indicator.component.scss']
 })
-export class RegisterNewIndicatorComponent implements OnInit {
+export class RegisterNewIndicatorComponent implements OnInit, AfterViewInit, OnDestroy {
     @Output() indicadorCreado = new EventEmitter<any>();
-    
+    private modalShowListener: (() => void) | null = null;
+
       indicador = {
         nombre: '',
         tipoIndicador: '',
@@ -62,6 +63,21 @@ export class RegisterNewIndicatorComponent implements OnInit {
         this.cargarTemporalidades();
         this.cargarTiposIndicador();
         this.cargarPublicoInteres();
+      }
+
+      ngAfterViewInit(): void {
+        const modalElement = document.getElementById('register-indicator-modal');
+        if (modalElement) {
+          this.modalShowListener = () => this.cargarProyectos();
+          modalElement.addEventListener('show.bs.modal', this.modalShowListener);
+        }
+      }
+
+      ngOnDestroy(): void {
+        const modalElement = document.getElementById('register-indicator-modal');
+        if (modalElement && this.modalShowListener) {
+          modalElement.removeEventListener('show.bs.modal', this.modalShowListener);
+        }
       }
 
       cargarProyectos(): void {
@@ -131,7 +147,7 @@ export class RegisterNewIndicatorComponent implements OnInit {
           this.publicoInteresFiltrados = [];
           return;
         }
-        
+
         if (term.trim() === '') {
           this.publicoInteresFiltrados = [...this.publicoInteresDisponibles];
         } else {
@@ -149,7 +165,7 @@ export class RegisterNewIndicatorComponent implements OnInit {
         if (!this.indicador.publicosInteres) {
           this.indicador.publicosInteres = [];
         }
-        
+
         const index = this.indicador.publicosInteres.indexOf(value);
         if (index > -1) {
           this.indicador.publicosInteres.splice(index, 1);
@@ -180,7 +196,7 @@ export class RegisterNewIndicatorComponent implements OnInit {
         const publico = this.publicoInteresDisponibles.find(publico => publico.label === label);
         return publico?.value || '';
       }
-    
+
       registrarIndicador() {
         if (this.cargando) return;
 
@@ -208,7 +224,7 @@ export class RegisterNewIndicatorComponent implements OnInit {
           next: (response) => {
             this.exito = 'Indicador creado exitosamente';
             this.indicadorCreado.emit(this.indicador);
-            
+
             // Esperar un momento antes de cerrar para que se vea el mensaje
             setTimeout(() => {
               this.limpiarFormulario();
@@ -219,7 +235,7 @@ export class RegisterNewIndicatorComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error completo:', JSON.stringify(error));
-            
+
             // Extraer el mensaje de error de diferentes formatos posibles
             let mensajeError = 'Error al registrar el indicador. Por favor, intente nuevamente.';
 
@@ -254,7 +270,7 @@ export class RegisterNewIndicatorComponent implements OnInit {
           modal.hide();
         }
       }
-    
+
       limpiarFormulario() {
         this.indicador = {
           nombre: '',
@@ -269,5 +285,5 @@ export class RegisterNewIndicatorComponent implements OnInit {
         this.error = '';
         this.exito = '';
       }
-    
+
 }

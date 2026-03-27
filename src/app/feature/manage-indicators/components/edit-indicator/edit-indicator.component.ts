@@ -20,7 +20,7 @@ export class EditIndicatorComponent implements OnInit, OnChanges {
   @Input() indicadorAEditar: IndicatorResponse | null = null;
   @Output() indicadorModificado = new EventEmitter<IndicatorResponse>();
   @Output() indicadorCancelado = new EventEmitter<void>();
-    
+
       indicador = {
         nombre: '',
         tipoIndicador: '',
@@ -71,6 +71,7 @@ export class EditIndicatorComponent implements OnInit, OnChanges {
 
       ngOnChanges(changes: SimpleChanges): void {
         if (changes['indicadorAEditar'] && changes['indicadorAEditar'].currentValue) {
+          this.cargarProyectos();
           this.cargarDatosIndicador();
         }
       }
@@ -151,7 +152,7 @@ export class EditIndicatorComponent implements OnInit, OnChanges {
           this.cargando = false;
         }
       }
-    
+
       modificarIndicador() {
         if (this.cargando || !this.indicadorAEditar) return;
 
@@ -178,13 +179,13 @@ export class EditIndicatorComponent implements OnInit, OnChanges {
         this.indicatorService.modificarIndicador(this.indicadorAEditar.identificador, indicadorRequest).subscribe({
           next: (response) => {
             this.exito = 'Indicador modificado exitosamente';
-            
+
             // Crear el objeto de respuesta actualizado
             if (!this.indicadorAEditar) {
               this.cargando = false;
               return;
             }
-            
+
             const indicadorModificado: IndicatorResponse = {
               identificador: this.indicadorAEditar.identificador,
               nombre: this.indicador.nombre,
@@ -203,10 +204,10 @@ export class EditIndicatorComponent implements OnInit, OnChanges {
           },
           error: (error) => {
             console.error('Error al modificar el indicador:', error);
-            
+
             // Extraer el mensaje de error
             let mensajeError = 'Error al modificar el indicador. Por favor, intente nuevamente.';
-            
+
             if (error?.error) {
               if (typeof error.error === 'string') {
                 mensajeError = error.error;
@@ -228,7 +229,7 @@ export class EditIndicatorComponent implements OnInit, OnChanges {
       cancelar() {
         this.indicadorCancelado.emit();
       }
-    
+
       limpiarFormulario() {
         this.indicador = {
           nombre: '',
@@ -251,7 +252,7 @@ export class EditIndicatorComponent implements OnInit, OnChanges {
           this.publicoInteresFiltrados = [];
           return;
         }
-        
+
         if (term.trim() === '') {
           this.publicoInteresFiltrados = [...this.publicoInteresDisponibles];
         } else {
@@ -269,7 +270,7 @@ export class EditIndicatorComponent implements OnInit, OnChanges {
         if (!this.indicador.publicosInteres) {
           this.indicador.publicosInteres = [];
         }
-        
+
         const index = this.indicador.publicosInteres.indexOf(value);
         if (index > -1) {
           this.indicador.publicosInteres.splice(index, 1);
