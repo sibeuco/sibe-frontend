@@ -56,8 +56,12 @@ export class DateSelectorComponent implements OnInit, OnChanges {
 
     this.activityService.consultarEjecuciones(this.actividad.identificador)
       .pipe(
-        catchError(() => {
-          this.error = 'Error al cargar las fechas programadas.';
+        catchError((err) => {
+          if (err?.status === 403 && err?.error?.mensaje) {
+            this.error = err.error.mensaje;
+          } else {
+            this.error = 'Error al cargar las fechas programadas.';
+          }
           this.cargando = false;
           this.ejecuciones = [];
           this.ejecucionesPorId.clear();

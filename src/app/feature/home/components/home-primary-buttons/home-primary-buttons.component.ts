@@ -34,7 +34,11 @@ export class HomePrimaryButtonsComponent {
       next: () => this.generandoExcel = false,
       error: (error) => {
         console.error('Error al generar el informe:', error);
-        alert('Error al generar el informe. Por favor, intente nuevamente.');
+        if (error?.status === 403 && error?.error?.mensaje) {
+          alert(error.error.mensaje);
+        } else {
+          alert('Error al generar el informe. Por favor, intente nuevamente.');
+        }
         this.generandoExcel = false;
       }
     });

@@ -19,7 +19,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   // Inputs para cargar desde backend
   @Input() nombreArea: string = '';
   @Input() tipoEstructura: 'direccion' | 'area' | 'subarea' = 'direccion';
-  
+
   @Input() rutaRedireccion: string = '';
   @Input() terminoBusqueda: string = '';
   @Output() actividadSeleccionada = new EventEmitter<any>();
@@ -40,7 +40,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
 
   // Mapa para almacenar fechas programadas más cercanas (identificador actividad -> fecha)
   fechasProgramadasMap: Map<string, Date | null> = new Map();
-  
+
   // Mapa para almacenar ejecuciones de cada actividad (identificador actividad -> ejecuciones)
   ejecucionesMap: Map<string, ActivityExecutionResponse[]> = new Map();
 
@@ -68,7 +68,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
         this.cargarActividades();
       }
     }
-    
+
     if (changes['terminoBusqueda']) {
       this.aplicarFiltrosYOrdenamiento();
     }
@@ -133,8 +133,12 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
               return of([]);
           }
         }),
-        catchError(() => {
-          this.error = 'Error al cargar las actividades. Por favor, intente nuevamente.';
+        catchError((err) => {
+          if (err?.status === 403 && err?.error?.mensaje) {
+            this.error = err.error.mensaje;
+          } else {
+            this.error = 'Error al cargar las actividades. Por favor, intente nuevamente.';
+          }
           return of([]);
         })
       )
@@ -175,14 +179,14 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
       this.activityService.consultarEjecuciones(actividad.identificador).pipe(
         map((ejecuciones: ActivityExecutionResponse[]) => {
           const fechaMasCercana = this.calcularFechaMasCercana(ejecuciones);
-          return { 
-            identificador: actividad.identificador, 
+          return {
+            identificador: actividad.identificador,
             fecha: fechaMasCercana,
             ejecuciones: ejecuciones
           };
         }),
-        catchError(() => of({ 
-          identificador: actividad.identificador, 
+        catchError(() => of({
+          identificador: actividad.identificador,
           fecha: null,
           ejecuciones: [] as ActivityExecutionResponse[]
         }))
@@ -272,17 +276,17 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   private aplicarFiltrosYOrdenamiento(): void {
     // Primero aplicar filtro de búsqueda
     let actividadesFiltradas = this.actividadesCargadas;
-    
+
     if (this.terminoBusqueda && this.terminoBusqueda.trim() !== '') {
       const termino = this.terminoBusqueda.toLowerCase().trim();
-      actividadesFiltradas = this.actividadesCargadas.filter(actividad => 
+      actividadesFiltradas = this.actividadesCargadas.filter(actividad =>
         actividad.nombre.toLowerCase().includes(termino) ||
         (actividad.nombreColaborador && actividad.nombreColaborador.toLowerCase().includes(termino)) ||
         this.calcularEstado(actividad).toLowerCase().includes(termino) ||
         (this.obtenerFechaProgramada(actividad) && this.obtenerFechaProgramada(actividad)!.toLocaleDateString().toLowerCase().includes(termino))
       );
     }
-    
+
     // Luego aplicar ordenamiento
     this.actividadesOrdenadas = [...actividadesFiltradas];
     if (this.columnaOrdenamiento) {
@@ -302,7 +306,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
       this.columnaOrdenamiento = columna;
       this.direccionOrdenamiento = 'asc';
     }
-    
+
     this.aplicarFiltrosYOrdenamiento();
   }
 
@@ -392,15 +396,15 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
    */
   calcularEstado(actividad: ActivityResponse): EstadoActividad {
     const ejecuciones = this.ejecucionesMap.get(actividad.identificador);
-    
+
     // Si no hay ejecuciones, retornar PENDIENTE por defecto
     if (!ejecuciones || ejecuciones.length === 0) {
       return EstadoActividad.PENDIENTE;
     }
 
     // Verificar si todas las ejecuciones están FINALIZADAS
-    const todasFinalizadas = ejecuciones.every(ej => 
-      ej.estadoActividad && 
+    const todasFinalizadas = ejecuciones.every(ej =>
+      ej.estadoActividad &&
       ej.estadoActividad.nombre === EstadoActividad.FINALIZADO
     );
 
@@ -426,10 +430,10 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   realizarActividad(actividad: ActivityResponse): void {
     // Emitir evento para que el componente padre maneje la lógica
     this.actividadSeleccionada.emit(actividad);
-    
+
     // Configurar datos para el modal
     this.actividadSeleccionadaParaModal = actividad;
-    
+
     // Abrir el modal
     this.abrirModalFechas();
   }
