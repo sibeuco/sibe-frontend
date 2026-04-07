@@ -172,8 +172,6 @@ export class ExcelReportService {
     fila['Participante Facultad'] = participante.facultad || '';
     fila['Participante Año Ingreso'] = participante.annoIngreso || '';
     fila['Participante Semestre Actual'] = participante.semestreActual || '';
-    fila['Participante Créditos Aprobados'] = participante.creditosAprobados || '';
-    fila['Participante Promedio General'] = participante.promedioGeneral || '';
     fila['Participante Estado Académico'] = participante.estadoAcademico || '';
     fila['Participante Modalidad Estudio'] = participante.modalidadEstudio || '';
     fila['Participante Tiempo Llegada Universidad'] = participante.tiempoLlegadaUniversidad || '';
@@ -222,8 +220,6 @@ export class ExcelReportService {
       'Participante Facultad': '',
       'Participante Año Ingreso': '',
       'Participante Semestre Actual': '',
-      'Participante Créditos Aprobados': '',
-      'Participante Promedio General': '',
       'Participante Estado Académico': '',
       'Participante Modalidad Estudio': '',
       'Participante Tiempo Llegada Universidad': '',
