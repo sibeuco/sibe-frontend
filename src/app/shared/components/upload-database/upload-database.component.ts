@@ -19,7 +19,7 @@ export class UploadDatabaseComponent {
   mensajeExito: string = '';
   cargando: boolean = false;
   tipoBaseDatos: 'empleados' | 'estudiantes' = 'empleados';
-  
+
   // Configuracion de validaciones
   private readonly TAMANO_MAXIMO_MB = 40;
   private readonly TAMANO_MAXIMO_BYTES = this.TAMANO_MAXIMO_MB * 1024 * 1024;
@@ -34,9 +34,9 @@ export class UploadDatabaseComponent {
   onFileSelected(event: any) {
     this.mensajeError = '';
     this.mensajeExito = '';
-    
+
     const archivo: File = event.target.files[0];
-    
+
     if (archivo) {
 
       if (!archivo.name) {
@@ -105,7 +105,7 @@ export class UploadDatabaseComponent {
     carga$.subscribe({
       next: (respuesta) => {
         this.cargando = false;
-        
+
         if (respuesta && respuesta.mensaje) {
           this.mensajeExito = respuesta.mensaje;
         } else if (respuesta && respuesta.message) {
@@ -113,13 +113,13 @@ export class UploadDatabaseComponent {
         } else {
           this.mensajeExito = 'Archivo cargado exitosamente en la base de datos';
         }
-        
+
         // Emitir el archivo al componente padre (por compatibilidad)
         this.archivoSeleccionado.emit(this.archivoActual!);
-        
+
         // Emitir la respuesta del backend
         this.cargaCompleta.emit(respuesta);
-        
+
         setTimeout(() => {
           this.cerrarModal();
           this.limpiarFormulario();
@@ -127,15 +127,15 @@ export class UploadDatabaseComponent {
       },
       error: (error) => {
         this.cargando = false;
-        
+
         if (error.status === 0) {
           this.mensajeError = 'No se pudo conectar con el servidor';
         } else if (error.status === 400) {
           this.mensajeError = error.error?.mensaje || error.error?.message || 'Error en la validación del archivo';
         } else if (error.status === 401) {
-          this.mensajeError = 'No tienes autorización para realizar esta acción';
+          this.mensajeError = error.error?.mensaje || 'No tienes permisos para realizar esta acción. Tu rol no permite acceder a este recurso.';
         } else if (error.status === 403) {
-          this.mensajeError = 'Acceso denegado para esta operación';
+          this.mensajeError = error.error?.mensaje || 'No tienes permisos para realizar esta acción. Tu rol no permite acceder a este recurso.';
         } else if (error.status === 500) {
           this.mensajeError = error.error?.mensaje || error.error?.message || 'Error del servidor al procesar el archivo';
         } else {
@@ -188,8 +188,8 @@ export class UploadDatabaseComponent {
   }
 
   obtenerTituloModal(): string {
-    return this.tipoBaseDatos === 'empleados' 
-      ? 'Cargar Base de Datos de Empleados' 
+    return this.tipoBaseDatos === 'empleados'
+      ? 'Cargar Base de Datos de Empleados'
       : 'Cargar Base de Datos de Estudiantes';
   }
 

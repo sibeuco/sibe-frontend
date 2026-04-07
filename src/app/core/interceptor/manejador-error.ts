@@ -16,6 +16,9 @@ export class ManejadorError implements ErrorHandler {
       if (!navigator.onLine) {
         return HTTP_ERRORES_CODIGO['NO_HAY_INTERNET'];
       }
+      if (error.status === 403 && error.error?.mensaje) {
+        return error.error.mensaje;
+      }
       if (Object.prototype.hasOwnProperty.call(error,'status') && !Object.prototype.hasOwnProperty.call(error.error,'mensaje')) {
         return this.obtenerErrorHttpCode(error.status.toString());
       }

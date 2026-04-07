@@ -257,7 +257,7 @@ describe('UploadDatabaseComponent', () => {
         status: 401
       })));
       component.cargarArchivo();
-      expect(component.mensajeError).toContain('autorización');
+      expect(component.mensajeError).toContain('permisos');
     });
 
     it('should handle 403 error', () => {
@@ -265,7 +265,7 @@ describe('UploadDatabaseComponent', () => {
         status: 403
       })));
       component.cargarArchivo();
-      expect(component.mensajeError).toContain('denegado');
+      expect(component.mensajeError).toContain('permisos');
     });
 
     it('should handle generic error status', () => {
@@ -434,7 +434,7 @@ describe('UploadDatabaseComponent', () => {
         status: 401
       })));
       component.cargarArchivo();
-      expect(component.mensajeError).toContain('autorización');
+      expect(component.mensajeError).toContain('permisos');
     });
 
     it('should handle 403 error for estudiantes', () => {
@@ -442,7 +442,7 @@ describe('UploadDatabaseComponent', () => {
         status: 403
       })));
       component.cargarArchivo();
-      expect(component.mensajeError).toContain('denegado');
+      expect(component.mensajeError).toContain('permisos');
     });
 
     it('should handle 500 error for estudiantes', () => {
