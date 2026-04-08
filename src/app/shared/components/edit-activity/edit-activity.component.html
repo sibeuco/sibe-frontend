@@ -27,7 +27,7 @@
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="actividadForm.nombre" [disabled]="soloColaboradorEditable" required />
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -38,7 +38,7 @@
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <input type="text" class="form-control" id="objetivo" name="objetivo" [(ngModel)]="actividadForm.objetivo" [disabled]="soloColaboradorEditable" required />
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -49,7 +49,7 @@
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <input type="text" class="form-control" id="semestre" name="semestre" [(ngModel)]="actividadForm.semestre" [disabled]="soloColaboradorEditable" required />
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -60,7 +60,7 @@
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <input type="text" class="form-control" id="ruta" name="ruta" [(ngModel)]="actividadForm.rutaInsumos" [disabled]="soloColaboradorEditable" required />
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -70,8 +70,8 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="indicador" name="indicador" 
-                                    [(ngModel)]="indicadorSeleccionado" 
+                            <select class="form-select" id="indicador" name="indicador"
+                                    [(ngModel)]="indicadorSeleccionado"
                                     (change)="actividadForm.indicador = indicadorSeleccionado"
                                     [disabled]="soloColaboradorEditable"
                                     required>
@@ -80,7 +80,7 @@
                                     {{ indicador.nombre }} - {{ indicador.tipoIndicador.tipologiaIndicador }}
                                 </option>
                             </select>
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -90,16 +90,16 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="colaborador" name="colaborador" 
-                                    [(ngModel)]="colaboradorSeleccionado" 
+                            <select class="form-select" id="colaborador" name="colaborador"
+                                    [(ngModel)]="colaboradorSeleccionado"
                                     (change)="actividadForm.colaborador = colaboradorSeleccionado"
                                     required>
                                 <option value="">Seleccione un colaborador</option>
                                 <option *ngFor="let usuario of usuarios" [value]="usuario.identificador">
-                                    {{ usuario.nombres }} {{ usuario.apellidos }} - {{ usuario.correo }}
+                                    {{ usuario.nombres }} {{ usuario.apellidos }} - {{ usuario.correo }}{{ usuario.area?.nombre ? ' - ' + usuario.area.nombre : '' }}
                                 </option>
                             </select>
-                        </div>     
+                        </div>
                     </div>
 
                     <!-- Mostrar información del área si se pasa desde el padre -->
@@ -115,7 +115,7 @@
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <input type="text" class="form-control" [value]="nombreArea" readonly />
-                        </div>     
+                        </div>
                     </div>
 
                     <!-- Campos de selección solo si NO se pasan desde el padre -->
@@ -126,8 +126,8 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="tipoEstructura" name="tipoEstructura" 
-                                    [(ngModel)]="tipoEstructuraSeleccionado" 
+                            <select class="form-select" id="tipoEstructura" name="tipoEstructura"
+                                    [(ngModel)]="tipoEstructuraSeleccionado"
                                     (change)="onTipoEstructuraChange()"
                                     [disabled]="soloColaboradorEditable"
                                     required>
@@ -136,7 +136,7 @@
                                 <option value="area">Área</option>
                                 <option value="subarea">Subárea</option>
                             </select>
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3" *ngIf="(!nombreArea || !tipoEstructuraSeleccionado) && tipoEstructuraSeleccionado && listaFiltrada && listaFiltrada.length > 0">
@@ -150,8 +150,8 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <select class="form-select" id="area" name="area" 
-                                    [(ngModel)]="areaSeleccionada" 
+                            <select class="form-select" id="area" name="area"
+                                    [(ngModel)]="areaSeleccionada"
                                     (change)="actividadForm.area = areaSeleccionada; actividadForm.tipoArea = determinarTipoArea()"
                                     [disabled]="soloColaboradorEditable"
                                     required>
@@ -160,7 +160,7 @@
                                     {{ item.nombre }}
                                 </option>
                             </select>
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -172,33 +172,33 @@
                                 </small>
                             </div>
                         </div>
-                        
+
                         <!-- Input de fecha con botón agregar -->
                         <div class="d-flex justify-content-center align-items-center mb-2">
                             <div class="fecha-input-container d-flex align-items-center" style="width: 85%;">
-                                <input 
-                                    type="date" 
-                                    class="form-control" 
-                                    id="fechaTemporal" 
-                                    name="fechaTemporal" 
+                                <input
+                                    type="date"
+                                    class="form-control"
+                                    id="fechaTemporal"
+                                    name="fechaTemporal"
                                     [(ngModel)]="fechaTemporal"
                                     [min]="minFechaProgramada"
                                     style="flex: 1;" />
-                                <button 
-                                    type="button" 
-                                    class="btn btn-agregar btn-sm ms-2" 
+                                <button
+                                    type="button"
+                                    class="btn btn-agregar btn-sm ms-2"
                                     (click)="agregarFecha()"
                                     title="Agregar fecha a la lista">
                                     + Agregar
                                 </button>
                             </div>
                         </div>
-                        
+
                         <!-- Mensaje de error -->
                         <div *ngIf="errorFecha" class="alert alert-danger mt-2 mx-auto" style="width: 85%;">
                             {{ errorFecha }}
                         </div>
-                        
+
                         <!-- Lista de fechas agregadas -->
                         <div *ngIf="actividadForm.fechasProgramadas.length > 0" class="fechas-lista mt-2">
                             <div class="d-flex justify-content-center">
@@ -207,14 +207,14 @@
                                         <strong>Fechas agregadas ({{ actividadForm.fechasProgramadas.length }}):</strong>
                                     </small>
                                     <div class="d-flex flex-wrap gap-2 mt-2">
-                                        <span *ngFor="let fecha of actividadForm.fechasProgramadas; let i = index; trackBy: trackByIndex" 
+                                        <span *ngFor="let fecha of actividadForm.fechasProgramadas; let i = index; trackBy: trackByIndex"
                                               class="badge bg-secondary d-flex align-items-center">
                                             <span>{{ fecha.fechaProgramada }}</span>
                                             <span *ngIf="mostrarCandado(fecha)" class="ms-2" style="font-size: 0.7rem;" title="Fecha existente (no se puede eliminar)">🔒</span>
-                                            <button 
+                                            <button
                                                 *ngIf="esFechaEditable(fecha)"
-                                                type="button" 
-                                                class="btn-close btn-close-white ms-2" 
+                                                type="button"
+                                                class="btn-close btn-close-white ms-2"
                                                 (click)="eliminarFecha(i)"
                                                 aria-label="Eliminar fecha"
                                                 style="font-size: 0.6rem; padding: 0.2rem;">
@@ -224,12 +224,12 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Campo oculto para validación requerida -->
-                        <input 
-                            type="hidden" 
-                            name="fechasValidacion" 
-                            [ngModel]="actividadForm.fechasProgramadas.length > 0 ? 'valid' : ''" 
+                        <input
+                            type="hidden"
+                            name="fechasValidacion"
+                            [ngModel]="actividadForm.fechasProgramadas.length > 0 ? 'valid' : ''"
                             [required]="!soloColaboradorEditable" />
                     </div>
 
