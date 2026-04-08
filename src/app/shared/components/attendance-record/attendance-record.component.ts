@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { Modal } from 'bootstrap';
 import { UniversityMemberService } from '../../service/university-member.service';
 import { UniversityMemberResponse } from '../../model/university-member.model';
@@ -8,6 +8,7 @@ import { ActivityService } from '../../service/activity.service';
 import { ActivityExecutionResponse } from '../../model/activity-execution.model';
 import { EstadoActividad, ActivityResponse } from '../../model/activity.model';
 import { ParticipantRequest, ParticipantResponse } from '../../model/participant.model';
+import { ExternalParticipantComponent } from '../external-participant/external-participant.component';
 
 @Component({
   selector: 'app-attendance-record',
@@ -15,7 +16,9 @@ import { ParticipantRequest, ParticipantResponse } from '../../model/participant
   styleUrls: ['./attendance-record.component.scss']
 })
 export class AttendanceRecordComponent implements OnInit, OnChanges {
-  
+
+  @ViewChild(ExternalParticipantComponent) private externalParticipantComp!: ExternalParticipantComponent;
+
   @Input() idActividad: number = 0;
   @Input() actividad: any = null;
   @Input() usuarioLoggeado: any = null;
@@ -25,7 +28,7 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   // Variables del formulario
   rfidSearch: string = '';
   documentoSearch: string = '';
-  
+
   // Variables de estado
   buscando: boolean = false;
   guardando: boolean = false;
@@ -36,7 +39,7 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   iniciandoActividad: boolean = false;
   cancelandoActividad: boolean = false;
   cargandoParticipantesFinalizados: boolean = false;
-  
+
   // Lista de participantes
   miembrosAsistencia: UniversityMemberResponse[] = [];
 
@@ -160,6 +163,9 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   }
 
   private abrirModalParticipanteExterno(): void {
+    if (this.externalParticipantComp) {
+      this.externalParticipantComp.precargarDocumento(this.documentoSearch?.trim() ?? '');
+    }
     const modalElement = document.getElementById('external-participant-modal');
     if (modalElement) {
       const modal = new Modal(modalElement);
@@ -404,13 +410,13 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     try {
       const data = JSON.parse(raw) as { actividad?: ActivityResponse | null; ejecucion?: ActivityExecutionResponse | null };
       const ejecucionAnteriorId = this.ejecucionSeleccionadaId;
-      
+
       this.actividadCargada = data?.actividad || null;
-      
+
       if (!this.actividad && this.actividadCargada) {
         this.actividad = this.actividadCargada;
       }
-      
+
       this.ejecucionSeleccionada = data?.ejecucion || null;
       this.ejecucionSeleccionadaId = this.ejecucionSeleccionada?.identificador || null;
       const estado = this.ejecucionSeleccionada?.estadoActividad?.nombre;
