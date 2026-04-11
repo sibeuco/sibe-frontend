@@ -32,8 +32,9 @@ describe('HeaderComponent', () => {
   };
 
   beforeEach(() => {
-    mockStateService = jasmine.createSpyObj('StateService', ['select', 'deleteProperty']);
+    mockStateService = jasmine.createSpyObj('StateService', ['select', 'deleteProperty', 'getState']);
     mockStateService.select.and.returnValue(of(mockSession));
+    mockStateService.getState.and.returnValue(mockSession);
 
     mockUserService = jasmine.createSpyObj('UserService', ['consultarUsuarioPorCorreo', 'modificarClave']);
 
@@ -123,7 +124,6 @@ describe('HeaderComponent', () => {
   });
 
   it('should handle password update success flow', fakeAsync(() => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ identificador: '123', correo: 'test@test.com' } as any));
     mockUserService.modificarClave.and.returnValue(of({ valor: 'ok' } as any));
 
     // Provide mock changePasswordComponent so the setTimeout callback doesn't fail
@@ -131,7 +131,7 @@ describe('HeaderComponent', () => {
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
 
-    expect(mockUserService.consultarUsuarioPorCorreo).toHaveBeenCalledWith('test@test.com');
+    expect(mockStateService.getState).toHaveBeenCalledWith(StateProps.USER_SESSION);
     expect(mockUserService.modificarClave).toHaveBeenCalled();
     expect(component.mensajeExito).toBe('Contraseña modificada exitosamente');
     expect(component.cambiandoContrasena).toBeFalse();
@@ -141,7 +141,6 @@ describe('HeaderComponent', () => {
   }));
 
   it('should set mensajeError when password update fails', () => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ identificador: '123', correo: 'test@test.com' } as any));
     mockUserService.modificarClave.and.returnValue(throwError(() => ({ error: { mensaje: 'Clave incorrecta' } })));
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
@@ -150,35 +149,25 @@ describe('HeaderComponent', () => {
     expect(component.cambiandoContrasena).toBeFalse();
   });
 
-  it('should set mensajeError when user lookup fails', () => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(throwError(() => new Error('fail')));
+  it('should set mensajeError when session is undefined', () => {
+    mockStateService.getState.and.returnValue(undefined);
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
 
-    expect(component.mensajeError).toBe('Error al obtener la información del usuario');
+    expect(component.mensajeError).toBe('No se pudo obtener la información de sesión del usuario');
     expect(component.cambiandoContrasena).toBeFalse();
   });
 
-  it('should set mensajeError when user response has no identificador', () => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ correo: 'test@test.com' } as any));
+  it('should set mensajeError when session has no identificador', () => {
+    mockStateService.getState.and.returnValue({ logged: true } as any);
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
 
-    expect(component.mensajeError).toBe('No se pudo obtener el identificador del usuario');
+    expect(component.mensajeError).toBe('No se pudo obtener la información de sesión del usuario');
     expect(component.cambiandoContrasena).toBeFalse();
-  });
-
-  it('should set mensajeError when session has no correo', () => {
-    mockStateService.select.and.returnValue(of({ logged: true } as any));
-    component.ngOnInit();
-
-    component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
-
-    expect(component.mensajeError).toBe('No se pudo obtener el correo del usuario');
   });
 
   it('should handle error.error as string', () => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ identificador: '123' } as any));
     mockUserService.modificarClave.and.returnValue(throwError(() => ({ error: 'Error string directo' })));
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
@@ -187,7 +176,6 @@ describe('HeaderComponent', () => {
   });
 
   it('should handle error.error.message', () => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ identificador: '123' } as any));
     mockUserService.modificarClave.and.returnValue(throwError(() => ({ error: { message: 'Msg error' } })));
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
@@ -196,7 +184,6 @@ describe('HeaderComponent', () => {
   });
 
   it('should handle error.error.error as string', () => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ identificador: '123' } as any));
     mockUserService.modificarClave.and.returnValue(throwError(() => ({ error: { error: 'Sub-error str' } })));
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
@@ -205,7 +192,6 @@ describe('HeaderComponent', () => {
   });
 
   it('should handle error.error.valor', () => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ identificador: '123' } as any));
     mockUserService.modificarClave.and.returnValue(throwError(() => ({ error: { valor: 'Valor error' } })));
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
@@ -214,7 +200,6 @@ describe('HeaderComponent', () => {
   });
 
   it('should handle error.message fallback', () => {
-    mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ identificador: '123' } as any));
     mockUserService.modificarClave.and.returnValue(throwError(() => ({ message: 'Top-level message' })));
 
     component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
@@ -261,7 +246,6 @@ describe('HeaderComponent', () => {
 
   describe('onContrasenaActualizada timeout handler', () => {
     it('should set error on timeout', fakeAsync(() => {
-      mockUserService.consultarUsuarioPorCorreo.and.returnValue(of({ identificador: '123' } as any));
       // Make modificarClave never complete (simulate timeout)
       mockUserService.modificarClave.and.returnValue(new (require('rxjs').Observable)(() => {}));
       component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
@@ -269,14 +253,5 @@ describe('HeaderComponent', () => {
       expect(component.mensajeError).toContain('Tiempo de espera agotado');
       expect(component.cambiandoContrasena).toBeFalse();
     }));
-  });
-
-  describe('onContrasenaActualizada consultarUsuarioPorCorreo error', () => {
-    it('should set error when user lookup fails', () => {
-      mockUserService.consultarUsuarioPorCorreo.and.returnValue(throwError(() => new Error('fail')));
-      component.onContrasenaActualizada({ contrasenaActual: 'old', nuevaContrasena: 'new' });
-      expect(component.mensajeError).toBe('Error al obtener la información del usuario');
-      expect(component.cambiandoContrasena).toBeFalse();
-    });
   });
 });

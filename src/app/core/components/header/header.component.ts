@@ -16,15 +16,15 @@ import { ChangePasswordComponent } from 'src/app/shared/components/change-passwo
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-  
+
   @ViewChild('changePasswordComponent') changePasswordComponent!: ChangePasswordComponent;
-  
+
   userSession$!: Observable<UserSession | undefined>;
-  
+
   isLogged$!: Observable<boolean>;
-  
+
   mostrarDropdown: boolean = false;
-  
+
   // Propiedades para el cambio de contraseña
   cambiandoContrasena: boolean = false;
   mensajeError: string = '';
@@ -57,7 +57,7 @@ export class HeaderComponent implements OnInit {
     this.mensajeError = '';
     this.mensajeExito = '';
     this.cambiandoContrasena = false;
-    
+
     const modalElement = document.getElementById('change-password-modal');
     if (modalElement) {
       const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
@@ -70,93 +70,69 @@ export class HeaderComponent implements OnInit {
     this.mensajeError = '';
     this.mensajeExito = '';
     this.cambiandoContrasena = true;
-    
+
     // Timeout de seguridad para evitar carga infinita
     const timeoutId = setTimeout(() => {
       this.cambiandoContrasena = false;
       this.mensajeError = 'Tiempo de espera agotado. Por favor, intente nuevamente.';
     }, 30000);
-    
-    // Obtener el correo del usuario desde el UserSession
-    this.userSession$.subscribe({
-      next: (userSession) => {
-        if (userSession && userSession.correo) {
-          // Consultar el usuario por correo para obtener el identificador
-          this.userService.consultarUsuarioPorCorreo(userSession.correo).subscribe({
-            next: (userResponse) => {
-              if (userResponse && userResponse.identificador) {
-                // Construir el EditPasswordRequest con la estructura correcta
-                const editPasswordRequest: EditPasswordRequest = {
-                  identificador: userResponse.identificador,
-                  claveAntigua: response.contrasenaActual,
-                  claveNueva: response.nuevaContrasena
-                };
-                
-                // Llamar al servicio de modificación de contraseña
-                this.userService.modificarClave(editPasswordRequest).subscribe({
-                  next: (result) => {
-                    clearTimeout(timeoutId);
-                    this.cambiandoContrasena = false;
-                    this.mensajeExito = 'Contraseña modificada exitosamente';
-                    
-                    // Cerrar el modal después de un breve delay
-                    setTimeout(() => {
-                      if (this.changePasswordComponent) {
-                        this.changePasswordComponent.cerrarModal();
-                        this.changePasswordComponent.limpiarFormulario();
-                      }
-                    }, 2000);
-                  },
-                  error: (error) => {
-                    clearTimeout(timeoutId);
-                    this.cambiandoContrasena = false;
-                    
-                    // Extraer el mensaje de error del backend
-                    let mensajeError = 'Error al modificar la contraseña. Por favor, intente nuevamente.';
-                    
-                    if (error.error) {
-                      if (typeof error.error === 'string') {
-                        mensajeError = error.error;
-                      } else if (error.error.mensaje) {
-                        mensajeError = error.error.mensaje;
-                      } else if (error.error.message) {
-                        mensajeError = error.error.message;
-                      } else if (error.error.error) {
-                        mensajeError = typeof error.error.error === 'string' 
-                          ? error.error.error 
-                          : mensajeError;
-                      } else if (error.error.valor) {
-                        mensajeError = error.error.valor;
-                      }
-                    } else if (error.message) {
-                      mensajeError = error.message;
-                    }
-                    
-                    this.mensajeError = mensajeError;
-                  }
-                });
-              } else {
-                clearTimeout(timeoutId);
-                this.cambiandoContrasena = false;
-                this.mensajeError = 'No se pudo obtener el identificador del usuario';
-              }
-            },
-            error: (error) => {
-              clearTimeout(timeoutId);
-              this.cambiandoContrasena = false;
-              this.mensajeError = 'Error al obtener la información del usuario';
-            }
-          });
-        } else {
-          clearTimeout(timeoutId);
-          this.cambiandoContrasena = false;
-          this.mensajeError = 'No se pudo obtener el correo del usuario';
-        }
+
+    // Obtener la sesión de forma síncrona para evitar suscripciones que queden vivas
+    const userSession = this.stateService.getState(StateProps.USER_SESSION) as UserSession | undefined;
+
+    if (!userSession || !userSession.identificador) {
+      clearTimeout(timeoutId);
+      this.cambiandoContrasena = false;
+      this.mensajeError = 'No se pudo obtener la información de sesión del usuario';
+      return;
+    }
+
+    const editPasswordRequest: EditPasswordRequest = {
+      identificador: userSession.identificador,
+      claveAntigua: response.contrasenaActual,
+      claveNueva: response.nuevaContrasena
+    };
+
+    this.userService.modificarClave(editPasswordRequest).subscribe({
+      next: (result) => {
+        clearTimeout(timeoutId);
+        this.cambiandoContrasena = false;
+        this.mensajeExito = 'Contraseña modificada exitosamente';
+
+        // Cerrar el modal después de un breve delay
+        setTimeout(() => {
+          if (this.changePasswordComponent) {
+            this.changePasswordComponent.cerrarModal();
+            this.changePasswordComponent.limpiarFormulario();
+          }
+        }, 2000);
       },
       error: (error) => {
         clearTimeout(timeoutId);
         this.cambiandoContrasena = false;
-        this.mensajeError = 'Error al obtener la información de sesión';
+
+        // Extraer el mensaje de error del backend
+        let mensajeError = 'Error al modificar la contraseña. Por favor, intente nuevamente.';
+
+        if (error.error) {
+          if (typeof error.error === 'string') {
+            mensajeError = error.error;
+          } else if (error.error.mensaje) {
+            mensajeError = error.error.mensaje;
+          } else if (error.error.message) {
+            mensajeError = error.error.message;
+          } else if (error.error.error) {
+            mensajeError = typeof error.error.error === 'string'
+              ? error.error.error
+              : mensajeError;
+          } else if (error.error.valor) {
+            mensajeError = error.error.valor;
+          }
+        } else if (error.message) {
+          mensajeError = error.message;
+        }
+
+        this.mensajeError = mensajeError;
       }
     });
   }
@@ -176,7 +152,7 @@ export class HeaderComponent implements OnInit {
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
     const dropdown = target.closest('.dropdown');
-    
+
     if (!dropdown) {
       this.cerrarDropdown();
     }
