@@ -157,28 +157,28 @@ describe('PasswordRecoveryComponent', () => {
     });
 
     it('should show error when password is too short', () => {
-      component.nuevaContrasena = '12345';
-      component.confirmarContrasena = '12345';
+      component.nuevaContrasena = 'Ab1cd';
+      component.confirmarContrasena = 'Ab1cd';
       component.cambiarContrasena();
-      expect(component.mensajeError).toContain('al menos 6 caracteres');
+      expect(component.mensajeError).toContain('al menos 8 caracteres');
     });
 
     it('should call service with valid passwords', () => {
       component.correo = 'test@example.com';
-      component.nuevaContrasena = 'newpass123';
-      component.confirmarContrasena = 'newpass123';
+      component.nuevaContrasena = 'Newpass123';
+      component.confirmarContrasena = 'Newpass123';
       component.cambiarContrasena();
       expect(mockPasswordService.recuperarClave).toHaveBeenCalledWith({
         correo: 'test@example.com',
-        clave: 'newpass123'
+        clave: 'Newpass123'
       });
     });
 
     it('should show success and redirect on success', () => {
       spyOn(router, 'navigate');
       component.correo = 'test@example.com';
-      component.nuevaContrasena = 'newpass123';
-      component.confirmarContrasena = 'newpass123';
+      component.nuevaContrasena = 'Newpass123';
+      component.confirmarContrasena = 'Newpass123';
       component.cambiarContrasena();
       expect(component.mensajeExito).toContain('exitosamente');
     });
@@ -187,8 +187,8 @@ describe('PasswordRecoveryComponent', () => {
       mockPasswordService.recuperarClave.and.returnValue(throwError(() => ({
         status: 0
       })));
-      component.nuevaContrasena = 'newpass123';
-      component.confirmarContrasena = 'newpass123';
+      component.nuevaContrasena = 'Newpass123';
+      component.confirmarContrasena = 'Newpass123';
       component.cambiarContrasena();
       expect(component.mensajeError).toContain('No se pudo conectar');
     });
@@ -277,32 +277,32 @@ describe('PasswordRecoveryComponent', () => {
 
     it('should handle 400 error on cambiarContrasena', () => {
       mockPasswordService.recuperarClave.and.returnValue(throwError(() => ({ status: 400, error: { mensaje: 'Bad clave' } })));
-      component.nuevaContrasena = 'newpass123';
-      component.confirmarContrasena = 'newpass123';
+      component.nuevaContrasena = 'Newpass123';
+      component.confirmarContrasena = 'Newpass123';
       component.cambiarContrasena();
       expect(component.mensajeError).toBe('Bad clave');
     });
 
     it('should handle 404 error on cambiarContrasena', () => {
       mockPasswordService.recuperarClave.and.returnValue(throwError(() => ({ status: 404 })));
-      component.nuevaContrasena = 'newpass123';
-      component.confirmarContrasena = 'newpass123';
+      component.nuevaContrasena = 'Newpass123';
+      component.confirmarContrasena = 'Newpass123';
       component.cambiarContrasena();
       expect(component.mensajeError).toContain('expirado');
     });
 
     it('should handle 500 error on cambiarContrasena', () => {
       mockPasswordService.recuperarClave.and.returnValue(throwError(() => ({ status: 500 })));
-      component.nuevaContrasena = 'newpass123';
-      component.confirmarContrasena = 'newpass123';
+      component.nuevaContrasena = 'Newpass123';
+      component.confirmarContrasena = 'Newpass123';
       component.cambiarContrasena();
       expect(component.mensajeError).toContain('Error del servidor');
     });
 
     it('should handle generic error on cambiarContrasena', () => {
       mockPasswordService.recuperarClave.and.returnValue(throwError(() => ({ status: 503 })));
-      component.nuevaContrasena = 'newpass123';
-      component.confirmarContrasena = 'newpass123';
+      component.nuevaContrasena = 'Newpass123';
+      component.confirmarContrasena = 'Newpass123';
       component.cambiarContrasena();
       expect(component.mensajeError).toContain('Error al cambiar');
     });

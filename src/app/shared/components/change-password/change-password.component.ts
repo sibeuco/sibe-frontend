@@ -12,6 +12,8 @@ export class ChangePasswordComponent {
   @Input() mensajeError: string = '';
   @Input() mensajeExito: string = '';
 
+  mensajeValidacion: string = '';
+
   passwords = {
     contrasenaActual: '',
     nuevaContrasena: '',
@@ -19,13 +21,21 @@ export class ChangePasswordComponent {
   };
 
   cambiarContrasena() {
+    this.mensajeValidacion = '';
+
     if (this.passwords.nuevaContrasena !== this.passwords.confirmarContrasena) {
-      alert('Las contraseñas nuevas no coinciden');
+      this.mensajeValidacion = 'Las contraseñas nuevas no coinciden';
       return;
     }
 
     if (this.passwords.nuevaContrasena === this.passwords.contrasenaActual) {
-      alert('La nueva contraseña debe ser diferente a la actual');
+      this.mensajeValidacion = 'La nueva contraseña debe ser diferente a la actual';
+      return;
+    }
+
+    const errorComplejidad = this.validarComplejidadClave(this.passwords.nuevaContrasena);
+    if (errorComplejidad) {
+      this.mensajeValidacion = errorComplejidad;
       return;
     }
 
@@ -34,8 +44,24 @@ export class ChangePasswordComponent {
       contrasenaActual: this.passwords.contrasenaActual,
       nuevaContrasena: this.passwords.nuevaContrasena
     });
-    
+
     // No cerrar el modal aquí, el padre lo manejará
+  }
+
+  validarComplejidadClave(clave: string): string | null {
+    if (clave.length < 8) {
+      return 'La contraseña debe tener al menos 8 caracteres.';
+    }
+    if (!/[A-Z]/.test(clave)) {
+      return 'La contraseña debe incluir al menos una letra mayúscula.';
+    }
+    if (!/[a-z]/.test(clave)) {
+      return 'La contraseña debe incluir al menos una letra minúscula.';
+    }
+    if (!/[0-9]/.test(clave)) {
+      return 'La contraseña debe incluir al menos un número.';
+    }
+    return null;
   }
 
   limpiarFormulario() {

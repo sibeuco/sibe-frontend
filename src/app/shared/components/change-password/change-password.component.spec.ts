@@ -29,33 +29,31 @@ describe('ChangePasswordComponent', () => {
     expect(component.passwords.confirmarContrasena).toBe('');
   });
 
-  it('should alert when new passwords do not match', () => {
-    spyOn(window, 'alert');
+  it('should set mensajeValidacion when new passwords do not match', () => {
     spyOn(component.contrasenaActualizada, 'emit');
 
     component.passwords = {
-      contrasenaActual: 'oldPass',
-      nuevaContrasena: 'newPass1',
-      confirmarContrasena: 'newPass2'
+      contrasenaActual: 'OldPass1!',
+      nuevaContrasena: 'NewPass1!',
+      confirmarContrasena: 'NewPass2!'
     };
     component.cambiarContrasena();
 
-    expect(window.alert).toHaveBeenCalledWith('Las contraseñas nuevas no coinciden');
+    expect(component.mensajeValidacion).toBe('Las contraseñas nuevas no coinciden');
     expect(component.contrasenaActualizada.emit).not.toHaveBeenCalled();
   });
 
-  it('should alert when new password equals current password', () => {
-    spyOn(window, 'alert');
+  it('should set mensajeValidacion when new password equals current password', () => {
     spyOn(component.contrasenaActualizada, 'emit');
 
     component.passwords = {
-      contrasenaActual: 'samePass',
-      nuevaContrasena: 'samePass',
-      confirmarContrasena: 'samePass'
+      contrasenaActual: 'SamePass1!',
+      nuevaContrasena: 'SamePass1!',
+      confirmarContrasena: 'SamePass1!'
     };
     component.cambiarContrasena();
 
-    expect(window.alert).toHaveBeenCalledWith('La nueva contraseña debe ser diferente a la actual');
+    expect(component.mensajeValidacion).toBe('La nueva contraseña debe ser diferente a la actual');
     expect(component.contrasenaActualizada.emit).not.toHaveBeenCalled();
   });
 
@@ -63,16 +61,56 @@ describe('ChangePasswordComponent', () => {
     spyOn(component.contrasenaActualizada, 'emit');
 
     component.passwords = {
-      contrasenaActual: 'oldPass',
-      nuevaContrasena: 'newPass',
-      confirmarContrasena: 'newPass'
+      contrasenaActual: 'OldPass1!',
+      nuevaContrasena: 'NewPass1!',
+      confirmarContrasena: 'NewPass1!'
     };
     component.cambiarContrasena();
 
     expect(component.contrasenaActualizada.emit).toHaveBeenCalledWith({
-      contrasenaActual: 'oldPass',
-      nuevaContrasena: 'newPass'
+      contrasenaActual: 'OldPass1!',
+      nuevaContrasena: 'NewPass1!'
     });
+  });
+
+  it('should set mensajeValidacion when password is too short', () => {
+    component.passwords = {
+      contrasenaActual: 'OldPass1!',
+      nuevaContrasena: 'Ab1cd',
+      confirmarContrasena: 'Ab1cd'
+    };
+    component.cambiarContrasena();
+    expect(component.mensajeValidacion).toContain('al menos 8 caracteres');
+  });
+
+  it('should set mensajeValidacion when password has no uppercase', () => {
+    component.passwords = {
+      contrasenaActual: 'OldPass1!',
+      nuevaContrasena: 'newpass123',
+      confirmarContrasena: 'newpass123'
+    };
+    component.cambiarContrasena();
+    expect(component.mensajeValidacion).toContain('letra mayúscula');
+  });
+
+  it('should set mensajeValidacion when password has no lowercase', () => {
+    component.passwords = {
+      contrasenaActual: 'OldPass1!',
+      nuevaContrasena: 'NEWPASS123',
+      confirmarContrasena: 'NEWPASS123'
+    };
+    component.cambiarContrasena();
+    expect(component.mensajeValidacion).toContain('letra minúscula');
+  });
+
+  it('should set mensajeValidacion when password has no number', () => {
+    component.passwords = {
+      contrasenaActual: 'OldPass1!',
+      nuevaContrasena: 'NewPassword!',
+      confirmarContrasena: 'NewPassword!'
+    };
+    component.cambiarContrasena();
+    expect(component.mensajeValidacion).toContain('un número');
   });
 
   it('should reset form fields on limpiarFormulario', () => {
