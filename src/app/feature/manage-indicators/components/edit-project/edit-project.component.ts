@@ -16,6 +16,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
   @Output() proyectoCancelado = new EventEmitter<void>();
 
       proyecto = {
+        numeroProyecto: '',
         nombre: '',
         objetivo: '',
         acciones: [] as string[]
@@ -75,6 +76,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
       cargarDatosProyecto(): void {
         if (this.proyectoAEditar) {
           this.proyecto = {
+            numeroProyecto: this.proyectoAEditar.numeroProyecto,
             nombre: this.proyectoAEditar.nombre,
             objetivo: this.proyectoAEditar.objetivo,
             acciones: this.proyectoAEditar.acciones?.map(accion => accion.identificador) || []
@@ -102,6 +104,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
 
         // Preparar el objeto del proyecto para enviar
         const proyectoRequest: EditProjectRequest = {
+          numeroProyecto: this.proyecto.numeroProyecto,
           nombre: this.proyecto.nombre,
           objetivo: this.proyecto.objetivo,
           acciones: this.proyecto.acciones
@@ -114,7 +117,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
             // Crear el objeto de respuesta actualizado
             const proyectoModificado: ProjectResponse = {
               identificador: this.proyectoAEditar!.identificador,
-              numeroProyecto: this.proyectoAEditar!.numeroProyecto,
+              numeroProyecto: this.proyecto.numeroProyecto,
               nombre: this.proyecto.nombre,
               objetivo: this.proyecto.objetivo
             };
@@ -156,6 +159,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
 
       limpiarFormulario() {
         this.proyecto = {
+          numeroProyecto: '',
           nombre: '',
           objetivo: '',
           acciones: [] as string[]

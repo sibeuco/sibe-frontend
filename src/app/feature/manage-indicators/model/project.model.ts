@@ -8,6 +8,7 @@ export interface ProjectRequest{
 }
 
 export interface EditProjectRequest{
+    numeroProyecto: string;
     nombre:string;
     objetivo: string;
     acciones: string[];

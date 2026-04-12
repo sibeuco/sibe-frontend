@@ -85,6 +85,7 @@ describe('EditProjectComponent', () => {
     it('should populate form from proyecto', () => {
       component.proyectoAEditar = mockProyecto as any;
       component.cargarDatosProyecto();
+      expect(component.proyecto.numeroProyecto).toBe('001');
       expect(component.proyecto.nombre).toBe('Proyecto 1');
       expect(component.proyecto.objetivo).toBe('Obj');
       expect(component.proyecto.acciones).toEqual(['acc-1']);
@@ -101,7 +102,7 @@ describe('EditProjectComponent', () => {
   describe('modificarProyecto', () => {
     beforeEach(() => {
       component.proyectoAEditar = mockProyecto as any;
-      component.proyecto = { nombre: 'P1', objetivo: 'O1', acciones: ['acc-1'] };
+      component.proyecto = { numeroProyecto: 'P1', nombre: 'P1', objetivo: 'O1', acciones: ['acc-1'] };
     });
 
     it('should not call service when cargando', () => {
@@ -174,7 +175,7 @@ describe('EditProjectComponent', () => {
 
   describe('limpiarFormulario', () => {
     it('should reset all fields', () => {
-      component.proyecto = { nombre: 'X', objetivo: 'Y', acciones: ['a'] };
+      component.proyecto = { numeroProyecto: 'X1', nombre: 'X', objetivo: 'Y', acciones: ['a'] };
       component.searchAcciones = 'search';
       component.error = 'e';
       component.exito = 's';

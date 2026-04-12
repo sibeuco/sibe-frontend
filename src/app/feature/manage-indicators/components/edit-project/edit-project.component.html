@@ -10,12 +10,23 @@
                     <div class="mb-3">
                         <div class="name-label-container d-flex justify-content-center align-items-center">
                             <div class="name-label">
+                                <label for="numeroProyecto" class="form-label">Número de proyecto</label>
+                            </div>
+                        </div>
+                        <div class="name-input d-flex justify-content-center align-items-center">
+                            <input type="text" class="form-control" id="numeroProyecto" name="numeroProyecto" [(ngModel)]="proyecto.numeroProyecto" required maxlength="12" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="name-label-container d-flex justify-content-center align-items-center">
+                            <div class="name-label">
                                 <label for="nombre" class="form-label">Nombre del proyecto</label>
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="proyecto.nombre" required />
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -26,7 +37,7 @@
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <input type="text" class="form-control" id="objetivo" name="objetivo" [(ngModel)]="proyecto.objetivo" required />
-                        </div>     
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -38,65 +49,65 @@
                         <div class="name-input d-flex justify-content-center align-items-center">
                             <div class="actions-container">
                                 <!-- Campo de búsqueda -->
-                                <input 
-                                    type="text" 
-                                    class="form-control actions-search" 
+                                <input
+                                    type="text"
+                                    class="form-control actions-search"
                                     placeholder="Buscar acciones..."
                                     [(ngModel)]="searchAcciones"
                                     (input)="filterAcciones()"
                                     (focus)="showDropdown = true"
                                     name="searchAcciones" />
-                                
+
                                 <!-- Dropdown personalizado -->
                                 <div class="actions-dropdown" [class.show]="showDropdown">
                                     <div class="dropdown-content">
                                         <div class="dropdown-header">
                                             <span>Seleccionar acciones</span>
-                                            <button 
-                                                type="button" 
-                                                class="btn-close-dropdown" 
+                                            <button
+                                                type="button"
+                                                class="btn-close-dropdown"
                                                 (click)="showDropdown = false">
                                                 ×
                                             </button>
                                         </div>
-                                        
+
                                         <div class="dropdown-options">
                                             <div *ngIf="cargandoAcciones" class="loading-actions">
                                                 <span>Cargando acciones...</span>
                                             </div>
-                                            
-                                            <label 
-                                                *ngFor="let accion of accionesFiltradas" 
+
+                                            <label
+                                                *ngFor="let accion of accionesFiltradas"
                                                 class="action-option">
-                                                <input 
-                                                    type="checkbox" 
+                                                <input
+                                                    type="checkbox"
                                                     [value]="accion.value"
                                                     [checked]="isActionSelected(accion.value)"
                                                     (click)="toggleAction(accion.value)"
                                                     class="action-checkbox" />
                                                 <span class="action-label">{{ accion.label }}</span>
                                             </label>
-                                            
+
                                             <div *ngIf="!cargandoAcciones && accionesFiltradas.length === 0" class="no-results">
                                                 No se encontraron acciones
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <!-- Información de selección -->
                                 <div class="selected-actions">
                                     <small class="text-muted actions-info">
                                         Seleccionadas: {{ (proyecto.acciones && proyecto.acciones.length) || 0 }} acciones
                                     </small>
                                     <div class="selected-tags" *ngIf="proyecto.acciones && proyecto.acciones.length > 0">
-                                        <span 
-                                            *ngFor="let accion of getSelectedActionsLabels(); let i = index" 
+                                        <span
+                                            *ngFor="let accion of getSelectedActionsLabels(); let i = index"
                                             class="action-tag">
                                             <span class="action-tag-text">{{ accion }}</span>
-                                            <button 
-                                                type="button" 
-                                                class="remove-tag" 
+                                            <button
+                                                type="button"
+                                                class="remove-tag"
                                                 (mousedown)="$event.stopPropagation()"
                                                 (click)="removeAction(getActionValue(accion)); $event.stopPropagation()"
                                                 title="Eliminar acción">
@@ -106,7 +117,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>     
+                        </div>
                     </div>
 
                     <!-- Mensaje de éxito -->
@@ -115,7 +126,7 @@
                             <i class="bi bi-check-circle me-2"></i>{{ exito }}
                         </div>
                     </div>
-                    
+
                     <!-- Mensaje de error -->
                     <div class="mb-3" *ngIf="error">
                         <div class="alert alert-danger text-center" role="alert">
