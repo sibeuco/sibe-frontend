@@ -1,5 +1,8 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { StateService } from 'src/app/shared/service/state.service';
+import { StateProps } from 'src/app/shared/model/state.enum';
+import { UserSession } from 'src/app/feature/login/model/user-session.model';
 import { ActivityResponse} from 'src/app/shared/model/activity.model';
 import { ActivitiesTableComponent } from 'src/app/shared/components/activities-table/activities-table.component';
 
@@ -16,7 +19,13 @@ export class ActivitiesComponent implements AfterViewInit {
   
   @ViewChild(ActivitiesTableComponent) activitiesTable!: ActivitiesTableComponent;
   
-  constructor(private router: Router) {}
+  esColaborador: boolean = false;
+
+  constructor(private router: Router, private stateService: StateService) {
+    const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
+    const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
+    this.esColaborador = session ? !rolesPermitidos.includes(session.rol) : false;
+  }
 
   ngAfterViewInit(): void {
   }

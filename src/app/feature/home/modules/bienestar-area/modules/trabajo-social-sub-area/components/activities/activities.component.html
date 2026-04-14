@@ -15,6 +15,8 @@
             </div>
             <div class="button-container col-md-4 col-12 d-flex justify-content-md-end justify-content-center">
                 <app-primary-button
+                    [disabled]="esColaborador"
+                    [disabledTooltip]="'No tienes permitida esta acción.'"
                     [modalTargetId]="'register-activity-modal'"
                     [icon]="'bi bi-plus-circle'"
                     [text]="'Agregar nueva actividad'">

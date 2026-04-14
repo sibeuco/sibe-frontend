@@ -6,6 +6,9 @@ import { ActivityService } from '../../service/activity.service';
 import { DepartmentService } from '../../service/department.service';
 import { AreaService } from '../../service/area.service';
 import { SubAreaService } from '../../service/subarea.service';
+import { StateService } from '../../service/state.service';
+import { StateProps } from '../../model/state.enum';
+import { UserSession } from 'src/app/feature/login/model/user-session.model';
 import { forkJoin, of } from 'rxjs';
 import { catchError, switchMap, map } from 'rxjs/operators';
 import { Modal } from 'bootstrap';
@@ -44,13 +47,21 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   // Mapa para almacenar ejecuciones de cada actividad (identificador actividad -> ejecuciones)
   ejecucionesMap: Map<string, ActivityExecutionResponse[]> = new Map();
 
+  // Control de rol
+  esColaborador: boolean = false;
+
   constructor(
     private activityService: ActivityService,
     private departmentService: DepartmentService,
     private areaService: AreaService,
     private subAreaService: SubAreaService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private stateService: StateService
+  ) {
+    const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
+    const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
+    this.esColaborador = session ? !rolesPermitidos.includes(session.rol) : false;
+  }
 
   ngOnInit() {
     if (this.nombreArea) {

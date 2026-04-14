@@ -73,36 +73,39 @@
             </span>
           </td>
           <td class="action">
-            <button 
+            <button
               class="realizar-actividad-btn"
               (click)="realizarActividad(actividad)">
               Gestionar
             </button>
           </td>
           <td class="edit-action">
-            <button 
-                type="button" 
-                class="btn btn-outline-warning btn-sm edit-activity-button"
-                (click)="abrirModalEditar(actividad)"
-                title="Editar actividad">
-                <i class="bi bi-pencil"></i>
-            </button>
+            <span [title]="esColaborador ? 'No tienes permitida esta acción.' : ''">
+              <button
+                  type="button"
+                  class="btn btn-outline-warning btn-sm edit-activity-button"
+                  [disabled]="esColaborador"
+                  (click)="abrirModalEditar(actividad)"
+                  title="Editar actividad">
+                  <i class="bi bi-pencil"></i>
+              </button>
+            </span>
           </td>
         </tr>
       </tbody>
     </table>
-    
+
     <div *ngIf="!cargando && !error && actividadesCargadas.length === 0" class="no-activities">
       <p>Aún no hay actividades registradas.</p>
     </div>
   </div>
-  <app-edit-activity 
+  <app-edit-activity
     [actividad]="actividadSeleccionadaEdicion"
     [nombreArea]="nombreArea"
     [tipoEstructura]="tipoEstructura"
     (actividadEditada)="recargarActividades()">
   </app-edit-activity>
-  <app-date-selector 
+  <app-date-selector
     [actividad]="actividadSeleccionadaParaModal"
     [redirectLink]="rutaRedireccion"
     (verFecha)="verFechaProgramada($event)"
