@@ -6,6 +6,9 @@ import { ActivityService } from '../../service/activity.service';
 import { DepartmentService } from '../../service/department.service';
 import { AreaService } from '../../service/area.service';
 import { SubAreaService } from '../../service/subarea.service';
+import { StateService } from '../../service/state.service';
+import { StateProps } from '../../model/state.enum';
+import { UserSession } from '../../../feature/login/model/user-session.model';
 import { forkJoin, of } from 'rxjs';
 import { catchError, switchMap, map } from 'rxjs/operators';
 import { Modal } from 'bootstrap';
@@ -37,6 +40,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   // Estados de carga
   cargando = false;
   error = '';
+  esColaborador = false;
 
   // Mapa para almacenar fechas programadas más cercanas (identificador actividad -> fecha)
   fechasProgramadasMap: Map<string, Date | null> = new Map();
@@ -49,8 +53,12 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     private departmentService: DepartmentService,
     private areaService: AreaService,
     private subAreaService: SubAreaService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    private cdr: ChangeDetectorRef,
+    private stateService: StateService
+  ) {
+    const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
+    this.esColaborador = session?.rol === 'COLABORADOR';
+  }
 
   ngOnInit() {
     if (this.nombreArea) {

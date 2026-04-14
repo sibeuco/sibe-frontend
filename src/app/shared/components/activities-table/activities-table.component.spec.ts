@@ -11,6 +11,7 @@ import { ActivityService } from '../../service/activity.service';
 import { DepartmentService } from '../../service/department.service';
 import { AreaService } from '../../service/area.service';
 import { SubAreaService } from '../../service/subarea.service';
+import { StateService } from '../../service/state.service';
 
 describe('ActivitiesTableComponent', () => {
   let component: ActivitiesTableComponent;
@@ -19,6 +20,7 @@ describe('ActivitiesTableComponent', () => {
   let mockDepartmentService: jasmine.SpyObj<DepartmentService>;
   let mockAreaService: jasmine.SpyObj<AreaService>;
   let mockSubAreaService: jasmine.SpyObj<SubAreaService>;
+  let mockStateService: jasmine.SpyObj<StateService>;
 
   const mockActivitiesResponse = [
       { identificador: 'act-1', nombre: 'Actividad 1', nombreColaborador: 'Juan', fechaCreacion: '2025-01-01', fechasProgramadas: ['2025-06-01'] },
@@ -37,6 +39,8 @@ describe('ActivitiesTableComponent', () => {
     mockDepartmentService = jasmine.createSpyObj('DepartmentService', ['consultarPorNombre']);
     mockAreaService = jasmine.createSpyObj('AreaService', ['consultarPorNombre']);
     mockSubAreaService = jasmine.createSpyObj('SubAreaService', ['consultarPorNombre']);
+    mockStateService = jasmine.createSpyObj('StateService', ['getState']);
+    mockStateService.getState.and.returnValue({ rol: 'ADMINISTRADOR_AREA' });
 
     mockActivityService.consultarEjecuciones.and.returnValue(of([]));
     mockActivityService.consultarPorDireccion.and.returnValue(of(mockActivitiesResponse as any));
@@ -51,7 +55,8 @@ describe('ActivitiesTableComponent', () => {
         { provide: ActivityService, useValue: mockActivityService },
         { provide: DepartmentService, useValue: mockDepartmentService },
         { provide: AreaService, useValue: mockAreaService },
-        { provide: SubAreaService, useValue: mockSubAreaService }
+        { provide: SubAreaService, useValue: mockSubAreaService },
+        { provide: StateService, useValue: mockStateService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });

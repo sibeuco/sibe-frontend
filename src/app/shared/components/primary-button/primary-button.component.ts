@@ -10,6 +10,8 @@ export class PrimaryButtonComponent {
   @Input() icon: string = '';
   @Input() text: string = '';
   @Input() modalTargetId?: string;
+  @Input() disabled: boolean = false;
+  @Input() disabledTooltip: string = '';
 
   openModal(id: string) {
     const modalElement = document.getElementById(id);

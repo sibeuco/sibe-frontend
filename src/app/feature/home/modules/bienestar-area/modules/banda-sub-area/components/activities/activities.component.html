@@ -17,7 +17,9 @@
                 <app-primary-button
                     [modalTargetId]="'register-activity-modal'"
                     [icon]="'bi bi-plus-circle'"
-                    [text]="'Agregar nueva actividad'">
+                    [text]="'Agregar nueva actividad'"
+                    [disabled]="esColaborador"
+                    [disabledTooltip]="'No tienes permitida esta acci\u00f3n.'">
                 </app-primary-button>
                 <app-register-new-activity 
                     [nombreArea]="nombreArea"
