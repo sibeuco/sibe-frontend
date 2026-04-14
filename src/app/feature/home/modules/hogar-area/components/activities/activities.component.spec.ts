@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
-import { StateService } from 'src/app/shared/service/state.service';
-import { of } from 'rxjs';
 
 import { ActivitiesComponent } from './activities.component';
 
@@ -13,10 +11,7 @@ describe('ActivitiesComponent (Hogar)', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [ActivitiesComponent],
-      providers: [
-        { provide: Router, useValue: jasmine.createSpyObj('Router', ['navigate']) },
-        { provide: StateService, useValue: { getState: () => ({ rol: 'ADMINISTRADOR_AREA' }), select: () => of({ rol: 'ADMINISTRADOR_AREA' }) } }
-      ],
+      providers: [{ provide: Router, useValue: jasmine.createSpyObj('Router', ['navigate']) }],
       schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(ActivitiesComponent);
