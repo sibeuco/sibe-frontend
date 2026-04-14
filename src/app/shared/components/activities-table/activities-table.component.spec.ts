@@ -39,8 +39,9 @@ describe('ActivitiesTableComponent', () => {
     mockDepartmentService = jasmine.createSpyObj('DepartmentService', ['consultarPorNombre']);
     mockAreaService = jasmine.createSpyObj('AreaService', ['consultarPorNombre']);
     mockSubAreaService = jasmine.createSpyObj('SubAreaService', ['consultarPorNombre']);
-    mockStateService = jasmine.createSpyObj('StateService', ['getState']);
+    mockStateService = jasmine.createSpyObj('StateService', ['getState', 'select']);
     mockStateService.getState.and.returnValue({ rol: 'ADMINISTRADOR_AREA' });
+    mockStateService.select.and.returnValue(of({ rol: 'ADMINISTRADOR_AREA' }));
 
     mockActivityService.consultarEjecuciones.and.returnValue(of([]));
     mockActivityService.consultarPorDireccion.and.returnValue(of(mockActivitiesResponse as any));

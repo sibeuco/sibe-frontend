@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, OnDestroy, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { ActivityResponse, EstadoActividad } from '../../model/activity.model';
 import { FechaProgramada } from '../../model/fecha-programada.model';
 import { ActivityExecutionResponse } from '../../model/activity-execution.model';
@@ -9,7 +9,7 @@ import { SubAreaService } from '../../service/subarea.service';
 import { StateService } from '../../service/state.service';
 import { StateProps } from '../../model/state.enum';
 import { UserSession } from '../../../feature/login/model/user-session.model';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError, switchMap, map } from 'rxjs/operators';
 import { Modal } from 'bootstrap';
 
@@ -18,7 +18,7 @@ import { Modal } from 'bootstrap';
   templateUrl: './activities-table.component.html',
   styleUrls: ['./activities-table.component.scss']
 })
-export class ActivitiesTableComponent implements OnInit, OnChanges {
+export class ActivitiesTableComponent implements OnInit, OnChanges, OnDestroy {
   // Inputs para cargar desde backend
   @Input() nombreArea: string = '';
   @Input() tipoEstructura: 'direccion' | 'area' | 'subarea' = 'direccion';
@@ -41,6 +41,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   cargando = false;
   error = '';
   esColaborador = false;
+  private sessionSubscription?: Subscription;
 
   // Mapa para almacenar fechas programadas más cercanas (identificador actividad -> fecha)
   fechasProgramadasMap: Map<string, Date | null> = new Map();
@@ -56,6 +57,13 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     private cdr: ChangeDetectorRef,
     private stateService: StateService
   ) {
+    this.actualizarRol();
+    this.sessionSubscription = this.stateService.select<UserSession>(StateProps.USER_SESSION).subscribe(() => {
+      this.actualizarRol();
+    });
+  }
+
+  private actualizarRol(): void {
     const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
     const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
     this.esColaborador = !rolesPermitidos.includes(session?.rol);
@@ -68,6 +76,10 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
       this.cargando = false;
       this.aplicarFiltrosYOrdenamiento();
     }
+  }
+
+  ngOnDestroy() {
+    this.sessionSubscription?.unsubscribe();
   }
 
   ngOnChanges(changes: SimpleChanges) {
