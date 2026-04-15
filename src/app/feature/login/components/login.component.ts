@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit {
           subareaId: tokenPayload.subareaId || ''
         };
         this.stateService.updateState(StateProps.USER_SESSION, userSession);
+        console.log('[DEBUG LOGIN] updateState llamado con rol:', userSession.rol, '| ANTES de navigate');
         this.router.navigate(['/home']);
       },
       (error)=> {

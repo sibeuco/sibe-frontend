@@ -61,6 +61,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
     const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
     this.esColaborador = session ? !rolesPermitidos.includes(session.rol) : false;
+    console.log('[DEBUG activities-table] constructor - session:', session, '| rol:', session?.rol, '| esColaborador:', this.esColaborador);
   }
 
   ngOnInit() {

@@ -16,15 +16,16 @@ export class ActivitiesComponent implements AfterViewInit {
   terminoBusqueda: string = '';
   nombreArea: string = 'Dirección de Bienestar y Evangelización';
   tipoEstructura: 'direccion' | 'area' | 'subarea' = 'direccion';
-  
+
   @ViewChild(ActivitiesTableComponent) activitiesTable!: ActivitiesTableComponent;
-  
+
   esColaborador: boolean = false;
 
   constructor(private router: Router, private stateService: StateService) {
     const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
     const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
     this.esColaborador = session ? !rolesPermitidos.includes(session.rol) : false;
+    console.log('[DEBUG activities-wrapper HOME] constructor - session:', session, '| rol:', session?.rol, '| esColaborador:', this.esColaborador);
   }
 
   ngAfterViewInit(): void {
@@ -32,7 +33,7 @@ export class ActivitiesComponent implements AfterViewInit {
 
   onActividadSeleccionada(actividad: ActivityResponse): void {
     console.log('Actividad seleccionada:', actividad);
-    
+
     console.log(`Procesando actividad: ${actividad.nombre}`);
   }
 
