@@ -42,15 +42,19 @@ export class StateService {
   }
 
   getState(prop:StateProps):any{
-    return this.stateProps.get(prop);
+    const val = this.stateProps.get(prop);
+    console.log('[DEBUG StateService.getState]', prop, '→ rol:', val?.rol, '| Map size:', this.stateProps.size);
+    return val;
   }
 
   updateState(prop:StateProps, value:any):void{
+    console.log('[DEBUG StateService.updateState]', prop, '→ rol:', value?.rol);
     this.stateProps.set(prop, value);
     this.state.next(this.stateProps);
   }
 
   deleteProperty(prop:StateProps){
+    console.log('[DEBUG StateService.deleteProperty]', prop);
     this.stateProps.delete(prop);
     this.state.next(this.stateProps);
   }
