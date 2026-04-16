@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StateService } from './service/state.service';
 import { GoToAreaButtonComponent } from './components/go-to-area-button/go-to-area-button.component';
 import { RouterModule } from '@angular/router';
 import { SeparatorComponent } from './components/separator/separator.component';
@@ -49,7 +48,6 @@ import { TotalParticipantsMonthsComponent } from './components/data-visualizatio
     FormsModule
   ],
   providers:[
-    StateService
   ],
   exports: [
     GoToAreaButtonComponent,
