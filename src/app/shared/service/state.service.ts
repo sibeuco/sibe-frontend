@@ -43,18 +43,20 @@ export class StateService {
 
   getState(prop:StateProps):any{
     const val = this.stateProps.get(prop);
-    console.log('[DEBUG StateService.getState]', prop, '→ rol:', val?.rol, '| Map size:', this.stateProps.size);
+    console.log('[DEBUG getState]', prop, '→ rol:', val?.rol, '| mapId:', (this as any).__debugId);
     return val;
   }
 
   updateState(prop:StateProps, value:any):void{
-    console.log('[DEBUG StateService.updateState]', prop, '→ rol:', value?.rol);
+    if (!(this as any).__debugId) { (this as any).__debugId = Math.random().toString(36).substr(2, 5); }
     this.stateProps.set(prop, value);
+    const verification = this.stateProps.get(prop);
+    console.log('[DEBUG updateState]', prop, '→ set rol:', value?.rol, '| verify rol:', verification?.rol, '| mapId:', (this as any).__debugId);
     this.state.next(this.stateProps);
   }
 
   deleteProperty(prop:StateProps){
-    console.log('[DEBUG StateService.deleteProperty]', prop);
+    console.log('[DEBUG deleteProperty]', prop, '| mapId:', (this as any).__debugId);
     this.stateProps.delete(prop);
     this.state.next(this.stateProps);
   }
