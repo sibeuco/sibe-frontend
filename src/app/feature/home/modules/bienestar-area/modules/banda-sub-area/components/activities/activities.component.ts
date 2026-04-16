@@ -19,13 +19,13 @@ export class ActivitiesComponent implements AfterViewInit {
   
   @ViewChild(ActivitiesTableComponent) activitiesTable!: ActivitiesTableComponent;
   
-  esColaborador: boolean = false;
-
-  constructor(private router: Router, private stateService: StateService) {
+  get esColaborador(): boolean {
     const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
     const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
-    this.esColaborador = session ? !rolesPermitidos.includes(session.rol) : false;
+    return session ? !rolesPermitidos.includes(session.rol) : false;
   }
+
+  constructor(private router: Router, private stateService: StateService) {}
 
   ngAfterViewInit(): void {
   }

@@ -47,8 +47,11 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   // Mapa para almacenar ejecuciones de cada actividad (identificador actividad -> ejecuciones)
   ejecucionesMap: Map<string, ActivityExecutionResponse[]> = new Map();
 
-  // Control de rol
-  esColaborador: boolean = false;
+  get esColaborador(): boolean {
+    const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
+    const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
+    return session ? !rolesPermitidos.includes(session.rol) : false;
+  }
 
   constructor(
     private activityService: ActivityService,
@@ -57,12 +60,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     private subAreaService: SubAreaService,
     private cdr: ChangeDetectorRef,
     private stateService: StateService
-  ) {
-    const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
-    const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
-    this.esColaborador = session ? !rolesPermitidos.includes(session.rol) : false;
-    console.log('[DEBUG activities-table] constructor - session:', session, '| rol:', session?.rol, '| esColaborador:', this.esColaborador);
-  }
+  ) {}
 
   ngOnInit() {
     if (this.nombreArea) {
