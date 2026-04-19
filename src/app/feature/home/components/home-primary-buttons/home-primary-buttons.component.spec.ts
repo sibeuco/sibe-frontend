@@ -4,19 +4,27 @@ import { of, throwError } from 'rxjs';
 
 import { HomePrimaryButtonsComponent } from './home-primary-buttons.component';
 import { ExcelReportService } from 'src/app/shared/service/excel-report.service';
+import { StateService } from 'src/app/shared/service/state.service';
+import { StateProps } from 'src/app/shared/model/state.enum';
 
 describe('HomePrimaryButtonsComponent', () => {
   let component: HomePrimaryButtonsComponent;
   let fixture: ComponentFixture<HomePrimaryButtonsComponent>;
   let mockExcelService: jasmine.SpyObj<ExcelReportService>;
+  let mockStateService: jasmine.SpyObj<StateService>;
 
   beforeEach(() => {
     mockExcelService = jasmine.createSpyObj('ExcelReportService', ['generarInformeDireccion']);
     mockExcelService.generarInformeDireccion.and.returnValue(of(void 0));
+    mockStateService = jasmine.createSpyObj('StateService', ['getState']);
+    mockStateService.getState.and.returnValue({ rol: 'ADMINISTRADOR_DIRECCION' });
 
     TestBed.configureTestingModule({
       declarations: [HomePrimaryButtonsComponent],
-      providers: [{ provide: ExcelReportService, useValue: mockExcelService }],
+      providers: [
+        { provide: ExcelReportService, useValue: mockExcelService },
+        { provide: StateService, useValue: mockStateService }
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     });
     fixture = TestBed.createComponent(HomePrimaryButtonsComponent);
@@ -41,6 +49,12 @@ describe('HomePrimaryButtonsComponent', () => {
 
     it('should not call service if already generating', () => {
       component.generandoExcel = true;
+      component.generarExcel();
+      expect(mockExcelService.generarInformeDireccion).not.toHaveBeenCalled();
+    });
+
+    it('should not call service when user is collaborator', () => {
+      mockStateService.getState.and.returnValue({ rol: 'COLABORADOR' });
       component.generarExcel();
       expect(mockExcelService.generarInformeDireccion).not.toHaveBeenCalled();
     });

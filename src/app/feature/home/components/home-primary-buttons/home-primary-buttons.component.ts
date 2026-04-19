@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { ExcelReportService } from 'src/app/shared/service/excel-report.service';
+import { StateService } from 'src/app/shared/service/state.service';
+import { StateProps } from 'src/app/shared/model/state.enum';
+import { UserSession } from 'src/app/feature/login/model/user-session.model';
 
 @Component({
   selector: 'app-home-primary-buttons',
@@ -11,7 +14,13 @@ export class HomePrimaryButtonsComponent {
   private readonly NOMBRE_DIRECCION = 'Dirección de Bienestar y Evangelización';
   generandoExcel: boolean = false;
 
-  constructor(private excelReportService: ExcelReportService) {}
+  get esColaborador(): boolean {
+    const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
+    const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
+    return session ? !rolesPermitidos.includes(session.rol) : false;
+  }
+
+  constructor(private excelReportService: ExcelReportService, private stateService: StateService) {}
 
   scrollToFilters(): void {
     const element = document.getElementById('home-filters-section');
@@ -24,7 +33,7 @@ export class HomePrimaryButtonsComponent {
   }
 
   generarExcel(): void {
-    if (this.generandoExcel) {
+    if (this.generandoExcel || this.esColaborador) {
       return;
     }
 

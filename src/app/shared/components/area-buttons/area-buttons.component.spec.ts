@@ -7,21 +7,26 @@ import { of, throwError } from 'rxjs';
 
 import { AreaButtonsComponent } from './area-buttons.component';
 import { ExcelReportService } from '../../service/excel-report.service';
+import { StateService } from '../../service/state.service';
 
 describe('AreaButtonsComponent', () => {
   let component: AreaButtonsComponent;
   let fixture: ComponentFixture<AreaButtonsComponent>;
   let mockExcelReportService: jasmine.SpyObj<ExcelReportService>;
+  let mockStateService: jasmine.SpyObj<StateService>;
   let router: Router;
 
   beforeEach(() => {
     mockExcelReportService = jasmine.createSpyObj('ExcelReportService', ['generarInformeArea', 'generarInformeSubarea']);
+    mockStateService = jasmine.createSpyObj('StateService', ['getState']);
+    mockStateService.getState.and.returnValue({ rol: 'ADMINISTRADOR_DIRECCION' });
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule, HttpClientTestingModule],
       declarations: [AreaButtonsComponent],
       providers: [
-        { provide: ExcelReportService, useValue: mockExcelReportService }
+        { provide: ExcelReportService, useValue: mockExcelReportService },
+        { provide: StateService, useValue: mockStateService }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -109,5 +114,16 @@ describe('AreaButtonsComponent', () => {
 
     expect(component.generandoExcel).toBeFalse();
     expect(window.alert).toHaveBeenCalled();
+  });
+
+  it('should not generate report when user is collaborator', () => {
+    mockStateService.getState.and.returnValue({ rol: 'COLABORADOR' });
+    component.tipoEstructura = 'area';
+    component.nombreEstructura = 'Area';
+
+    const button = { text: 'Export', icon: 'excel', action: 'generarInforme' };
+    component.onButtonClick(button);
+
+    expect(mockExcelReportService.generarInformeArea).not.toHaveBeenCalled();
   });
 });

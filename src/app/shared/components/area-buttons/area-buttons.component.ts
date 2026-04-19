@@ -1,6 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExcelReportService } from '../../service/excel-report.service';
+import { StateService } from '../../service/state.service';
+import { StateProps } from '../../model/state.enum';
+import { UserSession } from 'src/app/feature/login/model/user-session.model';
 
 @Component({
   selector: 'app-area-buttons',
@@ -15,10 +18,19 @@ export class AreaButtonsComponent {
 
   generandoExcel = false;
 
-  constructor(private router: Router, private excelReportService: ExcelReportService) {}
+  get esColaborador(): boolean {
+    const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
+    const rolesPermitidos = ['ADMINISTRADOR_DIRECCION', 'ADMINISTRADOR_AREA'];
+    return session ? !rolesPermitidos.includes(session.rol) : false;
+  }
+
+  constructor(private router: Router, private excelReportService: ExcelReportService, private stateService: StateService) {}
 
   onButtonClick(button: { text: string, icon: string, link?: string, scrollTarget?: string, action?: string }): void {
     if (button.action === 'generarInforme') {
+      if (this.esColaborador) {
+        return;
+      }
       this.generarInforme();
     } else {
       this.navigateTo(button);
