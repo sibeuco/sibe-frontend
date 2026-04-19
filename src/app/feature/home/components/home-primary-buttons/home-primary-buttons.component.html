@@ -9,8 +9,8 @@
         Ver Resumen
     </button>
 
-    <span [title]="esColaborador ? 'Tu rol no permite realizar esta acción.' : ''">
-        <button class="btn btn-primary flex-fill" (click)="generarExcel()" [disabled]="generandoExcel || esColaborador">
+    <span class="flex-fill" [title]="esColaborador ? 'Tu rol no permite realizar esta acción.' : ''">
+        <button class="btn btn-primary w-100" (click)="generarExcel()" [disabled]="generandoExcel || esColaborador">
             <i class="bi bi-journal-plus"></i>
             <span *ngIf="!generandoExcel">Generar Informes</span>
             <span *ngIf="generandoExcel">Generando...</span>
