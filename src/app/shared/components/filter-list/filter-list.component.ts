@@ -157,7 +157,7 @@ export class FilterListComponent implements OnInit {
     this.indicatorService.consultarIndicadores().subscribe({
       next: (response) => {
         if (response && response.length > 0) {
-          this.indicators = response.map(i => i.nombre);
+          this.indicators = response.map((i: any) => i.nombre);
         }
       },
       error: (error) => {

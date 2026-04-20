@@ -13,7 +13,11 @@ export class IndicatorsComponent implements OnInit{
   searchTerm: string = '';
   indicadores: IndicatorResponse[] = [];
   indicadoresFiltrados: IndicatorResponse[] = [];
-  
+
+  // Propiedades para paginación
+  p: number = 1;
+  totalElementos: number = 0;
+
   // Propiedades para el modal de edición
   indicadorSeleccionado: IndicatorResponse | null = null;
 
@@ -24,15 +28,21 @@ export class IndicatorsComponent implements OnInit{
   }
 
   loadIndicators(): void {
-    this.indicatorService.consultarIndicadores().subscribe({
-      next: (indicadores) => {
-        this.indicadores = indicadores;
-        this.indicadoresFiltrados = indicadores;
+    this.indicatorService.consultarIndicadores(this.p - 1).subscribe({
+      next: (response) => {
+        this.indicadores = response.content;
+        this.indicadoresFiltrados = response.content;
+        this.totalElementos = response.totalElements;
       },
       error: (error) => {
         console.error('Error al cargar los indicadores:', error);
       }
     });
+  }
+
+  onPageChange(event: number): void {
+    this.p = event;
+    this.loadIndicators();
   }
 
   filterIndicators(): void {
@@ -47,7 +57,7 @@ export class IndicatorsComponent implements OnInit{
   // Métodos para el modal de edición
   abrirModalEdicion(indicator: IndicatorResponse): void {
     this.indicadorSeleccionado = indicator;
-    
+
     // Abrir el modal usando Bootstrap
     const modalElement = document.getElementById('edit-indicator-modal');
     if (modalElement) {
@@ -59,7 +69,7 @@ export class IndicatorsComponent implements OnInit{
   onIndicadorModificado(indicadorModificado: IndicatorResponse): void {
     // Recargar todos los indicadores desde el backend
     this.loadIndicators();
-    
+
     // Cerrar el modal
     this.cerrarModal();
   }

@@ -14,6 +14,7 @@ import { EditProjectComponent } from './components/edit-project/edit-project.com
 import { ActionsComponent } from './components/actions/actions.component';
 import { RegisterNewActionComponent } from './components/register-new-action/register-new-action.component';
 import { EditActionComponent } from './components/edit-action/edit-action.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { EditActionComponent } from './components/edit-action/edit-action.compon
     CommonModule,
     ManageIndicatorsRoutingModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ]
 })
 export class ManageIndicatorsModule { }

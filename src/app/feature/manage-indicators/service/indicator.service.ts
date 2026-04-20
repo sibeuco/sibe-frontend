@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Response } from 'src/app/shared/model/response.model';
 import { environment } from 'src/environments/environment';
 import { EditIndicatorRequest, IndicatorRequest, IndicatorResponse } from '../model/indicator.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -16,15 +16,18 @@ export class IndicatorService extends HttpService {
     super(http);
   }
 
-  consultarIndicadores(): Observable<IndicatorResponse[]> {
+  consultarIndicadores(pagina: number = 0, tamano: number = 10): Observable<any> {
     const opts = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
       })
     };
+    const params = new HttpParams()
+        .set('pagina', pagina.toString())
+        .set('tamano', tamano.toString());
     const url = `${environment.endpoint}${this.INDICATOR_ENDPOINT}`;
-    return this.http.get<IndicatorResponse[]>(url, opts);
+    return this.doGetParameters<any>(url, params, opts);
   }
 
   consultarIndicadoresParaActividades(): Observable<IndicatorResponse[]> {

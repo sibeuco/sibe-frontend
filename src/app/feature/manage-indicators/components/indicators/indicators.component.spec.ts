@@ -7,6 +7,7 @@ import * as bootstrap from 'bootstrap';
 import { IndicatorsComponent } from './indicators.component';
 import { IndicatorService } from '../../service/indicator.service';
 import { IndicatorResponse } from '../../model/indicator.model';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('IndicatorsComponent', () => {
   let component: IndicatorsComponent;
@@ -23,12 +24,17 @@ describe('IndicatorsComponent', () => {
     }
   ];
 
+  const mockPaginatedResponse = {
+    content: mockIndicadores,
+    totalElements: 1
+  };
+
   beforeEach(() => {
     mockIndicatorService = jasmine.createSpyObj('IndicatorService', ['consultarIndicadores']);
-    mockIndicatorService.consultarIndicadores.and.returnValue(of(mockIndicadores));
+    mockIndicatorService.consultarIndicadores.and.returnValue(of(mockPaginatedResponse));
 
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, NgxPaginationModule],
       declarations: [IndicatorsComponent],
       providers: [
         { provide: IndicatorService, useValue: mockIndicatorService }
@@ -53,16 +59,26 @@ describe('IndicatorsComponent', () => {
   });
 
   describe('loadIndicators', () => {
-    it('should populate indicators on success', () => {
+    it('should populate indicators from paginated response on success', () => {
       component.loadIndicators();
       expect(component.indicadores).toEqual(mockIndicadores);
       expect(component.indicadoresFiltrados).toEqual(mockIndicadores);
+      expect(component.totalElementos).toBe(1);
     });
 
     it('should handle error gracefully', () => {
       mockIndicatorService.consultarIndicadores.and.returnValue(throwError(() => new Error('fail')));
       component.loadIndicators();
       expect(component.indicadores).toEqual([]);
+    });
+  });
+
+  describe('onPageChange', () => {
+    it('should update page and reload indicators', () => {
+      mockIndicatorService.consultarIndicadores.calls.reset();
+      component.onPageChange(3);
+      expect(component.p).toBe(3);
+      expect(mockIndicatorService.consultarIndicadores).toHaveBeenCalledWith(2);
     });
   });
 

@@ -20,11 +20,21 @@ describe('IndicatorService', () => {
 
   it('should be created', () => expect(service).toBeTruthy());
 
-  it('should call GET to consult indicators', () => {
-    service.consultarIndicadores().subscribe();
+  it('should call GET to consult indicators with pagination params', () => {
+    service.consultarIndicadores(0, 10).subscribe();
     const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/indicadores`);
     expect(req.request.method).toBe('GET');
-    req.flush([]);
+    expect(req.request.params.get('pagina')).toBe('0');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
+  });
+
+  it('should use default pagination params when none provided', () => {
+    service.consultarIndicadores().subscribe();
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/indicadores`);
+    expect(req.request.params.get('pagina')).toBe('0');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
   });
 
   it('should call GET to consult indicators for activities', () => {
