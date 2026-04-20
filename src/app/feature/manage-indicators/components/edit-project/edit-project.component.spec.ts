@@ -18,6 +18,11 @@ describe('EditProjectComponent', () => {
     { identificador: 'acc-2', detalle: 'Accion 2', objetivo: 'Obj 2' }
   ];
 
+  const mockPageResponse = {
+    content: mockAcciones,
+    totalElements: 2
+  };
+
   const mockProyecto = {
     identificador: 'p1', numeroProyecto: '001', nombre: 'Proyecto 1', objetivo: 'Obj',
     acciones: [{ identificador: 'acc-1', detalle: 'Accion 1', objetivo: 'Obj 1' }]
@@ -27,7 +32,7 @@ describe('EditProjectComponent', () => {
     mockProjectService = jasmine.createSpyObj('ProjectService', ['modificarProyecto']);
     mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones']);
 
-    mockActionService.consultarAcciones.and.returnValue(of(mockAcciones as any));
+    mockActionService.consultarAcciones.and.returnValue(of(mockPageResponse as any));
     mockProjectService.modificarProyecto.and.returnValue(of({ valor: 'ok' }));
 
     TestBed.configureTestingModule({
