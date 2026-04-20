@@ -7,7 +7,7 @@ const ADMINISTRADOR_AREA = 'ADMINISTRADOR_AREA';
 const ROLE_ROUTES: Record<string, string[]> = {
   '/gestionar-direccion': [ADMINISTRADOR_DIRECCION],
   '/gestionar-usuarios': [ADMINISTRADOR_DIRECCION],
-  '/gestionar-indicadores': [ADMINISTRADOR_DIRECCION, ADMINISTRADOR_AREA],
+  '/gestionar-indicadores': [ADMINISTRADOR_DIRECCION],
 };
 
 export const securityGuard: CanActivateFn = (route, state) => {

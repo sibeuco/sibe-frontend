@@ -66,13 +66,14 @@ describe('securityGuard', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/home']);
   });
 
-  it('debería permitir acceso a gestionar-indicadores cuando rol es ADMINISTRADOR_AREA', () => {
+  it('debería bloquear acceso a gestionar-indicadores cuando rol es ADMINISTRADOR_AREA', () => {
     const token = createValidToken({ rol: 'ADMINISTRADOR_AREA' });
     sessionStorage.setItem('Authorization', token);
 
     const result = executeGuard('/gestionar-indicadores');
 
-    expect(result).toBeTrue();
+    expect(result).toBeFalse();
+    expect(router.navigate).toHaveBeenCalledWith(['/home']);
   });
 
   it('debería permitir acceso a home para todos los roles', () => {
