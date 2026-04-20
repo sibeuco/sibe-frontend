@@ -7,6 +7,7 @@ import * as bootstrap from 'bootstrap';
 import { ActionsComponent } from './actions.component';
 import { ActionService } from '../../service/action.service';
 import { ActionResponse } from '../../model/action.model';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('ActionsComponent', () => {
   let component: ActionsComponent;
@@ -18,12 +19,17 @@ describe('ActionsComponent', () => {
     { identificador: 'a2', detalle: 'Detalle 2', objetivo: 'Objetivo 2' }
   ];
 
+  const mockPageResponse = {
+    content: mockAcciones,
+    totalElements: 2
+  };
+
   beforeEach(() => {
     mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones']);
-    mockActionService.consultarAcciones.and.returnValue(of(mockAcciones));
+    mockActionService.consultarAcciones.and.returnValue(of(mockPageResponse));
 
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, NgxPaginationModule],
       declarations: [ActionsComponent],
       providers: [
         { provide: ActionService, useValue: mockActionService }
@@ -67,6 +73,14 @@ describe('ActionsComponent', () => {
     it('should reload actions', () => {
       component.filterActions();
       expect(component.accionesFiltradas).toBeDefined();
+    });
+  });
+
+  describe('onPageChange', () => {
+    it('should update page and reload actions', () => {
+      component.onPageChange(3);
+      expect(component.p).toBe(3);
+      expect(mockActionService.consultarAcciones).toHaveBeenCalled();
     });
   });
 
