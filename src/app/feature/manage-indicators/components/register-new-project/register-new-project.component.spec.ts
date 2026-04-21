@@ -20,16 +20,11 @@ describe('RegisterNewProjectComponent', () => {
     { identificador: 'acc-2', detalle: 'Accion 2', objetivo: 'Obj 2' }
   ];
 
-  const mockPageResponse = {
-    content: mockAcciones,
-    totalElements: 2
-  };
-
   beforeEach(() => {
     mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones']);
     mockProjectService = jasmine.createSpyObj('ProjectService', ['agregarNuevoProyecto']);
 
-    mockActionService.consultarAcciones.and.returnValue(of(mockPageResponse as any));
+    mockActionService.consultarAcciones.and.returnValue(of(mockAcciones as any));
     mockProjectService.agregarNuevoProyecto.and.returnValue(of({ valor: 'ok' }));
 
     TestBed.configureTestingModule({

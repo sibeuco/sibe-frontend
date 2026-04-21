@@ -35,7 +35,7 @@ describe('FilterListComponent', () => {
     mockActivityService.consultarCentrosCostosEmpleadosEnEjecucionesFinalizadas.and.returnValue(of(['CC1']));
     mockActivityService.consultarProgramasAcademicosEstudiantesEnEjecucionesFinalizadas.and.returnValue(of(['Ing. Sistemas']));
     mockActivityService.consultarNivelesFormacionEstudiantesEnEjecucionesFinalizadas.and.returnValue(of(['Pregrado']));
-    mockIndicatorService.consultarIndicadores.and.returnValue(of({ content: [{ nombre: 'Ind1' }, { nombre: 'Ind2' }], totalElements: 2 } as any));
+    mockIndicatorService.consultarIndicadores.and.returnValue(of([{ nombre: 'Ind1' }, { nombre: 'Ind2' }] as any));
 
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule, RouterTestingModule],
@@ -255,8 +255,8 @@ describe('FilterListComponent', () => {
       expect(component.semesters).toEqual([]);
     });
 
-    it('should not set indicators when response content is empty', () => {
-      mockIndicatorService.consultarIndicadores.and.returnValue(of({ content: [], totalElements: 0 }));
+    it('should not set indicators when response is empty', () => {
+      mockIndicatorService.consultarIndicadores.and.returnValue(of([]));
       fixture.detectChanges();
       expect(component.indicators).toEqual([]);
     });

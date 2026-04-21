@@ -73,9 +73,8 @@ export class RegisterNewProjectComponent implements OnInit, AfterViewInit, OnDes
 
       cargarAcciones(): void {
         this.cargandoAcciones = true;
-        this.actionService.consultarAcciones(0, 10000).subscribe({
-          next: (response: any) => {
-            const acciones: ActionResponse[] = response.content;
+        this.actionService.consultarAcciones().subscribe({
+          next: (acciones: ActionResponse[]) => {
             // Mapear las acciones del servicio al formato esperado
             this.accionesDisponibles = acciones.map(accion => ({
               value: accion.identificador,
