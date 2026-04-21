@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <div class="table-container col-12 d-flex align-items-center justify-content-center">
+    <div class="table-container col-12 d-flex flex-column align-items-center justify-content-center">
         <div class="tabla-wrapper col-12 table-responsive">
             <table class="table table-hover">
                 <thead class="table">
@@ -53,14 +53,14 @@
                     </tr>
                 </tbody>
             </table>
-            <pagination-controls
-                id="indicadores"
-                previousLabel="Anterior"
-                nextLabel="Siguiente"
-                class="my-pagination"
-                (pageChange)="onPageChange($event)">
-            </pagination-controls>
         </div>
+        <pagination-controls
+            id="indicadores"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            class="my-pagination"
+            (pageChange)="onPageChange($event)">
+        </pagination-controls>
     </div>
     <app-edit-indicator
         [indicadorAEditar]="indicadorSeleccionado"
