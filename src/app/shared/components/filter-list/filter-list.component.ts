@@ -154,7 +154,7 @@ export class FilterListComponent implements OnInit {
   }
 
   private loadIndicators(): void {
-    this.indicatorService.consultarIndicadores().subscribe({
+    this.indicatorService.consultarTodosIndicadores().subscribe({
       next: (response) => {
         if (response && response.length > 0) {
           this.indicators = response.map((i: any) => i.nombre);

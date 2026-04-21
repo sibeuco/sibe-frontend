@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Response } from 'src/app/shared/model/response.model';
 import { environment } from 'src/environments/environment';
 import { EditIndicatorRequest, IndicatorRequest, IndicatorResponse } from '../model/indicator.model';
@@ -28,6 +29,12 @@ export class IndicatorService extends HttpService {
         .set('tamano', tamano.toString());
     const url = `${environment.endpoint}${this.INDICATOR_ENDPOINT}`;
     return this.doGetParameters<any>(url, params, opts);
+  }
+
+  consultarTodosIndicadores(): Observable<any[]> {
+    return this.consultarIndicadores(0, 10000).pipe(
+        map(response => response.content)
+    );
   }
 
   consultarIndicadoresParaActividades(): Observable<IndicatorResponse[]> {

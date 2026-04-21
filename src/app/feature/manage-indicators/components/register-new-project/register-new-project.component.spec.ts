@@ -21,10 +21,10 @@ describe('RegisterNewProjectComponent', () => {
   ];
 
   beforeEach(() => {
-    mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones']);
+    mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones', 'consultarTodasAcciones']);
     mockProjectService = jasmine.createSpyObj('ProjectService', ['agregarNuevoProyecto']);
 
-    mockActionService.consultarAcciones.and.returnValue(of(mockAcciones as any));
+    mockActionService.consultarTodasAcciones.and.returnValue(of(mockAcciones as any));
     mockProjectService.agregarNuevoProyecto.and.returnValue(of({ valor: 'ok' }));
 
     TestBed.configureTestingModule({
@@ -47,7 +47,7 @@ describe('RegisterNewProjectComponent', () => {
 
   describe('ngOnInit', () => {
     it('should load actions', () => {
-      expect(mockActionService.consultarAcciones).toHaveBeenCalled();
+      expect(mockActionService.consultarTodasAcciones).toHaveBeenCalled();
       expect(component.accionesDisponibles.length).toBe(2);
       expect(component.accionesDisponibles[0].label).toBe('Accion 1');
     });
@@ -168,15 +168,15 @@ describe('RegisterNewProjectComponent', () => {
 
   describe('recargarAcciones', () => {
     it('should reload actions from service', () => {
-      mockActionService.consultarAcciones.calls.reset();
+      mockActionService.consultarTodasAcciones.calls.reset();
       component.recargarAcciones();
-      expect(mockActionService.consultarAcciones).toHaveBeenCalled();
+      expect(mockActionService.consultarTodasAcciones).toHaveBeenCalled();
     });
   });
 
   describe('cargarAcciones error handling', () => {
     it('should set cargandoAcciones to false on error', () => {
-      mockActionService.consultarAcciones.and.returnValue(throwError(() => new Error('fail')));
+      mockActionService.consultarTodasAcciones.and.returnValue(throwError(() => new Error('fail')));
       component.cargarAcciones();
       expect(component.cargandoAcciones).toBeFalse();
     });

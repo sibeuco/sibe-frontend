@@ -27,6 +27,16 @@ describe('ActionService', () => {
     req.flush({ content: [], totalElements: 0 });
   });
 
+  it('should call consultarTodasAcciones and return content array', () => {
+    const mockAcciones = [{ identificador: '1', detalle: 'Test', objetivo: 'Obj' }];
+    service.consultarTodasAcciones().subscribe(result => {
+      expect(result).toEqual(mockAcciones);
+    });
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/acciones` && r.params.get('tamano') === '10000');
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: mockAcciones, totalElements: 1 });
+  });
+
   it('should call POST to add a new action', () => {
     const accion = { detalle: 'Test' } as any;
     service.agregarNuevaAccion(accion).subscribe();
