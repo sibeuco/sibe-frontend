@@ -15,7 +15,11 @@ export class ActionsComponent implements OnInit{
   accionesFiltradas: ActionResponse[] = [];
   cargando: boolean = false;
   error: string = '';
-  
+
+  // Propiedades para paginación
+  p: number = 1;
+  totalElementos: number = 0;
+
   // Propiedades para el modal de edición
   accionSeleccionada: ActionResponse | null = null;
 
@@ -29,10 +33,11 @@ export class ActionsComponent implements OnInit{
     this.cargando = true;
     this.error = '';
 
-    this.actionService.consultarAcciones().subscribe({
-      next: (data) => {
-        this.acciones = data;
-        this.accionesFiltradas = [...this.acciones];
+    this.actionService.consultarAcciones(this.p - 1).subscribe({
+      next: (response) => {
+        this.acciones = response.content;
+        this.accionesFiltradas = [...response.content];
+        this.totalElementos = response.totalElements;
         this.cargando = false;
       },
       error: (err) => {
@@ -41,6 +46,11 @@ export class ActionsComponent implements OnInit{
         this.cargando = false;
       }
     });
+  }
+
+  onPageChange(event: number): void {
+    this.p = event;
+    this.obtenerAcciones();
   }
 
   filterActions(): void {
@@ -55,7 +65,7 @@ export class ActionsComponent implements OnInit{
   // Métodos para el modal de edición
   abrirModalEdicion(accion: ActionResponse): void {
     this.accionSeleccionada = accion;
-    
+
     // Abrir el modal usando Bootstrap
     const modalElement = document.getElementById('edit-action-modal');
     if (modalElement) {
@@ -65,13 +75,9 @@ export class ActionsComponent implements OnInit{
   }
 
   onAccionModificada(accionModificada: ActionResponse): void {
-    // Actualizar la acción en la lista local
-    const index = this.acciones.findIndex(a => a.identificador === accionModificada.identificador);
-    if (index !== -1) {
-      this.acciones[index] = accionModificada;
-      this.accionesFiltradas = [...this.acciones];
-    }
-    
+    // Recargar todas las acciones desde el backend
+    this.obtenerAcciones();
+
     // Cerrar el modal
     this.cerrarModal();
   }

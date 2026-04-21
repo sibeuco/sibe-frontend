@@ -7,6 +7,7 @@ import * as bootstrap from 'bootstrap';
 import { ActionsComponent } from './actions.component';
 import { ActionService } from '../../service/action.service';
 import { ActionResponse } from '../../model/action.model';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('ActionsComponent', () => {
   let component: ActionsComponent;
@@ -18,12 +19,17 @@ describe('ActionsComponent', () => {
     { identificador: 'a2', detalle: 'Detalle 2', objetivo: 'Objetivo 2' }
   ];
 
+  const mockPaginatedResponse = {
+    content: mockAcciones,
+    totalElements: 2
+  };
+
   beforeEach(() => {
     mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones']);
-    mockActionService.consultarAcciones.and.returnValue(of(mockAcciones));
+    mockActionService.consultarAcciones.and.returnValue(of(mockPaginatedResponse));
 
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, NgxPaginationModule],
       declarations: [ActionsComponent],
       providers: [
         { provide: ActionService, useValue: mockActionService }
@@ -48,10 +54,11 @@ describe('ActionsComponent', () => {
   });
 
   describe('obtenerAcciones', () => {
-    it('should populate acciones on success', () => {
+    it('should populate acciones from paginated response on success', () => {
       component.obtenerAcciones();
       expect(component.acciones).toEqual(mockAcciones);
       expect(component.accionesFiltradas).toEqual(mockAcciones);
+      expect(component.totalElementos).toBe(2);
       expect(component.cargando).toBeFalse();
     });
 
@@ -60,6 +67,15 @@ describe('ActionsComponent', () => {
       component.obtenerAcciones();
       expect(component.error).toBe('No se pudieron cargar las acciones.');
       expect(component.cargando).toBeFalse();
+    });
+  });
+
+  describe('onPageChange', () => {
+    it('should update page and reload actions', () => {
+      mockActionService.consultarAcciones.calls.reset();
+      component.onPageChange(3);
+      expect(component.p).toBe(3);
+      expect(mockActionService.consultarAcciones).toHaveBeenCalledWith(2);
     });
   });
 
@@ -78,18 +94,12 @@ describe('ActionsComponent', () => {
   });
 
   describe('onAccionModificada', () => {
-    it('should update action in list and clear selection', () => {
-      component.acciones = [...mockAcciones];
-      const modified = { ...mockAcciones[0], detalle: 'Modified' };
-      component.onAccionModificada(modified);
-      expect(component.acciones[0].detalle).toBe('Modified');
+    it('should reload actions and clear selection', () => {
+      mockActionService.consultarAcciones.calls.reset();
+      component.accionSeleccionada = mockAcciones[0];
+      component.onAccionModificada(mockAcciones[0]);
+      expect(mockActionService.consultarAcciones).toHaveBeenCalled();
       expect(component.accionSeleccionada).toBeNull();
-    });
-
-    it('should not fail if action not found in list', () => {
-      component.acciones = [...mockAcciones];
-      const unknown = { identificador: 'unknown', detalle: 'X', objetivo: 'Y' };
-      expect(() => component.onAccionModificada(unknown)).not.toThrow();
     });
   });
 
