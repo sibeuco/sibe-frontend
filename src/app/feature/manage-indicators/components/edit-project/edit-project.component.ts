@@ -56,7 +56,7 @@ export class EditProjectComponent implements OnInit, OnChanges {
 
       cargarAcciones(): void {
         this.cargandoAcciones = true;
-        this.actionService.consultarTodasAcciones().subscribe({
+        this.actionService.consultarAcciones().subscribe({
           next: (acciones: ActionResponse[]) => {
             // Mapear las acciones del servicio al formato esperado
             this.accionesDisponibles = acciones.map(accion => ({

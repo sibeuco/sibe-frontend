@@ -25,7 +25,7 @@ describe('FilterListComponent', () => {
       'consultarProgramasAcademicosEstudiantesEnEjecucionesFinalizadas',
       'consultarNivelesFormacionEstudiantesEnEjecucionesFinalizadas'
     ]);
-    mockIndicatorService = jasmine.createSpyObj('IndicatorService', ['consultarIndicadores', 'consultarTodosIndicadores']);
+    mockIndicatorService = jasmine.createSpyObj('IndicatorService', ['consultarIndicadores']);
 
     // Default returns
     mockActivityService.consultarAnnosEjecucionesFinalizadas.and.returnValue(of(['2024', '2025']));
@@ -35,7 +35,7 @@ describe('FilterListComponent', () => {
     mockActivityService.consultarCentrosCostosEmpleadosEnEjecucionesFinalizadas.and.returnValue(of(['CC1']));
     mockActivityService.consultarProgramasAcademicosEstudiantesEnEjecucionesFinalizadas.and.returnValue(of(['Ing. Sistemas']));
     mockActivityService.consultarNivelesFormacionEstudiantesEnEjecucionesFinalizadas.and.returnValue(of(['Pregrado']));
-    mockIndicatorService.consultarTodosIndicadores.and.returnValue(of([{ nombre: 'Ind1' }, { nombre: 'Ind2' }] as any));
+    mockIndicatorService.consultarIndicadores.and.returnValue(of([{ nombre: 'Ind1' }, { nombre: 'Ind2' }] as any));
 
     TestBed.configureTestingModule({
       imports: [FormsModule, HttpClientTestingModule, RouterTestingModule],
@@ -230,7 +230,7 @@ describe('FilterListComponent', () => {
     });
 
     it('should handle error loading indicators', () => {
-      mockIndicatorService.consultarTodosIndicadores.and.returnValue(throwError(() => new Error('fail')));
+      mockIndicatorService.consultarIndicadores.and.returnValue(throwError(() => new Error('fail')));
       fixture.detectChanges();
       expect(component.indicators).toEqual([]);
     });
@@ -256,13 +256,13 @@ describe('FilterListComponent', () => {
     });
 
     it('should not set indicators when response is empty', () => {
-      mockIndicatorService.consultarTodosIndicadores.and.returnValue(of([]));
+      mockIndicatorService.consultarIndicadores.and.returnValue(of([]));
       fixture.detectChanges();
       expect(component.indicators).toEqual([]);
     });
 
     it('should not set indicators when response is null', () => {
-      mockIndicatorService.consultarTodosIndicadores.and.returnValue(of(null as any));
+      mockIndicatorService.consultarIndicadores.and.returnValue(of(null as any));
       fixture.detectChanges();
       expect(component.indicators).toEqual([]);
     });

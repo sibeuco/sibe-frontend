@@ -20,21 +20,11 @@ describe('ActionService', () => {
 
   it('should be created', () => expect(service).toBeTruthy());
 
-  it('should call GET to consult actions with pagination params', () => {
-    service.consultarAcciones(0, 10).subscribe();
-    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/acciones` && r.params.get('pagina') === '0' && r.params.get('tamano') === '10');
+  it('should call GET to consult actions', () => {
+    service.consultarAcciones().subscribe();
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/acciones`);
     expect(req.request.method).toBe('GET');
-    req.flush({ content: [], totalElements: 0 });
-  });
-
-  it('should call consultarTodasAcciones and return content array', () => {
-    const mockAcciones = [{ identificador: '1', detalle: 'Test', objetivo: 'Obj' }];
-    service.consultarTodasAcciones().subscribe(result => {
-      expect(result).toEqual(mockAcciones);
-    });
-    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/acciones` && r.params.get('tamano') === '10000');
-    expect(req.request.method).toBe('GET');
-    req.flush({ content: mockAcciones, totalElements: 1 });
+    req.flush([]);
   });
 
   it('should call POST to add a new action', () => {

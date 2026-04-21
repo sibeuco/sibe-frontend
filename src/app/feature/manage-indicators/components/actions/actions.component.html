@@ -42,7 +42,7 @@
                             </div>
                         </td>
                     </tr>
-
+                    
                     <!-- Mensaje de error -->
                     <tr *ngIf="!cargando && error">
                         <td colspan="3" class="text-center py-4">
@@ -51,21 +51,21 @@
                             </div>
                         </td>
                     </tr>
-
+                    
                     <!-- Mensaje cuando no hay datos -->
                     <tr *ngIf="!cargando && !error && accionesFiltradas.length === 0">
                         <td colspan="3" class="text-center py-4 text-muted">
                             No se encontraron acciones
                         </td>
                     </tr>
-
+                    
                     <!-- Datos de la tabla -->
-                    <tr *ngFor="let action of accionesFiltradas | paginate : { itemsPerPage: 10, currentPage: p, totalItems: totalElementos }">
+                    <tr *ngFor="let action of accionesFiltradas">
                         <td>{{ action.detalle }}</td>
                         <td>{{ action.objetivo }}</td>
                         <td class="text-center">
-                            <button
-                                type="button"
+                            <button 
+                                type="button" 
                                 class="btn btn-outline-warning btn-sm edit-action-button"
                                 (click)="abrirModalEdicion(action)"
                                 title="Editar acción">
@@ -75,14 +75,9 @@
                     </tr>
                 </tbody>
             </table>
-            <pagination-controls
-                (pageChange)="onPageChange($event)"
-                previousLabel="Anterior"
-                nextLabel="Siguiente">
-            </pagination-controls>
         </div>
     </div>
-    <app-edit-action
+    <app-edit-action 
         [accionAEditar]="accionSeleccionada"
         (accionModificada)="onAccionModificada($event)"
         (accionCancelada)="onAccionCancelada()">

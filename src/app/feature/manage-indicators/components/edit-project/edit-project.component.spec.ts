@@ -25,9 +25,9 @@ describe('EditProjectComponent', () => {
 
   beforeEach(() => {
     mockProjectService = jasmine.createSpyObj('ProjectService', ['modificarProyecto']);
-    mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones', 'consultarTodasAcciones']);
+    mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones']);
 
-    mockActionService.consultarTodasAcciones.and.returnValue(of(mockAcciones as any));
+    mockActionService.consultarAcciones.and.returnValue(of(mockAcciones as any));
     mockProjectService.modificarProyecto.and.returnValue(of({ valor: 'ok' }));
 
     TestBed.configureTestingModule({
@@ -50,7 +50,7 @@ describe('EditProjectComponent', () => {
 
   describe('ngOnInit', () => {
     it('should load actions', () => {
-      expect(mockActionService.consultarTodasAcciones).toHaveBeenCalled();
+      expect(mockActionService.consultarAcciones).toHaveBeenCalled();
       expect(component.accionesDisponibles.length).toBe(2);
       expect(component.cargandoAcciones).toBeFalse();
     });
@@ -64,7 +64,7 @@ describe('EditProjectComponent', () => {
     });
 
     it('should handle error', () => {
-      mockActionService.consultarTodasAcciones.and.returnValue(throwError(() => new Error('fail')));
+      mockActionService.consultarAcciones.and.returnValue(throwError(() => new Error('fail')));
       component.cargarAcciones();
       expect(component.cargandoAcciones).toBeFalse();
     });

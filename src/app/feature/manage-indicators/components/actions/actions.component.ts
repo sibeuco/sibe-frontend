@@ -15,9 +15,7 @@ export class ActionsComponent implements OnInit{
   accionesFiltradas: ActionResponse[] = [];
   cargando: boolean = false;
   error: string = '';
-  p: number = 1;
-  totalElementos: number = 0;
-
+  
   // Propiedades para el modal de edición
   accionSeleccionada: ActionResponse | null = null;
 
@@ -31,11 +29,10 @@ export class ActionsComponent implements OnInit{
     this.cargando = true;
     this.error = '';
 
-    this.actionService.consultarAcciones(this.p - 1).subscribe({
-      next: (response) => {
-        this.acciones = response.content;
+    this.actionService.consultarAcciones().subscribe({
+      next: (data) => {
+        this.acciones = data;
         this.accionesFiltradas = [...this.acciones];
-        this.totalElementos = response.totalElements;
         this.cargando = false;
       },
       error: (err) => {
@@ -44,11 +41,6 @@ export class ActionsComponent implements OnInit{
         this.cargando = false;
       }
     });
-  }
-
-  onPageChange(page: number): void {
-    this.p = page;
-    this.obtenerAcciones();
   }
 
   filterActions(): void {
@@ -63,7 +55,7 @@ export class ActionsComponent implements OnInit{
   // Métodos para el modal de edición
   abrirModalEdicion(accion: ActionResponse): void {
     this.accionSeleccionada = accion;
-
+    
     // Abrir el modal usando Bootstrap
     const modalElement = document.getElementById('edit-action-modal');
     if (modalElement) {
@@ -79,7 +71,7 @@ export class ActionsComponent implements OnInit{
       this.acciones[index] = accionModificada;
       this.accionesFiltradas = [...this.acciones];
     }
-
+    
     // Cerrar el modal
     this.cerrarModal();
   }

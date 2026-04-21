@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { HttpService } from 'src/app/core/service/http.service';
 import { environment } from 'src/environments/environment';
 import { ActionRequest, ActionResponse } from '../model/action.model';
@@ -17,24 +16,15 @@ export class ActionService extends HttpService {
         super(http);
     }
 
-    consultarAcciones(pagina: number = 0, tamano: number = 10): Observable<any> {
+    consultarAcciones(): Observable<ActionResponse[]> {
         const opts = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
             })
         };
-        const params = new HttpParams()
-            .set('pagina', pagina.toString())
-            .set('tamano', tamano.toString());
         const url = `${environment.endpoint}${this.ACTION_ENDPOINT}`;
-        return this.doGetParameters<any>(url, params, opts);
-    }
-
-    consultarTodasAcciones(): Observable<ActionResponse[]> {
-        return this.consultarAcciones(0, 10000).pipe(
-            map(response => response.content)
-        );
+        return this.http.get<ActionResponse[]>(url, opts);
     }
 
     agregarNuevaAccion(accion: ActionRequest): Observable<Response<string>> {

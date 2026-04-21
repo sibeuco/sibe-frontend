@@ -37,16 +37,6 @@ describe('IndicatorService', () => {
     req.flush({ content: [], totalElements: 0 });
   });
 
-  it('should call consultarTodosIndicadores and return content array', () => {
-    const mockIndicadores = [{ nombre: 'Ind1' }];
-    service.consultarTodosIndicadores().subscribe(result => {
-      expect(result).toEqual(mockIndicadores);
-    });
-    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/indicadores` && r.params.get('tamano') === '10000');
-    expect(req.request.method).toBe('GET');
-    req.flush({ content: mockIndicadores, totalElements: 1 });
-  });
-
   it('should call GET to consult indicators for activities', () => {
     service.consultarIndicadoresParaActividades().subscribe();
     const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/indicadores/actividades`);
