@@ -36,7 +36,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let indicator of indicadoresFiltrados | paginate : { itemsPerPage: 10, currentPage: p, totalItems: totalElementos }">
+                    <tr *ngFor="let indicator of indicadoresFiltrados | paginate : { id: 'indicadores', itemsPerPage: 10, currentPage: p, totalItems: totalElementos }">
                         <td>{{ indicator.nombre }}</td>
                         <td>{{ indicator.tipoIndicador.naturalezaIndicador }}</td>
                         <td>{{ indicator.tipoIndicador.tipologiaIndicador }}</td>
@@ -54,6 +54,7 @@
                 </tbody>
             </table>
             <pagination-controls
+                id="indicadores"
                 previousLabel="Anterior"
                 nextLabel="Siguiente"
                 class="my-pagination"
