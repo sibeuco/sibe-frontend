@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { environment } from 'src/environments/environment';
@@ -16,15 +16,18 @@ export class ProjectService extends HttpService {
         super(http);
     }
 
-    consultarProyectos(): Observable<ProjectResponse[]> {
+    consultarProyectos(pagina: number = 0, tamano: number = 10): Observable<any> {
         const opts = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
             })
         };
+        const params = new HttpParams()
+            .set('pagina', pagina.toString())
+            .set('tamano', tamano.toString());
         const url = `${environment.endpoint}${this.PROJECT_ENDPOINT}`;
-        return this.http.get<ProjectResponse[]>(url, opts);
+        return this.doGetParameters<any>(url, params, opts);
     }
 
     agregarNuevoProyecto(proyecto: ProjectRequest): Observable<Response<string>> {

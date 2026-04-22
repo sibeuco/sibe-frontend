@@ -7,6 +7,7 @@ import * as bootstrap from 'bootstrap';
 import { ProjectsComponent } from './projects.component';
 import { ProjectService } from '../../service/project.service';
 import { ProjectResponse } from '../../model/project.model';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('ProjectsComponent', () => {
   let component: ProjectsComponent;
@@ -18,12 +19,17 @@ describe('ProjectsComponent', () => {
     { identificador: 'p2', numeroProyecto: '002', nombre: 'Proyecto 2', objetivo: 'Obj 2' }
   ];
 
+  const mockPaginatedResponse = {
+    content: mockProyectos,
+    totalElements: 2
+  };
+
   beforeEach(() => {
     mockProjectService = jasmine.createSpyObj('ProjectService', ['consultarProyectos']);
-    mockProjectService.consultarProyectos.and.returnValue(of(mockProyectos));
+    mockProjectService.consultarProyectos.and.returnValue(of(mockPaginatedResponse));
 
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, NgxPaginationModule],
       declarations: [ProjectsComponent],
       providers: [
         { provide: ProjectService, useValue: mockProjectService }
@@ -48,10 +54,11 @@ describe('ProjectsComponent', () => {
   });
 
   describe('cargarProyectos', () => {
-    it('should populate projects on success', () => {
+    it('should populate projects from paginated response on success', () => {
       component.cargarProyectos();
       expect(component.proyectos).toEqual(mockProyectos);
       expect(component.proyectosFiltrados).toEqual(mockProyectos);
+      expect(component.totalElementos).toBe(2);
       expect(component.cargando).toBeFalse();
     });
 
@@ -60,6 +67,15 @@ describe('ProjectsComponent', () => {
       component.cargarProyectos();
       expect(component.error).toBe('No se pudieron cargar los proyectos.');
       expect(component.cargando).toBeFalse();
+    });
+  });
+
+  describe('onPageChange', () => {
+    it('should update page and reload projects', () => {
+      mockProjectService.consultarProyectos.calls.reset();
+      component.onPageChange(3);
+      expect(component.p).toBe(3);
+      expect(mockProjectService.consultarProyectos).toHaveBeenCalledWith(2);
     });
   });
 

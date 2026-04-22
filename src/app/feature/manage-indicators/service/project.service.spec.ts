@@ -20,11 +20,21 @@ describe('ProjectService', () => {
 
   it('should be created', () => expect(service).toBeTruthy());
 
-  it('should call GET to consult projects', () => {
-    service.consultarProyectos().subscribe();
+  it('should call GET to consult projects with pagination params', () => {
+    service.consultarProyectos(0, 10).subscribe();
     const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/proyectos`);
     expect(req.request.method).toBe('GET');
-    req.flush([]);
+    expect(req.request.params.get('pagina')).toBe('0');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
+  });
+
+  it('should use default pagination params', () => {
+    service.consultarProyectos().subscribe();
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/proyectos`);
+    expect(req.request.params.get('pagina')).toBe('0');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
   });
 
   it('should call POST to add a new project', () => {

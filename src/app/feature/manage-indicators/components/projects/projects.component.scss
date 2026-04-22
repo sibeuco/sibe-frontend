@@ -6,10 +6,10 @@
     margin-bottom: $margin-from-footer;
     width: 98%;
     margin-left: 1%;
-    height: 400px;
+    min-height: 400px;
     border-radius: $general-border-radius;
     box-shadow: $sombra-general;
-    overflow-x: hidden;
+    overflow: visible;
 }
 
 .projects-title{
