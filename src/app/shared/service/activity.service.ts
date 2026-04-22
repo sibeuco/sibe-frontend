@@ -122,6 +122,15 @@ export class ActivityService extends HttpService {
 
   }
 
+  consultarEjecucionesPaginado(identificador: string, pagina: number = 0, tamano: number = 10): Observable<any> {
+    const opts = this.createDefaultOptions();
+    const params = new HttpParams()
+      .set('pagina', pagina.toString())
+      .set('tamano', tamano.toString());
+    const url = `${environment.endpoint}${this.ACTIVITY_EXECUTION_ENDPOINT}/${identificador}/paginado`;
+    return this.doGetParameters<any>(url, params, opts);
+  }
+
   consultarParticipantesPorEjecucion(identificador: string): Observable<ParticipantResponse[]> {
     const opts = this.createDefaultOptions();
     const url = `${environment.endpoint}${this.PARTICIPANTS_ENDPOINT}/${identificador}`;

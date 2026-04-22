@@ -21,6 +21,8 @@ export class DateSelectorComponent implements OnInit, OnChanges {
   fechasOrdenadas: FechaProgramada[] = [];
   cargando = false;
   error = '';
+  p = 1;
+  totalElementos = 0;
   private readonly STORAGE_KEY = 'selectedActivityInfo';
   private ejecuciones: ActivityExecutionResponse[] = [];
   private ejecucionesPorId: Map<number, ActivityExecutionResponse> = new Map();
@@ -38,6 +40,7 @@ export class DateSelectorComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['actividad'] && this.actividad) {
+      this.p = 1;
       this.cargarEjecuciones();
     }
   }
@@ -54,7 +57,7 @@ export class DateSelectorComponent implements OnInit, OnChanges {
     this.cargando = true;
     this.error = '';
 
-    this.activityService.consultarEjecuciones(this.actividad.identificador)
+    this.activityService.consultarEjecucionesPaginado(this.actividad.identificador, this.p - 1)
       .pipe(
         catchError((err) => {
           if (err?.status === 403 && err?.error?.mensaje) {
@@ -65,12 +68,14 @@ export class DateSelectorComponent implements OnInit, OnChanges {
           this.cargando = false;
           this.ejecuciones = [];
           this.ejecucionesPorId.clear();
-          return of([]);
+          return of({ content: [], totalElements: 0 });
         })
       )
       .subscribe({
-        next: (ejecuciones: ActivityExecutionResponse[]) => {
-          this.ejecuciones = ejecuciones || [];
+        next: (response: any) => {
+          const ejecuciones = response.content || [];
+          this.totalElementos = response.totalElements || 0;
+          this.ejecuciones = ejecuciones;
           this.ejecucionesPorId.clear();
           this.fechasOrdenadas = this.mapearEjecucionesAFechas(ejecuciones);
           this.cargando = false;
@@ -81,6 +86,11 @@ export class DateSelectorComponent implements OnInit, OnChanges {
           this.cargando = false;
         }
       });
+  }
+
+  onPageChange(page: number): void {
+    this.p = page;
+    this.cargarEjecuciones();
   }
 
   /**

@@ -38,7 +38,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let fecha of fechasOrdenadas; trackBy: trackByFechaId">
+              <tr *ngFor="let fecha of fechasOrdenadas | paginate: { id: 'fechasProgramadas', itemsPerPage: 10, currentPage: p, totalItems: totalElementos }; trackBy: trackByFechaId">
                 <td class="fecha-programada">
                   {{ fecha.fecha | date:'dd/MM/yyyy' }}
                 </td>
@@ -48,8 +48,8 @@
                   </span>
                 </td>
                 <td class="accion">
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     class="ver-button"
                     (click)="verFechaProgramada(fecha)">
                     Ver
@@ -59,6 +59,14 @@
             </tbody>
           </table>
         </div>
+
+        <pagination-controls
+            id="fechasProgramadas"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            class="my-pagination"
+            (pageChange)="onPageChange($event)">
+        </pagination-controls>
 
         <div *ngIf="!cargando && !error && fechasOrdenadas.length === 0" class="no-dates text-center py-4">
           <div class="text-muted">

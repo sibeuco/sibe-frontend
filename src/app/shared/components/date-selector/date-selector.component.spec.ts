@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 
 import { DateSelectorComponent } from './date-selector.component';
 import { ActivityService } from '../../service/activity.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('DateSelectorComponent', () => {
   let component: DateSelectorComponent;
@@ -21,15 +22,21 @@ describe('DateSelectorComponent', () => {
       { identificador: 'ej-3', fechaProgramada: '2025-05-01', estadoActividad: { nombre: 'Finalizada' } }
     ];
 
+  const mockPaginatedResponse = {
+    content: mockEjecuciones,
+    totalElements: 3
+  };
+
   beforeEach(() => {
-    mockActivityService = jasmine.createSpyObj('ActivityService', ['consultarEjecuciones']);
+    mockActivityService = jasmine.createSpyObj('ActivityService', ['consultarEjecuciones', 'consultarEjecucionesPaginado']);
     mockActivityService.consultarEjecuciones.and.returnValue(of(mockEjecuciones as any));
+    mockActivityService.consultarEjecucionesPaginado.and.returnValue(of(mockPaginatedResponse as any));
 
     // Mock window.bootstrap for cerrarModalCompletamente()
     (window as any).bootstrap = { Modal: { getInstance: () => null } };
 
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, NgxPaginationModule],
       declarations: [DateSelectorComponent],
       providers: [
         { provide: ActivityService, useValue: mockActivityService }
@@ -50,13 +57,13 @@ describe('DateSelectorComponent', () => {
     it('should load executions when actividad is set', () => {
       component.actividad = { identificador: 'act-1' } as any;
       fixture.detectChanges();
-      expect(mockActivityService.consultarEjecuciones).toHaveBeenCalledWith('act-1');
+      expect(mockActivityService.consultarEjecucionesPaginado).toHaveBeenCalledWith('act-1', 0);
     });
 
     it('should not load executions when actividad is null', () => {
       component.actividad = null;
       fixture.detectChanges();
-      expect(mockActivityService.consultarEjecuciones).not.toHaveBeenCalled();
+      expect(mockActivityService.consultarEjecucionesPaginado).not.toHaveBeenCalled();
     });
   });
 
@@ -71,7 +78,7 @@ describe('DateSelectorComponent', () => {
         actividad: { currentValue: { identificador: 'act-2' }, previousValue: { identificador: 'act-1' }, firstChange: false, isFirstChange: () => false }
       });
 
-      expect(mockActivityService.consultarEjecuciones).toHaveBeenCalledWith('act-2');
+      expect(mockActivityService.consultarEjecucionesPaginado).toHaveBeenCalledWith('act-2', 0);
     });
   });
 
@@ -96,7 +103,7 @@ describe('DateSelectorComponent', () => {
 
   describe('error handling', () => {
     it('should set error when service fails', () => {
-      mockActivityService.consultarEjecuciones.and.returnValue(throwError(() => new Error('fail')));
+      mockActivityService.consultarEjecucionesPaginado.and.returnValue(throwError(() => new Error('fail')));
       component.actividad = { identificador: 'act-1' } as any;
       fixture.detectChanges();
       expect(component.error).toContain('Error al cargar');
@@ -297,10 +304,13 @@ describe('DateSelectorComponent', () => {
     });
 
     it('should filter out ejecuciones without fechaProgramada', () => {
-      mockActivityService.consultarEjecuciones.and.returnValue(of([
-          { identificador: 'ej-1', fechaProgramada: '2025-06-15', estadoActividad: { nombre: 'Pendiente' } },
-          { identificador: 'ej-2', fechaProgramada: null, estadoActividad: { nombre: 'Pendiente' } }
-        ] as any));
+      mockActivityService.consultarEjecucionesPaginado.and.returnValue(of({
+          content: [
+            { identificador: 'ej-1', fechaProgramada: '2025-06-15', estadoActividad: { nombre: 'Pendiente' } },
+            { identificador: 'ej-2', fechaProgramada: null, estadoActividad: { nombre: 'Pendiente' } }
+          ],
+          totalElements: 2
+        } as any));
       component.actividad = { identificador: 'act-1' } as any;
       fixture.detectChanges();
       expect(component.fechasOrdenadas.length).toBe(1);
@@ -353,12 +363,30 @@ describe('DateSelectorComponent', () => {
   });
 
   describe('cargarEjecuciones error handler', () => {
-    it('should set error when consultarEjecuciones fails', () => {
-      mockActivityService.consultarEjecuciones.and.returnValue(throwError(() => new Error('fail')));
+    it('should set error when consultarEjecucionesPaginado fails', () => {
+      mockActivityService.consultarEjecucionesPaginado.and.returnValue(throwError(() => new Error('fail')));
       component.actividad = { identificador: 'act-1' } as any;
       fixture.detectChanges();
       expect(component.error).toBe('Error al cargar las fechas programadas.');
       expect(component.cargando).toBeFalse();
+    });
+  });
+
+  describe('onPageChange', () => {
+    it('should update page and reload ejecuciones', () => {
+      component.actividad = { identificador: 'act-1' } as any;
+      fixture.detectChanges();
+      mockActivityService.consultarEjecucionesPaginado.calls.reset();
+      component.onPageChange(2);
+      expect(component.p).toBe(2);
+      expect(mockActivityService.consultarEjecucionesPaginado).toHaveBeenCalledWith('act-1', 1);
+    });
+
+    it('should set totalElementos from response', () => {
+      mockActivityService.consultarEjecucionesPaginado.and.returnValue(of({ content: mockEjecuciones, totalElements: 25 } as any));
+      component.actividad = { identificador: 'act-1' } as any;
+      fixture.detectChanges();
+      expect(component.totalElementos).toBe(25);
     });
   });
 });
