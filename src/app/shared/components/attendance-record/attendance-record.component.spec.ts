@@ -9,6 +9,7 @@ import * as bootstrap from 'bootstrap';
 import { AttendanceRecordComponent } from './attendance-record.component';
 import { UniversityMemberService } from '../../service/university-member.service';
 import { ActivityService } from '../../service/activity.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('AttendanceRecordComponent', () => {
   let component: AttendanceRecordComponent;
@@ -33,14 +34,14 @@ describe('AttendanceRecordComponent', () => {
     ]);
     mockActivityService = jasmine.createSpyObj('ActivityService', [
       'iniciarActividad', 'finalizarActividad', 'cancelarActividad',
-      'consultarParticipantesPorEjecucion'
+      'consultarParticipantesPorEjecucion', 'consultarParticipantesPorEjecucionPaginado'
     ]);
 
     mockUniversityMemberService.consultarPorCarnet.and.returnValue(of(mockMiembro as any));
     mockUniversityMemberService.consultarPorIdentificacion.and.returnValue(of(mockMiembro as any));
 
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, NgxPaginationModule],
       declarations: [AttendanceRecordComponent],
       providers: [
         { provide: UniversityMemberService, useValue: mockUniversityMemberService },
@@ -527,12 +528,13 @@ describe('AttendanceRecordComponent', () => {
 
     it('should parse FINALIZADO estado and load participants', () => {
       setStorageEjecucion('Finalizada');
-      mockActivityService.consultarParticipantesPorEjecucion.and.returnValue(of(
-        [{ identificador: 'p1', nombreCompleto: 'Part 1', numeroIdentificacion: '111', tipo: 'Estudiante' }] as any
-      ));
+      mockActivityService.consultarParticipantesPorEjecucionPaginado.and.returnValue(of({
+        content: [{ identificador: 'p1', nombreCompleto: 'Part 1', numeroIdentificacion: '111', tipo: 'Estudiante' }],
+        totalElements: 1
+      } as any));
       component.ngOnChanges({ actividad: { currentValue: {}, previousValue: null, firstChange: false, isFirstChange: () => false } });
       expect(component.ejecucionFinalizada).toBeTrue();
-      expect(mockActivityService.consultarParticipantesPorEjecucion).toHaveBeenCalled();
+      expect(mockActivityService.consultarParticipantesPorEjecucionPaginado).toHaveBeenCalled();
     });
 
     it('should clear miembros when ejecucion changes', () => {
@@ -563,7 +565,7 @@ describe('AttendanceRecordComponent', () => {
       component.ejecucionFinalizada = true;
       component.ejecucionSeleccionadaId = 'ej-1';
       component.miembrosAsistencia = [mockMiembro as any];
-      mockActivityService.consultarParticipantesPorEjecucion.and.returnValue(throwError(() => new Error('fail')));
+      mockActivityService.consultarParticipantesPorEjecucionPaginado.and.returnValue(throwError(() => new Error('fail')));
 
       (component as any).cargarParticipantesDeActividadFinalizada();
 
@@ -574,24 +576,41 @@ describe('AttendanceRecordComponent', () => {
     it('should map participant response to university member', () => {
       component.ejecucionFinalizada = true;
       component.ejecucionSeleccionadaId = 'ej-1';
-      mockActivityService.consultarParticipantesPorEjecucion.and.returnValue(of([
-        {
-          identificador: 'p1', nombreCompleto: 'Maria', numeroIdentificacion: '222',
-          programaAcademico: 'Derecho', correoInstitucional: 'maria@test.edu', tipo: 'Estudiante'
-        }
-      ] as any));
+      mockActivityService.consultarParticipantesPorEjecucionPaginado.and.returnValue(of({
+        content: [
+          {
+            identificador: 'p1', nombreCompleto: 'Maria', numeroIdentificacion: '222',
+            programaAcademico: 'Derecho', correoInstitucional: 'maria@test.edu', tipo: 'Estudiante'
+          }
+        ],
+        totalElements: 1
+      } as any));
 
       (component as any).cargarParticipantesDeActividadFinalizada();
 
       expect(component.miembrosAsistencia[0].nombreCompleto).toBe('Maria');
       expect(component.miembrosAsistencia[0].programaAcademico).toBe('Derecho');
+      expect(component.totalElementos).toBe(1);
     });
 
     it('should not load when not finalizada', () => {
       component.ejecucionFinalizada = false;
       component.ejecucionSeleccionadaId = 'ej-1';
       (component as any).cargarParticipantesDeActividadFinalizada();
-      expect(mockActivityService.consultarParticipantesPorEjecucion).not.toHaveBeenCalled();
+      expect(mockActivityService.consultarParticipantesPorEjecucionPaginado).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('onPageChange', () => {
+    it('should update page and reload participants', () => {
+      component.ejecucionFinalizada = true;
+      component.ejecucionSeleccionadaId = 'ej-1';
+      mockActivityService.consultarParticipantesPorEjecucionPaginado.and.returnValue(of({
+        content: [], totalElements: 25
+      } as any));
+      component.onPageChange(3);
+      expect(component.p).toBe(3);
+      expect(mockActivityService.consultarParticipantesPorEjecucionPaginado).toHaveBeenCalledWith('ej-1', 2);
     });
   });
 
@@ -627,12 +646,12 @@ describe('AttendanceRecordComponent', () => {
     it('should update to FINALIZADO state and load participants', () => {
       setStorageEjecucion('En curso');
       component.ngOnChanges({ actividad: { currentValue: {}, previousValue: null, firstChange: false, isFirstChange: () => false } });
-      mockActivityService.consultarParticipantesPorEjecucion.and.returnValue(of(
-        [] as any
+      mockActivityService.consultarParticipantesPorEjecucionPaginado.and.returnValue(of(
+        { content: [], totalElements: 0 } as any
       ));
       (component as any).actualizarEstadoEjecucionLocal('Finalizada');
       expect(component.ejecucionFinalizada).toBeTrue();
-      expect(mockActivityService.consultarParticipantesPorEjecucion).toHaveBeenCalled();
+      expect(mockActivityService.consultarParticipantesPorEjecucionPaginado).toHaveBeenCalled();
     });
 
     it('should handle when no storage available', () => {
@@ -706,14 +725,14 @@ describe('AttendanceRecordComponent', () => {
       component.ejecucionFinalizada = true;
       component.ejecucionSeleccionadaId = null;
       (component as any).cargarParticipantesDeActividadFinalizada();
-      expect(mockActivityService.consultarParticipantesPorEjecucion).not.toHaveBeenCalled();
+      expect(mockActivityService.consultarParticipantesPorEjecucionPaginado).not.toHaveBeenCalled();
     });
 
     it('should not load when not finalized', () => {
       component.ejecucionFinalizada = false;
       component.ejecucionSeleccionadaId = 'ej-1';
       (component as any).cargarParticipantesDeActividadFinalizada();
-      expect(mockActivityService.consultarParticipantesPorEjecucion).not.toHaveBeenCalled();
+      expect(mockActivityService.consultarParticipantesPorEjecucionPaginado).not.toHaveBeenCalled();
     });
   });
 

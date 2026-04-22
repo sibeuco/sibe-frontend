@@ -138,6 +138,15 @@ export class ActivityService extends HttpService {
     return this.doGet<ParticipantResponse[]>(url, opts);
   }
 
+  consultarParticipantesPorEjecucionPaginado(identificador: string, pagina: number = 0, tamano: number = 10): Observable<any> {
+    const opts = this.createDefaultOptions();
+    const params = new HttpParams()
+      .set('pagina', pagina.toString())
+      .set('tamano', tamano.toString());
+    const url = `${environment.endpoint}${this.PARTICIPANTS_ENDPOINT}/${identificador}/paginado`;
+    return this.doGetParameters<any>(url, params, opts);
+  }
+
   iniciarActividad(identificador: string): Observable<StartActivityResponse> {
     const url = `${environment.endpoint}${this.START_ACTIVITY_ENDPOINT}/${identificador}`;
     return this.http.put<StartActivityResponse>(url, {});

@@ -216,4 +216,13 @@ describe('ActivityService', () => {
     expect(req.request.params.get('tamano')).toBe('10');
     req.flush({ content: [], totalElements: 0 });
   });
+
+  it('should call GET for consultarParticipantesPorEjecucionPaginado with params', () => {
+    service.consultarParticipantesPorEjecucionPaginado('ej-1', 0, 10).subscribe();
+    const req = httpMock.expectOne(r => r.url.includes('/actividades/ejecuciones/ejecucion/participantes/ej-1/paginado'));
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('pagina')).toBe('0');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
+  });
 });

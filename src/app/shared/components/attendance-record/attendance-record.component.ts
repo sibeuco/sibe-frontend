@@ -43,6 +43,10 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
   // Lista de participantes
   miembrosAsistencia: UniversityMemberResponse[] = [];
 
+  // Paginación (solo para actividades finalizadas)
+  p = 1;
+  totalElementos = 0;
+
   private readonly STORAGE_KEY = 'selectedActivityInfo';
   private ejecucionSeleccionada: ActivityExecutionResponse | null = null;
   ejecucionSeleccionadaId: string | null = null;
@@ -425,6 +429,8 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
 
       if (this.ejecucionSeleccionadaId !== ejecucionAnteriorId) {
         this.miembrosAsistencia = [];
+        this.p = 1;
+        this.totalElementos = 0;
       }
 
       if (this.ejecucionFinalizada) {
@@ -515,11 +521,13 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
     this.cargandoParticipantesFinalizados = true;
     this.miembrosAsistencia = [];
 
-    this.activityService.consultarParticipantesPorEjecucion(this.ejecucionSeleccionadaId)
+    this.activityService.consultarParticipantesPorEjecucionPaginado(this.ejecucionSeleccionadaId, this.p - 1)
       .pipe(finalize(() => this.cargandoParticipantesFinalizados = false))
       .subscribe({
-        next: (participantes) => {
-          this.miembrosAsistencia = participantes.map(participante =>
+        next: (response: any) => {
+          const participantes = response.content || [];
+          this.totalElementos = response.totalElements || 0;
+          this.miembrosAsistencia = participantes.map((participante: ParticipantResponse) =>
             this.convertirParticipanteResponseAUniversityMember(participante)
           );
         },
@@ -528,6 +536,11 @@ export class AttendanceRecordComponent implements OnInit, OnChanges {
           this.mostrarMensaje('No fue posible obtener los participantes de la actividad finalizada.', 'error');
         }
       });
+  }
+
+  onPageChange(page: number): void {
+    this.p = page;
+    this.cargarParticipantesDeActividadFinalizada();
   }
 
   private convertirParticipanteResponseAUniversityMember(participante: ParticipantResponse): UniversityMemberResponse {

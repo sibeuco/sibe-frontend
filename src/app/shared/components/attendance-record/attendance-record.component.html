@@ -90,7 +90,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let participante of miembrosAsistencia; let i = index">
+          <tr *ngFor="let participante of miembrosAsistencia | paginate: { id: 'registroAsistencia', itemsPerPage: ejecucionFinalizada ? 10 : miembrosAsistencia.length, currentPage: p, totalItems: ejecucionFinalizada ? totalElementos : miembrosAsistencia.length }; let i = index">
             <td>{{ participante.nombreCompleto }}</td>
             <td>{{ participante.documentoIdentificacion }}</td>
             <td>{{ participante.programaAcademico || 'N/A' }}</td>
@@ -106,8 +106,16 @@
         </tbody>
       </table>
     </div>
+    <pagination-controls
+        *ngIf="ejecucionFinalizada"
+        id="registroAsistencia"
+        previousLabel="Anterior"
+        nextLabel="Siguiente"
+        class="my-pagination"
+        (pageChange)="onPageChange($event)">
+    </pagination-controls>
     <div class="participants-count">
-      <span class="badge ">Total: {{ miembrosAsistencia.length }} participantes</span>
+      <span class="badge ">Total: {{ ejecucionFinalizada ? totalElementos : miembrosAsistencia.length }} participantes</span>
     </div>
   </div>
 
