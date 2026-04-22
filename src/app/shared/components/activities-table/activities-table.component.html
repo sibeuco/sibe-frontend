@@ -99,14 +99,13 @@
       <p>Aún no hay actividades registradas.</p>
     </div>
   </div>
-  <div class="pagination-wrapper" *ngIf="!cargando && totalElementos > 10">
-    <pagination-controls
+  <pagination-controls
       id="actividades"
-      (pageChange)="onPageChange($event)"
       previousLabel="Anterior"
-      nextLabel="Siguiente">
-    </pagination-controls>
-  </div>
+      nextLabel="Siguiente"
+      class="my-pagination"
+      (pageChange)="onPageChange($event)">
+  </pagination-controls>
   <app-edit-activity
     [actividad]="actividadSeleccionadaEdicion"
     [nombreArea]="nombreArea"
