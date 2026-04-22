@@ -11,6 +11,7 @@ import { ActivityService } from '../../service/activity.service';
 import { DepartmentService } from '../../service/department.service';
 import { AreaService } from '../../service/area.service';
 import { SubAreaService } from '../../service/subarea.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 describe('ActivitiesTableComponent', () => {
   let component: ActivitiesTableComponent;
@@ -25,6 +26,11 @@ describe('ActivitiesTableComponent', () => {
       { identificador: 'act-2', nombre: 'Actividad 2', nombreColaborador: 'Ana', fechaCreacion: '2025-02-01', fechasProgramadas: [] }
     ];
 
+  const mockPaginatedResponse = {
+    content: mockActivitiesResponse,
+    totalElements: 2
+  };
+
   const mockEstructura = { identificador: 'dir-1', nombre: 'Direccion Test' };
 
   beforeEach(() => {
@@ -32,6 +38,9 @@ describe('ActivitiesTableComponent', () => {
       'consultarPorDireccion',
       'consultarPorArea',
       'consultarPorSubarea',
+      'consultarPorDireccionPaginado',
+      'consultarPorAreaPaginado',
+      'consultarPorSubareaPaginado',
       'consultarEjecuciones'
     ]);
     mockDepartmentService = jasmine.createSpyObj('DepartmentService', ['consultarPorNombre']);
@@ -40,12 +49,17 @@ describe('ActivitiesTableComponent', () => {
 
     mockActivityService.consultarEjecuciones.and.returnValue(of([]));
     mockActivityService.consultarPorDireccion.and.returnValue(of(mockActivitiesResponse as any));
+    mockActivityService.consultarPorArea.and.returnValue(of(mockActivitiesResponse as any));
+    mockActivityService.consultarPorSubarea.and.returnValue(of(mockActivitiesResponse as any));
+    mockActivityService.consultarPorDireccionPaginado.and.returnValue(of(mockPaginatedResponse as any));
+    mockActivityService.consultarPorAreaPaginado.and.returnValue(of(mockPaginatedResponse as any));
+    mockActivityService.consultarPorSubareaPaginado.and.returnValue(of(mockPaginatedResponse as any));
     mockDepartmentService.consultarPorNombre.and.returnValue(of(mockEstructura));
     mockAreaService.consultarPorNombre.and.returnValue(of(mockEstructura as any));
     mockSubAreaService.consultarPorNombre.and.returnValue(of(mockEstructura as any));
 
     TestBed.configureTestingModule({
-      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [FormsModule, ReactiveFormsModule, HttpClientTestingModule, RouterTestingModule, NgxPaginationModule],
       declarations: [ActivitiesTableComponent],
       providers: [
         { provide: ActivityService, useValue: mockActivityService },
@@ -93,14 +107,12 @@ describe('ActivitiesTableComponent', () => {
     it('should use areaService for area type', () => {
       component.nombreArea = 'Area Test';
       component.tipoEstructura = 'area';
-      mockActivityService.consultarPorArea.and.returnValue(of(mockActivitiesResponse as any));
       fixture.detectChanges();
     });
 
     it('should use subAreaService for subarea type', () => {
       component.nombreArea = 'Subarea Test';
       component.tipoEstructura = 'subarea';
-      mockActivityService.consultarPorSubarea.and.returnValue(of(mockActivitiesResponse as any));
       fixture.detectChanges();
       expect(mockSubAreaService.consultarPorNombre).toHaveBeenCalledWith('Subarea Test');
     });
@@ -161,9 +173,9 @@ describe('ActivitiesTableComponent', () => {
       component.nombreArea = 'Dir Test';
       component.tipoEstructura = 'direccion';
       fixture.detectChanges();
-      mockDepartmentService.consultarPorNombre.calls.reset();
+      mockActivityService.consultarPorDireccionPaginado.calls.reset();
       component.recargarActividades();
-      expect(mockDepartmentService.consultarPorNombre).toHaveBeenCalledWith('Dir Test');
+      expect(mockActivityService.consultarPorDireccionPaginado).toHaveBeenCalled();
     });
   });
 
@@ -205,23 +217,21 @@ describe('ActivitiesTableComponent', () => {
 
   describe('cargar actividades via area and subarea types', () => {
     it('should load activities by area', () => {
-      mockActivityService.consultarPorArea.and.returnValue(of(mockActivitiesResponse as any));
       component.nombreArea = 'Area Test';
       component.tipoEstructura = 'area';
       fixture.detectChanges();
-      expect(mockActivityService.consultarPorArea).toHaveBeenCalled();
+      expect(mockActivityService.consultarPorAreaPaginado).toHaveBeenCalled();
     });
 
     it('should load activities by subarea', () => {
-      mockActivityService.consultarPorSubarea.and.returnValue(of(mockActivitiesResponse as any));
       component.nombreArea = 'Subarea Test';
       component.tipoEstructura = 'subarea';
       fixture.detectChanges();
-      expect(mockActivityService.consultarPorSubarea).toHaveBeenCalled();
+      expect(mockActivityService.consultarPorSubareaPaginado).toHaveBeenCalled();
     });
 
     it('should set error when cargar actividades fails', () => {
-      mockActivityService.consultarPorDireccion.and.returnValue(throwError(() => new Error('fail')));
+      mockActivityService.consultarPorDireccionPaginado.and.returnValue(throwError(() => new Error('fail')));
       component.nombreArea = 'Dir Test';
       component.tipoEstructura = 'direccion';
       fixture.detectChanges();
@@ -374,7 +384,7 @@ describe('ActivitiesTableComponent', () => {
         { fechaProgramada: '2025-06-15', estadoActividad: { nombre: 'PENDIENTE' } }
       ];
       mockActivityService.consultarEjecuciones.and.returnValue(of(ejecuciones as any));
-      mockActivityService.consultarPorDireccion.and.returnValue(of(mockActivitiesResponse as any));
+      mockActivityService.consultarPorDireccionPaginado.and.returnValue(of(mockPaginatedResponse as any));
 
       component.nombreArea = 'Dir Test';
       component.tipoEstructura = 'direccion';
@@ -463,7 +473,7 @@ describe('ActivitiesTableComponent', () => {
   describe('cargarFechasProgramadas with ejecuciones error', () => {
     it('should handle forkJoin error', () => {
       mockActivityService.consultarEjecuciones.and.returnValue(throwError(() => new Error('fail')));
-      mockActivityService.consultarPorDireccion.and.returnValue(of(mockActivitiesResponse as any));
+      mockActivityService.consultarPorDireccionPaginado.and.returnValue(of(mockPaginatedResponse as any));
 
       component.nombreArea = 'Dir Test';
       component.tipoEstructura = 'direccion';
@@ -628,7 +638,7 @@ describe('ActivitiesTableComponent', () => {
       component.tipoEstructura = 'area';
       // Don't trigger ngOnInit/fixture.detectChanges to avoid setting estructuraId
       mockAreaService.consultarPorNombre.and.returnValue(of({ identificador: 'a1', nombre: 'Test Area' } as any));
-      mockActivityService.consultarPorArea.and.returnValue(of(mockActivitiesResponse as any));
+      mockActivityService.consultarPorAreaPaginado.and.returnValue(of(mockPaginatedResponse as any));
       component.recargarActividades();
       expect(mockAreaService.consultarPorNombre).toHaveBeenCalledWith('Test Area');
     });
@@ -646,12 +656,32 @@ describe('ActivitiesTableComponent', () => {
 
   describe('cargarActividades with empty response', () => {
     it('should set cargando false and apply filters when response is empty', () => {
-      mockActivityService.consultarPorDireccion.and.returnValue(of([] as any));
+      mockActivityService.consultarPorDireccionPaginado.and.returnValue(of({ content: [], totalElements: 0 } as any));
       component.nombreArea = 'Dir Test';
       component.tipoEstructura = 'direccion';
       fixture.detectChanges();
       expect(component.cargando).toBeFalse();
       expect(component.actividadesOrdenadas).toEqual([]);
+    });
+  });
+
+  describe('onPageChange', () => {
+    it('should update page and reload activities', () => {
+      component.nombreArea = 'Dir Test';
+      component.tipoEstructura = 'direccion';
+      fixture.detectChanges();
+      mockActivityService.consultarPorDireccionPaginado.calls.reset();
+      component.onPageChange(2);
+      expect(component.p).toBe(2);
+      expect(mockActivityService.consultarPorDireccionPaginado).toHaveBeenCalled();
+    });
+
+    it('should set totalElementos from response', () => {
+      mockActivityService.consultarPorDireccionPaginado.and.returnValue(of({ content: mockActivitiesResponse, totalElements: 25 } as any));
+      component.nombreArea = 'Dir Test';
+      component.tipoEstructura = 'direccion';
+      fixture.detectChanges();
+      expect(component.totalElementos).toBe(25);
     });
   });
 

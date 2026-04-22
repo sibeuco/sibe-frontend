@@ -180,4 +180,31 @@ describe('ActivityService', () => {
     expect(req.request.method).toBe('GET');
     req.flush([]);
   });
+
+  it('should call GET for consultarPorAreaPaginado with params', () => {
+    service.consultarPorAreaPaginado('area-1', 0, 10).subscribe();
+    const req = httpMock.expectOne(r => r.url.includes('/actividades/area/area-1/paginado'));
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('pagina')).toBe('0');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
+  });
+
+  it('should call GET for consultarPorDireccionPaginado with params', () => {
+    service.consultarPorDireccionPaginado('dir-1', 1, 10).subscribe();
+    const req = httpMock.expectOne(r => r.url.includes('/actividades/direccion/dir-1/paginado'));
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('pagina')).toBe('1');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
+  });
+
+  it('should call GET for consultarPorSubareaPaginado with params', () => {
+    service.consultarPorSubareaPaginado('sub-1', 0, 10).subscribe();
+    const req = httpMock.expectOne(r => r.url.includes('/actividades/subarea/sub-1/paginado'));
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('pagina')).toBe('0');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
+  });
 });

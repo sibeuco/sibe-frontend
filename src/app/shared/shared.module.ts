@@ -20,6 +20,7 @@ import { DateSelectorComponent } from './components/date-selector/date-selector.
 import { TotalParticipantsComponent } from './components/data-visualization/total-participants/total-participants.component';
 import { CompletedActivitiesComponent } from './components/data-visualization/completed-activities/completed-activities.component';
 import { TotalParticipantsMonthsComponent } from './components/data-visualization/total-participants-months/total-participants-months.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { TotalParticipantsMonthsComponent } from './components/data-visualizatio
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ],
   providers:[
   ],

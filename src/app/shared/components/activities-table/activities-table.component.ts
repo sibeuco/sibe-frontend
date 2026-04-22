@@ -41,6 +41,11 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   cargando = false;
   error = '';
 
+  // Paginación
+  p = 1;
+  totalElementos = 0;
+  private identificadorEstructuraResuelto: string = '';
+
   // Mapa para almacenar fechas programadas más cercanas (identificador actividad -> fecha)
   fechasProgramadasMap: Map<string, Date | null> = new Map();
 
@@ -75,6 +80,8 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     // Si cambian los parámetros para cargar desde backend
     if (changes['nombreArea'] || changes['tipoEstructura']) {
       if (this.nombreArea) {
+        this.p = 1;
+        this.identificadorEstructuraResuelto = '';
         this.cargarActividades();
       }
     }
@@ -105,6 +112,12 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
     this.cargando = true;
     this.error = '';
 
+    // Si ya tenemos el identificador resuelto, cargar directamente
+    if (this.identificadorEstructuraResuelto) {
+      this.cargarActividadesPaginadas(this.identificadorEstructuraResuelto);
+      return;
+    }
+
     // Primero consultar por nombre para obtener el identificador
     let consultaPorNombre$: any;
 
@@ -131,17 +144,8 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
             throw new Error('No se pudo obtener el identificador de la estructura');
           }
 
-          // Luego consultar las actividades según el tipo
-          switch (this.tipoEstructura) {
-            case 'direccion':
-              return this.activityService.consultarPorDireccion(estructura.identificador);
-            case 'area':
-              return this.activityService.consultarPorArea(estructura.identificador);
-            case 'subarea':
-              return this.activityService.consultarPorSubarea(estructura.identificador);
-            default:
-              return of([]);
-          }
+          this.identificadorEstructuraResuelto = estructura.identificador;
+          return this.consultarActividadesPaginadas(estructura.identificador);
         }),
         catchError((err) => {
           if (err?.status === 403 && err?.error?.mensaje) {
@@ -149,19 +153,64 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
           } else {
             this.error = 'Error al cargar las actividades. Por favor, intente nuevamente.';
           }
-          return of([]);
+          return of({ content: [], totalElements: 0 });
         })
       )
       .subscribe({
-        next: (actividades: ActivityResponse[]) => {
-          this.actividadesCargadas = actividades || [];
-          // Cargar fechas programadas
-          this.cargarFechasProgramadas(actividades);
+        next: (response: any) => {
+          this.actividadesCargadas = response.content || [];
+          this.totalElementos = response.totalElements || 0;
+          this.cargarFechasProgramadas(this.actividadesCargadas);
         },
         error: () => {
           this.cargando = false;
         }
       });
+  }
+
+  private cargarActividadesPaginadas(identificador: string): void {
+    this.consultarActividadesPaginadas(identificador)
+      .pipe(
+        catchError((err) => {
+          if (err?.status === 403 && err?.error?.mensaje) {
+            this.error = err.error.mensaje;
+          } else {
+            this.error = 'Error al cargar las actividades. Por favor, intente nuevamente.';
+          }
+          return of({ content: [], totalElements: 0 });
+        })
+      )
+      .subscribe({
+        next: (response: any) => {
+          this.actividadesCargadas = response.content || [];
+          this.totalElementos = response.totalElements || 0;
+          this.cargarFechasProgramadas(this.actividadesCargadas);
+        },
+        error: () => {
+          this.cargando = false;
+        }
+      });
+  }
+
+  private consultarActividadesPaginadas(identificador: string): any {
+    const pagina = this.p - 1;
+    switch (this.tipoEstructura) {
+      case 'direccion':
+        return this.activityService.consultarPorDireccionPaginado(identificador, pagina);
+      case 'area':
+        return this.activityService.consultarPorAreaPaginado(identificador, pagina);
+      case 'subarea':
+        return this.activityService.consultarPorSubareaPaginado(identificador, pagina);
+      default:
+        return of({ content: [], totalElements: 0 });
+    }
+  }
+
+  onPageChange(page: number): void {
+    this.p = page;
+    if (this.identificadorEstructuraResuelto) {
+      this.cargarActividadesPaginadas(this.identificadorEstructuraResuelto);
+    }
   }
 
   /**

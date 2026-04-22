@@ -61,7 +61,7 @@
             <p>{{ error }}</p>
           </td>
         </tr>
-        <tr *ngFor="let actividad of actividadesOrdenadas; trackBy: trackByActividadId">
+        <tr *ngFor="let actividad of actividadesOrdenadas | paginate: { id: 'actividades', itemsPerPage: 10, currentPage: p, totalItems: totalElementos }; trackBy: trackByActividadId">
           <td class="activity-name">{{ actividad.nombre }}</td>
           <td class="collaborator">{{ obtenerNombreColaborador(actividad) }}</td>
           <td class="creation-date">{{ (actividad.fechaCreacion | date:'dd/MM/yyyy') || 'Sin fecha' }}</td>
@@ -98,6 +98,14 @@
     <div *ngIf="!cargando && !error && actividadesCargadas.length === 0" class="no-activities">
       <p>Aún no hay actividades registradas.</p>
     </div>
+  </div>
+  <div class="pagination-wrapper" *ngIf="!cargando && totalElementos > 10">
+    <pagination-controls
+      id="actividades"
+      (pageChange)="onPageChange($event)"
+      previousLabel="Anterior"
+      nextLabel="Siguiente">
+    </pagination-controls>
   </div>
   <app-edit-activity
     [actividad]="actividadSeleccionadaEdicion"

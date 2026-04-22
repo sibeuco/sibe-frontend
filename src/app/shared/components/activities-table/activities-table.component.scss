@@ -1,36 +1,35 @@
 @import '../../../../assets/scss/modules/var';
 
 .activities-table-container {
-  --table-max-height: 500px; // Variable CSS para altura máxima configurable
   width: 100%;
+  min-height: 400px;
   margin: $general-margin-top 0;
   background: $white-color;
   border-radius: $general-border-radius;
   box-shadow: $sombra-general;
-  //overflow: visible;
+  overflow: visible;
 
   .table-wrapper {
     overflow-x: auto;
-    overflow-y: auto;
+    overflow-y: visible;
     width: 100%;
     max-width: 100%;
-    max-height: var(--table-max-height); // Usa la variable CSS para altura máxima
-    
+
     // Estilos para el scroll
     &::-webkit-scrollbar {
       width: 8px;
       height: 8px;
     }
-    
+
     &::-webkit-scrollbar-track {
       background: #f1f1f1;
       border-radius: 4px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: #c1c1c1;
       border-radius: 4px;
-      
+
       &:hover {
         background: #a8a8a8;
       }
@@ -55,20 +54,20 @@
       text-align: center;
       vertical-align: middle;
     }
-    
+
     .activities-table {
       width: 100%;
       min-width: 800px; // Ancho mínimo para mantener legibilidad
       border-collapse: collapse;
       font-family: $font-general;
-      
+
       thead {
         background: $background-color;
         position: sticky;
         top: 0;
         z-index: 10;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); // Sombra sutil para el encabezado flotante
-        
+
         th {
           padding: 1.5rem 2rem;
           text-align: left;
@@ -78,7 +77,7 @@
           border-bottom: 2px solid $border-label-color;
           background: $background-color; // Asegurar que el fondo se mantenga
           white-space: nowrap; // Evitar que el texto se rompa en múltiples líneas
-          
+
           // Anchos específicos para cada columna
           &:nth-child(1) { width: 25%; } // Nombre Actividad
           &:nth-child(2) { width: 18%; } // Colaborador
@@ -154,26 +153,26 @@
           }
         }
       }
-      
+
       tbody {
         tr {
           border-bottom: 1px solid $border-label-color;
           transition: background-color 0.3s ease;
-          
+
           &:hover {
             background-color: rgba(0, 139, 80, 0.05);
           }
-          
+
           &:last-child {
             border-bottom: none;
           }
-          
+
           td {
             padding: 1.5rem 2rem;
             font-size: $font-general-size;
             color: $black-color;
             vertical-align: middle;
-            
+
             // Aplicar los mismos anchos que las columnas del encabezado
             &:nth-child(1) { width: 25%; } // Nombre Actividad
             &:nth-child(2) { width: 18%; } // Colaborador
@@ -183,31 +182,31 @@
             &:nth-child(6) { width: 10%; } // Estado
             &:nth-child(7) { width: 8%; } // Acción Gestionar
             &:nth-child(8) { width: 5%; } // Acción Editar
-            
+
             &.activity-name {
               font-weight: 500;
               color: $dark-green;
             }
-            
+
             &.collaborator {
               color: $black-color;
             }
-            
+
             &.creation-date {
               color: $black-color;
             }
-            
+
             &.programmed-date {
               color: $black-color;
             }
-            
+
             &.ruta-insumos {
               color: $black-color;
               font-size: 0.9rem;
               word-break: break-word;
               max-width: 150px;
             }
-            
+
             &.status {
               .status-badge {
                 display: inline-block;
@@ -217,19 +216,19 @@
                 font-weight: 500;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
-                
+
                 &.status-pendiente {
                   background-color: rgba(255, 202, 0, 0.2);
                   color: #B8860B;
                   border: 1px solid $secondary-color;
                 }
-                
+
                 &.status-en-curso {
                   background-color: rgba(0, 139, 80, 0.2);
                   color: $primary-color;
                   border: 1px solid $primary-color;
                 }
-                
+
                 &.status-finalizado {
                   background-color: rgba(0, 0, 0, 0.1);
                   color: $black-color;
@@ -237,7 +236,7 @@
                 }
               }
             }
-            
+
             &.action {
               .realizar-actividad-btn {
                 background-color: $secondary-color;
@@ -251,24 +250,24 @@
                 cursor: pointer;
                 transition: all 0.3s ease;
                 box-shadow: 0 2px 4px rgba(255, 202, 0, 0.3);
-                
+
                 &:hover:not(.disabled) {
                   background-color: $secondary-color-light;
                   transform: translateY(-2px);
                   box-shadow: 0 4px 8px rgba(255, 202, 0, 0.4);
                 }
-                
+
                 &:active:not(.disabled) {
                   transform: translateY(0);
                   box-shadow: 0 2px 4px rgba(255, 202, 0, 0.3);
                 }
-                
+
                 &.disabled {
                   background-color: $border-label-color;
                   color: rgba(0, 0, 0, 0.4);
                   cursor: not-allowed;
                   box-shadow: none;
-                  
+
                   &:hover {
                     transform: none;
                     box-shadow: none;
@@ -280,14 +279,14 @@
         }
       }
     }
-    
+
     .no-activities {
       text-align: center;
       padding: 4rem 2rem;
       color: $black-color;
       font-size: $font-general-size;
       font-family: $font-general;
-      
+
       p {
         margin: 0;
         opacity: 0.7;
@@ -307,13 +306,13 @@
             font-size: $little-font-size;
           }
         }
-        
+
         tbody {
           tr {
             td {
               padding: 1rem;
               font-size: $little-font-size;
-              
+
               &.action {
                 .realizar-actividad-btn {
                   padding: 0.8rem 1.2rem;

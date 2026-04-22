@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 import { HttpService } from 'src/app/core/service/http.service';
 import { Response } from '../model/response.model';
@@ -85,6 +85,33 @@ export class ActivityService extends HttpService {
     const url = `${environment.endpoint}${this.ACTIVITY_SUBAREA_ENDPOINT}/${identificador}`;
 
     return this.doGet<ActivityResponse[]>(url, opts);
+  }
+
+  consultarPorAreaPaginado(identificador: string, pagina: number = 0, tamano: number = 10): Observable<any> {
+    const opts = this.createDefaultOptions();
+    const params = new HttpParams()
+      .set('pagina', pagina.toString())
+      .set('tamano', tamano.toString());
+    const url = `${environment.endpoint}${this.ACTIVITY_AREA_ENDPOINT}/${identificador}/paginado`;
+    return this.doGetParameters<any>(url, params, opts);
+  }
+
+  consultarPorDireccionPaginado(identificador: string, pagina: number = 0, tamano: number = 10): Observable<any> {
+    const opts = this.createDefaultOptions();
+    const params = new HttpParams()
+      .set('pagina', pagina.toString())
+      .set('tamano', tamano.toString());
+    const url = `${environment.endpoint}${this.ACTIVITY_DEPARTMENT_ENDPOINT}/${identificador}/paginado`;
+    return this.doGetParameters<any>(url, params, opts);
+  }
+
+  consultarPorSubareaPaginado(identificador: string, pagina: number = 0, tamano: number = 10): Observable<any> {
+    const opts = this.createDefaultOptions();
+    const params = new HttpParams()
+      .set('pagina', pagina.toString())
+      .set('tamano', tamano.toString());
+    const url = `${environment.endpoint}${this.ACTIVITY_SUBAREA_ENDPOINT}/${identificador}/paginado`;
+    return this.doGetParameters<any>(url, params, opts);
   }
 
   consultarEjecuciones(identificador: string): Observable<ActivityExecutionResponse[]> {
