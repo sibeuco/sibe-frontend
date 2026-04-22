@@ -6,12 +6,12 @@
 
 .modal-header {
   background-color: $primary-color;
-  
+
   .modal-title {
     font-weight: bold;
     color: $white-color;
   }
-  
+
   .btn-close {
     filter: brightness(0) invert(1);
     opacity: 1;
@@ -19,7 +19,7 @@
     font-size: 1.5rem;
     top: 10px;
     right: 15px;
-    
+
     &:hover {
       filter: brightness(0) invert(1);
       opacity: 0.8;
@@ -34,18 +34,25 @@
 
 .modal-body {
   padding: 2rem;
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > * {
+    width: 100%;
+  }
+
   .activity-info {
     background-color: $background-color;
     padding: 1.5rem;
     border-radius: $general-border-radius;
     border-left: 4px solid $primary-color;
     margin-bottom: 2rem;
-    
+
     .row {
       margin: 0;
     }
-    
+
     strong {
       color: $dark-green;
       font-family: $font-general;
@@ -57,7 +64,7 @@
 .table {
   margin-bottom: 0;
   font-family: $font-general;
-  
+
   thead th {
     background: $background-color;
     border-top: none;
@@ -67,7 +74,7 @@
     color: $dark-green;
     border-bottom: 2px solid $border-label-color;
   }
-  
+
   tbody td {
     padding: 1.5rem 2rem;
     vertical-align: middle;
@@ -75,7 +82,7 @@
     color: $black-color;
     border-bottom: 1px solid $border-label-color;
   }
-  
+
   .fecha-programada {
     font-weight: 500;
     color: $black-color;
@@ -90,19 +97,19 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  
+
   &.status-pendiente {
     background-color: rgba(255, 202, 0, 0.2);
     color: #B8860B;
     border: 1px solid $secondary-color;
   }
-  
+
   &.status-en-curso {
     background-color: rgba(0, 139, 80, 0.2);
     color: $primary-color;
     border: 1px solid $primary-color;
   }
-  
+
   &.status-finalizada {
     background-color: rgba(0, 0, 0, 0.1);
     color: $black-color;
@@ -121,13 +128,13 @@
   padding: 0.8rem 1.5rem;
   transition: all 0.3s ease;
   box-shadow: 0 2px 4px rgba(255, 202, 0, 0.3);
-  
+
   &:hover {
     background-color: $secondary-color-light;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(255, 202, 0, 0.4);
   }
-  
+
   &:active {
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(255, 202, 0, 0.3);
@@ -145,12 +152,12 @@
   color: $black-color;
   font-size: $font-general-size;
   font-family: $font-general;
-  
+
   .text-muted {
     color: $black-color !important;
     opacity: 0.7;
   }
-  
+
   i {
     color: $border-label-color;
   }
@@ -161,20 +168,24 @@
   padding: 1.5rem 2rem;
 }
 
+.my-pagination {
+  width: auto;
+}
+
 // Responsive adjustments
 @media (max-width: 768px) {
   .modal-dialog {
     margin: 0.5rem;
   }
-  
+
   .table-responsive {
     font-size: $little-font-size;
   }
-  
+
   .modal-body {
     padding: 1rem;
   }
-  
+
   .activity-info {
     padding: 1rem;
   }
