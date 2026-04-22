@@ -52,7 +52,7 @@
     </div>
 
     <!-- Tabla de usuarios -->
-    <div *ngIf="!cargando && !error" class="table-container col-12 d-flex align-items-center justify-content-center">
+    <div *ngIf="!cargando && !error" class="table-container col-12 d-flex flex-column align-items-center justify-content-center">
         <div class="tabla-wrapper col-12 table-responsive">
             <div *ngIf="usuariosFiltrados.length === 0" class="text-center py-4">
                 <i class="bi bi-people fs-1 text-muted"></i>
@@ -73,7 +73,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of usuariosFiltrados">
+                    <tr *ngFor="let user of usuariosFiltrados | paginate: {
+                            id: 'departmentUsers',
+                            itemsPerPage: 10,
+                            currentPage: p,
+                            totalItems: totalElementos
+                        }">
                         <td>{{ user.nombres }} {{ user.apellidos }}</td>
                         <td>{{ user.correo }}</td>
                         <td>{{ user.tipoUsuario.nombre }}</td>
@@ -100,6 +105,13 @@
                 </tbody>
             </table>
         </div>
+        <pagination-controls
+            id="departmentUsers"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+            class="my-pagination"
+            (pageChange)="onPageChange($event)">
+        </pagination-controls>
     </div>
 
     <!-- Modal de confirmación para eliminar usuario -->

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { of, throwError } from 'rxjs';
 
 import { DepartmentUsersComponent } from './department-users.component';
@@ -20,20 +21,20 @@ describe('DepartmentUsersComponent', () => {
     {
       identificador: '1', nombres: 'Juan', apellidos: 'Perez', correo: 'jp@test.com',
       identificacion: { tipoIdentificacion: 'CC', numeroIdentificacion: '123' } as any,
-      tipoUsuario: { identificador: 'tu1', nombre: 'Admin' } as any,
+      tipoUsuario: { identificador: 'tu1', nombre: 'Administrador de dirección' } as any,
       estaActivo: true
     },
     {
       identificador: '2', nombres: 'Ana', apellidos: 'Lopez', correo: 'al@test.com',
       identificacion: { tipoIdentificacion: 'CC', numeroIdentificacion: '456' } as any,
-      tipoUsuario: { identificador: 'tu1', nombre: 'Admin' } as any,
+      tipoUsuario: { identificador: 'tu1', nombre: 'Administrador de dirección' } as any,
       estaActivo: true
     }
   ];
 
   beforeEach(() => {
-    mockUserService = jasmine.createSpyObj('UserService', ['consultarUsuarios', 'eliminarUsuario']);
-    mockUserService.consultarUsuarios.and.returnValue(of(mockUsuarios));
+    mockUserService = jasmine.createSpyObj('UserService', ['consultarUsuariosPorTipo', 'eliminarUsuario']);
+    mockUserService.consultarUsuariosPorTipo.and.returnValue(of({ content: mockUsuarios, totalElements: mockUsuarios.length }));
     mockUserService.eliminarUsuario.and.returnValue(of({ valor: 'eliminado' }));
 
     mockDepartmentService = jasmine.createSpyObj('DepartmentService', ['consultarDirecciones']);
@@ -45,7 +46,7 @@ describe('DepartmentUsersComponent', () => {
     mockNotificationService = new UserNotificationService();
 
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, NgxPaginationModule],
       declarations: [DepartmentUsersComponent],
       providers: [
         { provide: UserService, useValue: mockUserService },
@@ -78,13 +79,14 @@ describe('DepartmentUsersComponent', () => {
   describe('obtenerUsuarios', () => {
     it('should load users on success', () => {
       component.obtenerUsuarios();
-      expect(mockUserService.consultarUsuarios).toHaveBeenCalled();
-      expect(component.usuarios.length).toBeGreaterThanOrEqual(0);
+      expect(mockUserService.consultarUsuariosPorTipo).toHaveBeenCalled();
+      expect(component.usuarios.length).toBe(2);
+      expect(component.totalElementos).toBe(2);
       expect(component.cargando).toBeFalse();
     });
 
     it('should handle error', () => {
-      mockUserService.consultarUsuarios.and.returnValue(throwError(() => new Error('fail')));
+      mockUserService.consultarUsuariosPorTipo.and.returnValue(throwError(() => new Error('fail')));
       component.obtenerUsuarios();
       expect(component.error).toBe('No se pudieron cargar los usuarios.');
       expect(component.cargando).toBeFalse();
@@ -163,18 +165,18 @@ describe('DepartmentUsersComponent', () => {
   describe('suscribirseANotificaciones', () => {
     it('should reload users on notification events', () => {
       fixture.detectChanges();
-      mockUserService.consultarUsuarios.calls.reset();
+      mockUserService.consultarUsuariosPorTipo.calls.reset();
 
       mockNotificationService.notificarUsuarioCreado({});
-      expect(mockUserService.consultarUsuarios).toHaveBeenCalledTimes(1);
+      expect(mockUserService.consultarUsuariosPorTipo).toHaveBeenCalledTimes(1);
 
-      mockUserService.consultarUsuarios.calls.reset();
+      mockUserService.consultarUsuariosPorTipo.calls.reset();
       mockNotificationService.notificarUsuarioActualizado({});
-      expect(mockUserService.consultarUsuarios).toHaveBeenCalledTimes(1);
+      expect(mockUserService.consultarUsuariosPorTipo).toHaveBeenCalledTimes(1);
 
-      mockUserService.consultarUsuarios.calls.reset();
+      mockUserService.consultarUsuariosPorTipo.calls.reset();
       mockNotificationService.notificarUsuarioEliminado({});
-      expect(mockUserService.consultarUsuarios).toHaveBeenCalledTimes(1);
+      expect(mockUserService.consultarUsuariosPorTipo).toHaveBeenCalledTimes(1);
     });
   });
 

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { ManageUsersRoutingModule } from './manage-users-routing.module';
 import { ManageUsersComponent } from './components/manage-users.component';
@@ -23,7 +24,8 @@ import { EditUserComponent } from './components/edit-user/edit-user.component';
     CommonModule,
     ManageUsersRoutingModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ]
 })
 export class ManageUsersModule { }

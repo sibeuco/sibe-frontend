@@ -27,6 +27,16 @@ describe('UserService', () => {
     req.flush([]);
   });
 
+  it('should call GET to consult users by type paginated', () => {
+    service.consultarUsuariosPorTipo('Administrador de dirección', 0, 10).subscribe();
+    const req = httpMock.expectOne(r => r.url.includes('/usuarios/paginado'));
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('tipoUsuario')).toBe('Administrador de dirección');
+    expect(req.request.params.get('pagina')).toBe('0');
+    expect(req.request.params.get('tamano')).toBe('10');
+    req.flush({ content: [], totalElements: 0 });
+  });
+
   it('should call POST to add a new user', () => {
     const user = { correo: 'test@test.com' } as any;
     service.agregarNuevoUsuario(user).subscribe();
