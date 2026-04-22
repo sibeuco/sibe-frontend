@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { of, throwError } from 'rxjs';
 
 import { AreaUsersComponent } from './area-users.component';
@@ -27,8 +28,8 @@ describe('AreaUsersComponent', () => {
   ];
 
   beforeEach(() => {
-    mockUserService = jasmine.createSpyObj('UserService', ['consultarUsuarios', 'eliminarUsuario']);
-    mockUserService.consultarUsuarios.and.returnValue(of(mockUsuarios));
+    mockUserService = jasmine.createSpyObj('UserService', ['consultarUsuariosPorTipo', 'eliminarUsuario']);
+    mockUserService.consultarUsuariosPorTipo.and.returnValue(of({ content: mockUsuarios, totalElements: mockUsuarios.length }));
     mockUserService.eliminarUsuario.and.returnValue(of({ valor: 'ok' }));
 
     notificationService = new UserNotificationService();
@@ -40,7 +41,7 @@ describe('AreaUsersComponent', () => {
     mockSubAreaService.consultarSubareas.and.returnValue(of([{ identificador: 's1', nombre: 'Sub 1' }] as any));
 
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, NgxPaginationModule],
       declarations: [AreaUsersComponent],
       providers: [
         { provide: UserService, useValue: mockUserService },
@@ -61,9 +62,10 @@ describe('AreaUsersComponent', () => {
 
   describe('ngOnInit', () => {
     it('should load users, subscribe and load areas', () => {
-      expect(mockUserService.consultarUsuarios).toHaveBeenCalled();
+      expect(mockUserService.consultarUsuariosPorTipo).toHaveBeenCalled();
       expect(mockAreaService.consultarAreas).toHaveBeenCalled();
       expect(component.usuarios.length).toBe(1);
+      expect(component.totalElementos).toBe(1);
     });
   });
 
@@ -74,7 +76,7 @@ describe('AreaUsersComponent', () => {
     });
 
     it('should handle error', () => {
-      mockUserService.consultarUsuarios.and.returnValue(throwError(() => new Error('fail')));
+      mockUserService.consultarUsuariosPorTipo.and.returnValue(throwError(() => new Error('fail')));
       component.obtenerUsuarios();
       expect(component.error).toBe('No se pudieron cargar los usuarios.');
       expect(component.cargando).toBeFalse();
@@ -181,21 +183,21 @@ describe('AreaUsersComponent', () => {
 
   describe('suscribirseANotificaciones', () => {
     it('should reload users when user is created', () => {
-      mockUserService.consultarUsuarios.calls.reset();
+      mockUserService.consultarUsuariosPorTipo.calls.reset();
       notificationService.notificarUsuarioCreado({});
-      expect(mockUserService.consultarUsuarios).toHaveBeenCalled();
+      expect(mockUserService.consultarUsuariosPorTipo).toHaveBeenCalled();
     });
 
     it('should reload users when user is updated', () => {
-      mockUserService.consultarUsuarios.calls.reset();
+      mockUserService.consultarUsuariosPorTipo.calls.reset();
       notificationService.notificarUsuarioActualizado({});
-      expect(mockUserService.consultarUsuarios).toHaveBeenCalled();
+      expect(mockUserService.consultarUsuariosPorTipo).toHaveBeenCalled();
     });
 
     it('should reload users when user is deleted', () => {
-      mockUserService.consultarUsuarios.calls.reset();
+      mockUserService.consultarUsuariosPorTipo.calls.reset();
       notificationService.notificarUsuarioEliminado({});
-      expect(mockUserService.consultarUsuarios).toHaveBeenCalled();
+      expect(mockUserService.consultarUsuariosPorTipo).toHaveBeenCalled();
     });
   });
 
@@ -203,9 +205,9 @@ describe('AreaUsersComponent', () => {
     it('should unsubscribe from all subscriptions', () => {
       component.ngOnDestroy();
       // After destroy, notifications should not trigger reload
-      mockUserService.consultarUsuarios.calls.reset();
+      mockUserService.consultarUsuariosPorTipo.calls.reset();
       notificationService.notificarUsuarioCreado({});
-      expect(mockUserService.consultarUsuarios).not.toHaveBeenCalled();
+      expect(mockUserService.consultarUsuariosPorTipo).not.toHaveBeenCalled();
     });
   });
 });

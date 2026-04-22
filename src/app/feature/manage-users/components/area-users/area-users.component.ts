@@ -25,7 +25,9 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
   error = '';
   searchTerm = '';
   private subscriptions: Subscription[] = [];
-  
+  p: number = 1;
+  totalElementos: number = 0;
+
   // Propiedades para el modal de confirmación
   usuarioAEliminar: UserResponse | null = null;
   eliminando = false;
@@ -77,7 +79,7 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
 
   cargarAreasYSubareas(): void {
     this.cargandoAreas = true;
-    
+
     // Cargar áreas
     this.areaService.consultarAreas().subscribe({
       next: (areas: AreaResponse[]) => {
@@ -89,7 +91,7 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
               identificador: area.identificador,
               nombre: area.nombre
             }));
-            
+
             this.listaSubareas = subareas.map(subarea => ({
               identificador: subarea.identificador,
               nombre: subarea.nombre
@@ -115,16 +117,11 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
     this.cargando = true;
     this.error = '';
 
-    this.userService.consultarUsuarios().subscribe({
-      next: (res: UserResponse[]) => {
-        console.log('Usuarios obtenidos del servicio (area-users):', res); // Debug log
-        this.usuarios = res.filter(
-          usuario => usuario.tipoUsuario?.nombre !== 'Administrador de dirección'
-        );
-        console.log('Usuarios filtrados (area-users):', this.usuarios); // Debug log
-
-        //  Guarda también la lista filtrada para búsquedas
-        this.usuariosFiltrados = [...this.usuarios];
+    this.userService.consultarUsuariosPorTipo('Administrador de dirección', this.p - 1, 10, true).subscribe({
+      next: (response: any) => {
+        this.usuarios = response.content;
+        this.usuariosFiltrados = [...response.content];
+        this.totalElementos = response.totalElements;
         this.cargando = false;
       },
       error: (err) => {
@@ -135,13 +132,18 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
     });
   }
 
+  onPageChange(event: number): void {
+    this.p = event;
+    this.obtenerUsuarios();
+  }
+
   // para filtrar los usuarios por algún término de busqueda
   filtrarUsuarios(): void {
     if (!this.searchTerm.trim()) {
       this.usuariosFiltrados = [...this.usuarios];
     } else {
       const termino = this.searchTerm.toLowerCase().trim();
-      this.usuariosFiltrados = this.usuarios.filter(usuario => 
+      this.usuariosFiltrados = this.usuarios.filter(usuario =>
         usuario.nombres?.toLowerCase().includes(termino) ||
         usuario.apellidos?.toLowerCase().includes(termino) ||
         usuario.correo?.toLowerCase().includes(termino) ||
@@ -186,10 +188,10 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
   eliminarUsuario(usuario: UserResponse): void {
     // Limpiar estado previo antes de abrir el modal
     this.limpiarEstadoModal();
-    
+
     // Establecer el nuevo usuario a eliminar
     this.usuarioAEliminar = usuario;
-    
+
     const modalElement = document.getElementById('confirmDeleteAreaModal');
     if (modalElement) {
       const modal = Modal.getInstance(modalElement) || new Modal(modalElement);
@@ -208,17 +210,17 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
       next: (response) => {
         console.log('Usuario eliminado exitosamente (area-users):', response); // Debug log
         this.eliminando = false;
-        
+
         // Mostrar mensaje de éxito en el modal
         this.mensajeExito = 'Usuario eliminado exitosamente';
         this.mostrarMensajeExito = true;
-        
+
         // Notificar a través del servicio para que todos los componentes se actualicen
         this.userNotificationService.notificarUsuarioEliminado(response);
-        
+
         // Recargar la lista de usuarios
         this.obtenerUsuarios();
-        
+
         // Cerrar el modal después de 2 segundos
         setTimeout(() => {
           const modalElement = document.getElementById('confirmDeleteAreaModal');
@@ -228,7 +230,7 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
               modal.hide();
             }
           }
-          
+
           // Limpiar el estado del modal
           this.limpiarEstadoModal();
         }, 2000);
@@ -236,14 +238,14 @@ export class AreaUsersComponent implements OnInit, OnDestroy{
       error: (err) => {
         this.eliminando = false;
         console.error('Error al eliminar usuario (area-users):', err); // Debug log
-        
+
         let mensajeError = 'Error al eliminar el usuario. Por favor, intente nuevamente.';
         if (err.error && err.error.mensaje) {
           mensajeError = err.error.mensaje;
         } else if (err.error && err.error.message) {
           mensajeError = err.error.message;
         }
-        
+
         alert(mensajeError);
       }
     });

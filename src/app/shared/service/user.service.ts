@@ -37,7 +37,7 @@ export class UserService extends HttpService {
     return this.http.get<UserResponse[]>(url, opts);
   }
 
-  consultarUsuariosPorTipo(tipoUsuario: string, pagina: number = 0, tamano: number = 10): Observable<any> {
+  consultarUsuariosPorTipo(tipoUsuario: string, pagina: number = 0, tamano: number = 10, excluir: boolean = false): Observable<any> {
     const opts = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -47,7 +47,8 @@ export class UserService extends HttpService {
     const params = new HttpParams()
         .set('tipoUsuario', tipoUsuario)
         .set('pagina', pagina.toString())
-        .set('tamano', tamano.toString());
+        .set('tamano', tamano.toString())
+        .set('excluir', excluir.toString());
     const url = `${environment.endpoint}${this.USER_ENDPOINT}/paginado`;
     return this.doGetParameters<any>(url, params, opts);
   }
