@@ -24,7 +24,7 @@ describe('RegisterNewProjectComponent', () => {
     mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones']);
     mockProjectService = jasmine.createSpyObj('ProjectService', ['agregarNuevoProyecto']);
 
-    mockActionService.consultarAcciones.and.returnValue(of(mockAcciones as any));
+    mockActionService.consultarAcciones.and.returnValue(of({ content: mockAcciones, totalElements: mockAcciones.length } as any));
     mockProjectService.agregarNuevoProyecto.and.returnValue(of({ valor: 'ok' }));
 
     TestBed.configureTestingModule({

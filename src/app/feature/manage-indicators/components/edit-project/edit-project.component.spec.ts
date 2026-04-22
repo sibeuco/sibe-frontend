@@ -27,7 +27,7 @@ describe('EditProjectComponent', () => {
     mockProjectService = jasmine.createSpyObj('ProjectService', ['modificarProyecto']);
     mockActionService = jasmine.createSpyObj('ActionService', ['consultarAcciones']);
 
-    mockActionService.consultarAcciones.and.returnValue(of(mockAcciones as any));
+    mockActionService.consultarAcciones.and.returnValue(of({ content: mockAcciones, totalElements: mockAcciones.length } as any));
     mockProjectService.modificarProyecto.and.returnValue(of({ valor: 'ok' }));
 
     TestBed.configureTestingModule({

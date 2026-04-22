@@ -82,9 +82,9 @@ export class RegisterNewIndicatorComponent implements OnInit, AfterViewInit, OnD
 
       cargarProyectos(): void {
         this.cargandoProyectos = true;
-        this.projectService.consultarProyectos().subscribe({
-          next: (proyectos: ProjectResponse[]) => {
-            this.proyectos = proyectos;
+        this.projectService.consultarProyectos(0, 1000).subscribe({
+          next: (response: any) => {
+            this.proyectos = response.content;
             this.cargandoProyectos = false;
           },
           error: (error) => {

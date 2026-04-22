@@ -38,7 +38,7 @@ describe('EditIndicatorComponent', () => {
     mockIndicatorService.modificarIndicador.and.returnValue(of({ valor: 'ok' }));
 
     mockProjectService = jasmine.createSpyObj('ProjectService', ['consultarProyectos']);
-    mockProjectService.consultarProyectos.and.returnValue(of(mockProyectos));
+    mockProjectService.consultarProyectos.and.returnValue(of({ content: mockProyectos, totalElements: mockProyectos.length }));
 
     mockFrequencyService = jasmine.createSpyObj('FrequencyService', ['consultarTemporalidades']);
     mockFrequencyService.consultarTemporalidades.and.returnValue(of(mockTemporalidades));
