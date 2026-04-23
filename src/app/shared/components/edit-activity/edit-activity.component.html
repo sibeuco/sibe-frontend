@@ -14,6 +14,11 @@
                         <p class="mt-2 text-muted">Cargando información de la actividad...</p>
                     </div>
 
+                    <div *ngIf="tieneEjecucionEnCurso" class="alert alert-info d-flex align-items-center" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <div>Esta actividad tiene una ejecución en curso, por lo que no puede modificarse hasta que finalice.</div>
+                    </div>
+
                     <div *ngIf="soloColaboradorEditable" class="alert alert-warning d-flex align-items-center" role="alert">
                         <i class="bi bi-exclamation-triangle-fill me-2"></i>
                         <div>Esta actividad tiene ejecuciones finalizadas. Solo es posible actualizar el colaborador asignado y agregar nuevas fechas. Las fechas existentes no se pueden modificar.</div>
@@ -26,7 +31,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="actividadForm.nombre" [disabled]="soloColaboradorEditable" required />
+                            <input type="text" class="form-control" id="nombre" name="nombre" [(ngModel)]="actividadForm.nombre" [disabled]="soloColaboradorEditable || tieneEjecucionEnCurso" required />
                         </div>
                     </div>
 
@@ -37,7 +42,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="objetivo" name="objetivo" [(ngModel)]="actividadForm.objetivo" [disabled]="soloColaboradorEditable" required />
+                            <input type="text" class="form-control" id="objetivo" name="objetivo" [(ngModel)]="actividadForm.objetivo" [disabled]="soloColaboradorEditable || tieneEjecucionEnCurso" required />
                         </div>
                     </div>
 
@@ -48,7 +53,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="semestre" name="semestre" [(ngModel)]="actividadForm.semestre" [disabled]="soloColaboradorEditable" required />
+                            <input type="text" class="form-control" id="semestre" name="semestre" [(ngModel)]="actividadForm.semestre" [disabled]="soloColaboradorEditable || tieneEjecucionEnCurso" required />
                         </div>
                     </div>
 
@@ -59,7 +64,7 @@
                             </div>
                         </div>
                         <div class="name-input d-flex justify-content-center align-items-center">
-                            <input type="text" class="form-control" id="ruta" name="ruta" [(ngModel)]="actividadForm.rutaInsumos" [disabled]="soloColaboradorEditable" required />
+                            <input type="text" class="form-control" id="ruta" name="ruta" [(ngModel)]="actividadForm.rutaInsumos" [disabled]="soloColaboradorEditable || tieneEjecucionEnCurso" required />
                         </div>
                     </div>
 
@@ -73,7 +78,7 @@
                             <select class="form-select" id="indicador" name="indicador"
                                     [(ngModel)]="indicadorSeleccionado"
                                     (change)="actividadForm.indicador = indicadorSeleccionado"
-                                    [disabled]="soloColaboradorEditable"
+                                    [disabled]="soloColaboradorEditable || tieneEjecucionEnCurso"
                                     required>
                                 <option value="">Seleccione un indicador</option>
                                 <option *ngFor="let indicador of indicadores" [value]="indicador.identificador">
@@ -93,6 +98,7 @@
                             <select class="form-select" id="colaborador" name="colaborador"
                                     [(ngModel)]="colaboradorSeleccionado"
                                     (change)="actividadForm.colaborador = colaboradorSeleccionado"
+                                    [disabled]="tieneEjecucionEnCurso"
                                     required>
                                 <option value="">Seleccione un colaborador</option>
                                 <option *ngFor="let usuario of usuarios" [value]="usuario.identificador">
@@ -129,7 +135,7 @@
                             <select class="form-select" id="tipoEstructura" name="tipoEstructura"
                                     [(ngModel)]="tipoEstructuraSeleccionado"
                                     (change)="onTipoEstructuraChange()"
-                                    [disabled]="soloColaboradorEditable"
+                                    [disabled]="soloColaboradorEditable || tieneEjecucionEnCurso"
                                     required>
                                 <option value="">Seleccione el tipo</option>
                                 <option value="direccion">Dirección</option>
@@ -153,7 +159,7 @@
                             <select class="form-select" id="area" name="area"
                                     [(ngModel)]="areaSeleccionada"
                                     (change)="actividadForm.area = areaSeleccionada; actividadForm.tipoArea = determinarTipoArea()"
-                                    [disabled]="soloColaboradorEditable"
+                                    [disabled]="soloColaboradorEditable || tieneEjecucionEnCurso"
                                     required>
                                 <option value="">Seleccione una opción</option>
                                 <option *ngFor="let item of listaFiltrada" [value]="item.identificador">
@@ -183,11 +189,13 @@
                                     name="fechaTemporal"
                                     [(ngModel)]="fechaTemporal"
                                     [min]="minFechaProgramada"
+                                    [disabled]="tieneEjecucionEnCurso"
                                     style="flex: 1;" />
                                 <button
                                     type="button"
                                     class="btn btn-agregar btn-sm ms-2"
                                     (click)="agregarFecha()"
+                                    [disabled]="tieneEjecucionEnCurso"
                                     title="Agregar fecha a la lista">
                                     + Agregar
                                 </button>
@@ -256,7 +264,7 @@
 
                 </div>
                 <div class="modal-footer">
-                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid || cargando || cargandoDatosActividad">
+                <button type="submit" class="register-button btn btn-primary" [disabled]="!userForm.valid || cargando || cargandoDatosActividad || tieneEjecucionEnCurso">
                     <span *ngIf="!cargando">Actualizar</span>
                     <span *ngIf="cargando">
                         <span class="spinner-border spinner-border-sm me-2" role="status"></span>

@@ -61,6 +61,7 @@ export class EditActivityComponent implements OnInit, OnChanges {
   mensajeExito = '';
 
   soloColaboradorEditable = false;
+  tieneEjecucionEnCurso = false;
   ejecuciones: ActivityExecutionResponse[] = [];
 
   constructor(
@@ -196,8 +197,11 @@ export class EditActivityComponent implements OnInit, OnChanges {
           }))
           .filter(fecha => !!fecha.fechaProgramada);
 
+        const hayEnCurso = (this.ejecuciones || []).some(ej => this.esEstadoEnCurso(ej.estadoActividad?.nombre));
+        this.tieneEjecucionEnCurso = hayEnCurso;
+
         const hayFinalizadas = (this.ejecuciones || []).some(ej => this.esEstadoFinalizado(ej.estadoActividad?.nombre));
-        this.soloColaboradorEditable = hayFinalizadas;
+        this.soloColaboradorEditable = hayFinalizadas && !hayEnCurso;
 
         if (!hayFinalizadas && !this.actividadForm.fechasProgramadas.length) {
           // Si no hay ejecuciones, usar las fechas programadas de la actividad como nuevas (sin identificador)
@@ -212,6 +216,7 @@ export class EditActivityComponent implements OnInit, OnChanges {
       },
       error: () => {
         this.soloColaboradorEditable = false;
+        this.tieneEjecucionEnCurso = false;
         // En caso de error, usar las fechas programadas de la actividad como nuevas (sin identificador)
         this.actividadForm.fechasProgramadas = (this.actividad?.fechasProgramadas ?? [])
           .map(fecha => ({
@@ -230,6 +235,15 @@ export class EditActivityComponent implements OnInit, OnChanges {
 
     const normalizado = nombreEstado.toLowerCase();
     return normalizado === EstadoActividad.FINALIZADO.toLowerCase();
+  }
+
+  private esEstadoEnCurso(nombreEstado?: string | null): boolean {
+    if (!nombreEstado) {
+      return false;
+    }
+
+    const normalizado = nombreEstado.toLowerCase();
+    return normalizado === EstadoActividad.EN_CURSO.toLowerCase();
   }
 
   private obtenerTipoEstructuraDesdeActividad(): 'direccion' | 'area' | 'subarea' | '' {
@@ -436,6 +450,10 @@ export class EditActivityComponent implements OnInit, OnChanges {
       return;
     }
 
+    if (this.tieneEjecucionEnCurso) {
+      return;
+    }
+
     if (!this.validarFormulario()) {
       this.error = 'Por favor, complete todos los campos requeridos';
       return;
@@ -494,6 +512,10 @@ export class EditActivityComponent implements OnInit, OnChanges {
   }
 
   private validarFormulario(): boolean {
+    if (this.tieneEjecucionEnCurso) {
+      return false;
+    }
+
     if (this.soloColaboradorEditable) {
       return !!this.colaboradorSeleccionado && this.colaboradorSeleccionado.trim() !== '';
     }
@@ -585,6 +607,7 @@ export class EditActivityComponent implements OnInit, OnChanges {
     this.error = '';
     this.mensajeExito = '';
     this.soloColaboradorEditable = false;
+    this.tieneEjecucionEnCurso = false;
     this.ejecuciones = [];
   }
 
