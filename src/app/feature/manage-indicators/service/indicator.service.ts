@@ -41,6 +41,17 @@ export class IndicatorService extends HttpService {
     return this.http.get<IndicatorResponse[]>(url, opts);
   }
 
+  consultarTodosLosIndicadores(): Observable<IndicatorResponse[]> {
+    const opts = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token') || ''}`
+      })
+    };
+    const url = `${environment.endpoint}${this.INDICATOR_ENDPOINT}/todos`;
+    return this.http.get<IndicatorResponse[]>(url, opts);
+  }
+
   agregarNuevoIndicador(indicador: IndicatorRequest): Observable<Response<string>> {
     const opts = this.createDefaultOptions();
         const url = `${environment.endpoint}${this.INDICATOR_ENDPOINT}`;

@@ -44,6 +44,13 @@ describe('IndicatorService', () => {
     req.flush([]);
   });
 
+  it('should call GET to consult all indicators without pagination', () => {
+    service.consultarTodosLosIndicadores().subscribe();
+    const req = httpMock.expectOne(r => r.url === `${environment.endpoint}/indicadores/todos`);
+    expect(req.request.method).toBe('GET');
+    req.flush([]);
+  });
+
   it('should call POST to add a new indicator', () => {
     const indicador = { nombre: 'Test' } as any;
     service.agregarNuevoIndicador(indicador).subscribe();
