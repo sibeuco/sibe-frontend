@@ -525,6 +525,8 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
    * Cierra el modal de fechas programadas
    */
   cerrarModalFechas(): void {
+    const actividadId = this.actividadSeleccionadaParaModal?.identificador;
+
     const modalElement = document.getElementById('date-selector-modal');
     if (modalElement) {
       const modal = (window as any).bootstrap.Modal.getInstance(modalElement);
@@ -544,6 +546,25 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
       }
     }
     this.actividadSeleccionadaParaModal = null;
+
+    if (actividadId) {
+      this.actualizarEjecucionesDeActividad(actividadId);
+    }
+  }
+
+  /**
+   * Reconsulta las ejecuciones de una actividad específica para reflejar cambios de estado
+   */
+  private actualizarEjecucionesDeActividad(actividadId: string): void {
+    this.activityService.consultarEjecuciones(actividadId).pipe(
+      catchError(() => of([] as ActivityExecutionResponse[]))
+    ).subscribe(ejecuciones => {
+      this.ejecucionesMap.set(actividadId, ejecuciones);
+      const fechaMasCercana = this.calcularFechaMasCercana(ejecuciones);
+      this.fechasProgramadasMap.set(actividadId, fechaMasCercana);
+      this.aplicarFiltrosYOrdenamiento();
+      this.cdr.detectChanges();
+    });
   }
 
   /**
