@@ -229,8 +229,7 @@ export class ExcelReportService {
 
   private generarArchivoExcel(datos: any[], nombre: string): void {
     if (datos.length === 0) {
-      alert('No se encontraron actividades para exportar.');
-      return;
+      throw new Error('NO_DATA');
     }
 
     const ws = XLSX.utils.json_to_sheet(datos);

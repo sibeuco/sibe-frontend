@@ -13,6 +13,8 @@ export class HomePrimaryButtonsComponent {
 
   private readonly NOMBRE_DIRECCION = 'Dirección de Bienestar y Evangelización';
   generandoExcel: boolean = false;
+  mensajeError: string = '';
+  mensajeExito: string = '';
 
   get esColaborador(): boolean {
     const session = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
@@ -38,19 +40,37 @@ export class HomePrimaryButtonsComponent {
     }
 
     this.generandoExcel = true;
+    this.mensajeError = '';
+    this.mensajeExito = '';
 
     this.excelReportService.generarInformeDireccion(this.NOMBRE_DIRECCION).subscribe({
-      next: () => this.generandoExcel = false,
+      next: () => {
+        this.generandoExcel = false;
+        this.mensajeExito = 'Informe generado exitosamente.';
+        this.limpiarMensajeDespues();
+      },
       error: (error) => {
         console.error('Error al generar el informe:', error);
         if (error?.status === 403 && error?.error?.mensaje) {
-          alert(error.error.mensaje);
+          this.mensajeError = error.error.mensaje;
+        } else if (error?.status === 403) {
+          this.mensajeError = 'No tienes permisos para generar informes. Tu rol no permite realizar esta acción.';
+        } else if (error?.message === 'NO_DATA') {
+          this.mensajeError = 'No se encontraron actividades para exportar.';
         } else {
-          alert('Error al generar el informe. Por favor, intente nuevamente.');
+          this.mensajeError = 'Error al generar el informe. Por favor, intente nuevamente.';
         }
         this.generandoExcel = false;
+        this.limpiarMensajeDespues();
       }
     });
+  }
+
+  private limpiarMensajeDespues(): void {
+    setTimeout(() => {
+      this.mensajeError = '';
+      this.mensajeExito = '';
+    }, 6000);
   }
 
 }
