@@ -498,7 +498,7 @@ export class ActivitiesTableComponent implements OnInit, OnChanges {
   }
 
   abrirModalEditar(actividad: ActivityResponse): void {
-    this.actividadSeleccionadaEdicion = actividad;
+    this.actividadSeleccionadaEdicion = { ...actividad };
 
     setTimeout(() => {
       const modalElement = document.getElementById('edit-activity-modal');
