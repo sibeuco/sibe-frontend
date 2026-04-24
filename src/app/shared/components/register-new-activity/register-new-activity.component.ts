@@ -349,7 +349,14 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
       error: (err) => {
         this.cargando = false;
 
-        if (err.error) {
+        if (err?.status === 403) {
+          if (err.error?.mensaje) {
+            this.error = err.error.mensaje;
+          } else {
+            const etiqueta = this.opcionesTipoEstructura.find(o => o.valor === this.tipoEstructura)?.etiqueta || 'unidad organizacional';
+            this.error = `No tienes permisos para agregar actividades en esta ${etiqueta}. Tu rol no permite ejecutar esta acción.`;
+          }
+        } else if (err.error) {
           if (err.error.mensaje) {
             this.error = err.error.mensaje;
           } else if (err.error.message) {
