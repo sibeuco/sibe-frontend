@@ -66,6 +66,14 @@
     </div>
   </div>
 
+  <div class="in-progress-info-section mb-4" *ngIf="actividadIniciada && !ejecucionFinalizada && !esUsuarioColaborador()">
+    <div class="alert alert-info text-center">
+      <i class="bi bi-info-circle me-2"></i>
+      <h4>Actividad en curso</h4>
+      <p class="mb-0">La actividad se encuentra en curso. Podrás visualizar la información de los participantes una vez finalice.</p>
+    </div>
+  </div>
+
   <div class="alert-section" *ngIf="mensaje">
     <div class="alert" [ngClass]="{
       'alert-success': tipoMensaje === 'success',
@@ -119,7 +127,7 @@
     </div>
   </div>
 
-  <div class="no-participants-section" *ngIf="(actividadIniciada || ejecucionFinalizada) && miembrosAsistencia.length === 0">
+  <div class="no-participants-section" *ngIf="(actividadIniciada || ejecucionFinalizada) && miembrosAsistencia.length === 0 && (ejecucionFinalizada || esUsuarioColaborador())">
     <div class="alert text-center">
       <i class="bi bi-info-circle me-2"></i>
       <h4>No hay participantes registrados</h4>
