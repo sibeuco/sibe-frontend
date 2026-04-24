@@ -273,6 +273,12 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
       return;
     }
 
+    const errorPermisos = this.validarPermisosCreacion();
+    if (errorPermisos) {
+      this.error = errorPermisos;
+      return;
+    }
+
     this.cargando = true;
     this.error = '';
     this.mensajeExito = '';
@@ -371,6 +377,57 @@ export class RegisterNewActivityComponent implements OnInit, OnChanges {
         }
       }
     });
+  }
+
+  private validarPermisosCreacion(): string | null {
+    const userSession = this.stateService.getState(StateProps.USER_SESSION) as UserSession;
+    if (!userSession) {
+      return 'No se pudo obtener la información del usuario. Por favor, inicie sesión nuevamente.';
+    }
+
+    const authorities = userSession.authorities || [];
+    const tienePermisoCrear = authorities.some(a =>
+      a === 'ADMINISTRADOR_DIRECCION_CREATE' || a === 'ADMINISTRADOR_AREA_CREATE'
+    );
+
+    if (!tienePermisoCrear) {
+      return 'No tienes permisos para crear actividades. Tu rol no permite ejecutar esta acción.';
+    }
+
+    const rol = userSession.rol;
+    const etiqueta = this.opcionesTipoEstructura.find(o => o.valor === this.tipoEstructura)?.etiqueta || 'unidad organizacional';
+
+    // ADMINISTRADOR_DIRECCION puede crear en cualquier nivel
+    if (rol === 'ADMINISTRADOR_DIRECCION') {
+      return null;
+    }
+
+    // ADMINISTRADOR_AREA: restricciones según contexto organizacional
+    if (rol === 'ADMINISTRADOR_AREA') {
+      // No puede crear a nivel de dirección
+      if (this.tipoEstructura === 'direccion') {
+        return `No tienes permisos para crear actividades en esta ${etiqueta}. Tu rol no permite ejecutar esta acción.`;
+      }
+
+      if (userSession.areaId) {
+        // Admin de área propia: solo puede crear en su propia área
+        if (this.tipoEstructura === 'area' && this.actividad.area !== userSession.areaId) {
+          return `No tienes permisos para crear actividades en esta ${etiqueta}. Tu rol no permite ejecutar esta acción.`;
+        }
+        // Para subáreas bajo su área, se delega al backend la validación de jerarquía
+      } else if (userSession.subareaId) {
+        // Admin de subárea propia: no puede crear a nivel de área
+        if (this.tipoEstructura === 'area') {
+          return `No tienes permisos para crear actividades en esta ${etiqueta}. Tu rol no permite ejecutar esta acción.`;
+        }
+        // Solo puede crear en su propia subárea
+        if (this.tipoEstructura === 'subarea' && this.actividad.area !== userSession.subareaId) {
+          return `No tienes permisos para crear actividades en esta ${etiqueta}. Tu rol no permite ejecutar esta acción.`;
+        }
+      }
+    }
+
+    return null;
   }
 
   validarFormulario(): boolean {
