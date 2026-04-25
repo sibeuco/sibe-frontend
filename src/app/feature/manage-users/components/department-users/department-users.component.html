@@ -139,6 +139,12 @@
                         <span style="font-size: 1.6rem;">Esta acción no se puede deshacer.</span>
                     </div>
 
+                    <!-- Mensaje de error de eliminación -->
+                    <div *ngIf="errorEliminacion" class="alert alert-danger d-flex align-items-center mt-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <div>{{ errorEliminacion }}</div>
+                    </div>
+
                     <!-- Mensaje de éxito -->
                     <div *ngIf="mostrarMensajeExito" class="d-flex align-items-center justify-content-center mb-4">
                         <div class="text-center">

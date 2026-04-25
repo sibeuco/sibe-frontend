@@ -33,6 +33,7 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
     eliminando = false;
     mensajeExito = '';
     mostrarMensajeExito = false;
+    errorEliminacion = '';
 
     // Propiedades para la lista desplegable
     listaDepartamentos: { identificador: string; nombre: string }[] = [];
@@ -162,6 +163,7 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
       this.eliminando = false;
       this.mostrarMensajeExito = false;
       this.mensajeExito = '';
+      this.errorEliminacion = '';
     }
 
     // Abre el modal de confirmación para eliminar un usuario
@@ -217,16 +219,14 @@ export class DepartmentUsersComponent implements OnInit, OnDestroy{
         },
         error: (err) => {
           this.eliminando = false;
-          console.error('Error al eliminar usuario (department):', err); // Debug log
 
-          let mensajeError = 'Error al eliminar el usuario. Por favor, intente nuevamente.';
           if (err.error && err.error.mensaje) {
-            mensajeError = err.error.mensaje;
+            this.errorEliminacion = err.error.mensaje;
           } else if (err.error && err.error.message) {
-            mensajeError = err.error.message;
+            this.errorEliminacion = err.error.message;
+          } else {
+            this.errorEliminacion = 'Error al eliminar el usuario. Por favor, intente nuevamente.';
           }
-
-          alert(mensajeError);
         }
       });
     }
